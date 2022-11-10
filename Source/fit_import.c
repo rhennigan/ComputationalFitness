@@ -299,7 +299,7 @@ DLLEXPORT int FITImport(
 }
 
 
-static int count_fit_records(char* input)
+int count_fit_records(char* input)
 {
    FILE *file;
    FIT_UINT8 buf[8];
