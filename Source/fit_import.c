@@ -1,10 +1,12 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define FIT_USE_STDINT_H
 
 #include "WolframLibrary.h"
 #include "stdio.h"
 #include "string.h"
 #include "fit_convert.h"
+
+static int count_fit_records(char* input);
+
 
 DLLEXPORT mint WolframLibrary_getVersion() {
     return WolframLibraryVersion;
@@ -299,7 +301,7 @@ DLLEXPORT int FITImport(
 }
 
 
-int count_fit_records(char* input)
+static int count_fit_records(char* input)
 {
    FILE *file;
    FIT_UINT8 buf[8];
