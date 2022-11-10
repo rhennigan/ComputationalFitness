@@ -40,11 +40,15 @@ $built = ccd`CreateLibrary[
     "TargetDirectory"     -> $targetDir,
     "CleanIntermediate"   -> True,
     "ShellOutputFunction" -> Print,
-    "Defines"             -> { "FIT_USE_STDINT_H" }
+    "Defines"             -> { (* "FIT_USE_STDINT_H" *) }
 ];
 
-If[ FileExistsQ @ $built,
-    $built,
+If[ FileExistsQ @ $built
+    ,
+    $built = ExpandFileName @ $built;
+    cicd`ConsoleLog[ "Built library: " <> $built ];
+    $built
+    ,
     cicd`ConsoleError[ "Failed to build the library.", "Fatal" -> True ]
 ]
 
