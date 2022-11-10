@@ -26,7 +26,13 @@ PacletObject[ <|
         },
         {
             "Asset",
-            "Assets"   -> { { "License", "./LICENSE" } }
+            "Assets"   -> {
+                { "License"    , "./LICENSE"     },
+                { "ExampleData", "./ExampleData" }
+            }
+        },
+        {
+            "Path"
         }
     }
 |> ]

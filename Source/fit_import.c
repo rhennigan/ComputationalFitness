@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define FIT_USE_STDINT_H
 
 #include "WolframLibrary.h"
 #include "stdio.h"

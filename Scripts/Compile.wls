@@ -25,10 +25,10 @@ cicd`ConsoleLog[ "Build target directory: " <> $targetDir ];
 (*Compile*)
 $sourceFiles = FileNames[
     {
+        "fit_import.c",
         "fit.c",
         "fit_crc.c",
         "fit_example.c",
-        "fit_import.c",
         "fit_convert.c"
     },
     $sourceDir
