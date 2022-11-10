@@ -39,7 +39,8 @@ $built = ccd`CreateLibrary[
     "FitnessData",
     "TargetDirectory"     -> $targetDir,
     "CleanIntermediate"   -> True,
-    "ShellOutputFunction" -> Print
+    "ShellOutputFunction" -> Print,
+    "Defines"             -> { "FIT_USE_STDINT_H" }
 ];
 
 If[ FileExistsQ @ $built,
