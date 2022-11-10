@@ -153,7 +153,7 @@ jobs:
             echo 'Updating paclet sites...'
             wolframscript -code 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]' > /dev/null
         fi
-        wolframscript -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
+        wolframscript -f ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
     - name: Archive compiled libraries
       uses: actions/upload-artifact@v3
       with: 
