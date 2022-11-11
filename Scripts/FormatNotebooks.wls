@@ -16,7 +16,9 @@
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
-PacletInstall[ "Wolfram/PacletCICD" ];
+If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
+    PacletInstall[ "https://github.com/WolframResearch/PacletCICD/releases/download/v0.34.0/Wolfram__PacletCICD-0.34.0.paclet" ]
+];
 Needs[ "Wolfram`PacletCICD`" -> "cicd`" ];
 
 (* ::**********************************************************************:: *)

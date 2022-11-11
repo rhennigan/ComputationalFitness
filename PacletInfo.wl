@@ -13,7 +13,10 @@ PacletObject[ <|
         {
             "Kernel",
             "Root"     -> "Kernel",
-            "Context"  -> "RH`FitnessData`"
+            "Context"  -> "RH`FitnessData`",
+            "Symbols"  -> {
+                "RH`FitnessData`FITImport"
+            }
         },
         {
             "Documentation",
