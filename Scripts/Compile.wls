@@ -6,16 +6,23 @@
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
-PacletInstall[ "Wolfram/PacletCICD" ];
+If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
+    PacletInstall @ ResourceObject[ "Wolfram/PacletCICD" ]
+];
 Needs[ "Wolfram`PacletCICD`" -> "cicd`" ];
 Needs[ "CCompilerDriver`"    -> "ccd`"  ];
+
+cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
+cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
+cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paths*)
-$pacletDir = DirectoryName[ $InputFileName, 2 ];
-$sourceDir = FileNameJoin @ { $pacletDir, "Source" };
-$targetDir = FileNameJoin @ { $pacletDir, "LibraryResources", $SystemID };
+$inputFileName = cFile @ Replace[ $InputFileName, "" :> NotebookFileName[ ] ];
+$pacletDir     = cDir @ DirectoryName[ $inputFileName, 2 ];
+$sourceDir     = cStr @ FileNameJoin @ { $pacletDir, "Source" };
+$targetDir     = cStr @ FileNameJoin @ { $pacletDir, "LibraryResources", $SystemID };
 
 cicd`ConsoleLog[ "Build source directory: " <> $sourceDir ];
 cicd`ConsoleLog[ "Build target directory: " <> $targetDir ];
@@ -23,15 +30,18 @@ cicd`ConsoleLog[ "Build target directory: " <> $targetDir ];
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Compile*)
-$sourceFiles = FileNames[
-    {
-        "fit_import.c",
-        "fit.c",
-        "fit_crc.c",
-        "fit_example.c",
-        "fit_convert.c"
-    },
-    $sourceDir
+$sourceFiles = cicd`ScriptConfirmMatch[
+    FileNames[
+        {
+            "fit_import.c",
+            "fit.c",
+            "fit_crc.c",
+            "fit_example.c",
+            "fit_convert.c"
+        },
+        $sourceDir
+    ],
+    { _, _, _, _, _ }
 ];
 
 $built = ccd`CreateLibrary[
@@ -45,7 +55,7 @@ $built = ccd`CreateLibrary[
 
 If[ FileExistsQ @ $built
     ,
-    $built = ExpandFileName @ $built;
+    $built = cStr @ ExpandFileName @ $built;
     cicd`ConsoleLog[ "Built library: " <> $built ];
     $built
     ,
