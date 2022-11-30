@@ -26,7 +26,7 @@ $mxFile        = cStr @ FileNameJoin @ {
                      $pacletDir,
                      "Kernel",
                      ToString @ $SystemWordLength <> "Bit",
-                     "FitnessData.mx"
+                     "ComputationalFitness.mx"
                  };
 
 (* ::**********************************************************************:: *)
@@ -39,7 +39,7 @@ If[ FileExistsQ @ $mxFile,
 
 cicd`ConsoleLog[ "Loading paclet..." ];
 cicd`ScriptConfirmBy[ PacletDirectoryLoad @ $pacletDir, MemberQ @ $pacletDir ];
-cicd`ScriptConfirm @ Needs[ "RH`FitnessData`" ];
+cicd`ScriptConfirm @ Needs[ "RH`ComputationalFitness`" ];
 
 $mxDir = cDir @ gu`EnsureDirectory @ DirectoryName @ $mxFile;
 cicd`ConsoleLog[ "MX target directory: ", $mxDir  ];
@@ -48,8 +48,8 @@ cicd`ConsoleLog[ "Building MX file: "   , $mxFile ];
 DumpSave[
     $mxFile,
     {
-        "RH`FitnessData`",
-        "RH`FitnessData`Private`"
+        "RH`ComputationalFitness`",
+        "RH`ComputationalFitness`Private`"
     },
     "SymbolAttributes" -> False
 ];

@@ -46,7 +46,7 @@ $sourceFiles = cicd`ScriptConfirmMatch[
 
 $built = ccd`CreateLibrary[
     $sourceFiles,
-    "FitnessData",
+    "ComputationalFitness",
     "TargetDirectory"     -> $targetDir,
     "CleanIntermediate"   -> True,
     "ShellOutputFunction" -> Print,

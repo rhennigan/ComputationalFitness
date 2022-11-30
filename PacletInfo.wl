@@ -1,5 +1,5 @@
 PacletObject[ <|
-    "Name"             -> "RH/FitnessData",
+    "Name"             -> "RH/ComputationalFitness",
     "Description"      -> "Utilities for importing and analyzing fitness data from smartwatches, cycling computers, and other sources",
     "Creator"          -> "Richard Hennigan (Wolfram Research)",
     "ActionURL"        -> "$ActionURL$",
@@ -7,15 +7,15 @@ PacletObject[ <|
     "Version"          -> "1.0.0",
     "WolframVersion"   -> "13.0+",
     "PublisherID"      -> "RH",
-    "SourceControlURL" -> "https://github.com/rhennigan/FitnessData",
+    "SourceControlURL" -> "https://github.com/rhennigan/ComputationalFitness",
     "License"          -> "MIT",
     "Extensions"       -> {
         {
             "Kernel",
             "Root"     -> "Kernel",
-            "Context"  -> "RH`FitnessData`",
+            "Context"  -> "RH`ComputationalFitness`",
             "Symbols"  -> {
-                "RH`FitnessData`FITImport"
+                "RH`ComputationalFitness`FITImport"
             }
         },
         {
@@ -31,7 +31,8 @@ PacletObject[ <|
             "Asset",
             "Assets"   -> {
                 { "License"    , "./LICENSE"     },
-                { "ExampleData", "./ExampleData" }
+                { "ExampleData", "./ExampleData" },
+                { "Source"     , "./Source"      }
             }
         },
         {

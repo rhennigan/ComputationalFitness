@@ -1,5 +1,6 @@
-RH`FitnessData`$FunctionalThresholdPower;
-RH`FitnessData`FITImport;
-RH`FitnessData`FunctionalThresholdPower;
-RH`FitnessData`ZWOExport;
-RH`FitnessData`ZWOImport;
+RH`ComputationalFitness`$FunctionalThresholdPower;
+RH`ComputationalFitness`FITImport;
+RH`ComputationalFitness`FunctionalThresholdPower;
+RH`ComputationalFitness`TCXImport;
+RH`ComputationalFitness`ZWOExport;
+RH`ComputationalFitness`ZWOImport;
