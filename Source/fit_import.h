@@ -7,6 +7,7 @@
 #include "fit_convert.h"
 
 #define MESSAGE_TENSOR_ROW_WIDTH 102
+#define FILE_ID_TENSOR_ROW_WIDTH  27
 
 #define FIT_IMPORT_ERROR_CONVERSION            8
 #define FIT_IMPORT_ERROR_UNEXPECTED_EOF        9

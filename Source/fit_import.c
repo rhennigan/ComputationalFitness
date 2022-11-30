@@ -24,6 +24,131 @@ DLLEXPORT int constantzero(
     return LIBRARY_NO_ERROR;
 }
 
+
+DLLEXPORT int FITFileType (
+    WolframLibraryData libData,
+    mint Argc, 
+    MArgument *Args, 
+    MArgument Res
+) {
+    char *path;
+    FILE *file;
+    mint res;
+    FIT_UINT8 buf[8];
+    FIT_CONVERT_RETURN convert_return = FIT_CONVERT_CONTINUE;
+    FIT_UINT32 buf_size;
+    FIT_UINT32 mesg_index = 0;
+
+    path = MArgument_getUTF8String(Args[0]);
+
+    #if defined(FIT_CONVERT_MULTI_THREAD)
+        FIT_CONVERT_STATE state;
+    #endif
+
+    // printf("Testing file conversion using %s file...\n", path);
+
+    #if defined(FIT_CONVERT_MULTI_THREAD)
+        FitConvert_Init(&state, FIT_TRUE);
+    #else
+        FitConvert_Init(FIT_TRUE);
+    #endif
+
+    if((file = fopen(path, "rb")) == NULL)
+    {
+        // printf("Error opening file %s.\n", path);
+        return FIT_IMPORT_ERROR_OPEN_FILE;
+    }
+
+    while(!feof(file) && (convert_return == FIT_CONVERT_CONTINUE))
+    {
+        for(buf_size=0;(buf_size < sizeof(buf)) && !feof(file); buf_size++)
+        {
+            buf[buf_size] = (FIT_UINT8)getc(file);
+        }
+
+        do
+        {
+            #if defined(FIT_CONVERT_MULTI_THREAD)
+                convert_return = FitConvert_Read(&state, buf, buf_size);
+            #else
+                convert_return = FitConvert_Read(buf, buf_size);
+            #endif
+
+            switch (convert_return)
+            {
+                case FIT_CONVERT_MESSAGE_AVAILABLE:
+                {
+                    #if defined(FIT_CONVERT_MULTI_THREAD)
+                        const FIT_UINT8 *mesg = FitConvert_GetMessageData(&state);
+                        FIT_UINT16 mesg_num = FitConvert_GetMessageNumber(&state);
+                    #else
+                        const FIT_UINT8 *mesg = FitConvert_GetMessageData();
+                        FIT_UINT16 mesg_num = FitConvert_GetMessageNumber();
+                    #endif
+
+                    switch(mesg_num)
+                    {
+                        case FIT_MESG_NUM_FILE_ID:
+                        {
+                            const FIT_FILE_ID_MESG *id = (FIT_FILE_ID_MESG *) mesg;
+                            res = id->type;
+                            convert_return = FIT_CONVERT_END_OF_FILE;
+                            break;
+                        }
+                        default:
+                        {    
+                            break;
+                        }
+                    }
+
+                    break;
+                }
+
+                default:
+                    break;
+            }
+        } while (convert_return == FIT_CONVERT_MESSAGE_AVAILABLE);
+    }
+
+    if (convert_return == FIT_CONVERT_ERROR)
+    {
+        // Error decoding file
+        fclose(file);
+        return FIT_IMPORT_ERROR_CONVERSION;
+    }
+
+    if (convert_return == FIT_CONVERT_CONTINUE)
+    {
+        // Unexpected end of file
+        fclose(file);
+        return FIT_IMPORT_ERROR_UNEXPECTED_EOF;
+    }
+
+    if (convert_return == FIT_CONVERT_DATA_TYPE_NOT_SUPPORTED)
+    {
+        // File is not FIT
+        fclose(file);
+        return FIT_IMPORT_ERROR_NOT_FIT_FILE;
+    }
+
+    if (convert_return == FIT_CONVERT_PROTOCOL_VERSION_NOT_SUPPORTED)
+    {
+        // Protocol version not supported
+        fclose(file);
+        return FIT_IMPORT_ERROR_UNSUPPORTED_PROTOCOL;
+    }
+
+    if (convert_return == FIT_CONVERT_END_OF_FILE)
+        // printf("File converted successfully.\n");
+
+    fclose(file);
+
+    MArgument_setInteger(Res, res);
+
+    return LIBRARY_NO_ERROR;
+}
+
+
 DLLEXPORT int FITImport(
     WolframLibraryData libData,
     mint Argc, 

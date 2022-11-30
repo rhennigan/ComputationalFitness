@@ -12,11 +12,12 @@ Quiet[
         ,
         Get @ RH`ComputationalFitnessLoader`$MXFile
         ,
-        Get[ "RH`ComputationalFitness`Symbols`"   ];
-        Get[ "RH`ComputationalFitness`Utilities`" ];
-        Get[ "RH`ComputationalFitness`Libraries`" ];
-        Get[ "RH`ComputationalFitness`FITImport`" ];
-        Get[ "RH`ComputationalFitness`TCXImport`" ];
+        Get[ "RH`ComputationalFitness`Symbols`"          ];
+        Get[ "RH`ComputationalFitness`Utilities`"        ];
+        Get[ "RH`ComputationalFitness`Libraries`"        ];
+        Get[ "RH`ComputationalFitness`FITImportStrings`" ];
+        Get[ "RH`ComputationalFitness`FITImport`"        ];
+        Get[ "RH`ComputationalFitness`TCXImport`"        ];
     ],
     General::shdw
 ];
