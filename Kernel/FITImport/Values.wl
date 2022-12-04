@@ -123,7 +123,7 @@ fitLapValue[ "MaxPositiveVerticalSpeed"           , v_ ] := fitVerticalSpeed @ v
 fitLapValue[ "MaxNegativeVerticalSpeed"           , v_ ] := fitVerticalSpeed @ v[[ 48 ]];
 fitLapValue[ "RepetitionNumber"                   , v_ ] := fitUINT16 @ v[[ 49 ]];
 fitLapValue[ "MinAltitude"                        , v_ ] := fitAltitudeSelect[ v[[ 21 ]], v[[ 50 ]] ];
-fitLapValue[ "WorkoutStepIndex"                   , v_ ] := fitMessageIndex @ v[[ 51 ]];
+fitLapValue[ "WorkoutStepIndex"                   , v_ ] := fitUINT16 @ v[[ 51 ]];
 fitLapValue[ "OpponentScore"                      , v_ ] := fitUINT16 @ v[[ 52 ]];
 fitLapValue[ "StrokeCount"                        , v_ ] := fitStrokeCount @ v[[ 53 ]];
 fitLapValue[ "ZoneCount"                          , v_ ] := fitUINT16 @ v[[ 54 ]];
@@ -489,22 +489,37 @@ fitTrainingFileValue[ _             , _  ] := Missing[ "NotAvailable" ];
 fitValue[ "WorkoutStep", name_, value_ ] := fitWorkoutStepValue[ name, value ];
 
 fitWorkoutStepValue[ "WorkoutStepName"               , v_ ] := fitString @ v[[ 2;;17 ]];
-fitWorkoutStepValue[ "DurationValue"                 , v_ ] := fitUINT32 @ v[[ 18 ]]; (* TODO: interpret values *)
-fitWorkoutStepValue[ "TargetValue"                   , v_ ] := fitUINT32 @ v[[ 19 ]];
-fitWorkoutStepValue[ "CustomTargetValueLow"          , v_ ] := fitUINT32 @ v[[ 20 ]];
-fitWorkoutStepValue[ "CustomTargetValueHigh"         , v_ ] := fitUINT32 @ v[[ 21 ]];
-fitWorkoutStepValue[ "SecondaryTargetValue"          , v_ ] := fitUINT32 @ v[[ 22 ]];
-fitWorkoutStepValue[ "SecondaryCustomTargetValueLow" , v_ ] := fitUINT32 @ v[[ 23 ]];
-fitWorkoutStepValue[ "SecondaryCustomTargetValueHigh", v_ ] := fitUINT32 @ v[[ 24 ]];
+fitWorkoutStepValue[ "Duration"                      , v_ ] := fitWktDuration[ v[[ 18 ]], v[[ 27 ]] ];
+fitWOrkoutStepValue[ "DurationType"                  , v_ ] := fitWorkoutStepDuration @ v[[ 27 ]];
+fitWorkoutStepValue[ "TargetValue"                   , v_ ] := fitWktTargetValue[ v[[ 19 ]], v[[ 28 ]] ];
+fitWorkoutStepValue[ "TargetType"                    , v_ ] := fitWorkoutStepTarget @ v[[ 28 ]];
+fitWorkoutStepValue[ "CustomTargetValueLow"          , v_ ] := fitWktTargetValue[ v[[ 20 ]], v[[ 28 ]] ];
+fitWorkoutStepValue[ "CustomTargetValueHigh"         , v_ ] := fitWktTargetValue[ v[[ 21 ]], v[[ 28 ]] ];
+fitWorkoutStepValue[ "SecondaryTargetValue"          , v_ ] := fitWktTargetValue[ v[[ 22 ]], v[[ 81 ]] ];
+fitWorkoutStepValue[ "SecondaryCustomTargetValueLow" , v_ ] := fitWktTargetValue[ v[[ 23 ]], v[[ 81 ]] ];
+fitWorkoutStepValue[ "SecondaryCustomTargetValueHigh", v_ ] := fitWktTargetValue[ v[[ 24 ]], v[[ 81 ]] ];
+fitWorkoutStepValue[ "SecondaryTargetType"           , v_ ] := fitWorkoutStepTarget @ v[[ 81 ]];
 fitWorkoutStepValue[ "MessageIndex"                  , v_ ] := fitMessageIndex @ v[[ 25 ]];
 fitWorkoutStepValue[ "ExerciseCategory"              , v_ ] := fitExerciseCategory @ v[[ 26 ]];
-fitWorkoutStepValue[ "DurationType"                  , v_ ] := fitWorkoutStepDuration @ v[[ 27 ]];
 fitWorkoutStepValue[ "TargetType"                    , v_ ] := fitWorkoutStepTarget @ v[[ 28 ]];
 fitWorkoutStepValue[ "Intensity"                     , v_ ] := fitIntensity @ v[[ 29 ]];
 fitWorkoutStepValue[ "Notes"                         , v_ ] := fitString @ v[[ 30;;79 ]];
 fitWorkoutStepValue[ "Equipment"                     , v_ ] := fitWorkoutEquipment @ v[[ 80 ]];
 fitWorkoutStepValue[ "SecondaryTargetType"           , v_ ] := fitWorkoutStepTarget @ v[[ 81 ]];
 fitWorkoutStepValue[ _                               , _  ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*Workout*)
+fitValue[ "Workout", name_, value_ ] := fitWorkoutValue[ name, value ];
+
+fitWorkoutValue[ "Capabilities"      , v_ ] := fitWorkoutCapabilities @ v[[ 2 ]];
+fitWorkoutValue[ "WorkoutName"       , v_ ] := fitString @ v[[ 3;;18 ]];
+fitWorkoutValue[ "NumberOfValidSteps", v_ ] := fitUINT16 @ v[[ 19 ]];
+fitWorkoutValue[ "PoolLength"        , v_ ] := fitMeters100 @ v[[ 20 ]];
+fitWorkoutValue[ "Sport"             , v_ ] := fitSport @ v[[ 21 ]];
+fitWorkoutValue[ "SubSport"          , v_ ] := fitSubSport @ v[[ 22 ]];
+fitWorkoutValue[ "PoolLengthUnit"    , v_ ] := fitDisplayMeasure @ v[[ 23 ]];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -1497,6 +1512,49 @@ fitChangeSport[ n___ ] :=
             sport
         ]
     ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitWktDuration*)
+fitWktDuration // ClearAll;
+fitWktDuration[ v_, t_ ] := fitWktDuration0[ fitUINT32 @ v, fitWorkoutStepDuration @ t ];
+fitWktDuration[ ___ ] := Missing[ "NotAvailable" ];
+
+fitWktDuration0 // ClearAll;
+fitWktDuration0[ _Missing, _        ] := Missing[ "NotAvailable" ];
+fitWktDuration0[ _       , _Missing ] := Missing[ "NotAvailable" ];
+
+fitWktDuration0[ w_, "Time"                 ] := fitTime @ w;
+fitWktDuration0[ w_, "Distance"             ] := fitDistance @ w;
+fitWktDuration0[ w_, "HeartRateLessThan"    ] := fitHeartRate @ w;
+fitWktDuration0[ w_, "HeartRateGreaterThan" ] := fitHeartRate @ w;
+fitWktDuration0[ w_, "Calories"             ] := fitCalories @ w;
+fitWktDuration0[ w_, "PowerLessThan"        ] := fitPower @ w;
+fitWktDuration0[ w_, "PowerGreaterThan"     ] := fitPower @ w;
+
+fitWktDuration0[ v_, t_ ] := v;
+fitWktDuration0[ ___    ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitWktTargetValue*)
+fitWktTargetValue // ClearAll;
+fitWktTargetValue[ v_, t_ ] := fitWktTargetValue0[ fitUINT32 @ v, fitWorkoutStepTarget @ t ];
+fitWktTargetValue[ ___ ] := Missing[ "NotAvailable" ];
+
+fitWktTargetValue0 // ClearAll;
+fitWktTargetValue0[ _Missing, _        ] := Missing[ "NotAvailable" ];
+fitWktTargetValue0[ _       , _Missing ] := Missing[ "NotAvailable" ];
+
+fitWktTargetValue0[ w_, "Power"      ] := fitPower @ w;
+fitWktTargetValue0[ w_, "HeartRate"  ] := fitHeartRate @ w;
+fitWktTargetValue0[ w_, "Cadence"    ] := fitCadence @ w;
+fitWktTargetValue0[ w_, "Speed"      ] := fitSpeed @ w;
+fitWktTargetValue0[ w_, "Grade"      ] := fitGrade @ w;
+fitWktTargetValue0[ w_, "Resistance" ] := fitResistance @ w;
+
+fitWktTargetValue0[ v_, t_ ] := v;
+fitWktTargetValue0[ ___    ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)

@@ -6008,8 +6008,8 @@ typedef struct
 
 // record message
 
-#define FIT_RECORD_MESG_SIZE                                                    134
-#define FIT_RECORD_MESG_DEF_SIZE                                                254
+#define FIT_RECORD_MESG_SIZE                                                    137
+#define FIT_RECORD_MESG_DEF_SIZE                                                239
 #define FIT_RECORD_MESG_COMPRESSED_SPEED_DISTANCE_COUNT                         3
 #define FIT_RECORD_MESG_SPEED_1S_COUNT                                          5
 

@@ -60,6 +60,7 @@ $$propList      = { $$prop... };
 $$props         = $$prop | $$propList;
 $$messageType   = _? messageTypeQ;
 $$messageTypes  = $$messageType | { $$messageType... };
+$$pluralMessage = "Events"|"Records"|"Laps"|"WorkoutSteps";
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -106,7 +107,8 @@ $messageTypes = {
     "FieldDescription",
     "TrainingFile",
     "HeartRateVariability",
-    "WorkoutStep"
+    "WorkoutStep",
+    "Workout"
 };
 
 (* ::**********************************************************************:: *)
@@ -130,6 +132,7 @@ fitKeys[ "FieldDescription"     ] := $fitFieldDescriptionKeys;
 fitKeys[ "TrainingFile"         ] := $fitTrainingFileKeys;
 fitKeys[ "HeartRateVariability" ] := $fitHeartRateVariabilityKeys;
 fitKeys[ "WorkoutStep"          ] := $fitWorkoutStepKeys;
+fitKeys[ "Workout"              ] := $fitWorkoutKeys;
 fitKeys[ "MessageInformation"   ] := $fitMessageInformationKeys;
 fitKeys[ _                      ] := $fitDefaultKeys;
 fitKeys // endDefinition;
@@ -613,21 +616,37 @@ $fitWorkoutStepKeys // ClearAll;
 $fitWorkoutStepKeys = {
     "MessageType",
     "WorkoutStepName",
-    "DurationValue",
+    "Duration",
+    "DurationType",
     "TargetValue",
     "CustomTargetValueLow",
     "CustomTargetValueHigh",
+    "TargetType",
     "SecondaryTargetValue",
     "SecondaryCustomTargetValueLow",
     "SecondaryCustomTargetValueHigh",
+    "SecondaryTargetType",
     "MessageIndex",
     "ExerciseCategory",
-    "DurationType",
-    "TargetType",
     "Intensity",
     "Notes",
     "Equipment",
     "SecondaryTargetType"
+};
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*$fitWorkoutKeys*)
+$fitWorkoutKeys // ClearAll;
+$fitWorkoutKeys = {
+    "MessageType",
+    "Capabilities",
+    "WorkoutName",
+    "NumberOfValidSteps",
+    "PoolLength",
+    "Sport",
+    "SubSport",
+    "PoolLengthUnit"
 };
 
 (* ::**********************************************************************:: *)

@@ -179,7 +179,8 @@ $capitalizationRules1 = {
     "TX"    -> "Transmit",
     "Ups"   -> "UPS",
     "Utm"   -> "UTM",
-    "WKT"   -> "Workout"
+    "WKT"   -> "Workout",
+    "Cmplt" -> "Complete"
 };
 
 
@@ -1992,6 +1993,32 @@ $fitWorkoutEquipment0 = <|
 |>;
 
 $fitWorkoutEquipment = toNiceCamelCase /@ removePrefix[ $fitWorkoutEquipment0, "FIT_WORKOUT_EQUIPMENT_" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitWorkoutCapabilities*)
+fitWorkoutCapabilities // ClearAll;
+fitWorkoutCapabilities[ n_Integer ] := Lookup[ $fitWorkoutCapabilities, n, Missing[ "NotAvailable" ] ];
+fitWorkoutCapabilities[ ___ ] := Missing[ "NotAvailable" ];
+
+$fitWorkoutCapabilities0 = <|
+    1     -> "FIT_WORKOUT_CAPABILITIES_INTERVAL",
+    2     -> "FIT_WORKOUT_CAPABILITIES_CUSTOM",
+    4     -> "FIT_WORKOUT_CAPABILITIES_FITNESS_EQUIPMENT",
+    8     -> "FIT_WORKOUT_CAPABILITIES_FIRSTBEAT",
+    16    -> "FIT_WORKOUT_CAPABILITIES_NEW_LEAF",
+    32    -> "FIT_WORKOUT_CAPABILITIES_TCX",
+    128   -> "FIT_WORKOUT_CAPABILITIES_SPEED",
+    256   -> "FIT_WORKOUT_CAPABILITIES_HEART_RATE",
+    512   -> "FIT_WORKOUT_CAPABILITIES_DISTANCE",
+    1024  -> "FIT_WORKOUT_CAPABILITIES_CADENCE",
+    2048  -> "FIT_WORKOUT_CAPABILITIES_POWER",
+    4096  -> "FIT_WORKOUT_CAPABILITIES_GRADE",
+    8192  -> "FIT_WORKOUT_CAPABILITIES_RESISTANCE",
+    16384 -> "FIT_WORKOUT_CAPABILITIES_PROTECTED"
+|>;
+
+$fitWorkoutCapabilities = toNiceCamelCase /@ removePrefix[ $fitWorkoutCapabilities0, "FIT_WORKOUT_CAPABILITIES_" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

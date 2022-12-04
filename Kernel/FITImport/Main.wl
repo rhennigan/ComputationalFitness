@@ -53,7 +53,7 @@ FITImport[ file_? FileExistsQ, "Dataset", opts: OptionsPattern[ ] ] :=
         ]
     ];
 
-FITImport[ file_, type: "Events"|"Records"|"Laps", opts: OptionsPattern[ ] ] :=
+FITImport[ file_, type: $$pluralMessage, opts: OptionsPattern[ ] ] :=
     catchTop @ FITImport[ file, StringDelete[ type, "s"~~EndOfString, opts ] ];
 
 FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /;
@@ -799,7 +799,9 @@ toFileString // beginDefinition;
 toFileString[ file_ ] :=
     With[ { str = toFileString0 @ file },
         If[ StringQ @ str,
-            $fileByteCount = FileByteCount @ file;
+            If[ $setFileByteCount,
+                $fileByteCount = Quiet @ FileByteCount @ file
+            ];
             str,
             throwFailure[ FITImport::InvalidFile, file ]
         ]

@@ -50,6 +50,7 @@ compileOnDemand[ id_, file_ ] :=
         files = FileNames[
             {
                 "fit_import.c",
+                "fit_export.c",
                 "fit.c",
                 "fit_crc.c",
                 "fit_example.c",

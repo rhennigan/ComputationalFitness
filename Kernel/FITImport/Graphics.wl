@@ -81,8 +81,14 @@ powerZonePlotCF[ ftp_Quantity ] :=
 
 powerZonePlotCF[ ftp_? NumberQ ] :=
     With[
-        { v = Transpose @ { $powerZoneThresholds, Values @ $powerZoneColors } },
-        Function[ { x, y }, Blend[ v, y/ftp ] ]
+        {
+            v =
+                Transpose @ {
+                    Mean /@ Partition[ Append[ $powerZoneThresholds, 2. ], 2, 1 ] + 0.025,
+                    Values @ $powerZoneColors
+                }
+        },
+        Function[ { x, y }, Blend[ v, y / ftp ] ]
     ];
 
 powerZonePlotCF // endDefinition;

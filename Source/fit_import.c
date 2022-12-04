@@ -110,6 +110,13 @@ DLLEXPORT int FITFileType (
         } while (convert_return == FIT_CONVERT_MESSAGE_AVAILABLE);
     }
 
+    #if defined(RETURN_PARTIAL_DATA)
+    fclose(file);
+    // FIXME: this can be undefined:
+    MArgument_setInteger(Res, res);
+    return LIBRARY_NO_ERROR;
+    #endif
+
     if (convert_return == FIT_CONVERT_ERROR)
     {
         // Error decoding file
@@ -241,7 +248,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_FILE_ID_MESG *id = (FIT_FILE_ID_MESG *) mesg;
                         idx++;
-                        write_file_id(libData, data, idx, id);
+                        import_file_id(libData, data, idx, id);
                         break;
                     }
 
@@ -249,7 +256,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_USER_PROFILE_MESG *user_profile = (FIT_USER_PROFILE_MESG *) mesg;
                         idx++;
-                        write_user_profile(libData, data, idx, user_profile);
+                        import_user_profile(libData, data, idx, user_profile);
                         break;
                     }
 
@@ -257,7 +264,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_ACTIVITY_MESG *activity = (FIT_ACTIVITY_MESG *) mesg;
                         idx++;
-                        write_activity(libData, data, idx, activity);
+                        import_activity(libData, data, idx, activity);
                         {
                             FIT_ACTIVITY_MESG old_mesg;
                             old_mesg.num_sessions = 1;
@@ -275,7 +282,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_LAP_MESG *lap = (FIT_LAP_MESG *) mesg;
                         idx++;
-                        write_lap(libData, data, idx, lap);
+                        import_lap(libData, data, idx, lap);
                         break;
                     }
 
@@ -283,7 +290,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_RECORD_MESG *record = (FIT_RECORD_MESG *) mesg;
                         idx++;
-                        write_record(libData, data, idx, record, last_hrv);
+                        import_record(libData, data, idx, record, last_hrv);
                         break;
                     }
 
@@ -291,7 +298,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_EVENT_MESG *event = (FIT_EVENT_MESG *) mesg;
                         idx++;
-                        write_event(libData, data, idx, event);
+                        import_event(libData, data, idx, event);
                         break;
                     }
 
@@ -299,7 +306,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_DEVICE_INFO_MESG *device_info = (FIT_DEVICE_INFO_MESG *) mesg;
                         idx++;
-                        write_device_info(libData, data, idx, device_info);
+                        import_device_info(libData, data, idx, device_info);
                         break;
                     }
 
@@ -307,7 +314,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_SESSION_MESG *session = (FIT_SESSION_MESG *) mesg;
                         idx++;
-                        write_session(libData, data, idx, session);
+                        import_session(libData, data, idx, session);
                         break;
                     }
 
@@ -315,7 +322,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_DEVICE_SETTINGS_MESG *device_settings = (FIT_DEVICE_SETTINGS_MESG *) mesg;
                         idx++;
-                        write_device_settings(libData, data, idx, device_settings);
+                        import_device_settings(libData, data, idx, device_settings);
                         break;
                     }
 
@@ -323,7 +330,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_ZONES_TARGET_MESG *zones_target = (FIT_ZONES_TARGET_MESG *) mesg;
                         idx++;
-                        write_zones_target(libData, data, idx, zones_target);
+                        import_zones_target(libData, data, idx, zones_target);
                         break;
                     }
 
@@ -331,7 +338,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_FILE_CREATOR_MESG *file_creator = (FIT_FILE_CREATOR_MESG *) mesg;
                         idx++;
-                        write_file_creator(libData, data, idx, file_creator);
+                        import_file_creator(libData, data, idx, file_creator);
                         break;
                     }
 
@@ -339,7 +346,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_SPORT_MESG *sport = (FIT_SPORT_MESG *) mesg;
                         idx++;
-                        write_sport(libData, data, idx, sport);
+                        import_sport(libData, data, idx, sport);
                         break;
                     }
 
@@ -347,7 +354,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_DEVELOPER_DATA_ID_MESG *developer_data_id = (FIT_DEVELOPER_DATA_ID_MESG *) mesg;
                         idx++;
-                        write_developer_data_id(libData, data, idx, developer_data_id);
+                        import_developer_data_id(libData, data, idx, developer_data_id);
                         break;
                     }
 
@@ -355,7 +362,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_FIELD_DESCRIPTION_MESG *field_description = (FIT_FIELD_DESCRIPTION_MESG *) mesg;
                         idx++;
-                        write_field_description(libData, data, idx, field_description);
+                        import_field_description(libData, data, idx, field_description);
                         break;
                     }
 
@@ -363,7 +370,7 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_TRAINING_FILE_MESG *training_file = (FIT_TRAINING_FILE_MESG *) mesg;
                         idx++;
-                        write_training_file(libData, data, idx, training_file);
+                        import_training_file(libData, data, idx, training_file);
                         break;
                     }
 
@@ -371,7 +378,15 @@ DLLEXPORT int FITImport(
                     {
                         const FIT_WORKOUT_STEP_MESG *workout_step = (FIT_WORKOUT_STEP_MESG *) mesg;
                         idx++;
-                        write_workout_step(libData, data, idx, workout_step);
+                        import_workout_step(libData, data, idx, workout_step);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_WORKOUT:
+                    {
+                        const FIT_WORKOUT_MESG *workout = (FIT_WORKOUT_MESG *) mesg;
+                        idx++;
+                        import_workout(libData, data, idx, workout);
                         break;
                     }
 
@@ -380,14 +395,14 @@ DLLEXPORT int FITImport(
                         const FIT_HRV_MESG *hrv = (FIT_HRV_MESG *) mesg;
                         idx++;
                         last_hrv = (*hrv).time[0];
-                        write_hrv(libData, data, idx, hrv);
+                        import_hrv(libData, data, idx, hrv);
                         break;
                     }
 
                     default:
                     {
                         // idx++;
-                        // write_unknown(libData, data, idx, mesg_num, mesg);
+                        // import_unknown(libData, data, idx, mesg_num, mesg);
                         break;
                     }
                 }
@@ -399,6 +414,12 @@ DLLEXPORT int FITImport(
             }
         } while (convert_return == FIT_CONVERT_MESSAGE_AVAILABLE);
     }
+
+    #if defined(RETURN_PARTIAL_DATA)
+    fclose(file);
+    MArgument_setMTensor(Res, data);
+    return LIBRARY_NO_ERROR;
+    #endif
 
     if (convert_return == FIT_CONVERT_ERROR)
     {
@@ -545,6 +566,12 @@ DLLEXPORT int FITMessageTypes (
         } while (convert_return == FIT_CONVERT_MESSAGE_AVAILABLE);
     }
 
+    #if defined(RETURN_PARTIAL_DATA)
+    fclose(file);
+    MArgument_setMTensor(Res, data);
+    return LIBRARY_NO_ERROR;
+    #endif
+
     if (convert_return == FIT_CONVERT_ERROR)
     {
         // Error decoding file
@@ -582,7 +609,7 @@ DLLEXPORT int FITMessageTypes (
     return LIBRARY_NO_ERROR;
 }
 
-static void write_file_id(WolframLibraryData libData, MTensor data, int idx, const FIT_FILE_ID_MESG *mesg)
+static void import_file_id(WolframLibraryData libData, MTensor data, int idx, const FIT_FILE_ID_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -598,7 +625,7 @@ static void write_file_id(WolframLibraryData libData, MTensor data, int idx, con
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_user_profile(WolframLibraryData libData, MTensor data, int idx, const FIT_USER_PROFILE_MESG *mesg) 
+static void import_user_profile(WolframLibraryData libData, MTensor data, int idx, const FIT_USER_PROFILE_MESG *mesg) 
 {
     mint pos[2];
     pos[0] = idx;
@@ -638,7 +665,7 @@ static void write_user_profile(WolframLibraryData libData, MTensor data, int idx
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_activity(WolframLibraryData libData, MTensor data, int idx, const FIT_ACTIVITY_MESG *mesg)
+static void import_activity(WolframLibraryData libData, MTensor data, int idx, const FIT_ACTIVITY_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -656,7 +683,7 @@ static void write_activity(WolframLibraryData libData, MTensor data, int idx, co
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_lap(WolframLibraryData libData, MTensor data, int idx, const FIT_LAP_MESG *mesg)
+static void import_lap(WolframLibraryData libData, MTensor data, int idx, const FIT_LAP_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -748,7 +775,7 @@ static void write_lap(WolframLibraryData libData, MTensor data, int idx, const F
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_record(WolframLibraryData libData, MTensor data, int idx, const FIT_RECORD_MESG *mesg, FIT_UINT16 last_hrv)
+static void import_record(WolframLibraryData libData, MTensor data, int idx, const FIT_RECORD_MESG *mesg, FIT_UINT16 last_hrv)
 {
     mint pos[2];
     pos[0] = idx;
@@ -847,7 +874,7 @@ static void write_record(WolframLibraryData libData, MTensor data, int idx, cons
 }
 
 
-static void write_event(WolframLibraryData libData, MTensor data, int idx, const FIT_EVENT_MESG *mesg)
+static void import_event(WolframLibraryData libData, MTensor data, int idx, const FIT_EVENT_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -871,7 +898,7 @@ static void write_event(WolframLibraryData libData, MTensor data, int idx, const
 }
 
 
-static void write_device_info(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVICE_INFO_MESG *mesg)
+static void import_device_info(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVICE_INFO_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -900,7 +927,7 @@ static void write_device_info(WolframLibraryData libData, MTensor data, int idx,
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_session(WolframLibraryData libData, MTensor data, int idx, const FIT_SESSION_MESG *mesg)
+static void import_session(WolframLibraryData libData, MTensor data, int idx, const FIT_SESSION_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1008,7 +1035,7 @@ static void write_session(WolframLibraryData libData, MTensor data, int idx, con
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_device_settings(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVICE_SETTINGS_MESG *mesg)
+static void import_device_settings(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVICE_SETTINGS_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1037,7 +1064,7 @@ static void write_device_settings(WolframLibraryData libData, MTensor data, int 
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_zones_target(WolframLibraryData libData, MTensor data, int idx, const FIT_ZONES_TARGET_MESG *mesg)
+static void import_zones_target(WolframLibraryData libData, MTensor data, int idx, const FIT_ZONES_TARGET_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1051,7 +1078,7 @@ static void write_zones_target(WolframLibraryData libData, MTensor data, int idx
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_file_creator(WolframLibraryData libData, MTensor data, int idx, const FIT_FILE_CREATOR_MESG *mesg)
+static void import_file_creator(WolframLibraryData libData, MTensor data, int idx, const FIT_FILE_CREATOR_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1062,7 +1089,7 @@ static void write_file_creator(WolframLibraryData libData, MTensor data, int idx
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_sport(WolframLibraryData libData, MTensor data, int idx, const FIT_SPORT_MESG *mesg)
+static void import_sport(WolframLibraryData libData, MTensor data, int idx, const FIT_SPORT_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1074,7 +1101,7 @@ static void write_sport(WolframLibraryData libData, MTensor data, int idx, const
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_developer_data_id(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVELOPER_DATA_ID_MESG *mesg)
+static void import_developer_data_id(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVELOPER_DATA_ID_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1088,7 +1115,7 @@ static void write_developer_data_id(WolframLibraryData libData, MTensor data, in
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_field_description(WolframLibraryData libData, MTensor data, int idx, const FIT_FIELD_DESCRIPTION_MESG *mesg)
+static void import_field_description(WolframLibraryData libData, MTensor data, int idx, const FIT_FIELD_DESCRIPTION_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1107,7 +1134,7 @@ static void write_field_description(WolframLibraryData libData, MTensor data, in
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_training_file(WolframLibraryData libData, MTensor data, int idx, const FIT_TRAINING_FILE_MESG *mesg)
+static void import_training_file(WolframLibraryData libData, MTensor data, int idx, const FIT_TRAINING_FILE_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1122,7 +1149,7 @@ static void write_training_file(WolframLibraryData libData, MTensor data, int id
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_hrv(WolframLibraryData libData, MTensor data, int idx, const FIT_HRV_MESG *mesg)
+static void import_hrv(WolframLibraryData libData, MTensor data, int idx, const FIT_HRV_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1132,7 +1159,7 @@ static void write_hrv(WolframLibraryData libData, MTensor data, int idx, const F
     SetInteger(libData, data, pos, DONE);
 }
 
-static void write_workout_step(WolframLibraryData libData, MTensor data, int idx, const FIT_WORKOUT_STEP_MESG *mesg)
+static void import_workout_step(WolframLibraryData libData, MTensor data, int idx, const FIT_WORKOUT_STEP_MESG *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1156,7 +1183,23 @@ static void write_workout_step(WolframLibraryData libData, MTensor data, int idx
     SetInteger(libData, data, pos, mesg->secondary_target_type);
 }
 
-static void write_unknown(WolframLibraryData libData, MTensor data, int idx, int mesgNum, const FIT_UINT8 *mesg)
+static void import_workout(WolframLibraryData libData, MTensor data, int idx, const FIT_WORKOUT_MESG *mesg)
+{
+    mint pos[2];
+    pos[0] = idx;
+    pos[1] = 0;
+    SetInteger(libData, data, pos, FIT_MESG_NUM_WORKOUT);
+    SetInteger(libData, data, pos, mesg->capabilities);
+    SetIntegerSequence(libData, data, pos, mesg->wkt_name, FIT_WORKOUT_MESG_WKT_NAME_COUNT);
+    SetInteger(libData, data, pos, mesg->num_valid_steps);
+    SetInteger(libData, data, pos, mesg->pool_length);
+    SetInteger(libData, data, pos, mesg->sport);
+    SetInteger(libData, data, pos, mesg->sub_sport);
+    SetInteger(libData, data, pos, mesg->pool_length_unit);
+    SetInteger(libData, data, pos, DONE);
+}
+
+static void import_unknown(WolframLibraryData libData, MTensor data, int idx, int mesgNum, const FIT_UINT8 *mesg)
 {
     mint pos[2];
     pos[0] = idx;
@@ -1308,6 +1351,11 @@ static int count_usable_fit_messages(char* input, mint *err)
                         mesg_count++;
                         break;
                     }
+                    case FIT_MESG_NUM_WORKOUT:
+                    {
+                        mesg_count++;
+                        break;
+                    }
                   default:
                     break;
                }
@@ -1319,6 +1367,11 @@ static int count_usable_fit_messages(char* input, mint *err)
          }
       } while (convert_return == FIT_CONVERT_MESSAGE_AVAILABLE);
    }
+
+   #if defined(RETURN_PARTIAL_DATA)
+   fclose(file);
+   return mesg_count;
+   #endif
 
    if (convert_return == FIT_CONVERT_ERROR)
     {
@@ -1417,6 +1470,11 @@ static int count_fit_messages(char* input, mint* err)
          }
       } while (convert_return == FIT_CONVERT_MESSAGE_AVAILABLE);
    }
+
+   #if defined(RETURN_PARTIAL_DATA)
+   fclose(file);
+   return mesg_count;
+   #endif
 
    if (convert_return == FIT_CONVERT_ERROR)
     {
