@@ -9,24 +9,24 @@ Begin[ "`Private`" ];
 (* ::Section:: *)
 (*Options*)
 FITImport // Options = {
-    "FunctionalThresholdPower" -> Automatic,
-    "MaxHeartRate"             -> Automatic,
-    "Weight"                   -> Automatic,
-    "Sport"                    -> Automatic,
-    UnitSystem                 :> $UnitSystem
+    FunctionalThresholdPower :> $FunctionalThresholdPower,
+    MaxHeartRate             :> $MaxHeartRate,
+    Sport                    :> $Sport,
+    UnitSystem               :> $UnitSystem,
+    Weight                   :> $Weight
 };
 
 (* ::**********************************************************************:: *)
 (* ::Section:: *)
 (*Main definition*)
 FITImport[ file_, opts: OptionsPattern[ ] ] :=
-    catchTop @ FITImport[ file, "Dataset", opts ];
+    catchTopAs[ FITImport ] @ FITImport[ file, "Dataset", opts ];
 
 FITImport[ file_? FileExistsQ, "RawData", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[ fitImport @ ExpandFileName @ file, opts ];
+    fitImportOptionsBlock[ fitImport @ ExpandFileName @ file, opts ];
 
 FITImport[ file_? FileExistsQ, "Data", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         Module[ { data, messages },
             data     = FITImport[ file, "RawData", opts ];
             messages = selectMessageType[ data, "Record" ];
@@ -36,7 +36,7 @@ FITImport[ file_? FileExistsQ, "Data", opts: OptionsPattern[ ] ] :=
     ];
 
 FITImport[ file_? FileExistsQ, type: $$messageTypes, opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         Module[ { data },
             data = FITImport[ file, "RawData", opts ];
             makeMessageTypeData[ data, type ]
@@ -45,7 +45,7 @@ FITImport[ file_? FileExistsQ, type: $$messageTypes, opts: OptionsPattern[ ] ] :
     ];
 
 FITImport[ file_? FileExistsQ, "Dataset", opts: OptionsPattern[ ] ] :=
-    catchTop @ Module[ { data },
+    catchTopAs[ FITImport ] @ Module[ { data },
         data = FITImport[ file, "Data", opts ];
         If[ MatchQ[ data, { __Association } ],\
             Dataset @ KeyDrop[ data, "MessageType" ],
@@ -54,7 +54,7 @@ FITImport[ file_? FileExistsQ, "Dataset", opts: OptionsPattern[ ] ] :=
     ];
 
 FITImport[ file_, type: $$pluralMessage, opts: OptionsPattern[ ] ] :=
-    catchTop @ FITImport[ file, StringDelete[ type, "s"~~EndOfString, opts ] ];
+    catchTopAs[ FITImport ] @ FITImport[ file, StringDelete[ type, "s"~~EndOfString, opts ] ];
 
 FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /;
     ! FileExistsQ @ file :=
@@ -63,7 +63,7 @@ FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /;
         ];
 
 FITImport[ file_, "MessageInformation", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         Module[ { data, gathered, format, formatted, drop, grouped },
             data      = fitMessageTypes @ file;
             gathered  = GatherBy[ data, #[[ 2 ]] & ];
@@ -77,7 +77,7 @@ FITImport[ file_, "MessageInformation", opts: OptionsPattern[ ] ] :=
     ];
 
 FITImport[ file_, "MessageCounts", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         Module[ { data },
             data = fitMessageTypes @ file;
             Counts[ fitMessageType /@ data[[ All, 2 ]] ]
@@ -86,13 +86,13 @@ FITImport[ file_, "MessageCounts", opts: OptionsPattern[ ] ] :=
     ];
 
 FITImport[ file_, "Messages", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         DeleteMissing /@ formatFitData @ FITImport[ file, "RawData", opts ],
         opts
     ];
 
 FITImport[ file_, "MessageData", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         Dataset @ GroupBy[
             FITImport[ file, "Messages", opts ],
             #MessageType &
@@ -104,22 +104,22 @@ FITImport[ file_, "MessageData", opts: OptionsPattern[ ] ] :=
 (* ::Subsection::Closed:: *)
 (*Special Properties*)
 FITImport[ _, "Elements", OptionsPattern[ ] ] :=
-    catchTop @ Union[ $fitElements, $messageTypes ];
+    catchTopAs[ FITImport ] @ Union[ $fitElements, $messageTypes ];
 
 FITImport[ file_, "FileType", OptionsPattern[ ] ] :=
-    catchTop @ fitFileType @ file;
+    catchTopAs[ FITImport ] @ fitFileType @ file;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*TimeSeries Data*)
 FITImport[ file_, "TimeSeries", opts: OptionsPattern[ ] ] :=
-    catchTop @ FITImport[ file, { "TimeSeries", $fitRecordKeys }, opts ];
+    catchTopAs[ FITImport ] @ FITImport[ file, { "TimeSeries", $fitRecordKeys }, opts ];
 
 FITImport[ file_, key: $$fitRecordKeys, opts: OptionsPattern[ ] ] :=
-    catchTop @ FITImport[ file, { "TimeSeries", key }, opts ];
+    catchTopAs[ FITImport ] @ FITImport[ file, { "TimeSeries", key }, opts ];
 
 FITImport[ file_, { "TimeSeries", key: $$fitRecordKeys }, opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         Module[ { data, records },
             data = FITImport[ file, "RawData", opts ];
             records = selectMessageType[ data, "Record" ];
@@ -129,10 +129,10 @@ FITImport[ file_, { "TimeSeries", key: $$fitRecordKeys }, opts: OptionsPattern[ 
     ];
 
 FITImport[ file_, All, opts: OptionsPattern[ ] ] :=
-    catchTop @ FITImport[ file, { "TimeSeries", All }, opts ];
+    catchTopAs[ FITImport ] @ FITImport[ file, { "TimeSeries", All }, opts ];
 
 FITImport[ file_, { "TimeSeries", All }, opts: OptionsPattern[ ] ] :=
-    catchTop @ Module[ { data, records },
+    catchTopAs[ FITImport ] @ Module[ { data, records },
         data  = FITImport[ file, "RawData", opts ];
         records = selectMessageType[ data, "Record" ];
         DeleteMissing @ makeTimeSeriesData[
@@ -146,7 +146,7 @@ FITImport[ file_, { "TimeSeries", All }, opts: OptionsPattern[ ] ] :=
 (* ::Subsection::Closed:: *)
 (*Mixed Elements*)
 FITImport[ file_, props: $$propList, opts: OptionsPattern[ ] ] :=
-    catchTop @ Module[ { data, fitKeys, elements, ts, as, joined },
+    catchTopAs[ FITImport ] @ Module[ { data, fitKeys, elements, ts, as, joined },
         data     = FITImport[ file, "RawData", opts ];
         fitKeys  = Select[ props, fitRecordKeyQ ];
         elements = Select[ props, elementQ ];
@@ -164,19 +164,19 @@ FITImport[ file_, props: $$propList, opts: OptionsPattern[ ] ] :=
 (* ::Subsection::Closed:: *)
 (*Graphics*)
 FITImport[ file_, "PowerZonePlot", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         powerZonePlot @ FITImport[ file, "Power", opts ],
         opts
     ];
 
 FITImport[ file_, "AveragePowerPhasePlot", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         averagePowerPhasePlot @ FITImport[ file, "Session", opts ],
         opts
     ];
 
 FITImport[ file_, "CriticalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
-    fitOptionsBlock[
+    fitImportOptionsBlock[
         criticalPowerCurve @ FITImport[ file, "Power", opts ],
         opts
     ];
@@ -185,7 +185,7 @@ FITImport[ file_, "CriticalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
 (* ::Section::Closed:: *)
 (*Error cases*)
 FITImport[ $$source, { ___, e: Except[ $$props ], ___ }, OptionsPattern[ ] ] :=
-    catchTop[
+    catchTopAs[ FITImport ][
         If[ StringQ @ e,
             throwFailure[ FITImport::InvalidElement         , e ],
             throwFailure[ FITImport::BadElementSpecification, e ]
@@ -194,7 +194,7 @@ FITImport[ $$source, { ___, e: Except[ $$props ], ___ }, OptionsPattern[ ] ] :=
 
 
 FITImport[ $$source, e: Except[ $$props ], OptionsPattern[ ] ] :=
-    catchTop[
+    catchTopAs[ FITImport ][
         If[ StringQ @ e,
             throwFailure[ FITImport::InvalidElement         , e ],
             throwFailure[ FITImport::BadElementSpecification, e ]
@@ -202,17 +202,17 @@ FITImport[ $$source, e: Except[ $$props ], OptionsPattern[ ] ] :=
     ];
 
 FITImport[ source: $$source, _, opts: OptionsPattern[ ] ] :=
-    catchTop @ throwFailure[ FITImport::FileNotFound, source ];
+    catchTopAs[ FITImport ] @ throwFailure[ FITImport::FileNotFound, source ];
 
 FITImport[ source: Except @ $$source, _, opts: OptionsPattern[ ] ] :=
-    catchTop @ throwFailure[ FITImport::InvalidFile, source ];
+    catchTopAs[ FITImport ] @ throwFailure[ FITImport::InvalidFile, source ];
 
 FITImport[ source: $$source, elem_String, opts: OptionsPattern[ ] ] /;
     ! elementQ @ elem :=
-        catchTop @ throwFailure[ FITImport::InvalidElement, elem ];
+        catchTopAs[ FITImport ] @ throwFailure[ FITImport::InvalidElement, elem ];
 
 FITImport[ args___ ] :=
-    catchTop @ With[ { len = Length @ HoldComplete @ args },
+    catchTopAs[ FITImport ] @ With[ { len = Length @ HoldComplete @ args },
         throwFailure[ FITImport::ArgumentCount, len ]
     ];
 
@@ -222,12 +222,12 @@ FITImport[ args___ ] :=
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
-(*fitOptionsBlock*)
-fitOptionsBlock // beginDefinition;
-fitOptionsBlock // Attributes = { HoldFirst };
+(*fitImportOptionsBlock*)
+fitImportOptionsBlock // beginDefinition;
+fitImportOptionsBlock // Attributes = { HoldFirst };
 
-fitOptionsBlock[ eval_, opts: OptionsPattern[ FITImport ] ] :=
-    catchTop @ Block[
+fitImportOptionsBlock[ eval_, opts: OptionsPattern[ FITImport ] ] :=
+    catchTopAs[ FITImport ] @ Block[
         {
             $UnitSystem     = setUnitSystem @ OptionValue @ UnitSystem, (* FIXME: fix it! *)
             $ftp            = setFTP @ OptionValue @ FunctionalThresholdPower,
@@ -237,12 +237,12 @@ fitOptionsBlock[ eval_, opts: OptionsPattern[ FITImport ] ] :=
             $timeOffset     = 0,
             $fileByteCount  = 0,
             $lastHRV        = None,
-            fitOptionsBlock = # &
+            fitImportOptionsBlock = # &
         },
         eval
     ];
 
-fitOptionsBlock // endDefinition;
+fitImportOptionsBlock // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -479,37 +479,6 @@ setWeightPref[ config_, Automatic, _ ] :=
 setFTPPref // endDefinition;
 
 (* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*selectMessageType*)
-selectMessageType // beginDefinition;
-
-selectMessageType[ data_, type_String ] :=
-    selectMessageType[ data, fitMessageTypeNumber @ type ];
-
-selectMessageType[ data_, type_Integer ] :=
-    Developer`ToPackedArray @ Select[ data, #[[ 1 ]] === type & ];
-
-selectMessageType[ data_, type_ ] :=
-    With[ { p = type /. s_String :> RuleCondition @ fitMessageTypeNumber @ s },
-        Developer`ToPackedArray @ Select[ data, MatchQ[ #[[ 1 ]], p ] & ]
-    ];
-
-selectMessageType // endDefinition;
-
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*selectFirstMessageType*)
-selectFirstMessageType // beginDefinition;
-
-selectFirstMessageType[ data_, type_String ] :=
-    selectFirstMessageType[ data, fitMessageTypeNumber @ type ];
-
-selectFirstMessageType[ data_, type_Integer ] :=
-    FirstCase[ data, { type, ___ } ];
-
-selectFirstMessageType // endDefinition;
-
-(* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setUnitSystem*)
 setUnitSystem // beginDefinition;
@@ -661,56 +630,6 @@ fitFileType[ source_, file_, err_LibraryFunctionError ] :=
     libraryError[ source, file, err ];
 
 fitFileType // endDefinition;
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*libraryError*)
-libraryError // beginDefinition;
-
-libraryError[
-    source_,
-    file_,
-    LibraryFunctionError[ "LIBRARY_USER_ERROR", code_ ]
-] := libraryUserError[ source, file, code ];
-
-libraryError[ source_, file_, err_LibraryFunctionError ] :=
-    throwFailure[ FITImport::LibraryError, err ];
-
-libraryError // endDefinition;
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*libraryUserError*)
-libraryUserError // beginDefinition;
-
-libraryUserError[ source_, file_, n_Integer ] :=
-    With[ { tag = Lookup[ $libraryErrorCodes, n ] },
-        throwFailure[
-            MessageName[ FITImport, tag ],
-            source,
-            file,
-            n,
-            $bugReportLink
-        ] /; IntegerQ @ n
-    ];
-
-libraryUserError // endDefinition;
-
-$libraryErrorCodes = <|
-    8  -> "LibraryErrorConversion",
-    9  -> "LibraryErrorUnexpectedEOF",
-    10 -> "LibraryErrorConversion",
-    11 -> "LibraryErrorUnsupportedProtocol",
-    12 -> "LibraryErrorInternal",
-    13 -> "LibraryErrorOpenFile"
-|>;
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*rawDataQ*)
-rawDataQ[ { { } }  ] := False;
-rawDataQ[ raw_List ] := MatrixQ[ raw, IntegerQ ];
-rawDataQ[ ___      ] := False;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -869,82 +788,6 @@ $tempFile := FileNameJoin @ {
 };
 
 (* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitImportLibFunction*)
-If[ MatchQ[ fitImportLibFunction, _LibraryFunction ],
-    Quiet[ LibraryFunctionUnload @ fitImportLibFunction,
-           LibraryFunction::nofun
-    ]
-];
-
-fitImportLibFunction // ClearAll;
-fitImportLibFunction := libraryFunctionLoad[
-    $libraryFile,
-    "FITImport",
-    { String },
-    { Integer, 2 }
-];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitMessageTypesLibFunction*)
-If[ MatchQ[ fitMessageTypesLibFunction, _LibraryFunction ],
-    Quiet[ LibraryFunctionUnload @ fitMessageTypesLibFunction,
-           LibraryFunction::nofun
-    ]
-];
-
-fitMessageTypesLibFunction // ClearAll;
-fitMessageTypesLibFunction := libraryFunctionLoad[
-    $libraryFile,
-    "FITMessageTypes",
-    { String },
-    { Integer, 2 }
-];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitFileTypeLibFunction*)
-If[ MatchQ[ fitFileTypeLibFunction, _LibraryFunction ],
-    Quiet[ LibraryFunctionUnload @ fitFileTypeLibFunction,
-           LibraryFunction::nofun
-    ]
-];
-
-fitFileTypeLibFunction // ClearAll;
-fitFileTypeLibFunction := libraryFunctionLoad[
-    $libraryFile,
-    "FITFileType",
-    { String },
-    { Integer }
-];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*libraryFunctionLoad*)
-libraryFunctionLoad // ClearAll;
-libraryFunctionLoad[ args___ ] := libraryFunctionLoad0[ $SessionID, args ];
-
-
-libraryFunctionLoad0 // beginDefinition;
-
-libraryFunctionLoad0[ id_Integer, file_, a___ ] :=
-    libraryFunctionLoad0[ id, file, a ] =
-        Quiet[
-            Check[
-                LibraryFunctionLoad[ file, a ],
-                If[ $CloudEvaluation,
-                    throwFailure[ FITImport::CloudLibraryFunction ],
-                    throwFailure[ FITImport::LibraryFunctionLoadFail, file ]
-                ],
-                LibraryFunction::noopen
-            ],
-            LibraryFunction::noopen
-        ];
-
-libraryFunctionLoad0 // endDefinition;
-
-(* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*formatFitData*)
 formatFitData // beginDefinition;
@@ -1042,50 +885,6 @@ fitValueTimed[ type_, name_, v_ ] :=
     ];
 
 $fitValueTimings := $fitValueTimings = Internal`Bag[ ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*fitMessageType*)
-fitMessageType // beginDefinition;
-fitMessageType[ v_List ] := fitMessageType @ v[[ 1 ]];
-fitMessageType[ n_Integer ] := Lookup[ $fitMessageTypes, n, "UNKNOWN" ];
-fitMessageType // endDefinition;
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitMessageTypes*)
-$fitMessageTypes = Association[
-    $fitMessageNUM,
-    65535      -> "Invalid",
-    1768842863 -> "MessageInformation"
-];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*unsupportedMessageTypeQ*)
-unsupportedMessageTypeQ[ type_ ] := MemberQ[ $unsupportedMessageTypes, type ];
-unsupportedMessageTypeQ[ ___ ] := False;
-
-$unsupportedMessageTypes = Complement[
-    Values @ $fitMessageTypes,
-    $messageTypes
-];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitMessageTypeNumber*)
-fitMessageTypeNumber // beginDefinition;
-
-fitMessageTypeNumber[ "Events"  ] := fitMessageTypeNumber[ "Event"  ];
-fitMessageTypeNumber[ "Records" ] := fitMessageTypeNumber[ "Record" ];
-fitMessageTypeNumber[ "Laps"    ] := fitMessageTypeNumber[ "Lap"    ];
-
-fitMessageTypeNumber[ type_String ] :=
-    With[ { n = $fitMessageTypeNumbers[ type ] }, n /; IntegerQ @ n ];
-
-fitMessageTypeNumber // endDefinition;
-
-$fitMessageTypeNumbers = AssociationMap[ Reverse, $fitMessageTypes ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

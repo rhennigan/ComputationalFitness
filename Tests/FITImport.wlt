@@ -29,6 +29,13 @@ VerificationTest[
     TestID   -> "Initialize-Needs-ComputationalFitness@@Tests/FITImport.wlt:25,1-30,2"
 ]
 
+VerificationTest[
+    Context @ FITImport,
+    "RH`ComputationalFitness`",
+    SameTest -> MatchQ,
+    TestID   -> "Initialize-Context@@Tests/FITImport.wlt:32,1-37,2"
+]
+
 (* ::**********************************************************************:: *)
 (* ::Section:: *)
 (*Tests*)
@@ -37,24 +44,27 @@ VerificationTest[
 (* ::Subsection:: *)
 (*Basic Examples*)
 VerificationTest[
-    FITImport[ "ComputationalFitness/ExampleData/BikeRide.fit" ],
+    Quiet[
+        FITImport[ "ComputationalFitness/ExampleData/BikeRide.fit" ],
+        FITImport::CompileOnDemand
+    ],
     _Dataset,
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-1@@Tests/FITImport.wlt:39,1-44,2"
+    TestID -> "BasicExamples-1@@Tests/FITImport.wlt:46,1-54,2"
 ]
 
 VerificationTest[
     session = FITImport[ "ComputationalFitness/ExampleData/BikeRide.fit", "Session" ],
     _Dataset,
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-2@@Tests/FITImport.wlt:46,1-51,2"
+    TestID   -> "BasicExamples-2@@Tests/FITImport.wlt:56,1-61,2"
 ]
 
 VerificationTest[
     session1 = session[ 1 ],
     _Dataset,
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-3@@Tests/FITImport.wlt:53,1-58,2"
+    TestID   -> "BasicExamples-3@@Tests/FITImport.wlt:63,1-68,2"
 ]
 
 VerificationTest[
@@ -109,49 +119,49 @@ VerificationTest[
         "Trigger"                                 -> _String
     },
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-4@@Tests/FITImport.wlt:60,1-113,2"
+    TestID   -> "BasicExamples-4@@Tests/FITImport.wlt:70,1-123,2"
 ]
 
 VerificationTest[
     pos = FITImport[ "ComputationalFitness/ExampleData/BikeRide.fit", "GeoPosition" ],
     _TemporalData,
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-5@@Tests/FITImport.wlt:115,1-120,2"
+    TestID   -> "BasicExamples-5@@Tests/FITImport.wlt:125,1-130,2"
 ]
 
 VerificationTest[
     Values @ pos,
     { __GeoPosition },
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-6@@Tests/FITImport.wlt:122,1-127,2"
+    TestID   -> "BasicExamples-6@@Tests/FITImport.wlt:132,1-137,2"
 ]
 
 VerificationTest[
     DateListPlot @ FITImport[ "ComputationalFitness/ExampleData/BikeHillClimb.fit", "Altitude" ],
     _Graphics,
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-7@@Tests/FITImport.wlt:129,1-134,2"
+    TestID   -> "BasicExamples-7@@Tests/FITImport.wlt:139,1-144,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/IndoorIntervals.fit", "PowerZonePlot" ],
     _Legended,
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-8@@Tests/FITImport.wlt:136,1-141,2"
+    TestID   -> "BasicExamples-8@@Tests/FITImport.wlt:146,1-151,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/BikeLaps.fit", "AveragePowerPhasePlot" ],
     _Graphics,
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-9@@Tests/FITImport.wlt:143,1-148,2"
+    TestID   -> "BasicExamples-9@@Tests/FITImport.wlt:153,1-158,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/BikeLaps.fit", "CriticalPowerCurvePlot" ],
     _Graphics,
     SameTest -> MatchQ,
-    TestID   -> "BasicExamples-10@@Tests/FITImport.wlt:150,1-155,2"
+    TestID   -> "BasicExamples-10@@Tests/FITImport.wlt:160,1-165,2"
 ]
 
 (* ::**********************************************************************:: *)
@@ -161,14 +171,14 @@ VerificationTest[
     devices = FITImport[ "ComputationalFitness/ExampleData/BikeHillClimb.fit", "DeviceInformation" ],
     _Dataset,
     SameTest -> MatchQ,
-    TestID   -> "Scope-1@@Tests/FITImport.wlt:160,1-165,2"
+    TestID   -> "Scope-1@@Tests/FITImport.wlt:170,1-175,2"
 ]
 
 VerificationTest[
     FirstCase[ Normal @ devices, KeyValuePattern @ { "ProductName" -> "Edge830" } ],
     _Association,
     SameTest -> MatchQ,
-    TestID   -> "Scope-2@@Tests/FITImport.wlt:167,1-172,2"
+    TestID   -> "Scope-2@@Tests/FITImport.wlt:177,1-182,2"
 ]
 
 (* ::**********************************************************************:: *)
@@ -185,14 +195,14 @@ VerificationTest[
     ],
     Null,
     SameTest -> MatchQ,
-    TestID -> "Options/FunctionalThresholdPower-1@@Tests/FITImport.wlt:181,1-189,2"
+    TestID -> "Options/FunctionalThresholdPower-1@@Tests/FITImport.wlt:191,1-199,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/ZwiftRide.fit", "PowerZone" ],
     _Missing,
     SameTest -> MatchQ,
-    TestID   -> "Options-FunctionalThresholdPower-2@@Tests/FITImport.wlt:191,1-196,2"
+    TestID   -> "Options-FunctionalThresholdPower-2@@Tests/FITImport.wlt:201,1-206,2"
 ]
 
 VerificationTest[
@@ -203,7 +213,7 @@ VerificationTest[
     ],
     _TemporalData,
     SameTest -> MatchQ,
-    TestID   -> "Options-FunctionalThresholdPower-3@@Tests/FITImport.wlt:198,1-207,2"
+    TestID   -> "Options-FunctionalThresholdPower-3@@Tests/FITImport.wlt:208,1-217,2"
 ]
 
 VerificationTest[
@@ -211,21 +221,21 @@ VerificationTest[
     _Graphics,
     { FITImport::NoFTPValue },
     SameTest -> MatchQ,
-    TestID   -> "Options-FunctionalThresholdPower-4@@Tests/FITImport.wlt:209,1-215,2"
+    TestID   -> "Options-FunctionalThresholdPower-4@@Tests/FITImport.wlt:219,1-225,2"
 ]
 
 VerificationTest[
     PersistentSymbol[ "FITImport/FunctionalThresholdPower" ] = Quantity[ 250, "Watts" ],
     _Quantity,
     SameTest -> MatchQ,
-    TestID   -> "Options-FunctionalThresholdPower-5@@Tests/FITImport.wlt:217,1-222,2"
+    TestID   -> "Options-FunctionalThresholdPower-5@@Tests/FITImport.wlt:227,1-232,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/ZwiftRide.fit", "PowerZone" ],
     _TemporalData,
     SameTest -> MatchQ,
-    TestID   -> "Options-FunctionalThresholdPower-6@@Tests/FITImport.wlt:224,1-229,2"
+    TestID   -> "Options-FunctionalThresholdPower-6@@Tests/FITImport.wlt:234,1-239,2"
 ]
 
 VerificationTest[
@@ -234,7 +244,7 @@ VerificationTest[
     ],
     Null,
     SameTest -> MatchQ,
-    TestID   -> "Options-FunctionalThresholdPower-7@@Tests/FITImport.wlt:231,1-238,2"
+    TestID   -> "Options-FunctionalThresholdPower-7@@Tests/FITImport.wlt:241,1-248,2"
 ]
 
 (* ::**********************************************************************:: *)
@@ -247,14 +257,14 @@ VerificationTest[
     ],
     Null,
     SameTest -> MatchQ,
-    TestID   -> "Options-MaxHeartRate-1@@Tests/FITImport.wlt:243,1-251,2"
+    TestID   -> "Options-MaxHeartRate-1@@Tests/FITImport.wlt:253,1-261,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/ZwiftRide.fit", "HeartRateZone" ],
     _Missing,
     SameTest -> MatchQ,
-    TestID   -> "Options-MaxHeartRate-2@@Tests/FITImport.wlt:253,1-258,2"
+    TestID   -> "Options-MaxHeartRate-2@@Tests/FITImport.wlt:263,1-268,2"
 ]
 
 VerificationTest[
@@ -265,21 +275,21 @@ VerificationTest[
     ],
     _TemporalData,
     SameTest -> MatchQ,
-    TestID   -> "Options-MaxHeartRate-3@@Tests/FITImport.wlt:260,1-269,2"
+    TestID   -> "Options-MaxHeartRate-3@@Tests/FITImport.wlt:270,1-279,2"
 ]
 
 VerificationTest[
     PersistentSymbol[ "FITImport/MaxHeartRate" ] = Quantity[ 190, "BPM" ],
     _Quantity,
     SameTest -> MatchQ,
-    TestID   -> "Options-MaxHeartRate-4@@Tests/FITImport.wlt:271,1-276,2"
+    TestID   -> "Options-MaxHeartRate-4@@Tests/FITImport.wlt:281,1-286,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/ZwiftRide.fit", "HeartRateZone" ],
     _TemporalData,
     SameTest -> MatchQ,
-    TestID   -> "Options-MaxHeartRate-5@@Tests/FITImport.wlt:278,1-283,2"
+    TestID   -> "Options-MaxHeartRate-5@@Tests/FITImport.wlt:288,1-293,2"
 ]
 
 VerificationTest[
@@ -288,7 +298,7 @@ VerificationTest[
     ],
     Null,
     SameTest -> MatchQ,
-    TestID   -> "Options-MaxHeartRate-6@@Tests/FITImport.wlt:285,1-292,2"
+    TestID   -> "Options-MaxHeartRate-6@@Tests/FITImport.wlt:295,1-302,2"
 ]
 
 (* ::**********************************************************************:: *)
@@ -298,14 +308,14 @@ VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/BikeHillClimb.fit", "Altitude", UnitSystem -> "Imperial" ][ "LastValue" ],
     Quantity[ _, "Feet" ],
     SameTest -> MatchQ,
-    TestID   -> "Options-UnitSystem-1@@Tests/FITImport.wlt:297,1-302,2"
+    TestID   -> "Options-UnitSystem-1@@Tests/FITImport.wlt:307,1-312,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/BikeHillClimb.fit", "Altitude", UnitSystem -> "Metric" ][ "LastValue" ],
     Quantity[ _, "Meters" ],
     SameTest -> MatchQ,
-    TestID   -> "Options-UnitSystem-2@@Tests/FITImport.wlt:304,1-309,2"
+    TestID   -> "Options-UnitSystem-2@@Tests/FITImport.wlt:314,1-319,2"
 ]
 
 VerificationTest[
@@ -314,7 +324,7 @@ VerificationTest[
     ],
     Quantity[ _, "Feet" ],
     SameTest -> MatchQ,
-    TestID   -> "Options-UnitSystem-3@@Tests/FITImport.wlt:311,1-318,2"
+    TestID   -> "Options-UnitSystem-3@@Tests/FITImport.wlt:321,1-328,2"
 ]
 
 VerificationTest[
@@ -323,7 +333,7 @@ VerificationTest[
     ],
     Quantity[ _, "Meters" ],
     SameTest -> MatchQ,
-    TestID   -> "Options-UnitSystem-4@@Tests/FITImport.wlt:320,1-327,2"
+    TestID   -> "Options-UnitSystem-4@@Tests/FITImport.wlt:330,1-337,2"
 ]
 
 (* ::**********************************************************************:: *)
@@ -342,7 +352,7 @@ VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/BikeRide.fit", "MessageCounts" ],
     KeyValuePattern[ "Record" -> 11376 ],
     SameTest -> MatchQ,
-    TestID   -> "PropertiesAndRelations-1@@Tests/FITImport.wlt:341,1-346,2"
+    TestID   -> "PropertiesAndRelations-1@@Tests/FITImport.wlt:351,1-356,2"
 ]
 
 VerificationTest[
@@ -352,21 +362,21 @@ VerificationTest[
     ][ All, "Count" ],
     Length @ FITImport[ "ComputationalFitness/ExampleData/BikeRide.fit", "RawData" ],
     SameTest -> MatchQ,
-    TestID   -> "PropertiesAndRelations-2@@Tests/FITImport.wlt:348,1-356,2"
+    TestID   -> "PropertiesAndRelations-2@@Tests/FITImport.wlt:358,1-366,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/Walk.fit", "Session" ][ 1 ][ "AverageCadence" ],
     Quantity[ _, "Steps"/"Minutes" ],
     SameTest -> MatchQ,
-    TestID   -> "PropertiesAndRelations-3@@Tests/FITImport.wlt:358,1-363,2"
+    TestID   -> "PropertiesAndRelations-3@@Tests/FITImport.wlt:368,1-373,2"
 ]
 
 VerificationTest[
     FITImport[ "ComputationalFitness/ExampleData/BikeRide.fit", "Session" ][ 1 ][ "AverageCadence" ],
     Quantity[ _, "Revolutions"/"Minutes" ],
     SameTest -> MatchQ,
-    TestID   -> "PropertiesAndRelations-4@@Tests/FITImport.wlt:365,1-370,2"
+    TestID   -> "PropertiesAndRelations-4@@Tests/FITImport.wlt:375,1-380,2"
 ]
 
 (* ::**********************************************************************:: *)
@@ -385,35 +395,35 @@ VerificationTest[
     $exampleDir = DirectoryName @ FindFile[ "ComputationalFitness/ExampleData/BikeRide.fit" ],
     _? DirectoryQ,
     SameTest -> MatchQ,
-    TestID   -> "ExampleData-1@@Tests/FITImport.wlt:384,1-389,2"
+    TestID   -> "ExampleData-1@@Tests/FITImport.wlt:394,1-399,2"
 ]
 
 VerificationTest[
-    StringStartsQ[ $exampleDir, $UserBaseDirectory ],
+    StringStartsQ[ $exampleDir, $pacletDir ],
     True,
     SameTest -> MatchQ,
-    TestID   -> "ExampleData-2@@Tests/FITImport.wlt:391,1-396,2"
+    TestID   -> "ExampleData-2@@Tests/FITImport.wlt:401,1-406,2"
 ]
 
 VerificationTest[
     $exampleFiles = FileNames[ "*.fit", $exampleDir ],
     { Repeated[ _String, { 5, Infinity } ] },
     SameTest -> MatchQ,
-    TestID   -> "ExampleData-3@@Tests/FITImport.wlt:398,1-403,2"
+    TestID   -> "ExampleData-3@@Tests/FITImport.wlt:408,1-413,2"
 ]
 
 VerificationTest[
-    MemberQ[ $Path, AbsoluteFileName @ DirectoryName @ $exampleDir ],
-    True,
+    FindFile[ "ComputationalFitness/ExampleData/BikeRide.fit" ],
+    _? FileExistsQ,
     SameTest -> MatchQ,
-    TestID   -> "ExampleData-4@@Tests/FITImport.wlt:405,1-410,2"
+    TestID   -> "ExampleData-4@@Tests/FITImport.wlt:415,1-420,2"
 ]
 
 VerificationTest[
-    (FITImport @ FileNameTake[ #, -2 ] &) /@ $exampleFiles,
-    { __Dataset },
+    (FITImport[ FileNameTake[ #, -3 ], "MessageCounts" ] &) /@ $exampleFiles,
+    { __Association? AssociationQ },
     SameTest -> MatchQ,
-    TestID   -> "ExampleData-5@@Tests/FITImport.wlt:412,1-417,2"
+    TestID   -> "ExampleData-5@@Tests/FITImport.wlt:422,1-427,2"
 ]
 
 (* ::**********************************************************************:: *)

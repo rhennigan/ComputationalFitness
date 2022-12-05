@@ -678,7 +678,9 @@ fitTime[ n_Integer ] := secondsToQuantity[ n/1000.0 ];
 fitTime[ ___ ] := Missing[ "NotAvailable" ];
 
 secondsToQuantity := secondsToQuantity =
-    ResourceFunction[ "SecondsToQuantity", "Function" ];
+    Block[ { PrintTemporary },
+        ResourceFunction[ "SecondsToQuantity", "Function" ]
+    ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

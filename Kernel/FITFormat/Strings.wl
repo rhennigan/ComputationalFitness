@@ -3,8 +3,6 @@
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`" ];
 
-FITImport;
-
 Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
@@ -26,27 +24,7 @@ FITImport::BadElementSpecification =
 "The import element specification \"`1`\" is not valid.";
 
 FITImport::FileNotFound =
-"File `1` not found."
-
-FITImport::IncompatibleSystemID =
-"FITImport is not compatible with the system ID \"`1`\".";
-
-FITImport::IncompatibleSystemID2 =
-"FITImport is not compatible with the system ID \"`1`\". Supported platforms \
-are: `2`.";
-
-FITImport::CompileOnDemand =
-"FITImport does not include compiled libraries for the system ID \"`1`\". \
-Attempting to compile a library from sources...";
-
-FITImport::CompileFailure =
-"FITImport was unable to compile a library for the system ID \"`1`\".";
-
-FITImport::CloudLibraryFunction =
-"FITImport is not supported in the cloud.";
-
-FITImport::LibraryFunctionLoadFail =
-"FITImport could not load the library function \"`1`\".";
+"File `1` not found.";
 
 FITImport::CopyTemporaryFailed =
 "Failed to copy source to a temporary file.";
@@ -65,24 +43,6 @@ FITImport::InvalidWeight =
 
 FITImport::InvalidUnitSystem =
 "The value `1` is not a valid value for UnitSystem.";
-
-FITImport::LibraryError =
-"Encountered an internal library error: `1`";
-
-FITImport::LibraryErrorConversion =
-"Invalid FIT format: `1`";
-
-FITImport::LibraryErrorUnexpectedEOF =
-"Encountered an unexpected end of file in `1`.";
-
-FITImport::LibraryErrorUnsupportedProtocol =
-"Library error: FIT_IMPORT_ERROR_UNSUPPORTED_PROTOCOL (`1`).";
-
-FITImport::LibraryErrorInternal =
-"Library error: FIT_IMPORT_ERROR_INTERNAL (`1`). `4`";
-
-FITImport::LibraryErrorOpenFile =
-"Cannot read from file `2`. Check permissions and try again.";
 
 FITImport::NoFTPValue =
 "No functional threshold power specified.";

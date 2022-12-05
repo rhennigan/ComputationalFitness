@@ -14,9 +14,11 @@ Quiet[
         ,
         Get[ "RH`ComputationalFitness`Symbols`"   ];
         Get[ "RH`ComputationalFitness`Utilities`" ];
-        Get[ "RH`ComputationalFitness`Libraries`" ];
-        Get[ "RH`ComputationalFitness`FITImport`" ];
+        Get[ "RH`ComputationalFitness`FITFormat`" ];
         Get[ "RH`ComputationalFitness`TCXImport`" ];
     ],
     General::shdw
 ];
+
+RH`ComputationalFitness`Private`$thisPacletLocation =
+    DirectoryName[ $InputFileName, 2 ];

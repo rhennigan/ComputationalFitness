@@ -416,6 +416,7 @@ DLLEXPORT int FITImport(
     }
 
     #if defined(RETURN_PARTIAL_DATA)
+    // TODO: append a custom message that indicates the error type
     fclose(file);
     MArgument_setMTensor(Res, data);
     return LIBRARY_NO_ERROR;

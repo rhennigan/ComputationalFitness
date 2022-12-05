@@ -47,8 +47,8 @@
             ExportInteger(libData, data, pos, ch); \
             string[i] = (char)ch; \
         } \
-        string[len-1] = '\0'; \
-        strcpy(tgt, string); \
+        string[len] = '\0'; \
+        strncpy(tgt, string, length); \
     }
 
 ///////////////////////////////////////////////////////////////////////

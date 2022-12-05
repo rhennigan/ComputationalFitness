@@ -7,6 +7,14 @@ Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Global Values*)
+setIfUndefined[ $FunctionalThresholdPower, Automatic ];
+setIfUndefined[ $MaxHeartRate            , Automatic ];
+setIfUndefined[ $Sport                   , Automatic ];
+setIfUndefined[ $Weight                  , Automatic ];
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Config*)
 $timeOffset          = 0;
 $ftp                 = Automatic;
