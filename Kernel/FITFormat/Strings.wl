@@ -6,51 +6,6 @@ BeginPackage[ "RH`ComputationalFitness`" ];
 Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
-(* ::Section:: *)
-(*FITImport Messages*)
-FITImport::Internal =
-"An unexpected error occurred. `1`";
-
-FITImport::InvalidFile =
-"First argument `1` is not a valid file, directory, or URL specification.";
-
-FITImport::InvalidFitFile =
-"Cannot import data as FIT format.";
-
-FITImport::InvalidElement =
-"The import element \"`1`\" is not present when importing as FIT.";
-
-FITImport::BadElementSpecification =
-"The import element specification \"`1`\" is not valid.";
-
-FITImport::FileNotFound =
-"File `1` not found.";
-
-FITImport::CopyTemporaryFailed =
-"Failed to copy source to a temporary file.";
-
-FITImport::ArgumentCount =
-"FITImport called with `1` arguments; between 1 and 2 arguments are expected.";
-
-FITImport::InvalidFTP =
-"The value `1` is not a valid value for functional threshold power.";
-
-FITImport::InvalidMaxHR =
-"The value `1` is not a valid value for maximum heart rate.";
-
-FITImport::InvalidWeight =
-"The value `1` is not a valid value for weight.";
-
-FITImport::InvalidUnitSystem =
-"The value `1` is not a valid value for UnitSystem.";
-
-FITImport::NoFTPValue =
-"No functional threshold power specified.";
-
-FITImport::NoRecordsAvailable =
-"No records available in the specified FIT file.";
-
-(* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*FIT Enumerations*)
 
