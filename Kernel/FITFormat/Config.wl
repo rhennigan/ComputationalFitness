@@ -32,7 +32,7 @@ $invalidUINT16Z      = 0;
 $invalidSINT32       = 2147483647;
 $invalidUINT32       = 4294967295;
 $invalidUINT32Z      = 0;
-$invalidTimestamp    = 2840036400;
+$invalidTimestamp    = 2840036399|2840036400|7135003695;
 $fitTerm             = 1685024357;
 $powerZoneThresholds = { 0.05, 0.55, 0.75, 0.9, 1.05, 1.2, 1.5 };
 
