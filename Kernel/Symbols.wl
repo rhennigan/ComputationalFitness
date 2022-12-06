@@ -12,6 +12,7 @@ HoldComplete[
 GeneralUtilities`UnprotectAndClearAll[
     RH`ComputationalFitness`ComputationalFitness,
     RH`ComputationalFitness`FITExport,
+    RH`ComputationalFitness`FITFileType,
     RH`ComputationalFitness`FITImport,
     RH`ComputationalFitness`FunctionalThresholdPower,
     RH`ComputationalFitness`MaxHeartRate,
