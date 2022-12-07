@@ -2,9 +2,7 @@
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`" ];
-
-ComputationalFitness;
-
+Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
@@ -112,7 +110,7 @@ cacheBlock // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
-(*fastCache*)
+(*cached*)
 cached // Attributes = { HoldFirst };
 
 cached[ eval_ ] /; $cacheBlock :=

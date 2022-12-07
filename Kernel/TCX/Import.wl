@@ -1,10 +1,9 @@
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
-BeginPackage[ "RH`ComputationalFitness`" ];
-
-TCXImport // ClearAll;
-
+BeginPackage[ "RH`ComputationalFitness`TCX`" ];
+Needs[ "RH`ComputationalFitness`" ];
+Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
