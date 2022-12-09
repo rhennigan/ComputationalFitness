@@ -655,10 +655,6 @@ static void export_record(WolframLibraryData libData, MTensor data, int idx, FIL
     ExportInteger(libData, data, pos, mesg.stance_time_balance);
     ExportInteger(libData, data, pos, mesg.step_length);
     ExportInteger(libData, data, pos, mesg.absolute_pressure);
-    ExportInteger(libData, data, pos, mesg.unknown_61);
-    ExportInteger(libData, data, pos, mesg.performance_condition);
-    ExportInteger(libData, data, pos, mesg.unknown_90);
-    ExportInteger(libData, data, pos, mesg.respiration_rate);
 
     WriteMessageDefinition(FIT_MESG_NUM_RECORD, local_mesg_number, fit_mesg_defs[FIT_MESG_RECORD], FIT_RECORD_MESG_DEF_SIZE, fp);
     WriteMessage(local_mesg_number, &mesg, FIT_RECORD_MESG_SIZE, fp);

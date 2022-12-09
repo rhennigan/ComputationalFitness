@@ -39,6 +39,7 @@ BeginPackage[ "`Package`" ];
 
 (* Shared across subpackages: *)
 GeneralUtilities`UnprotectAndClearAll[
+    `$debug,
     `$messageSymbol,
     `$thisPacletLocation,
     `beginDefinition,

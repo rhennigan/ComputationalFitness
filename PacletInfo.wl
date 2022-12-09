@@ -32,7 +32,8 @@ PacletObject[ <|
             "Assets"   -> {
                 { "License"    , "./LICENSE"     },
                 { "ExampleData", "./ExampleData" },
-                { "Source"     , "./Source"      }
+                { "Source"     , "./Source"      },
+                { "Data"       , "./Data"        }
             }
         },
         {

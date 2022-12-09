@@ -12,13 +12,19 @@ ComputationalFitness::Internal =
 "An unexpected error occurred. `1`";
 
 ComputationalFitness::Unfinished =
-"Starting definition for `1` without ending the current one.";
+"Definition warning: Starting definition for `1` without ending the current one.";
+
+ComputationalFitness::IndexTranslation =
+"Definition error: Index translation failed for `1` part \"`2`\" in `3`.";
+
+ComputationalFitness::UnusedIndices =
+"Definition warning: Unused indices in `1`: `2`.";
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
 $inDef = False;
-$debug = False;
+$debug = True;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
