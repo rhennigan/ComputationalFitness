@@ -158,6 +158,20 @@ catchTopAs // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
+(*catchMine*)
+catchMine // beginDefinition;
+
+catchMine // Attributes = { HoldFirst };
+
+catchMine /: HoldPattern[ f_Symbol[ args___ ] := catchMine[ rhs_ ] ] :=
+    f[ args ] := Block[ { $messageSymbol = f }, catchTop @ rhs ];
+
+catchMine[ eval_ ] := catchTop @ eval;
+
+catchMine // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*throwFailure*)
 throwFailure // beginDefinition;
 throwFailure // Attributes = { HoldFirst };

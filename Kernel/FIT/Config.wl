@@ -39,6 +39,11 @@ $powerZoneThresholds = { 0.05, 0.55, 0.75, 0.9, 1.05, 1.2, 1.5 };
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Option Settings*)
+$ftp := Automatic;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*Units*)
 $altitudeUnits    := $UnitSystem;
 $distanceUnits    := $UnitSystem;
@@ -70,6 +75,7 @@ $$props         = $$prop | $$propList;
 $$messageType   = _? messageTypeQ;
 $$messageTypes  = $$messageType | { $$messageType... };
 $$pluralMessage = "Events"|"Records"|"Laps"|"WorkoutSteps";
+$$powerZone     = 1|2|3|4|5|6|7;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -624,9 +630,11 @@ $fitHeartRateVariabilityKeys = {
 $fitWorkoutStepKeys // ClearAll;
 $fitWorkoutStepKeys = {
     "MessageType",
+    "MessageIndex",
     "WorkoutStepName",
     "Duration",
     "DurationType",
+    "Target",
     "TargetValue",
     "CustomTargetValueLow",
     "CustomTargetValueHigh",
@@ -635,7 +643,6 @@ $fitWorkoutStepKeys = {
     "SecondaryCustomTargetValueLow",
     "SecondaryCustomTargetValueHigh",
     "SecondaryTargetType",
-    "MessageIndex",
     "ExerciseCategory",
     "Intensity",
     "Notes",

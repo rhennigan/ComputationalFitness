@@ -33,9 +33,6 @@ FITImport::CopyTemporaryFailed =
 FITImport::ArgumentCount =
 "FITImport called with `1` arguments; between 1 and 2 arguments are expected.";
 
-FITImport::InvalidFTP =
-"The value `1` is not a valid value for functional threshold power.";
-
 FITImport::InvalidMaxHR =
 "The value `1` is not a valid value for maximum heart rate.";
 
@@ -44,9 +41,6 @@ FITImport::InvalidWeight =
 
 FITImport::InvalidUnitSystem =
 "The value `1` is not a valid value for UnitSystem.";
-
-FITImport::NoFTPValue =
-"No functional threshold power specified.";
 
 FITImport::NoRecordsAvailable =
 "No records available in the specified FIT file.";
@@ -346,7 +340,7 @@ setSportPref[ as_Association, Automatic ] :=
         sport = If[ ListQ @ v, fitValue[ "Sport", "Sport", v ], v ];
         If[ StringQ @ sport,
             $sport = setSport @ sport,
-            $sport = setSport @ PersistentSymbol[ "FITImport/Sport" ];
+            $sport = setSport @ PersistentSymbol[ "ComputationalFitness/Sport" ];
         ]
     ];
 
@@ -385,7 +379,7 @@ setUnitPrefs[ config_, as_Association, v_List ] := (
 );
 
 setUnitPrefs[ config_, Automatic, _ ] :=
-    $unitSystem = setUnitSystem @ PersistentSymbol[ "FITImport/UnitSystem" ];
+    $unitSystem = setUnitSystem @ PersistentSymbol[ "ComputationalFitness/UnitSystem" ];
 
 setUnitPrefs // endDefinition;
 
@@ -463,12 +457,12 @@ setFTPPref[ config_, Automatic, v_List ] :=
         ftp = fitValue[ "Session", "ThresholdPower", v ];
         If[ TrueQ @ Positive @ ftp,
             $ftp = setFTP @ ftp,
-            $ftp = setFTP @ PersistentSymbol[ "FITImport/FunctionalThresholdPower" ]
+            $ftp = setFTP @ PersistentSymbol[ "ComputationalFitness/FunctionalThresholdPower" ]
         ]
     ];
 
 setFTPPref[ config_, Automatic, _ ] :=
-    $ftp = setFTP @ PersistentSymbol[ "FITImport/FunctionalThresholdPower" ];
+    $ftp = setFTP @ PersistentSymbol[ "ComputationalFitness/FunctionalThresholdPower" ];
 
 setFTPPref // endDefinition;
 
@@ -489,12 +483,12 @@ setMaxHRPref[ config_, Automatic, v_List ] :=
         maxHR = fitValue[ "UserProfile", "DefaultMaxHeartRate", v ];
         If[ TrueQ @ Positive @ maxHR,
             $maxHR = setMaxHR @ maxHR,
-            $maxHR = setMaxHR @ PersistentSymbol[ "FITImport/MaxHeartRate" ]
+            $maxHR = setMaxHR @ PersistentSymbol[ "ComputationalFitness/MaxHeartRate" ]
         ]
     ];
 
 setMaxHRPref[ config_, Automatic, _ ] :=
-    $maxHR = setMaxHR @ PersistentSymbol[ "FITImport/MaxHeartRate" ];
+    $maxHR = setMaxHR @ PersistentSymbol[ "ComputationalFitness/MaxHeartRate" ];
 
 setMaxHRPref // endDefinition;
 
@@ -515,12 +509,12 @@ setWeightPref[ config_, Automatic, v_List ] :=
         weight = fitValue[ "UserProfile", "Weight", v ];
         If[ TrueQ @ Positive @ weight,
             $weight = setWeight @ weight,
-            $weight = setWeight @ PersistentSymbol[ "FITImport/Weight" ]
+            $weight = setWeight @ PersistentSymbol[ "ComputationalFitness/Weight" ]
         ]
     ];
 
 setWeightPref[ config_, Automatic, _ ] :=
-    $weight = setWeight @ PersistentSymbol[ "FITImport/Weight" ];
+    $weight = setWeight @ PersistentSymbol[ "ComputationalFitness/Weight" ];
 
 setFTPPref // endDefinition;
 
@@ -547,7 +541,7 @@ setFTP[ ftp_Integer   ] := N @ ftp;
 setFTP[ ftp_Real      ] := ftp;
 setFTP[ Quantity[ ftp_, "Watts" ] ] := setFTP @ ftp;
 setFTP[ ftp_Quantity ] := setFTP @ UnitConvert[ ftp, "Watts" ];
-setFTP[ ftp_ ] := throwFailure[ FITImport::InvalidFTP, ftp ];
+setFTP[ ftp_ ] := throwFailure[ "InvalidFTP", ftp ];
 setFTP // endDefinition;
 
 (* ::**********************************************************************:: *)

@@ -21,6 +21,7 @@ fitValue[ type_, "MessageType", v_ ] := type;
 (*FileID*)
 fitValue[ "FileID", name_, value_ ] := fitFileIDValue[ name, value ];
 
+fitFileIDValue // ClearAll;
 fitFileIDValue[ "SerialNumber", v_ ] := fitSerialNumber @ v[[ 2 ]];
 fitFileIDValue[ "TimeCreated" , v_ ] := fitDateTime @ v[[ 3 ]];
 fitFileIDValue[ "Manufacturer", v_ ] := fitManufacturer @ v[[ 4 ]];
@@ -35,6 +36,7 @@ fitFileIDValue[ _             , _  ] := Missing[ "NotAvailable" ];
 (*UserProfile*)
 fitValue[ "UserProfile", name_, value_ ] := fitUserProfileValue[ name, value ];
 
+fitUserProfileValue // ClearAll;
 fitUserProfileValue[ "MessageIndex"              , v_ ] := fitUINT16 @ v[[ 2 ]];
 fitUserProfileValue[ "Weight"                    , v_ ] := fitWeight @ v[[ 3 ]];
 fitUserProfileValue[ "LocalID"                   , v_ ] := fitUINT16 @ v[[ 4 ]];
@@ -67,6 +69,7 @@ fitUserProfileValue[ _                           , _  ] := Missing[ "NotAvailabl
 (*Activity*)
 fitValue[ "Activity", name_, value_ ] := fitActivityValue[ name, value ];
 
+fitActivityValue // ClearAll;
 fitActivityValue[ "Timestamp"       , v_ ] := fitDateTime @ v[[ 2 ]];
 fitActivityValue[ "TotalTimerTime"  , v_ ] := fitTime32 @ v[[ 3 ]];
 fitActivityValue[ "LocalTimestamp"  , v_ ] := fitLocalTimestamp @ v[[ 4 ]];
@@ -82,6 +85,7 @@ fitActivityValue[ _                 , _  ] := Missing[ "NotAvailable" ];
 (*Lap*)
 fitValue[ "Lap", name_, value_ ] := fitLapValue[ name, value ];
 
+fitLapValue // ClearAll;
 fitLapValue[ "Timestamp"                          , v_ ] := fitDateTime @ v[[ 2 ]];
 fitLapValue[ "StartTime"                          , v_ ] := fitDateTime @ v[[ 3 ]];
 fitLapValue[ "StartPosition"                      , v_ ] := fitGeoPosition @ v[[ 4;;5 ]];
@@ -162,6 +166,7 @@ fitLapValue[ _                                    , v_ ] := Missing[ "NotAvailab
 (*DeviceSettings*)
 fitValue[ "DeviceSettings", name_, value_ ] := fitDeviceSettingsValue[ name, value ];
 
+fitDeviceSettingsValue // ClearAll;
 fitDeviceSettingsValue[ "UTCOffset"             , v_ ] := fitUINT32 @ v[[ 2 ]];
 fitDeviceSettingsValue[ "TimeOffset"            , v_ ] := fitTimeOffset @ v[[ 3;;4 ]];
 fitDeviceSettingsValue[ "ClockTime"             , v_ ] := fitDateTime @ v[[ 5 ]];
@@ -186,6 +191,7 @@ fitDeviceSettingsValue[ _                       , _  ] := Missing[ "NotAvailable
 (*Record*)
 fitValue[ "Record", name_, value_ ] := fitRecordValue[ name, value ];
 
+fitRecordValue // ClearAll;
 fitRecordValue[ "Timestamp"                      , v_ ] := fitDateTime @ v[[ 2 ]];
 fitRecordValue[ "GeoPosition"                    , v_ ] := fitGeoPosition @ v[[ 3;;4 ]];
 fitRecordValue[ "Distance"                       , v_ ] := fitDistance @ v[[ 5 ]];
@@ -244,11 +250,11 @@ fitRecordValue[ "VerticalRatio"                  , v_ ] := fitPercent @ v[[ 60 ]
 fitRecordValue[ "StanceTimeBalance"              , v_ ] := fitPercent @ v[[ 61 ]];
 fitRecordValue[ "StepLength"                     , v_ ] := fitMM8 @ v[[ 62 ]];
 fitRecordValue[ "AbsolutePressure"               , v_ ] := fitPressure @ v[[ 63 ]];
-fitRecordValue[ "Unknown61"                      , v_ ] := fitUINT16 @ v[[ 64 ]];
+(* fitRecordValue[ "Unknown61"                      , v_ ] := fitUINT16 @ v[[ 64 ]];
 fitRecordValue[ "PerformanceCondition"           , v_ ] := fitSINT8 @ v[[ 65 ]];
 fitRecordValue[ "Unknown90"                      , v_ ] := fitSINT8 @ v[[ 66 ]];
-fitRecordValue[ "RespirationRate"                , v_ ] := fitRespirationRate @ v[[ 67 ]];
-fitRecordValue[ "HeartRateVariability"           , v_ ] := fitHRV @ v[[ 68 ]];
+fitRecordValue[ "RespirationRate"                , v_ ] := fitRespirationRate @ v[[ 67 ]]; *)
+fitRecordValue[ "HeartRateVariability"           , v_ ] := fitHRV @ v[[ 64 ]];
 fitRecordValue[ "PowerZone"                      , v_ ] := fitPowerZone @ v[[ 13 ]];
 fitRecordValue[ "HeartRateZone"                  , v_ ] := fitHeartRateZone @ v[[ 29 ]];
 fitRecordValue[ _                                , _  ] := Missing[ "NotAvailable" ];
@@ -258,6 +264,7 @@ fitRecordValue[ _                                , _  ] := Missing[ "NotAvailabl
 (*Event*)
 fitValue[ "Event", name_, value_ ] := fitEventValue[ name, value ];
 
+fitEventValue // ClearAll;
 fitEventValue[ "Timestamp"           , v_ ] := fitDateTime @ v[[ 2 ]];
 fitEventValue[ "Data"                , v_ ] := fitUINT32 @ v[[ 3 ]];
 fitEventValue[ "Data16"              , v_ ] := fitUINT16 @ v[[ 4 ]];
@@ -279,6 +286,7 @@ fitEventValue[ _                     , _  ] := Missing[ "NotAvailable" ];
 (*DeviceInformation*)
 fitValue[ "DeviceInformation", name_, value_ ] := fitDeviceInformationValue[ name, value ];
 
+fitDeviceInformationValue // ClearAll;
 fitDeviceInformationValue[ "Timestamp"              , v_ ] := fitDateTime @ v[[ 2 ]];
 fitDeviceInformationValue[ "SerialNumber"           , v_ ] := fitSerialNumber @ v[[ 3 ]];
 fitDeviceInformationValue[ "CumulativeOperatingTime", v_ ] := fitCumulativeOperatingTime @ v[[ 4 ]];
@@ -303,6 +311,7 @@ fitDeviceInformationValue[ _                        , _  ] := Missing[ "NotAvail
 (*Session*)
 fitValue[ "Session", name_, value_ ] := fitSessionValue[ name, value ];
 
+fitSessionValue // ClearAll;
 fitSessionValue[ "Timestamp"                              , v_ ] := fitDateTime @ v[[ 2 ]];
 fitSessionValue[ "StartTime"                              , v_ ] := fitDateTime @ v[[ 3 ]];
 fitSessionValue[ "StartPosition"                          , v_ ] := fitGeoPosition @ v[[ 4;;5 ]];
@@ -400,6 +409,7 @@ fitSessionValue[ _                                        , _  ] := Missing[ "No
 (*ZonesTarget*)
 fitValue[ "ZonesTarget" , name_, value_ ] := fitZonesTargetValue[ name, value ];
 
+fitZonesTargetValue // ClearAll;
 fitZonesTargetValue[ "FunctionalThresholdPower", v_ ] := fitFTPSetting @ v[[ 2 ]];
 fitZonesTargetValue[ "MaxHeartRate"            , v_ ] := fitMaxHRSetting @ v[[ 3 ]];
 fitZonesTargetValue[ "ThresholdHeartRate"      , v_ ] := fitHeartRate @ v[[ 4 ]];
@@ -412,6 +422,7 @@ fitZonesTargetValue[ _                         , _  ] := Missing[ "NotAvailable"
 (*FileCreator*)
 fitValue[ "FileCreator", name_, value_ ] := fitFileCreatorValue[ name, value ];
 
+fitFileCreatorValue // ClearAll;
 fitFileCreatorValue[ "SoftwareVersion", v_ ] := fitUINT16 @ v[[ 2 ]];
 fitFileCreatorValue[ "HardwareVersion", v_ ] := fitUINT8 @ v[[ 3 ]];
 fitFileCreatorValue[ _                , _  ] := Missing[ "NotAvailable" ];
@@ -421,6 +432,7 @@ fitFileCreatorValue[ _                , _  ] := Missing[ "NotAvailable" ];
 (*Sport*)
 fitValue[ "Sport", name_, value_ ] := fitSportValue[ name, value ];
 
+fitSportValue // ClearAll;
 fitSportValue[ "Name"    , v_ ] := fitString @ v[[ 2;;17 ]];
 fitSportValue[ "Sport"   , v_ ] := fitSport @ v[[ 18 ]];
 fitSportValue[ "SubSport", v_ ] := fitSubSport @ v[[ 19 ]];
@@ -431,6 +443,7 @@ fitSportValue[ _         , _  ] := Missing[ "NotAvailable" ];
 (*DeveloperDataID*)
 fitValue[ "DeveloperDataID", name_, value_ ] := fitDeveloperDataIDValue[ name, value ];
 
+fitDeveloperDataIDValue // ClearAll;
 fitDeveloperDataIDValue[ "DeveloperID"       , v_ ] := fitHexString @ v[[ 2;;17 ]];
 fitDeveloperDataIDValue[ "ApplicationID"     , v_ ] := fitHexString @ v[[ 18;;33 ]];
 fitDeveloperDataIDValue[ "ApplicationVersion", v_ ] := fitUINT32 @ v[[ 34 ]];
@@ -443,14 +456,15 @@ fitDeveloperDataIDValue[ _                   , _  ] := Missing[ "NotAvailable" ]
 (*MessageInformation*)
 fitValue[ "MessageInformation", name_, value_ ] := fitMessageInformationValue[ name, value ];
 
+fitMessageInformationValue // ClearAll;
 fitMessageInformationValue[ "MessageTypeName", v_ ] := fitMessageType @ v[[ 2 ]];
 fitMessageInformationValue[ "MessageIDNumber", v_ ] := v[[ 2 ]];
 fitMessageInformationValue[ "MessageSize"    , v_ ] := v[[ 3 ]];
 fitMessageInformationValue[ "Supported"      , v_ ] := messageTypeQ @ fitMessageType @ v[[ 2 ]];
 fitMessageInformationValue[ "ByteOrdering"   , v_ ] := fitByteOrder @ v[[ 4 ]];
 fitMessageInformationValue[ "FieldCount"     , v_ ] := v[[ 5 ]];
-fitMessageInformationValue[ "FileOffset"     , v_ ] := fitFileOffset @ v[[ 6 ]];
-fitMessageInformationValue[ "MessageIndex"   , v_ ] := v[[ 7 ]];
+(* fitMessageInformationValue[ "FileOffset"     , v_ ] := fitFileOffset @ v[[ 6 ]]; *)
+fitMessageInformationValue[ "MessageIndex"   , v_ ] := v[[ 6 ]];
 fitMessageInformationValue[ _                , _  ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
@@ -458,6 +472,7 @@ fitMessageInformationValue[ _                , _  ] := Missing[ "NotAvailable" ]
 (*FieldDescription*)
 fitValue[ "FieldDescription", name_, value_ ] := fitFieldDescriptionValue[ name, value ];
 
+fitFieldDescriptionValue // ClearAll;
 fitFieldDescriptionValue[ "FieldName"            , v_ ] := fitString @ v[[ 2;;65 ]];
 fitFieldDescriptionValue[ "Units"                , v_ ] := fitString @ v[[ 66;;81 ]];
 fitFieldDescriptionValue[ "FitBaseUnitID"        , v_ ] := fitFitBaseUnit @ v[[ 82 ]];
@@ -475,6 +490,7 @@ fitFieldDescriptionValue[ _                      , _  ] := Missing[ "NotAvailabl
 (*TrainingFile*)
 fitValue[ "TrainingFile", name_, value_ ] := fitTrainingFileValue[ name, value ];
 
+fitTrainingFileValue // ClearAll;
 fitTrainingFileValue[ "Timestamp"   , v_ ] := fitDateTime @ v[[ 2 ]];
 fitTrainingFileValue[ "SerialNumber", v_ ] := fitUINT32Z @ v[[ 3 ]];
 fitTrainingFileValue[ "TimeCreated" , v_ ] := fitDateTime @ v[[ 4 ]];
@@ -489,18 +505,20 @@ fitTrainingFileValue[ _             , _  ] := Missing[ "NotAvailable" ];
 (*WorkoutStep*)
 fitValue[ "WorkoutStep", name_, value_ ] := fitWorkoutStepValue[ name, value ];
 
+fitWorkoutStepValue // ClearAll;
 fitWorkoutStepValue[ "WorkoutStepName"               , v_ ] := fitString @ v[[ 2;;17 ]];
 fitWorkoutStepValue[ "Duration"                      , v_ ] := fitWktDuration[ v[[ 18 ]], v[[ 27 ]] ];
-fitWOrkoutStepValue[ "DurationType"                  , v_ ] := fitWorkoutStepDuration @ v[[ 27 ]];
+fitWorkoutStepValue[ "DurationType"                  , v_ ] := fitWorkoutStepDuration @ v[[ 27 ]];
 fitWorkoutStepValue[ "TargetValue"                   , v_ ] := fitWktTargetValue[ v[[ 19 ]], v[[ 28 ]] ];
 fitWorkoutStepValue[ "TargetType"                    , v_ ] := fitWorkoutStepTarget @ v[[ 28 ]];
 fitWorkoutStepValue[ "CustomTargetValueLow"          , v_ ] := fitWktTargetValue[ v[[ 20 ]], v[[ 28 ]] ];
 fitWorkoutStepValue[ "CustomTargetValueHigh"         , v_ ] := fitWktTargetValue[ v[[ 21 ]], v[[ 28 ]] ];
+fitWorkoutStepValue[ "Target"                        , v_ ] := fitWktTarget[ v[[ 19 ]], v[[ 20 ]], v[[ 21 ]], v[[ 28 ]] ];
 fitWorkoutStepValue[ "SecondaryTargetValue"          , v_ ] := fitWktTargetValue[ v[[ 22 ]], v[[ 81 ]] ];
 fitWorkoutStepValue[ "SecondaryCustomTargetValueLow" , v_ ] := fitWktTargetValue[ v[[ 23 ]], v[[ 81 ]] ];
 fitWorkoutStepValue[ "SecondaryCustomTargetValueHigh", v_ ] := fitWktTargetValue[ v[[ 24 ]], v[[ 81 ]] ];
 fitWorkoutStepValue[ "SecondaryTargetType"           , v_ ] := fitWorkoutStepTarget @ v[[ 81 ]];
-fitWorkoutStepValue[ "MessageIndex"                  , v_ ] := fitMessageIndex @ v[[ 25 ]];
+fitWorkoutStepValue[ "MessageIndex"                  , v_ ] := fitUINT16 @ v[[ 25 ]];
 fitWorkoutStepValue[ "ExerciseCategory"              , v_ ] := fitExerciseCategory @ v[[ 26 ]];
 fitWorkoutStepValue[ "TargetType"                    , v_ ] := fitWorkoutStepTarget @ v[[ 28 ]];
 fitWorkoutStepValue[ "Intensity"                     , v_ ] := fitIntensity @ v[[ 29 ]];
@@ -514,6 +532,7 @@ fitWorkoutStepValue[ _                               , _  ] := Missing[ "NotAvai
 (*Workout*)
 fitValue[ "Workout", name_, value_ ] := fitWorkoutValue[ name, value ];
 
+fitWorkoutValue // ClearAll;
 fitWorkoutValue[ "Capabilities"      , v_ ] := fitWorkoutCapabilities @ v[[ 2 ]];
 fitWorkoutValue[ "WorkoutName"       , v_ ] := fitString @ v[[ 3;;18 ]];
 fitWorkoutValue[ "NumberOfValidSteps", v_ ] := fitUINT16 @ v[[ 19 ]];
@@ -527,6 +546,7 @@ fitWorkoutValue[ "PoolLengthUnit"    , v_ ] := fitDisplayMeasure @ v[[ 23 ]];
 (*HeartRateVariability*)
 fitValue[ "HeartRateVariability", name_, value_ ] := fitHeartRateVariabilityValue[ name, value ];
 
+fitHeartRateVariabilityValue // ClearAll;
 fitHeartRateVariabilityValue[ "Time", v_ ] := fitHRV @ v[[ 2 ]];
 fitHeartRateVariabilityValue[ _     , _  ] := Missing[ "NotAvailable" ];
 
@@ -1540,6 +1560,32 @@ fitWktDuration0[ ___    ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
+(*fitWktTarget*)
+fitWktTarget // ClearAll;
+fitWktTarget[ tVal_, tLow_, tHigh_, type_ ] :=
+    fitWktTarget0[
+        fitUINT32 @ tVal,
+        fitUINT32 @ tLow,
+        fitUINT32 @ tHigh,
+        fitWorkoutStepTarget @ type
+    ];
+
+fitWktTarget[ ___ ] := Missing[ "NotAvailable" ];
+
+
+$$wktStepPowerType = "Power" | "Power3S" | "Power10S" | "Power30S" | "PowerLap";
+
+fitWktTarget0 // ClearAll;
+fitWktTarget0[ w_, _Missing, _Missing, $$wktStepPowerType ] := fitWktTargetPower @ w;
+fitWktTarget0[ _, low_Integer, high_Integer, $$wktStepPowerType ] := fitPowerInterval[ low, high ];
+fitWktTarget0[ w_Integer, _Missing|0, _Missing|0, _Missing ] := w;
+fitWktTarget0[ w_Integer, _Missing|0, _Missing|0, "Open" ] := w;
+fitWktTarget0[ _Missing, _Missing|0, _Missing|0, _ ] := Missing[ "NotAvailable" ];
+
+(* https://developer.garmin.com/fit/file-types/workout/ *)
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
 (*fitWktTargetValue*)
 fitWktTargetValue // ClearAll;
 fitWktTargetValue[ v_, t_ ] := fitWktTargetValue0[ fitUINT32 @ v, fitWorkoutStepTarget @ t ];
@@ -1549,15 +1595,59 @@ fitWktTargetValue0 // ClearAll;
 fitWktTargetValue0[ _Missing, _        ] := Missing[ "NotAvailable" ];
 fitWktTargetValue0[ _       , _Missing ] := Missing[ "NotAvailable" ];
 
-fitWktTargetValue0[ w_, "Power"      ] := fitPower @ w;
+fitWktTargetValue0[ w_, "Power"      ] := fitWktTargetPower @ w;
+fitWktTargetValue0[ w_, "Power3S"    ] := fitWktTargetPower @ w;
+fitWktTargetValue0[ w_, "PowerLap"   ] := fitWktTargetPower @ w;
 fitWktTargetValue0[ w_, "HeartRate"  ] := fitHeartRate @ w;
 fitWktTargetValue0[ w_, "Cadence"    ] := fitCadence @ w;
 fitWktTargetValue0[ w_, "Speed"      ] := fitSpeed @ w;
 fitWktTargetValue0[ w_, "Grade"      ] := fitGrade @ w;
 fitWktTargetValue0[ w_, "Resistance" ] := fitResistance @ w;
+fitWktTargetValue0[ 0 , "Open"       ] := Missing[ "NotAvailable" ];
 
 fitWktTargetValue0[ v_, t_ ] := v;
 fitWktTargetValue0[ ___    ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitPowerInterval*)
+fitPowerInterval // ClearAll;
+fitPowerInterval[ a_, b_ ] := fitPowerInterval0[ fitWktTargetPower @ a, fitWktTargetPower @ b ];
+fitPowerInterval[ ___ ] := Missing[ "NotAvailable" ];
+
+fitPowerInterval0 // ClearAll;
+fitPowerInterval0[ a_Quantity, b_Quantity ] := fitPowerInterval1 @ Interval[ { a, b } ];
+fitPowerInterval0[ a_Interval, b_Interval ] := fitPowerInterval1 @ IntervalUnion[ a, b ];
+
+fitPowerInterval1 // ClearAll;
+fitPowerInterval1[ q: Quantity[ _Interval, "Watts" ] ] := q;
+fitPowerInterval1[ q: Quantity[ _Interval, _ ] ] := UnitConvert[ q, "Watts" ];
+fitPowerInterval1[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitWktTargetPower*)
+fitWktTargetPower // ClearAll;
+fitWktTargetPower[ w_ ] := If[ TrueQ[ w > 1000 ], fitPower[ w - 1000 ], fitPZRange[ w ] ];
+fitWktTargetPower[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitPZRange*)
+fitPZRange // ClearAll;
+fitPZRange[ w_Integer ] := fitPZRange[ w, $ftp ];
+fitPZRange[ w: $$powerZone, ftp_? NumberQ ] := Quantity[ Interval[ $pzBuckets[[ w ]]*ftp ], "Watts" ];
+fitPZRange[ w: $$powerZone, ftp_ ] := Quantity[ Interval[ $pzBuckets[[ w ]]*100 ], "Percent" ] * QuantityVariable[ "FTP", "Power" ];
+fitPZRange[ ___ ] := Missing[ "NotAvailable" ];
+
+$pzBuckets := cached @ Append[
+    Partition[ $powerZoneThresholds, 2, 1 ],
+    { 1.5, Infinity }
+];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitWktTargetType*)
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)

@@ -8,6 +8,43 @@ Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Messages*)
+ComputationalFitness::NoFTPValue =
+"No functional threshold power specified.";
+
+ComputationalFitness::InvalidFTP =
+"The value `1` is not a valid value for functional threshold power.";
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Argument Patterns*)
+$$ftp = _? NumberQ | _Quantity? powerQuantityQ;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*PowerZoneColorFunction*)
+PowerZoneColorFunction[ Automatic, ftp: $$ftp ] :=
+    catchMine @ powerZonePlotCF @ ftp;
+
+PowerZoneColorFunction[ "Garmin", ftp: $$ftp ] :=
+    catchMine @ Block[ { $powerZoneColors = $garminPZColors },
+        powerZonePlotCF @ ftp
+    ];
+
+PowerZoneColorFunction[ name_, ftp_ ] :=
+    catchMine @ Block[ { $ftp = setFTP @ ftp },
+        PowerZoneColorFunction[ name, $ftp ]
+    ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*powerQuantityQ*)
+powerQuantityQ // ClearAll;
+powerQuantityQ[ q_Quantity ] := CompatibleUnitQ[ q, "Watts" ];
+powerQuantityQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*PowerZonePlot*)
 
 (* ::**********************************************************************:: *)
@@ -51,7 +88,7 @@ powerZonePlot[ power: _TimeSeries|_TemporalData, ftp_? NumberQ ] :=
 
 powerZonePlot[ power_, Automatic|None|_Missing ] :=
     Module[ { mean, top, resampled },
-        messageFailure[ FITImport::NoFTPValue ];
+        messageFailure[ "NoFTPValue" ];
         mean = Mean @ power;
         top  = 1.2 * Max @ power;
         resampled = TimeSeriesResample[ power, (power["LastDate"] - power["FirstDate"]) / 1600 ];

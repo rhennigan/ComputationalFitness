@@ -8,7 +8,7 @@
 
 #define RETURN_PARTIAL_DATA
 
-#define MESSAGE_TENSOR_ROW_WIDTH 102
+#define MESSAGE_TENSOR_ROW_WIDTH 137
 #define FILE_ID_TENSOR_ROW_WIDTH  27
 
 #define FIT_IMPORT_ERROR_CONVERSION            8
@@ -27,11 +27,38 @@
     pos[1]++; \
     libData->MTensor_setInteger(data, pos, x)
 
+#define SetFloat(libData, data, pos, x) \
+    pos[1]++; \
+    libData->MTensor_setInteger(data, pos, (mint)(1000*(x)))
+
 #define SetIntegerSequence(libData, data, pos, x, n) \
     for(int i=0; i<n; i++) { \
         pos[1]++; \
         libData->MTensor_setInteger(data, pos, x[i]); \
     }
+
+#define ImportInteger(col, libData, data, pos, x) \
+    pos[1] = col; \
+    libData->MTensor_setInteger(data, pos, x)
+
+#define ImportFloat(col, libData, data, pos, x) \
+    pos[1] = col; \
+    libData->MTensor_setInteger(data, pos, (mint)(1000*(x)))
+
+#define ImportIntegerSequence(col, libData, data, pos, x, n) \
+    pos[1] = col; \
+    for(int i=0; i<n; i++) { \
+        pos[1]++; \
+        libData->MTensor_setInteger(data, pos, x[i]); \
+    }
+
+#define ImportString(col, libData, data, pos, x, n) \
+    pos[1] = col; \
+    for(int i=0; i<n; i++) { \
+        pos[1]++; \
+        libData->MTensor_setInteger(data, pos, x[i]); \
+    }
+
 
 static int count_fit_messages(        char* input, mint* err );
 static int count_usable_fit_messages( char* input, mint* err );
