@@ -6,6 +6,10 @@ Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
+
+(* TODO: generate dumb value functions for unknown defs in the SDK *)
+
+
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Definition Utilities*)
