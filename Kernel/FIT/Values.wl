@@ -16,7 +16,7 @@ Begin[ "`Private`" ];
 $fitIndex = Get @ FileNameJoin @ {
     DirectoryName[ $InputFileName, 3 ],
     "Data",
-    "FITIndex.wl"
+    "FITStructIndex.wl"
 };
 
 If[ $debug,

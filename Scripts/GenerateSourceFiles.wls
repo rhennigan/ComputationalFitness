@@ -124,6 +124,88 @@ configureSTDINT[ outputDir_ ] :=
     cFile @ FileNameJoin @ { outputDir, "fit_config.h" };
 
 (* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Data Formatting*)
+
+$indent     = 1;
+$indentSize = 4;
+
+$currentIndentSize := $indentSize * $indent;
+$currentIndent     := StringJoin @ ConstantArray[ " ", $currentIndentSize ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*format*)
+format // ClearAll;
+
+format[ value_ ] := format[ value, 1 ];
+
+format[ value_, indent_ ] := Block[ { $indent = indent }, format0 @ value ];
+
+format0 // ClearAll;
+
+format0[ as_Association ] /; AllTrue[ as, AssociationQ ] :=
+    StringJoin[
+        "<|\n",
+        StringRiffle[
+            KeyValueMap[ formatTopKV, as ],
+            "\n" <> $currentIndent <> ",\n"
+        ],
+        "\n",
+        StringDelete[
+            $currentIndent,
+            StartOfString ~~ StringJoin @ ConstantArray[ " ", $indentSize ]
+        ],
+        "|>"
+    ];
+
+format0[ as_Association ] :=
+    Module[ { keySize },
+        keySize = 2 + Max[ StringLength /@ Keys @ as ];
+        StringJoin[
+            "<|\n",
+            StringRiffle[ KeyValueMap[ formatKV @ keySize, as ], ",\n" ],
+            "\n",
+            StringDelete[
+                $currentIndent,
+                StartOfString ~~ StringJoin @ ConstantArray[ " ", $indentSize ]
+            ],
+            "|>"
+        ]
+    ];
+
+format0[ expr_ ] := ToString @ ResourceFunction[ "ReadableForm" ][
+    expr,
+    PageWidth -> Infinity
+];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*formatTopKV*)
+formatTopKV // ClearAll;
+
+formatTopKV[ key_, value_ ] :=
+    StringJoin[
+        $currentIndent,
+        ToString[ key, InputForm ],
+        " -> ",
+        format[ value, $indent + 1 ]
+    ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*formatKV*)
+formatKV // ClearAll;
+
+formatKV[ (keySize_) ][ key_, value_ ] :=
+    StringJoin[
+        $currentIndent,
+        StringPadRight[ ToString[ key, InputForm ], keySize ],
+        " -> ",
+        format[ value, $indent + 1 ]
+    ];
+
+(* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Generate FIT Source Files*)
 $fitGen = If[ TrueQ[ $forceDownload || ! FileExistsQ @ $fitGen ],
@@ -482,19 +564,11 @@ makeIndex[ KeyValuePattern @ { "offset" -> idx_, "list" -> True, "length" -> n_ 
 
 $fitIndex = KeyMap[
     cf`toNiceCamelCase @ StringDelete[ #1, { StartOfString~~"FIT_", "_MESG"~~EndOfString } ] &,
-    Association[ (#Type -> makeIndex /@ #Indices &) /@ $importData ]
+    Association[ (#Type -> KeyMap[ cf`toNiceCamelCase, makeIndex /@ #Indices ] &) /@ $importData ]
 ];
-indexFile = FileNameJoin @ { $pacletDir, "Data", "FITIndex.wl" };
+indexFile = FileNameJoin @ { $pacletDir, "Data", "FITStructIndex.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ indexFile;
-Export[
-    indexFile,
-    ToString @ ResourceFunction[ "ReadableForm" ][
-        $fitIndex,
-        PageWidth -> 60,
-        "RelativeWidth" -> True
-    ],
-    "String"
-];
+Export[ indexFile, format @ $fitIndex, "String" ];
 
 
 Export[
