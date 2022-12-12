@@ -38,6 +38,15 @@ If[ $debug,
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
+(*$enumTypeData*)
+$enumTypeData = Get @ FileNameJoin @ {
+    DirectoryName[ $InputFileName, 3 ],
+    "Data",
+    "FITEnumData.wl"
+};
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*indexTranslate*)
 indexTranslate // beginDefinition;
 
@@ -769,6 +778,29 @@ indexTranslate[ "HeartRateVariability", fitHeartRateVariabilityValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
+(*AccelerometerData*)
+fitValue[ "AccelerometerData", name_, value_ ] := fitAccelerometerDataValue[ name, value ];
+
+(* FIXME: create definitions for generated code *)
+fitAccelerometerDataValue // ClearAll;
+fitAccelerometerDataValue[ "Timestamp"                        , v_ ] := fitDateTime @ v[[ "Timestamp" ]];
+fitAccelerometerDataValue[ "CalibratedAccelerationX"          , v_ ] := fitFloat32A @ v[[ "CalibratedAccelerationX" ]];
+fitAccelerometerDataValue[ "CalibratedAccelerationY"          , v_ ] := fitFloat32A @ v[[ "CalibratedAccelerationY" ]];
+fitAccelerometerDataValue[ "CalibratedAccelerationZ"          , v_ ] := fitFloat32A @ v[[ "CalibratedAccelerationZ" ]];
+fitAccelerometerDataValue[ "TimestampMilliseconds"            , v_ ] := fitUINT16 @ v[[ "TimestampMilliseconds" ]];
+fitAccelerometerDataValue[ "SampleTimeOffset"                 , v_ ] := fitUINT16A @ v[[ "SampleTimeOffset" ]];
+fitAccelerometerDataValue[ "AccelerationX"                    , v_ ] := fitUINT16A @ v[[ "AccelerationX" ]];
+fitAccelerometerDataValue[ "AccelerationY"                    , v_ ] := fitUINT16A @ v[[ "AccelerationY" ]];
+fitAccelerometerDataValue[ "AccelerationZ"                    , v_ ] := fitUINT16A @ v[[ "AccelerationZ" ]];
+fitAccelerometerDataValue[ "CompressedCalibratedAccelerationX", v_ ] := fitSINT16A @ v[[ "CompressedCalibratedAccelerationX" ]];
+fitAccelerometerDataValue[ "CompressedCalibratedAccelerationY", v_ ] := fitSINT16A @ v[[ "CompressedCalibratedAccelerationY" ]];
+fitAccelerometerDataValue[ "CompressedCalibratedAccelerationZ", v_ ] := fitSINT16A @ v[[ "CompressedCalibratedAccelerationZ" ]];
+fitAccelerometerDataValue[ _                                  , _  ] := Missing[ "NotAvailable" ];
+
+indexTranslate[ "AccelerometerData", fitAccelerometerDataValue ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
 (*MessageInformation*)
 fitValue[ "MessageInformation", name_, value_ ] := fitMessageInformationValue[ name, value ];
 
@@ -791,6 +823,16 @@ fitMessageInformationValue[ _                , _  ] := Missing[ "NotAvailable" ]
 fitValue[ _, "RawData", v_ ] := fitRawData @ v[[ 2;; ]];
 fitValue[ _, _, _ ] := Missing[ "NotAvailable" ];
 fitValue // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitEnum*)
+fitEnum // ClearAll;
+fitEnum[ name_ ][ value_ ] := fitEnum0 @ $enumTypeData[ name, value ];
+fitEnum[ ___ ][ ___ ] := Missing[ "NotAvailable" ];
+
+fitEnum0[ _Missing ] := Missing[ "NotAvailable" ];
+fitEnum0[ v_ ] := v;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

@@ -539,7 +539,8 @@ makeImportData[ struct_ ] :=
                 "LastIndex"          -> lastIndex,
                 "FunctionDefinition" -> funcDef,
                 "MessageNumber"      -> mesgNum,
-                "Indices"            -> Association @ Internal`BagPart[ $indexedNames, All ]
+                "Indices"            -> Association @ Internal`BagPart[ $indexedNames, All ],
+                "StructLines"        -> structLines
             |>
         ]
     ];
@@ -731,6 +732,14 @@ enumTypeName[ str_String ] :=
     cf`toNiceCamelCase @ StringDelete[ str, StartOfString ~~ "FIT_" ];
 
 $defines = makeDefineData[ header, fitH ];
+
+
+
+Export[
+    FileNameJoin @ { $pacletDir, "SDK", "Defines.wxf" },
+    $defines,
+    "WXF"
+];
 
 
 

@@ -527,6 +527,14 @@ DLLEXPORT int FITImport(
                         break;
                     }
 
+                    case FIT_MESG_NUM_ACCELEROMETER_DATA:
+                    {
+                        const FIT_ACCELEROMETER_DATA_MESG *new = (FIT_ACCELEROMETER_DATA_MESG *) mesg;
+                        idx++;
+                        import_accelerometer_data(libData, data, idx, new);
+                        break;
+                    }
+
                     case FIT_MESG_NUM_NMEA_SENTENCE:
                     {
                         const FIT_NMEA_SENTENCE_MESG *new = (FIT_NMEA_SENTENCE_MESG *) mesg;
@@ -1251,6 +1259,12 @@ static int count_usable_fit_messages(char* input, mint *err)
                     }
 
                     case FIT_MESG_NUM_WEATHER_ALERT:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_ACCELEROMETER_DATA:
                     {
                         mesg_count++;
                         break;
@@ -2395,6 +2409,25 @@ static void import_weather_alert(WolframLibraryData libData, MTensor data, int i
     ImportInteger(17, libData, data, pos, mesg->severity);
     ImportInteger(18, libData, data, pos, mesg->type);
     ImportFinish(19, libData, data, pos);
+}
+
+static void import_accelerometer_data(WolframLibraryData libData, MTensor data, int idx, const FIT_ACCELEROMETER_DATA_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_ACCELEROMETER_DATA);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportFloatSequence(3, libData, data, pos, mesg->calibrated_accel_x, FIT_ACCELEROMETER_DATA_MESG_CALIBRATED_ACCEL_X_COUNT);
+    ImportFloatSequence(4, libData, data, pos, mesg->calibrated_accel_y, FIT_ACCELEROMETER_DATA_MESG_CALIBRATED_ACCEL_Y_COUNT);
+    ImportFloatSequence(5, libData, data, pos, mesg->calibrated_accel_z, FIT_ACCELEROMETER_DATA_MESG_CALIBRATED_ACCEL_Z_COUNT);
+    ImportInteger(6, libData, data, pos, mesg->timestamp_ms);
+    ImportIntegerSequence(7, libData, data, pos, mesg->sample_time_offset, FIT_ACCELEROMETER_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT);
+    ImportIntegerSequence(8, libData, data, pos, mesg->accel_x, FIT_ACCELEROMETER_DATA_MESG_ACCEL_X_COUNT);
+    ImportIntegerSequence(9, libData, data, pos, mesg->accel_y, FIT_ACCELEROMETER_DATA_MESG_ACCEL_Y_COUNT);
+    ImportIntegerSequence(10, libData, data, pos, mesg->accel_z, FIT_ACCELEROMETER_DATA_MESG_ACCEL_Z_COUNT);
+    ImportIntegerSequence(11, libData, data, pos, mesg->compressed_calibrated_accel_x, FIT_ACCELEROMETER_DATA_MESG_COMPRESSED_CALIBRATED_ACCEL_X_COUNT);
+    ImportIntegerSequence(12, libData, data, pos, mesg->compressed_calibrated_accel_y, FIT_ACCELEROMETER_DATA_MESG_COMPRESSED_CALIBRATED_ACCEL_Y_COUNT);
+    ImportIntegerSequence(13, libData, data, pos, mesg->compressed_calibrated_accel_z, FIT_ACCELEROMETER_DATA_MESG_COMPRESSED_CALIBRATED_ACCEL_Z_COUNT);
+    ImportFinish(14, libData, data, pos);
 }
 
 static void import_nmea_sentence(WolframLibraryData libData, MTensor data, int idx, const FIT_NMEA_SENTENCE_MESG *mesg)

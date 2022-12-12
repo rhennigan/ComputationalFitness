@@ -37,6 +37,12 @@
         libData->MTensor_setInteger(data, pos, x[i]); \
     }
 
+#define ImportFloatSequence(col, libData, data, pos, x, n) \
+    for(int i=0; i<n; i++) { \
+        pos[1] = col + i; \
+        libData->MTensor_setInteger(data, pos, (mint)(1000*(x[i]))); \
+    }
+
 #define ImportString(col, libData, data, pos, x, n) \
     { \
         FIT_STRING * string = (FIT_STRING *)(x); \
@@ -94,6 +100,7 @@ static void import_device_aux_battery_info(WolframLibraryData libData, MTensor d
 static void import_training_file(WolframLibraryData libData, MTensor data, int idx, const FIT_TRAINING_FILE_MESG *mesg);
 static void import_weather_conditions(WolframLibraryData libData, MTensor data, int idx, const FIT_WEATHER_CONDITIONS_MESG *mesg);
 static void import_weather_alert(WolframLibraryData libData, MTensor data, int idx, const FIT_WEATHER_ALERT_MESG *mesg);
+static void import_accelerometer_data(WolframLibraryData libData, MTensor data, int idx, const FIT_ACCELEROMETER_DATA_MESG *mesg);
 static void import_nmea_sentence(WolframLibraryData libData, MTensor data, int idx, const FIT_NMEA_SENTENCE_MESG *mesg);
 static void import_aviation_attitude(WolframLibraryData libData, MTensor data, int idx, const FIT_AVIATION_ATTITUDE_MESG *mesg);
 static void import_video_title(WolframLibraryData libData, MTensor data, int idx, const FIT_VIDEO_TITLE_MESG *mesg);

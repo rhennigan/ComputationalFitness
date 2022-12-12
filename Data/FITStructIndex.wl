@@ -1,5 +1,20 @@
 (* This file is auto-generated. Do not edit manually. *)
 <|
+    "AccelerometerData" -> <|
+        "AccelerationX"                     -> 8;;8,
+        "AccelerationY"                     -> 9;;9,
+        "AccelerationZ"                     -> 10;;10,
+        "CalibratedAccelerationX"           -> 3;;3,
+        "CalibratedAccelerationY"           -> 4;;4,
+        "CalibratedAccelerationZ"           -> 5;;5,
+        "CompressedCalibratedAccelerationX" -> 11;;11,
+        "CompressedCalibratedAccelerationY" -> 12;;12,
+        "CompressedCalibratedAccelerationZ" -> 13;;13,
+        "SampleTimeOffset"                  -> 7;;7,
+        "Timestamp"                         -> 2,
+        "TimestampMilliseconds"             -> 6
+    |>
+    ,
     "Activity" -> <|
         "Event"            -> 7,
         "EventGroup"       -> 9,
