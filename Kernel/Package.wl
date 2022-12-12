@@ -35,11 +35,17 @@ GeneralUtilities`UnprotectAndClearAll[
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Symbols*)
-BeginPackage[ "`Package`" ];
 
 (* Shared across subpackages: *)
+BeginPackage[ "`Package`" ];
+
+(* Preserve values if already set: *)
+HoldComplete[
+    `$debug
+];
+
+(* Clear for new definitions: *)
 GeneralUtilities`UnprotectAndClearAll[
-    `$debug,
     `$messageSymbol,
     `$thisPacletLocation,
     `beginDefinition,
@@ -51,9 +57,11 @@ GeneralUtilities`UnprotectAndClearAll[
     `endDefinition,
     `findFile,
     `messageFailure,
+    `messagePrint,
     `setIfUndefined,
     `throwFailure,
-    `throwInternalFailure
+    `throwInternalFailure,
+    `toNiceCamelCase
 ];
 
 EndPackage[ ];

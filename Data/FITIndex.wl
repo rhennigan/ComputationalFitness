@@ -1,5 +1,5 @@
 <|
-    "FILE_ID" -> <|
+    "FileID" -> <|
         "serial_number" -> 2,
         "time_created" -> 3,
         "product_name" -> 4;;23,
@@ -8,20 +8,20 @@
         "number" -> 26,
         "type" -> 27
     |>,
-    "FILE_CREATOR" -> <| "software_version" -> 2, "hardware_version" -> 3 |>,
-    "SOFTWARE" -> <|
+    "FileCreator" -> <| "software_version" -> 2, "hardware_version" -> 3 |>,
+    "Software" -> <|
         "part_number" -> 2;;17,
         "message_index" -> 18,
         "version" -> 19
     |>,
-    "SLAVE_DEVICE" -> <| "manufacturer" -> 2, "product" -> 3 |>,
-    "CAPABILITIES" -> <|
+    "SlaveDevice" -> <| "manufacturer" -> 2, "product" -> 3 |>,
+    "Capabilities" -> <|
         "languages" -> 2;;5,
         "workouts_supported" -> 6,
         "connectivity_supported" -> 7,
         "sports" -> 8;;8
     |>,
-    "FILE_CAPABILITIES" -> <|
+    "FileCapabilities" -> <|
         "directory" -> 2;;17,
         "max_size" -> 18,
         "message_index" -> 19,
@@ -29,21 +29,21 @@
         "type" -> 21,
         "flags" -> 22
     |>,
-    "MESG_CAPABILITIES" -> <|
+    "MessageCapabilities" -> <|
         "message_index" -> 2,
         "mesg_num" -> 3,
         "count" -> 4,
         "file" -> 5,
         "count_type" -> 6
     |>,
-    "FIELD_CAPABILITIES" -> <|
+    "FieldCapabilities" -> <|
         "message_index" -> 2,
         "mesg_num" -> 3,
         "count" -> 4,
         "file" -> 5,
         "field_num" -> 6
     |>,
-    "DEVICE_SETTINGS" -> <|
+    "DeviceSettings" -> <|
         "utc_offset" -> 2,
         "time_offset" -> 3;;4,
         "clock_time" -> 5,
@@ -62,7 +62,7 @@
         "mounting_side" -> 20,
         "tap_sensitivity" -> 21
     |>,
-    "USER_PROFILE" -> <|
+    "UserProfile" -> <|
         "friendly_name" -> 2;;17,
         "wake_time" -> 18,
         "sleep_time" -> 19,
@@ -93,14 +93,14 @@
         "height_setting" -> 49,
         "depth_setting" -> 50
     |>,
-    "HRM_PROFILE" -> <|
+    "HeartRateMonitorProfile" -> <|
         "message_index" -> 2,
         "hrm_ant_id" -> 3,
         "enabled" -> 4,
         "log_hrv" -> 5,
         "hrm_ant_id_trans_type" -> 6
     |>,
-    "SDM_PROFILE" -> <|
+    "SDMProfile" -> <|
         "odometer" -> 2,
         "message_index" -> 3,
         "sdm_ant_id" -> 4,
@@ -110,7 +110,7 @@
         "sdm_ant_id_trans_type" -> 8,
         "odometer_rollover" -> 9
     |>,
-    "BIKE_PROFILE" -> <|
+    "BikeProfile" -> <|
         "name" -> 2;;17,
         "odometer" -> 18,
         "message_index" -> 19,
@@ -144,7 +144,7 @@
         "rear_gear" -> 47;;47,
         "shimano_di2_enabled" -> 48
     |>,
-    "CONNECTIVITY" -> <|
+    "Connectivity" -> <|
         "name" -> 2;;25,
         "bluetooth_enabled" -> 26,
         "bluetooth_le_enabled" -> 27,
@@ -159,42 +159,42 @@
         "incident_detection_enabled" -> 36,
         "grouptrack_enabled" -> 37
     |>,
-    "ZONES_TARGET" -> <|
+    "ZonesTarget" -> <|
         "functional_threshold_power" -> 2,
         "max_heart_rate" -> 3,
         "threshold_heart_rate" -> 4,
         "hr_calc_type" -> 5,
         "pwr_calc_type" -> 6
     |>,
-    "SPORT" -> <| "name" -> 2;;17, "sport" -> 18, "sub_sport" -> 19 |>,
-    "HR_ZONE" -> <|
+    "Sport" -> <| "name" -> 2;;17, "sport" -> 18, "sub_sport" -> 19 |>,
+    "HeartRateZone" -> <|
         "name" -> 2;;17,
         "message_index" -> 18,
         "high_bpm" -> 19
     |>,
-    "SPEED_ZONE" -> <|
+    "SpeedZone" -> <|
         "name" -> 2;;17,
         "message_index" -> 18,
         "high_value" -> 19
     |>,
-    "CADENCE_ZONE" -> <|
+    "CadenceZone" -> <|
         "name" -> 2;;17,
         "message_index" -> 18,
         "high_value" -> 19
     |>,
-    "POWER_ZONE" -> <|
+    "PowerZone" -> <|
         "name" -> 2;;17,
         "message_index" -> 18,
         "high_value" -> 19
     |>,
-    "MET_ZONE" -> <|
+    "METZone" -> <|
         "message_index" -> 2,
         "calories" -> 3,
         "high_bpm" -> 4,
         "fat_calories" -> 5
     |>,
-    "DIVE_SETTINGS" -> <| "name" -> 2;;17, "heart_rate_source" -> 18 |>,
-    "GOAL" -> <|
+    "DiveSettings" -> <| "name" -> 2;;17, "heart_rate_source" -> 18 |>,
+    "Goal" -> <|
         "start_date" -> 2,
         "end_date" -> 3,
         "value" -> 4,
@@ -209,7 +209,7 @@
         "enabled" -> 13,
         "source" -> 14
     |>,
-    "ACTIVITY" -> <|
+    "Activity" -> <|
         "timestamp" -> 2,
         "total_timer_time" -> 3,
         "local_timestamp" -> 4,
@@ -219,7 +219,7 @@
         "event_type" -> 8,
         "event_group" -> 9
     |>,
-    "SESSION" -> <|
+    "Session" -> <|
         "timestamp" -> 2,
         "start_time" -> 3,
         "start_position_lat" -> 4,
@@ -242,117 +242,117 @@
         "avg_lap_time" -> 21,
         "opponent_name" -> 22;;37,
         "time_standing" -> 38,
-        "enhanced_avg_speed" -> 39,
-        "enhanced_max_speed" -> 40,
-        "enhanced_avg_altitude" -> 41,
-        "enhanced_min_altitude" -> 42,
-        "enhanced_max_altitude" -> 43,
-        "training_load_peak" -> 44,
-        "total_grit" -> 45,
-        "total_flow" -> 46,
-        "avg_grit" -> 47,
-        "avg_flow" -> 48,
-        "message_index" -> 49,
-        "total_calories" -> 50,
-        "total_fat_calories" -> 51,
-        "avg_speed" -> 52,
-        "max_speed" -> 53,
-        "avg_power" -> 54,
-        "max_power" -> 55,
-        "total_ascent" -> 56,
-        "total_descent" -> 57,
-        "first_lap_index" -> 58,
-        "num_laps" -> 59,
-        "num_lengths" -> 60,
-        "normalized_power" -> 61,
-        "training_stress_score" -> 62,
-        "intensity_factor" -> 63,
-        "left_right_balance" -> 64,
-        "avg_stroke_distance" -> 65,
-        "pool_length" -> 66,
-        "threshold_power" -> 67,
-        "num_active_lengths" -> 68,
-        "avg_altitude" -> 69,
-        "max_altitude" -> 70,
-        "avg_grade" -> 71,
-        "avg_pos_grade" -> 72,
-        "avg_neg_grade" -> 73,
-        "max_pos_grade" -> 74,
-        "max_neg_grade" -> 75,
-        "avg_pos_vertical_speed" -> 76,
-        "avg_neg_vertical_speed" -> 77,
-        "max_pos_vertical_speed" -> 78,
-        "max_neg_vertical_speed" -> 79,
-        "best_lap_index" -> 80,
-        "min_altitude" -> 81,
-        "player_score" -> 82,
-        "opponent_score" -> 83,
-        "stroke_count" -> 84;;84,
-        "zone_count" -> 85;;85,
-        "max_ball_speed" -> 86,
-        "avg_ball_speed" -> 87,
-        "avg_vertical_oscillation" -> 88,
-        "avg_stance_time_percent" -> 89,
-        "avg_stance_time" -> 90,
-        "avg_total_hemoglobin_conc" -> 91;;91,
-        "min_total_hemoglobin_conc" -> 92;;92,
-        "max_total_hemoglobin_conc" -> 93;;93,
-        "avg_saturated_hemoglobin_percent" -> 94;;94,
-        "min_saturated_hemoglobin_percent" -> 95;;95,
-        "max_saturated_hemoglobin_percent" -> 96;;96,
-        "stand_count" -> 97,
-        "avg_power_position" -> 98;;98,
-        "max_power_position" -> 99;;99,
-        "avg_lev_motor_power" -> 100,
-        "max_lev_motor_power" -> 101,
-        "avg_vertical_ratio" -> 102,
-        "avg_stance_time_balance" -> 103,
-        "avg_step_length" -> 104,
-        "avg_vam" -> 105,
-        "jump_count" -> 106,
-        "avg_core_temperature" -> 107,
-        "min_core_temperature" -> 108,
-        "max_core_temperature" -> 109,
-        "event" -> 110,
-        "event_type" -> 111,
-        "sport" -> 112,
-        "sub_sport" -> 113,
-        "avg_heart_rate" -> 114,
-        "max_heart_rate" -> 115,
-        "avg_cadence" -> 116,
-        "max_cadence" -> 117,
-        "total_training_effect" -> 118,
-        "event_group" -> 119,
-        "trigger" -> 120,
-        "swim_stroke" -> 121,
-        "pool_length_unit" -> 122,
-        "gps_accuracy" -> 123,
-        "avg_temperature" -> 124,
-        "max_temperature" -> 125,
-        "min_heart_rate" -> 126,
-        "avg_fractional_cadence" -> 127,
-        "max_fractional_cadence" -> 128,
-        "total_fractional_cycles" -> 129,
-        "avg_left_torque_effectiveness" -> 130,
-        "avg_right_torque_effectiveness" -> 131,
-        "avg_left_pedal_smoothness" -> 132,
-        "avg_right_pedal_smoothness" -> 133,
-        "avg_combined_pedal_smoothness" -> 134,
-        "sport_index" -> 135,
-        "avg_left_pco" -> 136,
-        "avg_right_pco" -> 137,
-        "avg_left_power_phase" -> 138;;139,
-        "avg_left_power_phase_peak" -> 140;;141,
-        "avg_right_power_phase" -> 142;;143,
-        "avg_right_power_phase_peak" -> 144;;145,
-        "avg_cadence_position" -> 146;;146,
-        "max_cadence_position" -> 147;;147,
-        "lev_battery_consumption" -> 148,
-        "total_anaerobic_training_effect" -> 149,
-        "total_fractional_ascent" -> 150,
-        "total_fractional_descent" -> 151
+        "avg_power_position" -> 39;;40,
+        "max_power_position" -> 41;;42,
+        "enhanced_avg_speed" -> 43,
+        "enhanced_max_speed" -> 44,
+        "enhanced_avg_altitude" -> 45,
+        "enhanced_min_altitude" -> 46,
+        "enhanced_max_altitude" -> 47,
+        "training_load_peak" -> 48,
+        "total_grit" -> 49,
+        "total_flow" -> 50,
+        "avg_grit" -> 51,
+        "avg_flow" -> 52,
+        "message_index" -> 53,
+        "total_calories" -> 54,
+        "total_fat_calories" -> 55,
+        "avg_speed" -> 56,
+        "max_speed" -> 57,
+        "avg_power" -> 58,
+        "max_power" -> 59,
+        "total_ascent" -> 60,
+        "total_descent" -> 61,
+        "first_lap_index" -> 62,
+        "num_laps" -> 63,
+        "num_lengths" -> 64,
+        "normalized_power" -> 65,
+        "training_stress_score" -> 66,
+        "intensity_factor" -> 67,
+        "left_right_balance" -> 68,
+        "avg_stroke_distance" -> 69,
+        "pool_length" -> 70,
+        "threshold_power" -> 71,
+        "num_active_lengths" -> 72,
+        "avg_altitude" -> 73,
+        "max_altitude" -> 74,
+        "avg_grade" -> 75,
+        "avg_pos_grade" -> 76,
+        "avg_neg_grade" -> 77,
+        "max_pos_grade" -> 78,
+        "max_neg_grade" -> 79,
+        "avg_pos_vertical_speed" -> 80,
+        "avg_neg_vertical_speed" -> 81,
+        "max_pos_vertical_speed" -> 82,
+        "max_neg_vertical_speed" -> 83,
+        "best_lap_index" -> 84,
+        "min_altitude" -> 85,
+        "player_score" -> 86,
+        "opponent_score" -> 87,
+        "stroke_count" -> 88;;88,
+        "zone_count" -> 89;;89,
+        "max_ball_speed" -> 90,
+        "avg_ball_speed" -> 91,
+        "avg_vertical_oscillation" -> 92,
+        "avg_stance_time_percent" -> 93,
+        "avg_stance_time" -> 94,
+        "avg_total_hemoglobin_conc" -> 95;;95,
+        "min_total_hemoglobin_conc" -> 96;;96,
+        "max_total_hemoglobin_conc" -> 97;;97,
+        "avg_saturated_hemoglobin_percent" -> 98;;98,
+        "min_saturated_hemoglobin_percent" -> 99;;99,
+        "max_saturated_hemoglobin_percent" -> 100;;100,
+        "stand_count" -> 101,
+        "avg_lev_motor_power" -> 102,
+        "max_lev_motor_power" -> 103,
+        "avg_vertical_ratio" -> 104,
+        "avg_stance_time_balance" -> 105,
+        "avg_step_length" -> 106,
+        "avg_vam" -> 107,
+        "jump_count" -> 108,
+        "avg_core_temperature" -> 109,
+        "min_core_temperature" -> 110,
+        "max_core_temperature" -> 111,
+        "event" -> 112,
+        "event_type" -> 113,
+        "sport" -> 114,
+        "sub_sport" -> 115,
+        "avg_heart_rate" -> 116,
+        "max_heart_rate" -> 117,
+        "avg_cadence" -> 118,
+        "max_cadence" -> 119,
+        "total_training_effect" -> 120,
+        "event_group" -> 121,
+        "trigger" -> 122,
+        "swim_stroke" -> 123,
+        "pool_length_unit" -> 124,
+        "gps_accuracy" -> 125,
+        "avg_temperature" -> 126,
+        "max_temperature" -> 127,
+        "min_heart_rate" -> 128,
+        "avg_fractional_cadence" -> 129,
+        "max_fractional_cadence" -> 130,
+        "total_fractional_cycles" -> 131,
+        "avg_left_torque_effectiveness" -> 132,
+        "avg_right_torque_effectiveness" -> 133,
+        "avg_left_pedal_smoothness" -> 134,
+        "avg_right_pedal_smoothness" -> 135,
+        "avg_combined_pedal_smoothness" -> 136,
+        "sport_index" -> 137,
+        "avg_left_pco" -> 138,
+        "avg_right_pco" -> 139,
+        "avg_left_power_phase" -> 140;;141,
+        "avg_left_power_phase_peak" -> 142;;143,
+        "avg_right_power_phase" -> 144;;145,
+        "avg_right_power_phase_peak" -> 146;;147,
+        "avg_cadence_position" -> 148;;149,
+        "max_cadence_position" -> 150;;151,
+        "lev_battery_consumption" -> 152,
+        "total_anaerobic_training_effect" -> 153,
+        "total_fractional_ascent" -> 154,
+        "total_fractional_descent" -> 155
     |>,
-    "LAP" -> <|
+    "Lap" -> <|
         "timestamp" -> 2,
         "start_time" -> 3,
         "start_position_lat" -> 4,
@@ -437,7 +437,7 @@
         "max_fractional_cadence" -> 83,
         "total_fractional_cycles" -> 84
     |>,
-    "LENGTH" -> <|
+    "Length" -> <|
         "timestamp" -> 2,
         "start_time" -> 3,
         "total_elapsed_time" -> 4,
@@ -457,7 +457,7 @@
         "event_group" -> 18,
         "length_type" -> 19
     |>,
-    "RECORD" -> <|
+    "Record" -> <|
         "timestamp" -> 2,
         "position_lat" -> 3,
         "position_long" -> 4,
@@ -533,7 +533,7 @@
         "ebike_assist_mode" -> 84,
         "ebike_assist_level_percent" -> 85
     |>,
-    "EVENT" -> <|
+    "Event" -> <|
         "timestamp" -> 2,
         "data" -> 3,
         "data16" -> 4,
@@ -549,7 +549,7 @@
         "radar_threat_level_max" -> 14,
         "radar_threat_count" -> 15
     |>,
-    "DEVICE_INFO" -> <|
+    "DeviceInformation" -> <|
         "timestamp" -> 2,
         "serial_number" -> 3,
         "cum_operating_time" -> 4,
@@ -569,14 +569,14 @@
         "ant_network" -> 37,
         "source_type" -> 38
     |>,
-    "DEVICE_AUX_BATTERY_INFO" -> <|
+    "DeviceAuxiliaryBatteryInformation" -> <|
         "timestamp" -> 2,
         "battery_voltage" -> 3,
         "device_index" -> 4,
         "battery_status" -> 5,
         "battery_identifier" -> 6
     |>,
-    "TRAINING_FILE" -> <|
+    "TrainingFile" -> <|
         "timestamp" -> 2,
         "serial_number" -> 3,
         "time_created" -> 4,
@@ -584,7 +584,7 @@
         "product" -> 6,
         "type" -> 7
     |>,
-    "WEATHER_CONDITIONS" -> <|
+    "WeatherConditions" -> <|
         "timestamp" -> 2,
         "location" -> 3;;66,
         "observed_at_time" -> 67,
@@ -602,7 +602,7 @@
         "high_temperature" -> 79,
         "low_temperature" -> 80
     |>,
-    "WEATHER_ALERT" -> <|
+    "WeatherAlert" -> <|
         "timestamp" -> 2,
         "report_id" -> 3;;14,
         "issue_time" -> 15,
@@ -610,12 +610,12 @@
         "severity" -> 17,
         "type" -> 18
     |>,
-    "NMEA_SENTENCE" -> <|
+    "NMEASentence" -> <|
         "timestamp" -> 2,
         "timestamp_ms" -> 3,
         "sentence" -> 4;;86
     |>,
-    "AVIATION_ATTITUDE" -> <|
+    "AviationAttitude" -> <|
         "timestamp" -> 2,
         "system_time" -> 3;;3,
         "timestamp_ms" -> 4,
@@ -629,18 +629,18 @@
         "stage" -> 12;;12,
         "attitude_stage_complete" -> 13;;13
     |>,
-    "VIDEO_TITLE" -> <|
+    "VideoTitle" -> <|
         "text" -> 2;;81,
         "message_index" -> 82,
         "message_count" -> 83
     |>,
-    "VIDEO_DESCRIPTION" -> <|
+    "VideoDescription" -> <|
         "text" -> 2;;129,
         "message_index" -> 130,
         "message_count" -> 131
     |>,
-    "SET" -> <| "weight_display_unit" -> 2 |>,
-    "FIELD_DESCRIPTION" -> <|
+    "Set" -> <| "weight_display_unit" -> 2 |>,
+    "FieldDescription" -> <|
         "field_name" -> 2;;65,
         "units" -> 66;;81,
         "fit_base_unit_id" -> 82,
@@ -652,20 +652,20 @@
         "offset" -> 88,
         "native_field_num" -> 89
     |>,
-    "DEVELOPER_DATA_ID" -> <|
+    "DeveloperDataID" -> <|
         "developer_id" -> 2;;17,
         "application_id" -> 18;;33,
         "application_version" -> 34,
         "manufacturer_id" -> 35,
         "developer_data_index" -> 36
     |>,
-    "COURSE" -> <|
+    "Course" -> <|
         "name" -> 2;;17,
         "capabilities" -> 18,
         "sport" -> 19,
         "sub_sport" -> 20
     |>,
-    "COURSE_POINT" -> <|
+    "CoursePoint" -> <|
         "timestamp" -> 2,
         "position_lat" -> 3,
         "position_long" -> 4,
@@ -675,7 +675,7 @@
         "type" -> 23,
         "favorite" -> 24
     |>,
-    "SEGMENT_ID" -> <|
+    "SegmentID" -> <|
         "user_profile_primary_key" -> 2,
         "device_id" -> 3,
         "name" -> 4;;4,
@@ -686,7 +686,7 @@
         "delete_status" -> 9,
         "selection_type" -> 10
     |>,
-    "SEGMENT_LEADERBOARD_ENTRY" -> <|
+    "SegmentLeaderboardEntry" -> <|
         "group_primary_key" -> 2,
         "activity_id" -> 3,
         "segment_time" -> 4,
@@ -694,7 +694,7 @@
         "name" -> 6;;6,
         "type" -> 7
     |>,
-    "SEGMENT_POINT" -> <|
+    "SegmentPoint" -> <|
         "position_lat" -> 2,
         "position_long" -> 3,
         "distance" -> 4,
@@ -702,7 +702,7 @@
         "message_index" -> 6,
         "altitude" -> 7
     |>,
-    "SEGMENT_LAP" -> <|
+    "SegmentLap" -> <|
         "timestamp" -> 2,
         "start_time" -> 3,
         "start_position_lat" -> 4,
@@ -777,7 +777,7 @@
         "max_fractional_cadence" -> 120,
         "total_fractional_cycles" -> 121
     |>,
-    "SEGMENT_FILE" -> <|
+    "SegmentFile" -> <|
         "user_profile_primary_key" -> 2,
         "leader_group_primary_key" -> 3;;3,
         "leader_activity_id" -> 4;;4,
@@ -786,16 +786,16 @@
         "enabled" -> 7,
         "leader_type" -> 8;;8
     |>,
-    "WORKOUT" -> <|
+    "Workout" -> <|
         "capabilities" -> 2,
-        "wkt_name" -> 3;;50,
-        "num_valid_steps" -> 51,
-        "pool_length" -> 52,
-        "sport" -> 53,
-        "sub_sport" -> 54,
-        "pool_length_unit" -> 55
+        "wkt_name" -> 3;;102,
+        "num_valid_steps" -> 103,
+        "pool_length" -> 104,
+        "sport" -> 105,
+        "sub_sport" -> 106,
+        "pool_length_unit" -> 107
     |>,
-    "WORKOUT_SESSION" -> <|
+    "WorkoutSession" -> <|
         "message_index" -> 2,
         "num_valid_steps" -> 3,
         "first_step_index" -> 4,
@@ -804,7 +804,7 @@
         "sub_sport" -> 7,
         "pool_length_unit" -> 8
     |>,
-    "WORKOUT_STEP" -> <|
+    "WorkoutStep" -> <|
         "wkt_step_name" -> 2;;49,
         "duration_value" -> 50,
         "target_value" -> 51,
@@ -822,13 +822,13 @@
         "equipment" -> 112,
         "secondary_target_type" -> 113
     |>,
-    "EXERCISE_TITLE" -> <|
+    "ExerciseTitle" -> <|
         "wkt_step_name" -> 2;;49,
         "message_index" -> 50,
         "exercise_category" -> 51,
         "exercise_name" -> 52
     |>,
-    "SCHEDULE" -> <|
+    "Schedule" -> <|
         "serial_number" -> 2,
         "time_created" -> 3,
         "scheduled_time" -> 4,
@@ -837,7 +837,7 @@
         "completed" -> 7,
         "type" -> 8
     |>,
-    "TOTALS" -> <|
+    "Totals" -> <|
         "timestamp" -> 2,
         "timer_time" -> 3,
         "distance" -> 4,
@@ -848,7 +848,7 @@
         "sessions" -> 9,
         "sport" -> 10
     |>,
-    "WEIGHT_SCALE" -> <|
+    "WeightScale" -> <|
         "timestamp" -> 2,
         "weight" -> 3,
         "percent_fat" -> 4,
@@ -863,7 +863,7 @@
         "metabolic_age" -> 13,
         "visceral_fat_rating" -> 14
     |>,
-    "BLOOD_PRESSURE" -> <|
+    "BloodPressure" -> <|
         "timestamp" -> 2,
         "systolic_pressure" -> 3,
         "diastolic_pressure" -> 4,
@@ -876,8 +876,8 @@
         "heart_rate_type" -> 11,
         "status" -> 12
     |>,
-    "MONITORING_INFO" -> <| "timestamp" -> 2, "local_timestamp" -> 3 |>,
-    "MONITORING" -> <|
+    "MonitoringInformation" -> <| "timestamp" -> 2, "local_timestamp" -> 3 |>,
+    "Monitoring" -> <|
         "timestamp" -> 2,
         "distance" -> 3,
         "cycles" -> 4,
@@ -891,7 +891,7 @@
         "activity_type" -> 12,
         "activity_subtype" -> 13
     |>,
-    "HR" -> <|
+    "HeartRate" -> <|
         "timestamp" -> 2,
         "event_timestamp" -> 3;;3,
         "fractional_timestamp" -> 4,
@@ -899,7 +899,7 @@
         "filtered_bpm" -> 6;;6,
         "event_timestamp_12" -> 7;;7
     |>,
-    "ANT_RX" -> <|
+    "ANTReceive" -> <|
         "timestamp" -> 2,
         "data" -> 3;;10,
         "fractional_timestamp" -> 11,
@@ -907,7 +907,7 @@
         "mesg_data" -> 13;;21,
         "channel_number" -> 22
     |>,
-    "ANT_TX" -> <|
+    "ANTTransmit" -> <|
         "timestamp" -> 2,
         "data" -> 3;;10,
         "fractional_timestamp" -> 11,
@@ -915,13 +915,13 @@
         "mesg_data" -> 13;;21,
         "channel_number" -> 22
     |>,
-    "EXD_SCREEN_CONFIGURATION" -> <|
+    "ExtendedDisplayScreenConfiguration" -> <|
         "screen_index" -> 2,
         "field_count" -> 3,
         "layout" -> 4,
         "screen_enabled" -> 5
     |>,
-    "EXD_DATA_FIELD_CONFIGURATION" -> <|
+    "ExtendedDisplayDataFieldConfiguration" -> <|
         "screen_index" -> 2,
         "concept_field" -> 3,
         "field_id" -> 4,
@@ -929,7 +929,7 @@
         "display_type" -> 6,
         "title" -> 7;;7
     |>,
-    "EXD_DATA_CONCEPT_CONFIGURATION" -> <|
+    "ExtendedDisplayDataConceptConfiguration" -> <|
         "screen_index" -> 2,
         "concept_field" -> 3,
         "field_id" -> 4,
@@ -942,5 +942,5 @@
         "descriptor" -> 11,
         "is_signed" -> 12
     |>,
-    "HRV" -> <| "time" -> 2;;2 |>
+    "HeartRateVariability" -> <| "time" -> 2;;2 |>
 |>

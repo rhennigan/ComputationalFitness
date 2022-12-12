@@ -197,7 +197,11 @@ $fitUserProfileKeys = {
     "TemperatureSetting",
     "HeightSetting",
     "FriendlyName",
-    "GlobalID"
+    "GlobalID",
+    "DepthSetting",
+    "DiveCount",
+    "SleepTime",
+    "WakeTime"
 };
 
 (* ::**********************************************************************:: *)
@@ -334,7 +338,6 @@ $fitRecordKeys = {
     "Distance",
     "TimeFromCourse",
     "TotalCycles",
-    (* "AccumulatedPower", *) (* Currently broken *)
     "Altitude",
     "Speed",
     "Power",
@@ -383,11 +386,32 @@ $fitRecordKeys = {
     "LeftPowerPhasePeakEnd",
     "RightPowerPhasePeakStart",
     "RightPowerPhasePeakEnd",
-    (* "Unknown61", *)
-    "PerformanceCondition",
-    (* "Unknown90", *)
-    "RespirationRate",
-    "HeartRateVariability"
+    (* "PerformanceCondition", *)
+    (* "RespirationRate", *)
+    (* "HeartRateVariability", *)
+    "CNSLoad",
+    "AbsolutePressure",
+    "AccumulatedPower",
+    "BatterySOC",
+    "CompressedSpeedDistance",
+    "CoreTemperature",
+    "Depth",
+    "EBikeAssistLevel",
+    "EBikeAssistMode",
+    "EBikeBatteryLevel",
+    "EBikeTravelRange",
+    "Flow",
+    "Grit",
+    "MotorPower",
+    "N2Load",
+    "NDLTime",
+    "NextStopDepth",
+    "NextStopTime",
+    "Speed1S",
+    "StanceTimeBalance",
+    "StepLength",
+    "TimeToSurface",
+    "VerticalRatio"
 };
 
 (* ::**********************************************************************:: *)
@@ -434,7 +458,8 @@ $fitDeviceInformationKeys = {
     "SensorPosition",
     "ANTTransmissionType",
     "ANTNetwork",
-    "SourceType"
+    "SourceType",
+    "Descriptor"
 };
 
 (* ::**********************************************************************:: *)
@@ -532,7 +557,40 @@ $fitSessionKeys = {
     "AverageLeftPowerPhasePeakEnd",
     "AverageRightPowerPhasePeakStart",
     "AverageRightPowerPhasePeakEnd",
-    "SportIndex"
+    "SportIndex",
+    "AverageStanceTimeBalance",
+    "StandCount",
+    "TimeStanding",
+    "AverageCadencePosition",
+    "MaxCadencePosition",
+    "AveragePowerPosition",
+    "MaxPowerPosition",
+    "AverageLeftPedalSmoothness",
+    "AverageRightPedalSmoothness",
+    "AverageCombinedPedalSmoothness",
+    "AverageLeftTorqueEffectiveness",
+    "AverageRightTorqueEffectiveness",
+    "AverageCoreTemperature",
+    "AverageFlow",
+    "TotalFlow",
+    "AverageGrit",
+    "TotalGrit",
+    "MaxCoreTemperature",
+    "MinCoreTemperature",
+    "AverageTotalHemoglobinConcentration",
+    "MinTotalHemoglobinConcentration",
+    "MaxTotalHemoglobinConcentration",
+    "AverageSaturatedHemoglobinPercent",
+    "MinSaturatedHemoglobinPercent",
+    "MaxSaturatedHemoglobinPercent",
+    "AverageStepLength",
+    "AverageVerticalRatio",
+    "JumpCount",
+    "AverageLEVMotorPower",
+    "MaxLEVMotorPower",
+    "LEVBatteryConsumption",
+    "OpponentName",
+    "TrainingLoadPeak"
 };
 
 (* ::**********************************************************************:: *)

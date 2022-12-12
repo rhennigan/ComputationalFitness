@@ -20,11 +20,21 @@ ComputationalFitness::IndexTranslation =
 ComputationalFitness::UnusedIndices =
 "Definition warning: Unused indices in `1`: `2`.";
 
+ComputationalFitness::KeysMissingDefinitions =
+"The following \"`1`\" keys are missing definitions in `2`: `3`.";
+
+ComputationalFitness::DefinitionsMissingKeys =
+"The following \"`1`\" keys are defined in `2` but not declared: `3`.";
+
+ComputationalFitness::UnsupportedMessageTypes =
+"The following message types are defined in the SDK but not handled at \
+top-level: `1`.";
+
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
 $inDef = False;
-$debug = True;
+$debug = TrueQ @ $debug;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -232,6 +242,20 @@ messageFailure0 := messageFailure0 =
     Block[ { PrintTemporary },
         ResourceFunction[ "MessageFailure", "Function" ]
     ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*messagePrint*)
+messagePrint // beginDefinition;
+messagePrint // Attributes = { HoldFirst };
+
+messagePrint[ args___ ] := WithCleanup[
+    $failed = False,
+    messageFailure @ args,
+    $failed = False
+];
+
+messagePrint // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)

@@ -4108,7 +4108,7 @@ typedef struct
 // Messages
 ///////////////////////////////////////////////////////////////////////
 
-#define FIT_MESG_SIZE       304
+#define FIT_MESG_SIZE       310
 #define FIT_MESG_DEF_SIZE   398
 
 // pad message
@@ -5327,13 +5327,15 @@ typedef struct
 
 // session message
 
-#define FIT_SESSION_MESG_SIZE                                                   304
+#define FIT_SESSION_MESG_SIZE                                                   310
 #define FIT_SESSION_MESG_DEF_SIZE                                               398
 #define FIT_SESSION_MESG_TIME_IN_HR_ZONE_COUNT                                  1
 #define FIT_SESSION_MESG_TIME_IN_SPEED_ZONE_COUNT                               1
 #define FIT_SESSION_MESG_TIME_IN_CADENCE_ZONE_COUNT                             1
 #define FIT_SESSION_MESG_TIME_IN_POWER_ZONE_COUNT                               1
 #define FIT_SESSION_MESG_OPPONENT_NAME_COUNT                                    16
+#define FIT_SESSION_MESG_AVG_POWER_POSITION_COUNT                               2
+#define FIT_SESSION_MESG_MAX_POWER_POSITION_COUNT                               2
 #define FIT_SESSION_MESG_STROKE_COUNT_COUNT                                     1
 #define FIT_SESSION_MESG_ZONE_COUNT_COUNT                                       1
 #define FIT_SESSION_MESG_AVG_TOTAL_HEMOGLOBIN_CONC_COUNT                        1
@@ -5342,14 +5344,12 @@ typedef struct
 #define FIT_SESSION_MESG_AVG_SATURATED_HEMOGLOBIN_PERCENT_COUNT                 1
 #define FIT_SESSION_MESG_MIN_SATURATED_HEMOGLOBIN_PERCENT_COUNT                 1
 #define FIT_SESSION_MESG_MAX_SATURATED_HEMOGLOBIN_PERCENT_COUNT                 1
-#define FIT_SESSION_MESG_AVG_POWER_POSITION_COUNT                               1
-#define FIT_SESSION_MESG_MAX_POWER_POSITION_COUNT                               1
 #define FIT_SESSION_MESG_AVG_LEFT_POWER_PHASE_COUNT                             2
 #define FIT_SESSION_MESG_AVG_LEFT_POWER_PHASE_PEAK_COUNT                        2
 #define FIT_SESSION_MESG_AVG_RIGHT_POWER_PHASE_COUNT                            2
 #define FIT_SESSION_MESG_AVG_RIGHT_POWER_PHASE_PEAK_COUNT                       2
-#define FIT_SESSION_MESG_AVG_CADENCE_POSITION_COUNT                             1
-#define FIT_SESSION_MESG_MAX_CADENCE_POSITION_COUNT                             1
+#define FIT_SESSION_MESG_AVG_CADENCE_POSITION_COUNT                             2
+#define FIT_SESSION_MESG_MAX_CADENCE_POSITION_COUNT                             2
 
 typedef struct
 {
@@ -5375,6 +5375,8 @@ typedef struct
    FIT_UINT32 avg_lap_time; // 1000 * s + 0,
    FIT_STRING opponent_name[FIT_SESSION_MESG_OPPONENT_NAME_COUNT]; //
    FIT_UINT32 time_standing; // 1000 * s + 0, Total time spend in the standing position
+   FIT_UINT16 avg_power_position[FIT_SESSION_MESG_AVG_POWER_POSITION_COUNT]; // 1 * watts + 0, Average power by position. Data value indexes defined by rider_position_type.
+   FIT_UINT16 max_power_position[FIT_SESSION_MESG_MAX_POWER_POSITION_COUNT]; // 1 * watts + 0, Maximum power by position. Data value indexes defined by rider_position_type.
    FIT_UINT32 enhanced_avg_speed; // 1000 * m/s + 0, total_distance / total_timer_time
    FIT_UINT32 enhanced_max_speed; // 1000 * m/s + 0,
    FIT_UINT32 enhanced_avg_altitude; // 5 * m + 500,
@@ -5434,8 +5436,6 @@ typedef struct
    FIT_UINT16 min_saturated_hemoglobin_percent[FIT_SESSION_MESG_MIN_SATURATED_HEMOGLOBIN_PERCENT_COUNT]; // 10 * % + 0, Min percentage of hemoglobin saturated with oxygen
    FIT_UINT16 max_saturated_hemoglobin_percent[FIT_SESSION_MESG_MAX_SATURATED_HEMOGLOBIN_PERCENT_COUNT]; // 10 * % + 0, Max percentage of hemoglobin saturated with oxygen
    FIT_UINT16 stand_count; // Number of transitions to the standing state
-   FIT_UINT16 avg_power_position[FIT_SESSION_MESG_AVG_POWER_POSITION_COUNT]; // 1 * watts + 0, Average power by position. Data value indexes defined by rider_position_type.
-   FIT_UINT16 max_power_position[FIT_SESSION_MESG_MAX_POWER_POSITION_COUNT]; // 1 * watts + 0, Maximum power by position. Data value indexes defined by rider_position_type.
    FIT_UINT16 avg_lev_motor_power; // 1 * watts + 0, lev average motor power during session
    FIT_UINT16 max_lev_motor_power; // 1 * watts + 0, lev maximum motor power during session
    FIT_UINT16 avg_vertical_ratio; // 100 * percent + 0,
@@ -5510,6 +5510,8 @@ typedef FIT_UINT8 FIT_SESSION_FIELD_NUM;
 #define FIT_SESSION_FIELD_NUM_AVG_LAP_TIME ((FIT_SESSION_FIELD_NUM)69)
 #define FIT_SESSION_FIELD_NUM_OPPONENT_NAME ((FIT_SESSION_FIELD_NUM)84)
 #define FIT_SESSION_FIELD_NUM_TIME_STANDING ((FIT_SESSION_FIELD_NUM)112)
+#define FIT_SESSION_FIELD_NUM_AVG_POWER_POSITION ((FIT_SESSION_FIELD_NUM)120)
+#define FIT_SESSION_FIELD_NUM_MAX_POWER_POSITION ((FIT_SESSION_FIELD_NUM)121)
 #define FIT_SESSION_FIELD_NUM_ENHANCED_AVG_SPEED ((FIT_SESSION_FIELD_NUM)124)
 #define FIT_SESSION_FIELD_NUM_ENHANCED_MAX_SPEED ((FIT_SESSION_FIELD_NUM)125)
 #define FIT_SESSION_FIELD_NUM_ENHANCED_AVG_ALTITUDE ((FIT_SESSION_FIELD_NUM)126)
@@ -5569,8 +5571,6 @@ typedef FIT_UINT8 FIT_SESSION_FIELD_NUM;
 #define FIT_SESSION_FIELD_NUM_MIN_SATURATED_HEMOGLOBIN_PERCENT ((FIT_SESSION_FIELD_NUM)99)
 #define FIT_SESSION_FIELD_NUM_MAX_SATURATED_HEMOGLOBIN_PERCENT ((FIT_SESSION_FIELD_NUM)100)
 #define FIT_SESSION_FIELD_NUM_STAND_COUNT ((FIT_SESSION_FIELD_NUM)113)
-#define FIT_SESSION_FIELD_NUM_AVG_POWER_POSITION ((FIT_SESSION_FIELD_NUM)120)
-#define FIT_SESSION_FIELD_NUM_MAX_POWER_POSITION ((FIT_SESSION_FIELD_NUM)121)
 #define FIT_SESSION_FIELD_NUM_AVG_LEV_MOTOR_POWER ((FIT_SESSION_FIELD_NUM)129)
 #define FIT_SESSION_FIELD_NUM_MAX_LEV_MOTOR_POWER ((FIT_SESSION_FIELD_NUM)130)
 #define FIT_SESSION_FIELD_NUM_AVG_VERTICAL_RATIO ((FIT_SESSION_FIELD_NUM)132)
@@ -5644,6 +5644,8 @@ typedef enum
    FIT_SESSION_MESG_AVG_LAP_TIME,
    FIT_SESSION_MESG_OPPONENT_NAME,
    FIT_SESSION_MESG_TIME_STANDING,
+   FIT_SESSION_MESG_AVG_POWER_POSITION,
+   FIT_SESSION_MESG_MAX_POWER_POSITION,
    FIT_SESSION_MESG_ENHANCED_AVG_SPEED,
    FIT_SESSION_MESG_ENHANCED_MAX_SPEED,
    FIT_SESSION_MESG_ENHANCED_AVG_ALTITUDE,
@@ -5703,8 +5705,6 @@ typedef enum
    FIT_SESSION_MESG_MIN_SATURATED_HEMOGLOBIN_PERCENT,
    FIT_SESSION_MESG_MAX_SATURATED_HEMOGLOBIN_PERCENT,
    FIT_SESSION_MESG_STAND_COUNT,
-   FIT_SESSION_MESG_AVG_POWER_POSITION,
-   FIT_SESSION_MESG_MAX_POWER_POSITION,
    FIT_SESSION_MESG_AVG_LEV_MOTOR_POWER,
    FIT_SESSION_MESG_MAX_LEV_MOTOR_POWER,
    FIT_SESSION_MESG_AVG_VERTICAL_RATIO,
@@ -7592,9 +7592,9 @@ typedef struct
 
 // workout message
 
-#define FIT_WORKOUT_MESG_SIZE                                                   59
+#define FIT_WORKOUT_MESG_SIZE                                                   111
 #define FIT_WORKOUT_MESG_DEF_SIZE                                               26
-#define FIT_WORKOUT_MESG_WKT_NAME_COUNT                                         48
+#define FIT_WORKOUT_MESG_WKT_NAME_COUNT                                         100
 
 typedef struct
 {

@@ -37,6 +37,13 @@ cicd`ConsoleLog[ "SDK directory: "    <> $sdkDir    ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Load Paclet Definitions*)
+PacletDirectoryLoad @ $pacletDir;
+Needs[ "RH`ComputationalFitness`" -> None ];
+Needs[ "RH`ComputationalFitness`Package`" -> "cf`" ];
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Definitions*)
 
 (* ::**********************************************************************:: *)
@@ -474,7 +481,7 @@ makeIndex[ KeyValuePattern @ { "offset" -> idx_, "list" -> True, "length" -> n_ 
 
 
 $fitIndex = KeyMap[
-    StringDelete[ #1, { StartOfString~~"FIT_", "_MESG"~~EndOfString } ] &,
+    cf`toNiceCamelCase @ StringDelete[ #1, { StartOfString~~"FIT_", "_MESG"~~EndOfString } ] &,
     Association[ (#Type -> makeIndex /@ #Indices &) /@ $importData ]
 ];
 indexFile = FileNameJoin @ { $pacletDir, "Data", "FITIndex.wl" };
