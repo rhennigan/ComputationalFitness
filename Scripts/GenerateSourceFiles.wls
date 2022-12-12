@@ -579,10 +579,10 @@ makeIndex[ KeyValuePattern @ { "offset" -> idx_, "list" -> True, "length" -> n_ 
 
 
 
-$fitIndex = KeyMap[
+$fitIndex = KeySort[ KeySort /@ KeyMap[
     cf`toNiceCamelCase @ StringDelete[ #1, { StartOfString~~"FIT_", "_MESG"~~EndOfString } ] &,
     Association[ (#Type -> KeyMap[ cf`toNiceCamelCase, makeIndex /@ #Indices ] &) /@ $importData ]
-];
+] ];
 indexFile = FileNameJoin @ { $pacletDir, "Data", "FITStructIndex.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ indexFile;
 $exportedIndex = Export[ indexFile, formatWithNotice @ $fitIndex, "String" ];
@@ -749,12 +749,11 @@ types = Select[
 ];
 
 
-$enumTypeData =
-    Replace[
-        Association[ makeTypeRule /@ types ],
-        "Invalid" -> Missing[ "Invalid" ],
-        { 2 }
-    ];
+$enumTypeData = KeySort @ Replace[
+    Association[ makeTypeRule /@ types ],
+    "Invalid" -> Missing[ "Invalid" ],
+    { 2 }
+];
 
 
 enumFile = FileNameJoin @ { $pacletDir, "Data", "FITEnumData.wl" };
