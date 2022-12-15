@@ -19,36 +19,64 @@
 
 #define FromWLTimestamp(t) ((t) - 2840036400)
 
-#define GetInteger(libData, data, pos, x) \
-    pos[1]++; \
+#define GetInteger(col, libData, data, pos, x) \
+    pos[1] = col; \
     libData->MTensor_getInteger(data, pos, x)
 
-#define ExportInteger(libData, data, pos, tgt) \
-    {mint y = 0; \
-    GetInteger(libData, data, pos, &y); \
-    tgt = y;}
-
-#define ExportTimestamp(libData, data, pos, tgt) \
-    {mint y = 0; \
-    GetInteger(libData, data, pos, &y); \
-    tgt = FromWLTimestamp(y);}
-
-#define ExportIntegerSequence(libData, data, pos, tgt, length) \
-    for (int i = 0; i < length; i++) { \
-        ExportInteger(libData, data, pos, tgt[i]); \
+#define ExportInteger(col, libData, data, pos, tgt) \
+    { \
+        mint y = 0; \
+        GetInteger(col, libData, data, pos, &y); \
+        tgt = y; \
     }
 
-#define ExportString(libData, data, pos, tgt, length) \
+#define ExportTimestamp(col, libData, data, pos, tgt) \
     { \
-        int len = length - 1; \
-        char string[length]; \
-        for (int i = 0; i < len; i++) { \
+        mint y = 0; \
+        GetInteger(col, libData, data, pos, &y); \
+        tgt = FromWLTimestamp(y); \
+    }
+
+#define ExportIntegerSequence(col, libData, data, pos, tgt, length) \
+    for (int i = 0; i < length; i++) { \
+        ExportInteger(col+i, libData, data, pos, tgt[i]); \
+    }
+
+#define ExportString(col, libData, data, pos, tgt, length) \
+    { \
+        FIT_STRING string[length]; \
+        for (int i = 0; i < length; i++) { \
             mint ch; \
-            ExportInteger(libData, data, pos, ch); \
-            string[i] = (char)ch; \
+            ExportInteger(col+i, libData, data, pos, ch); \
+            string[i] = (FIT_STRING)ch; \
         } \
-        string[len] = '\0'; \
         strncpy(tgt, string, length); \
+    }
+
+#define ExportFloat32(col, libData, data, pos, tgt) \
+    { \
+        mint y = 0; \
+        GetInteger(col, libData, data, pos, &y); \
+        FIT_FLOAT32 z = (FIT_FLOAT32)(y); \
+        tgt = z / 65535.0; \
+    }
+
+#define ExportFloat64(col, libData, data, pos, tgt) \
+    { \
+        mint y = 0; \
+        GetInteger(col, libData, data, pos, &y); \
+        FIT_FLOAT64 z = (FIT_FLOAT64)(y); \
+        tgt = z / 65535.0; \
+    }
+
+#define ExportFloat32Sequence(col, libData, data, pos, tgt, length) \
+    for (int i = 0; i < length; i++) { \
+        ExportFloat32(col+i, libData, data, pos, tgt[i]); \
+    }
+
+#define ExportFloat64Sequence(col, libData, data, pos, tgt, length) \
+    for (int i = 0; i < length; i++) { \
+        ExportFloat64(col+i, libData, data, pos, tgt[i]); \
     }
 
 ///////////////////////////////////////////////////////////////////////
@@ -95,24 +123,74 @@ void WriteData(const void *data, FIT_UINT16 data_size, FILE *fp);
 
 
 ///////////////////////////////////////////////////////////////////////
-static void export_file_id(           WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_user_profile(      WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_activity(          WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_lap(               WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_record(            WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_event(             WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_device_info(       WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_session(           WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_device_settings(   WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_zones_target(      WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_file_creator(      WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_sport(             WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_developer_data_id( WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_field_description( WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_training_file(     WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_hrv(               WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_workout_step(      WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-static void export_workout(           WolframLibraryData libData, MTensor data, int idx, FILE *fp );
-
+// --- START MESSAGE EXPORT DECLARATIONS ---
+// This section is auto-generated. Do not edit manually.
+static void export_file_id(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_file_creator(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_software(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_slave_device(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_capabilities(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_file_capabilities(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_mesg_capabilities(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_field_capabilities(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_device_settings(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_user_profile(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_hrm_profile(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_sdm_profile(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_bike_profile(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_connectivity(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_zones_target(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_sport(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_hr_zone(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_speed_zone(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_cadence_zone(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_power_zone(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_met_zone(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_dive_settings(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_goal(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_activity(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_session(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_lap(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_length(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_record(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_event(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_device_info(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_device_aux_battery_info(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_training_file(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_weather_conditions(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_weather_alert(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_accelerometer_data(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_nmea_sentence(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_aviation_attitude(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_video_title(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_video_description(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_set(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_field_description(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_developer_data_id(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_course(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_course_point(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_segment_id(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_segment_leaderboard_entry(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_segment_point(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_segment_lap(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_segment_file(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_workout(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_workout_session(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_workout_step(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_exercise_title(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_schedule(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_totals(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_weight_scale(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_blood_pressure(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_monitoring_info(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_monitoring(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_hr(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_ant_rx(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_ant_tx(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_exd_screen_configuration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_exd_data_field_configuration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_exd_data_concept_configuration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_hrv(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+// --- END MESSAGE EXPORT DECLARATIONS ---
 
 #endif // !defined(FIT_EXPORT_H)

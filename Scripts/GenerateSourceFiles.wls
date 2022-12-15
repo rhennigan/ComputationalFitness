@@ -46,6 +46,13 @@ Needs[ "RH`ComputationalFitness`Package`" -> "cf`" ];
 (* ::Section::Closed:: *)
 (*Definitions*)
 
+niceMessageName // ClearAll;
+niceMessageName[ type_String ] :=
+    cf`toNiceCamelCase @ StringDelete[
+        type,
+        { StartOfString ~~ "FIT_", "_MESG" ~~ EndOfString }
+    ];
+
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fetchFitGen*)
@@ -303,23 +310,43 @@ $enumTypes =
 
 $$enumType = Alternatives @@ $enumTypes;
 
-$setTimestampTemplate       = "ImportInteger(`Index`, libData, data, pos, WLTimestamp(mesg->`Name`));";
-$setIntegerTemplate         = "ImportInteger(`Index`, libData, data, pos, mesg->`Name`);";
-$setIntegerSequenceTemplate = "ImportIntegerSequence(`Index`, libData, data, pos, mesg->`Name`, `Count`);";
-$setFloatTemplate           = "ImportFloat(`Index`, libData, data, pos, mesg->`Name`);";
-$setFloatSequenceTemplate   = "ImportFloatSequence(`Index`, libData, data, pos, mesg->`Name`, `Count`);";
-$setStringTemplate          = "ImportString(`Index`, libData, data, pos, mesg->`Name`, `Count`);";
-$setDoneTemplate            = "ImportFinish(`Index`, libData, data, pos);";
-$funcHeaderTemplate         = "static void `Name`(WolframLibraryData libData, MTensor data, int idx, const `Type` *mesg)";
+$importTimestampTemplate       = "ImportInteger(`Index`, libData, data, pos, WLTimestamp(mesg->`Name`));";
+$importIntegerTemplate         = "ImportInteger(`Index`, libData, data, pos, mesg->`Name`);";
+$importIntegerSequenceTemplate = "ImportIntegerSequence(`Index`, libData, data, pos, mesg->`Name`, `Count`);";
+$importFloat32Template         = "ImportFloat(`Index`, libData, data, pos, mesg->`Name`);";
+$importFloat64Template         = "ImportFloat(`Index`, libData, data, pos, mesg->`Name`);";
+$importFloat32SequenceTemplate = "ImportFloatSequence(`Index`, libData, data, pos, mesg->`Name`, `Count`);";
+$importFloat64SequenceTemplate = "ImportFloatSequence(`Index`, libData, data, pos, mesg->`Name`, `Count`);";
+$importStringTemplate          = "ImportString(`Index`, libData, data, pos, mesg->`Name`, `Count`);";
+$importDoneTemplate            = "ImportFinish(`Index`, libData, data, pos);";
+$importHeaderTemplate          = "static void `Name`(WolframLibraryData libData, MTensor data, int idx, const `Type` *mesg)";
+
+$exportTimestampTemplate       = "ExportTimestamp(`Index`, libData, data, pos, mesg.`Name`);";
+$exportIntegerTemplate         = "ExportInteger(`Index`, libData, data, pos, mesg.`Name`);";
+$exportIntegerSequenceTemplate = "ExportIntegerSequence(`Index`, libData, data, pos, mesg.`Name`, `Count`);";
+$exportFloat32Template         = "ExportFloat32(`Index`, libData, data, pos, mesg.`Name`);";
+$exportFloat64Template         = "ExportFloat64(`Index`, libData, data, pos, mesg.`Name`);";
+$exportFloat32SequenceTemplate = "ExportFloat32Sequence(`Index`, libData, data, pos, mesg.`Name`, `Count`);";
+$exportFloat64SequenceTemplate = "ExportFloat64Sequence(`Index`, libData, data, pos, mesg.`Name`, `Count`);";
+$exportStringTemplate          = "ExportString(`Index`, libData, data, pos, mesg.`Name`, `Count`);";
+$exportDoneTemplate            = "ExportFinish(`Index`, libData, data, pos);";
+$exportHeaderTemplate          = "static void `Name`(WolframLibraryData libData, MTensor data, int idx, FILE *fp )";
 
 $importCaseTemplate = "\
                     case `MessageNumber`:
                     {
                         const `Type` *new = (`Type` *) mesg;
                         idx++;
-                        `FunctionName`(libData, data, idx, new);
+                        `ImportFunctionName`(libData, data, idx, new);
                         break;
                     }";
+
+$exportCaseTemplate = "\
+            case `MessageNumber`:
+            {
+                `ExportFunctionName`(libData, data, idx, fp);
+                break;
+            }";
 
 $importCountTemplate = "\
                     case `MessageNumber`:
@@ -359,39 +386,39 @@ nextNamedIndex[ part_, n_ ] :=
     ];
 
 
-makeSetIntegerStringN // ClearAll;
+makeImportIntegerStringN // ClearAll;
 
-makeSetIntegerStringN[ str_String ] :=
-    makeSetIntegerStringN @ StringSplit[ str, " " ];
+makeImportIntegerStringN[ str_String ] :=
+    makeImportIntegerStringN @ StringSplit[ str, " " ];
 
-makeSetIntegerStringN[ { type_String, val_ } ] :=
-    makeSetIntegerStringN[ type, StringSplit[ val, "[" | "]" ] ];
+makeImportIntegerStringN[ { type_String, val_ } ] :=
+    makeImportIntegerStringN[ type, StringSplit[ val, "[" | "]" ] ];
 
-makeSetIntegerStringN[ $$dateType, { name_String } ] :=
+makeImportIntegerStringN[ $$dateType, { name_String } ] :=
     TemplateApply[
-        $setTimestampTemplate,
+        $importTimestampTemplate,
         <|
             "Name"  -> name,
             "Index" -> nextNamedIndex[ name ]
         |>
     ];
 
-makeSetIntegerStringN[ $$integerType | $$enumType, { name_String } ] :=
+makeImportIntegerStringN[ $$integerType | $$enumType, { name_String } ] :=
     TemplateApply[
-        $setIntegerTemplate,
+        $importIntegerTemplate,
         <|
             "Name"  -> name,
             "Index" -> nextNamedIndex[ name ]
         |>
     ];
 
-makeSetIntegerStringN[
+makeImportIntegerStringN[
     $$integerType | $$enumType,
     { name_String, count_String }
 ] :=
     With[ { s = sizes @ count },
         TemplateApply[
-            $setIntegerSequenceTemplate,
+            $importIntegerSequenceTemplate,
             <|
                 "Name"  -> name,
                 "Index" -> nextNamedIndex[ name, s ],
@@ -401,32 +428,52 @@ makeSetIntegerStringN[
             IntegerQ @ s
     ];
 
-makeSetIntegerStringN[ "FIT_FLOAT32", { name_String } ] :=
+makeImportIntegerStringN[ "FIT_FLOAT32", { name_String } ] :=
     TemplateApply[
-        $setFloatTemplate,
+        $importFloat32Template,
         <|
             "Name"  -> name,
             "Index" -> nextNamedIndex[ name ]
         |>
     ];
 
-makeSetIntegerStringN[ "FIT_FLOAT32", { name_String, count_String } ] :=
+makeImportIntegerStringN[ "FIT_FLOAT32", { name_String, count_String } ] :=
     With[ { s = sizes @ count },
         TemplateApply[
-            $setFloatSequenceTemplate,
+            $importFloat32SequenceTemplate,
             <|
                 "Name"  -> name,
                 "Index" -> nextNamedIndex[ name, s ],
                 "Count" -> count
             |>
-        ] /;
-            IntegerQ @ s
+        ] /; IntegerQ @ s
     ];
 
-makeSetIntegerStringN[ "FIT_STRING", { name_String, count_String } ] :=
+makeImportIntegerStringN[ "FIT_FLOAT64", { name_String } ] :=
+    TemplateApply[
+        $importFloat64Template,
+        <|
+            "Name"  -> name,
+            "Index" -> nextNamedIndex[ name ]
+        |>
+    ];
+
+makeImportIntegerStringN[ "FIT_FLOAT64", { name_String, count_String } ] :=
     With[ { s = sizes @ count },
         TemplateApply[
-            $setStringTemplate,
+            $importFloat64SequenceTemplate,
+            <|
+                "Name"  -> name,
+                "Index" -> nextNamedIndex[ name, s ],
+                "Count" -> count
+            |>
+        ] /; IntegerQ @ s
+    ];
+
+makeImportIntegerStringN[ "FIT_STRING", { name_String, count_String } ] :=
+    With[ { s = sizes @ count },
+        TemplateApply[
+            $importStringTemplate,
             <|
                 "Name"  -> name,
                 "Index" -> nextNamedIndex[ name, s ],
@@ -437,17 +484,144 @@ makeSetIntegerStringN[ "FIT_STRING", { name_String, count_String } ] :=
 
 
 
+
+
+
+makeExportIntegerStringN // ClearAll;
+
+makeExportIntegerStringN[ str_String ] :=
+    makeExportIntegerStringN @ StringSplit[ str, " " ];
+
+makeExportIntegerStringN[ { type_String, val_ } ] :=
+    makeExportIntegerStringN[ type, StringSplit[ val, "[" | "]" ] ];
+
+makeExportIntegerStringN[ $$dateType, { name_String } ] :=
+    TemplateApply[
+        $exportTimestampTemplate,
+        <|
+            "Name"  -> name,
+            "Index" -> nextIndex[ ]
+        |>
+    ];
+
+makeExportIntegerStringN[ $$integerType | $$enumType, { name_String } ] :=
+    TemplateApply[
+        $exportIntegerTemplate,
+        <|
+            "Name"  -> name,
+            "Index" -> nextIndex[ ]
+        |>
+    ];
+
+makeExportIntegerStringN[
+    $$integerType | $$enumType,
+    { name_String, count_String }
+] :=
+    With[ { s = sizes @ count },
+        TemplateApply[
+            $exportIntegerSequenceTemplate,
+            <|
+                "Name"  -> name,
+                "Index" -> nextIndex @ s,
+                "Count" -> count
+            |>
+        ] /;
+            IntegerQ @ s
+    ];
+
+makeExportIntegerStringN[ "FIT_FLOAT32", { name_String } ] :=
+    TemplateApply[
+        $exportFloat32Template,
+        <|
+            "Name"  -> name,
+            "Index" -> nextIndex[ ]
+        |>
+    ];
+
+makeExportIntegerStringN[ "FIT_FLOAT32", { name_String, count_String } ] :=
+    With[ { s = sizes @ count },
+        TemplateApply[
+            $exportFloat32SequenceTemplate,
+            <|
+                "Name"  -> name,
+                "Index" -> nextIndex @ s,
+                "Count" -> count
+            |>
+        ] /; IntegerQ @ s
+    ];
+
+makeExportIntegerStringN[ "FIT_FLOAT64", { name_String } ] :=
+    TemplateApply[
+        $exportFloat64Template,
+        <|
+            "Name"  -> name,
+            "Index" -> nextIndex[ ]
+        |>
+    ];
+
+makeExportIntegerStringN[ "FIT_FLOAT64", { name_String, count_String } ] :=
+    With[ { s = sizes @ count },
+        TemplateApply[
+            $exportFloat64SequenceTemplate,
+            <|
+                "Name"  -> name,
+                "Index" -> nextIndex @ s,
+                "Count" -> count
+            |>
+        ] /; IntegerQ @ s
+    ];
+
+makeExportIntegerStringN[ "FIT_STRING", { name_String, count_String } ] :=
+    With[ { s = sizes @ count },
+        TemplateApply[
+            $exportStringTemplate,
+            <|
+                "Name"  -> name,
+                "Index" -> nextIndex @ s,
+                "Count" -> count
+            |>
+        ]
+    ];
+
+
+
+
+$exportFuncDefTemplate = "\
+static void `FunctionName`(WolframLibraryData libData, MTensor data, int idx, FILE *fp) {
+    mint pos[2];
+    pos[0] = idx;
+    pos[1] = 1;
+    mint x = 0;
+
+    FIT_UINT8 local_mesg_number = 0;
+    `MessageType` mesg;
+    Fit_InitMesg(fit_mesg_defs[`MessageID`], &mesg);
+
+`ExportCodeBlock`
+
+    WriteMessageDefinition(`MessageNumber`, local_mesg_number, fit_mesg_defs[`MessageID`], `MessageType`_DEF_SIZE, fp);
+    WriteMessage(local_mesg_number, &mesg, `MessageType`_SIZE, fp);
+}";
+
+
+
+
 makeImportData[ struct_ ] :=
     Block[ { $index = 0, $indexedNames = Internal`Bag[ ] },
         Module[
             {
                 structLines,
-                codeBlock,
+                importCodeBlock,
+                exportCodeBlock,
                 type,
-                funcName,
-                funcHeader,
-                funcDef,
+                importFuncName,
+                exportFuncName,
+                importFuncHeader,
+                exportFuncHeader,
                 mesgNum,
+                messageID,
+                importFuncDef,
+                exportFuncDef,
                 lastIndex
             },
 
@@ -459,12 +633,12 @@ makeImportData[ struct_ ] :=
 
             $index = 1;
 
-            codeBlock =
+            importCodeBlock =
                 StringJoin[
                     "    ",
                     StringRiffle[
                         Map[
-                            makeSetIntegerStringN,
+                            makeImportIntegerStringN,
                             StringDelete[
                                 StringTrim @ StringSplit[ structLines, "\n" ],
                                 ";" ~~ ___ ~~ EndOfString
@@ -474,6 +648,24 @@ makeImportData[ struct_ ] :=
                     ]
                 ];
 
+            lastIndex = nextIndex[ ];
+
+            $index = 1;
+
+            exportCodeBlock =
+                StringJoin[
+                    "    ",
+                    StringRiffle[
+                        Map[
+                            makeExportIntegerStringN,
+                            StringDelete[
+                                StringTrim @ StringSplit[ structLines, "\n" ],
+                                ";" ~~ ___ ~~ EndOfString
+                            ]
+                        ],
+                        "\n    "
+                    ]
+                ];
 
             type =
                 StringTrim[
@@ -482,7 +674,7 @@ makeImportData[ struct_ ] :=
                 ];
 
 
-            funcName =
+            importFuncName =
                 StringJoin[
                     "import_",
                     ToLowerCase @ StringDelete[
@@ -491,27 +683,47 @@ makeImportData[ struct_ ] :=
                     ]
                 ];
 
+            exportFuncName =
+                StringJoin[
+                    "export_",
+                    ToLowerCase @ StringDelete[
+                        type,
+                        { StartOfString ~~ "FIT_", "_MESG" ~~ EndOfString }
+                    ]
+                ];
 
-            funcHeader =
+
+            importFuncHeader =
                 TemplateApply[
-                    $funcHeaderTemplate,
+                    $importHeaderTemplate,
                     <|
-                        "Name" -> funcName,
+                        "Name" -> importFuncName,
                         "Type" -> type
                     |>
                 ];
 
-            lastIndex = nextIndex[ ];
+            exportFuncHeader =
+                TemplateApply[
+                    $exportHeaderTemplate,
+                    <|
+                        "Name" -> exportFuncName,
+                        "Type" -> type
+                    |>
+                ];
 
             mesgNum = StringReplace[
-                            type,
-                            "FIT_" ~~ base__ ~~ "_MESG" :>
-                                "FIT_MESG_NUM_" <> base
-                        ];
+                type,
+                "FIT_" ~~ base__ ~~ "_MESG" :> "FIT_MESG_NUM_" <> base
+            ];
 
-            funcDef =
+            messageID = StringReplace[
+                type,
+                "FIT_" ~~ base__ ~~ "_MESG" :> "FIT_MESG_" <> base
+            ];
+
+            importFuncDef =
                 StringJoin[
-                    funcHeader,
+                    importFuncHeader,
                     "\n",
                     "{\n",
                     "    mint pos[2] = {idx, 0};\n",
@@ -520,10 +732,10 @@ makeImportData[ struct_ ] :=
                         mesgNum,
                         ");\n"
                     ],
-                    codeBlock,
+                    importCodeBlock,
                     "\n    ",
                     TemplateApply[
-                        $setDoneTemplate,
+                        $importDoneTemplate,
                         <|
                             "Index" -> lastIndex
                         |>
@@ -532,15 +744,32 @@ makeImportData[ struct_ ] :=
                     "}"
                 ];
 
+            exportFuncDef =
+                TemplateApply[
+                    $exportFuncDefTemplate,
+                    <|
+                        "FunctionName"    -> exportFuncName,
+                        "MessageType"     -> type,
+                        "MessageNumber"   -> mesgNum,
+                        "MessageID"       -> messageID,
+                        "ExportCodeBlock" -> exportCodeBlock
+                    |>
+                ];
+
             <|
-                "Type"               -> type,
-                "FunctionName"       -> funcName,
-                "FunctionHeader"     -> funcHeader,
-                "LastIndex"          -> lastIndex,
-                "FunctionDefinition" -> funcDef,
-                "MessageNumber"      -> mesgNum,
-                "Indices"            -> Association @ Internal`BagPart[ $indexedNames, All ],
-                "StructLines"        -> structLines
+                "Name"                     -> niceMessageName @ type,
+                "Type"                     -> type,
+                "ImportFunctionName"       -> importFuncName,
+                "ExportFunctionName"       -> exportFuncName,
+                "ImportFunctionHeader"     -> importFuncHeader,
+                "ExportFunctionHeader"     -> exportFuncHeader,
+                "LastIndex"                -> lastIndex,
+                "ImportFunctionDefinition" -> importFuncDef,
+                "ExportFunctionDefinition" -> exportFuncDef,
+                "MessageNumber"            -> mesgNum,
+                "MessageID"                -> messageID,
+                "Indices"                  -> Association @ Internal`BagPart[ $indexedNames, All ],
+                "StructLines"              -> structLines
             |>
         ]
     ];
@@ -569,7 +798,7 @@ replaceAutoGeneratedSection[ string_String, label_, stuff_ ] :=
 
 
 
-$importData = makeImportData /@ mesgStructs;
+$functionData = makeImportData /@ mesgStructs;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -581,8 +810,8 @@ makeIndex[ KeyValuePattern @ { "offset" -> idx_, "list" -> True, "length" -> n_ 
 
 
 $fitIndex = KeySort[ KeySort /@ KeyMap[
-    cf`toNiceCamelCase @ StringDelete[ #1, { StartOfString~~"FIT_", "_MESG"~~EndOfString } ] &,
-    Association[ (#Type -> KeyMap[ cf`toNiceCamelCase, makeIndex /@ #Indices ] &) /@ $importData ]
+    niceMessageName,
+    Association[ (#Type -> KeyMap[ cf`toNiceCamelCase, makeIndex /@ #Indices ] &) /@ $functionData ]
 ] ];
 indexFile = FileNameJoin @ { $pacletDir, "Data", "FITStructIndex.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ indexFile;
@@ -775,7 +1004,7 @@ cicd`ConsoleLog[ "Updated FIT enum data: " <> $exportedEnumData ];
 (*SDK Data*)
 Export[
     FileNameJoin @ { $pacletDir, "SDK", "Data.wxf" },
-    $importData,
+    $functionData,
     "WXF"
 ];
 
@@ -783,7 +1012,7 @@ Export[
 (* ::Subsubsection::Closed:: *)
 (*Import Functions*)
 
-$importFunctions = StringRiffle[ $importData[[ All, "FunctionDefinition" ]], "\n\n" ];
+$importFunctions = StringRiffle[ $functionData[[ All, "ImportFunctionDefinition" ]], "\n\n" ];
 
 fitImportSrcFile = cFile @ FileNameJoin @ { $sourceDir, "fit_import.c" };
 fitImportString  = StringReplace[ cStr @ ReadString @ fitImportSrcFile, "\r\n" -> "\n" ];
@@ -791,7 +1020,7 @@ importCases = StringRiffle[
     Map[
         TemplateApply[ $importCaseTemplate, #1 ] &,
         DeleteCases[
-            $importData,
+            $functionData,
             KeyValuePattern[ "MessageNumber" -> "FIT_MESG_NUM_ACTIVITY" ]
         ]
     ],
@@ -800,7 +1029,7 @@ importCases = StringRiffle[
 
 importCounts =
     StringRiffle[
-        (TemplateApply[ $importCountTemplate, #1 ] &) /@ $importData,
+        (TemplateApply[ $importCountTemplate, #1 ] &) /@ $functionData,
         "\n"
     ];
 
@@ -830,7 +1059,7 @@ $importH = cFile @ FileNameJoin @ { $sourceDir, "fit_import.h" };
 fitImportHFile = cFile @ FileNameJoin @ { $sourceDir, "fit_import.h" };
 fitImportHString  = StringReplace[ cStr @ ReadString @ fitImportHFile, "\r\n" -> "\n" ];
 
-$importFunctionDeclarations = StringRiffle[ (#FunctionHeader <> ";" &) /@ $importData, "\n" ];
+$importFunctionDeclarations = StringRiffle[ (#ImportFunctionHeader <> ";" &) /@ $functionData, "\n" ];
 
 fitImportHUpdated =
     cFile @ Export[
@@ -851,21 +1080,236 @@ fitImportHUpdated =
         "String"
     ];
 
-replaceAutoGeneratedSection[
-            StringReplace[
-            fitImportHString,
-                "#define MESSAGE_TENSOR_ROW_WIDTH " ~~ DigitCharacter.. ~~ "\n" :>
-                    StringJoin[
-                        "#define MESSAGE_TENSOR_ROW_WIDTH ",
-                        ToString @ $maxIndex,
-                        "\n"
-                    ]
-        ],
-            "MESSAGE IMPORT DECLARATIONS",
-            $importFunctionDeclarations
-        ]
-
 cicd`ConsoleLog[ "Updated import header file:" <> fitImportHFile ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*Export Functions*)
+
+$exportFunctions = StringRiffle[ $functionData[[ All, "ExportFunctionDefinition" ]], "\n\n" ];
+
+fitExportSrcFile = cFile @ FileNameJoin @ { $sourceDir, "fit_export.c" };
+fitExportString  = StringReplace[ cStr @ ReadString @ fitExportSrcFile, "\r\n" -> "\n" ];
+exportCases = StringRiffle[
+    Map[
+        TemplateApply[ $exportCaseTemplate, #1 ] &,
+        $functionData
+    ],
+    "\n"
+];
+
+
+fitExportUpdated =
+    cFile @ Export[
+        fitExportSrcFile,
+        replaceAutoGeneratedSection[
+            replaceAutoGeneratedSection[
+                fitExportString,
+                "MESSAGE EXPORT FUNCTIONS",
+                $exportFunctions
+            ],
+            "MESSAGE EXPORT CASES",
+            exportCases
+        ],
+        "String"
+    ];
+
+cicd`ConsoleLog[ "Updated export functions in :" <> fitExportSrcFile ];
+
+$exportH = cFile @ FileNameJoin @ { $sourceDir, "fit_export.h" };
+
+fitExportHFile = cFile @ FileNameJoin @ { $sourceDir, "fit_export.h" };
+fitExportHString  = StringReplace[ cStr @ ReadString @ fitExportHFile, "\r\n" -> "\n" ];
+
+$exportFunctionDeclarations = StringRiffle[ (#ExportFunctionHeader <> ";" &) /@ $functionData, "\n" ];
+
+fitExportHUpdated =
+    cFile @ Export[
+        fitExportHFile,
+        replaceAutoGeneratedSection[
+            fitExportHString,
+            "MESSAGE EXPORT DECLARATIONS",
+            $exportFunctionDeclarations
+        ],
+        "String"
+    ];
+
+cicd`ConsoleLog[ "Updated export header file:" <> fitExportHFile ];
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Type Data*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Definitions*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*parseType*)
+parseType // ClearAll;
+
+parseType[ line_String ] := parseType @ StringSplit[ line, " " ];
+
+parseType[ { type_String, name_String, ___ } ] :=
+    parseType[ type, StringSplit[ StringTrim[ name, ";" ], "[" | "]" ] ];
+
+parseType[ type_String, { name_String, length_String } ] :=
+    parseType[ type, name, length, toExpression[ type, length ] ];
+
+parseType[ type_String, _String, _String, length_Integer ] := Association[
+    niceType @ type,
+    "NativeType" -> type,
+    "Dimensions" -> { length }
+];
+
+parseType[ type_String, { _String } ] := Association[
+    niceType @ type,
+    "NativeType" -> type,
+    "Dimensions" -> { }
+];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*niceType*)
+niceType // ClearAll;
+
+niceType[ type_String ] :=
+    niceType0[
+        type,
+        cf`toNiceCamelCase @ StringDelete[ type, StartOfString ~~ "FIT_" ]
+    ];
+
+niceType0 // ClearAll;
+
+niceType0[ type_String, nice_String ] :=
+    niceType0[ type, nice, $enumTypeData @ type ];
+
+niceType0[ type_String, nice_String, as_Association ] :=
+    DeleteMissing @ <|
+        "Type"    -> nice,
+        "Invalid" -> Lookup[ as, "Invalid" ]
+    |>;
+
+niceType0[ type_String, nice_String, _Missing ] :=
+    DeleteMissing @ <|
+        "Type"    -> nice,
+        "Invalid" -> Lookup[ $defines, type <> "_INVALID" ]
+    |>;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*parseName*)
+parseName // ClearAll;
+parseName[ line_String ] := parseName @ StringSplit[ line, " " | "[" | "]" | ";" ];
+parseName[ { _, name_String, __ } ] := <|
+    "FieldName"       -> cf`toNiceCamelCase @ name,
+    "NativeFieldName" -> name
+|>;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*parseComment*)
+parseComment // ClearAll;
+parseComment[ line_String ] := parseComment @ StringSplit[ line, "//" ];
+parseComment[ { _, comment_String } ] := <| "Comment" -> StringTrim[ comment, (","|WhitespaceCharacter).. ] |>;
+parseComment[ ___ ] := <| |>;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*parseLine*)
+parseLine // ClearAll;
+parseLine[ line_String ] := addDefaultFunction @ Association[ parseName @ line, parseType @ line, parseComment @ line ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*addDefaultFunction*)
+addDefaultFunction // ClearAll;
+addDefaultFunction[ as_ ] := DeleteMissing @ Append[ as, "Interpreter" -> defaultFunction @ as ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*defaultFunction*)
+defaultFunction // ClearAll;
+defaultFunction[ as_Association ] := defaultFunction[ as[ "Type" ], as[ "Dimensions" ] ];
+
+defaultFunction[ "Bool"              , {   } ] := "fitBool";
+defaultFunction[ "Bool"              , { _ } ] := "fitBoolA";
+defaultFunction[ "Byte"              , {   } ] := "fitByte";
+defaultFunction[ "Byte"              , { _ } ] := "fitByteA";
+defaultFunction[ "Real32"            , {   } ] := "fitFloat32";
+defaultFunction[ "Real32"            , { _ } ] := "fitFloat32A";
+defaultFunction[ "Real64"            , {   } ] := "fitFloat64";
+defaultFunction[ "Real64"            , { _ } ] := "fitFloat64A";
+defaultFunction[ "SignedInteger8"    , {   } ] := "fitSINT8";
+defaultFunction[ "SignedInteger8"    , { _ } ] := "fitSINT8A";
+defaultFunction[ "SignedInteger16"   , {   } ] := "fitSINT16";
+defaultFunction[ "SignedInteger16"   , { _ } ] := "fitSINT16A";
+defaultFunction[ "SignedInteger32"   , {   } ] := "fitSINT32";
+defaultFunction[ "SignedInteger32"   , { _ } ] := "fitSINT32A";
+defaultFunction[ "SignedInteger64"   , {   } ] := "fitSINT64";
+defaultFunction[ "SignedInteger64"   , { _ } ] := "fitSINT64A";
+defaultFunction[ "UnsignedInteger8"  , {   } ] := "fitUINT8";
+defaultFunction[ "UnsignedInteger8"  , { _ } ] := "fitUINT8A";
+defaultFunction[ "UnsignedInteger8z" , {   } ] := "fitUINT8Z";
+defaultFunction[ "UnsignedInteger8z" , { _ } ] := "fitUINT8ZA";
+defaultFunction[ "UnsignedInteger16" , {   } ] := "fitUINT16";
+defaultFunction[ "UnsignedInteger16" , { _ } ] := "fitUINT16A";
+defaultFunction[ "UnsignedInteger16z", {   } ] := "fitUINT16Z";
+defaultFunction[ "UnsignedInteger16z", { _ } ] := "fitUINT16ZA";
+defaultFunction[ "UnsignedInteger32" , {   } ] := "fitUINT32";
+defaultFunction[ "UnsignedInteger32" , { _ } ] := "fitUINT32A";
+defaultFunction[ "UnsignedInteger32z", {   } ] := "fitUINT32Z";
+defaultFunction[ "UnsignedInteger32z", { _ } ] := "fitUINT32ZA";
+defaultFunction[ "UnsignedInteger64" , {   } ] := "fitUINT64";
+defaultFunction[ "UnsignedInteger64" , { _ } ] := "fitUINT64A";
+defaultFunction[ "DateTime"          , {   } ] := "fitDateTime";
+defaultFunction[ "String"            , { _ } ] := "fitString";
+
+defaultFunction[ type_String, _ ] :=
+    With[ { enum = $enumTypeData @ type },
+        { "fitEnum", type } /; AssociationQ @ enum
+    ];
+
+defaultFunction[ type_String, _ ] := { "fitMissing", type      };
+defaultFunction[ ___            ] := { "fitMissing", "Unknown" };
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*makeTypeData*)
+makeTypeData // ClearAll;
+makeTypeData[ as_ ] :=
+    Module[ { index, typeData, res },
+        index = makeIndex /@ KeyMap[ niceMessageName, as[ "Indices" ] ];
+        typeData = parseLine /@ StringTrim @ StringSplit[ as[ "StructLines" ], "\n" ];
+
+
+        res =
+            Merge[
+                {
+                    (<| "Index" -> #1 |> &) /@ index,
+                    Association[
+                        Map[
+                            #FieldName -> KeyDrop[ #1, "FieldName" ] &,
+                            typeData
+                        ]
+                    ]
+                },
+                Composition[ KeySort, Association ]
+            ];
+
+        as[ "Name" ] -> res
+    ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Make Type Data*)
+$fitTypeData = KeySort /@ KeySort @ Association[ makeTypeData /@ $functionData ];
+
+typeFile = FileNameJoin @ { $pacletDir, "Data", "FITMessageDefinitions.wl" };
+GeneralUtilities`EnsureDirectory @ DirectoryName @ typeFile;
+$exportedTypeData = Export[ typeFile, formatWithNotice @ $fitTypeData, "String" ];
+cicd`ConsoleLog[ "Updated FIT message data: " <> $exportedTypeData ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

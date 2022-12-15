@@ -146,7 +146,6 @@ $capitalizationRules2 = {
     "Autoscroll"                         -> "AutoScroll",
     "Autosync"                           -> "AutoSync",
     "BasalMET"                           -> "BasalMetabolicRate",
-    "BikeCad"                            -> "BikeCadence",
     "BikeSPD"                            -> "BikeSpeed",
     "BluetoothLe"                        -> "BluetoothLE",
     "CadEnabled"                         -> "CadenceEnabled",

@@ -33,6 +33,8 @@ $invalidUINT16Z      = 0;
 $invalidSINT32       = 2147483647;
 $invalidUINT32       = 4294967295;
 $invalidUINT32Z      = 0;
+$invalidFLOAT32      = -9223372036854775808;
+$invalidFLOAT64      = -9223372036854775808;
 $invalidTimestamp    = 2840036399|2840036400|7135003695;
 $fitTerm             = 1685024357;
 $powerZoneThresholds = { 0.05, 0.55, 0.75, 0.9, 1.05, 1.2, 1.5 };
@@ -123,7 +125,10 @@ $messageTypes = {
     "TrainingFile",
     "HeartRateVariability",
     "WorkoutStep",
-    "Workout"
+    "Workout",
+
+    (* Partial Support: *)
+    "AccelerometerData"
 };
 
 (* ::**********************************************************************:: *)
@@ -149,7 +154,7 @@ fitKeys[ "HeartRateVariability" ] := $fitHeartRateVariabilityKeys;
 fitKeys[ "WorkoutStep"          ] := $fitWorkoutStepKeys;
 fitKeys[ "Workout"              ] := $fitWorkoutKeys;
 fitKeys[ "MessageInformation"   ] := $fitMessageInformationKeys;
-fitKeys[ _                      ] := $fitDefaultKeys;
+fitKeys[ name_                  ] := fallbackFitKeys @ name;
 fitKeys // endDefinition;
 
 (* ::**********************************************************************:: *)
@@ -380,10 +385,10 @@ $fitRecordKeys = {
     "RightPlatformCenterOffset",
     "LeftPowerPhaseStart",
     "LeftPowerPhaseEnd",
-    "RightPowerPhaseStart",
-    "RightPowerPhaseEnd",
     "LeftPowerPhasePeakStart",
     "LeftPowerPhasePeakEnd",
+    "RightPowerPhaseStart",
+    "RightPowerPhaseEnd",
     "RightPowerPhasePeakStart",
     "RightPowerPhasePeakEnd",
     (* "PerformanceCondition", *)
@@ -776,6 +781,59 @@ elementQ[ ___         ] := False;
 (*messageTypeQ*)
 messageTypeQ[ type_String ] := MemberQ[ $messageTypes, type ];
 messageTypeQ[ ___         ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Data*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*$fitIndex*)
+$fitIndex = Get @ FileNameJoin @ {
+    DirectoryName[ $InputFileName, 3 ],
+    "Data",
+    "FITStructIndex.wl"
+};
+
+If[ $debug,
+    Module[ { names, unsupported },
+        names       = Keys @ $fitIndex;
+        unsupported = Complement[ names, $messageTypes ];
+        If[ MatchQ[ unsupported, { __ } ],
+            messagePrint[
+                "UnsupportedMessageTypes",
+                HoldForm @ Evaluate @ unsupported
+            ]
+        ]
+    ]
+];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*$enumTypeData*)
+$enumTypeData = Get @ FileNameJoin @ {
+    DirectoryName[ $InputFileName, 3 ],
+    "Data",
+    "FITEnumData.wl"
+};
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*$messageDefs*)
+$messageDefs = Get @ FileNameJoin @ {
+    DirectoryName[ $InputFileName, 3 ],
+    "Data",
+    "FITMessageDefinitions.wl"
+};
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fallbackFitKeys*)
+fallbackFitKeys // beginDefinition;
+fallbackFitKeys[ name_String ] := fallbackFitKeys[ name, $fitIndex[ name ] ];
+fallbackFitKeys[ name_, as_Association ] := Prepend[ Keys @ as, "MessageType" ];
+fallbackFitKeys[ name_, _Missing ] := $fitDefaultKeys;
+fallbackFitKeys // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

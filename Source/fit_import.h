@@ -29,7 +29,7 @@
 
 #define ImportFloat(col, libData, data, pos, x) \
     pos[1] = col; \
-    libData->MTensor_setInteger(data, pos, (mint)(1000*(x)))
+    libData->MTensor_setInteger(data, pos, (mint)(65535 * (x)))
 
 #define ImportIntegerSequence(col, libData, data, pos, x, n) \
     for(int i=0; i<n; i++) { \
@@ -40,7 +40,7 @@
 #define ImportFloatSequence(col, libData, data, pos, x, n) \
     for(int i=0; i<n; i++) { \
         pos[1] = col + i; \
-        libData->MTensor_setInteger(data, pos, (mint)(1000*(x[i]))); \
+        libData->MTensor_setInteger(data, pos, (mint)(65535 * (x[i]))); \
     }
 
 #define ImportString(col, libData, data, pos, x, n) \

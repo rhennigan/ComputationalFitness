@@ -16,37 +16,6 @@ Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
-(*$fitIndex*)
-$fitIndex = Get @ FileNameJoin @ {
-    DirectoryName[ $InputFileName, 3 ],
-    "Data",
-    "FITStructIndex.wl"
-};
-
-If[ $debug,
-    Module[ { names, unsupported },
-        names       = Keys @ $fitIndex;
-        unsupported = Complement[ names, $messageTypes ];
-        If[ MatchQ[ unsupported, { __ } ],
-            messagePrint[
-                "UnsupportedMessageTypes",
-                HoldForm @ Evaluate @ unsupported
-            ]
-        ]
-    ]
-];
-
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*$enumTypeData*)
-$enumTypeData = Get @ FileNameJoin @ {
-    DirectoryName[ $InputFileName, 3 ],
-    "Data",
-    "FITEnumData.wl"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
 (*indexTranslate*)
 indexTranslate // beginDefinition;
 
@@ -166,7 +135,7 @@ checkKeyCoverage // endDefinition;
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitValue*)
-fitValue // beginDefinition;
+fitValue // ClearAll;
 fitValue[ type_, "MessageType", v_ ] := type;
 
 (* ::**********************************************************************:: *)
@@ -781,7 +750,6 @@ indexTranslate[ "HeartRateVariability", fitHeartRateVariabilityValue ];
 (*AccelerometerData*)
 fitValue[ "AccelerometerData", name_, value_ ] := fitAccelerometerDataValue[ name, value ];
 
-(* FIXME: create definitions for generated code *)
 fitAccelerometerDataValue // ClearAll;
 fitAccelerometerDataValue[ "Timestamp"                        , v_ ] := fitDateTime @ v[[ "Timestamp" ]];
 fitAccelerometerDataValue[ "CalibratedAccelerationX"          , v_ ] := fitFloat32A @ v[[ "CalibratedAccelerationX" ]];
@@ -819,10 +787,58 @@ fitMessageInformationValue[ _                , _  ] := Missing[ "NotAvailable" ]
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
+(*Unsupported Messages*)
+
+$generatedDefinitions = Internal`Bag[ ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsubsection::Closed:: *)
+(*makeInterpreter*)
+makeInterpreter // beginDefinition;
+makeInterpreter[ { s_String, a_String } ] := Symbol[ s ][ a ];
+makeInterpreter[ s_String ] := Symbol @ s;
+makeInterpreter // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsubsection::Closed:: *)
+(*setValueDefinitions*)
+setValueDefinitions // beginDefinition;
+
+setValueDefinitions[ name_String ] :=
+    setValueDefinitions[ name, $messageDefs @ name ];
+
+setValueDefinitions[ name_String, defs_Association ] :=
+    With[ { valueSym = Symbol[ "fit" <> name <> "Value$Generated" ] },
+        fitValue[ name, field_, value_ ] := valueSym[ field, value ];
+
+        valueSym // ClearAll;
+        KeyValueMap[
+            Function @ With[
+                {
+                    int = makeInterpreter @ #2[ "Interpreter" ],
+                    idx = #2[ "Index" ]
+                },
+                valueSym[ #1, v_ ] := int @ v[[ idx ]]
+            ],
+            defs
+        ];
+        valueSym[ _, _ ] := Missing[ "NotAvailable" ];
+
+        Internal`StuffBag[ $generatedDefinitions, HoldComplete @ valueSym ]
+    ];
+
+setValueDefinitions // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsubsection::Closed:: *)
+(*Generate Definitions*)
+setValueDefinitions /@ Complement[ Keys @ $messageDefs, $messageTypes ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
 (*Defaults*)
 fitValue[ _, "RawData", v_ ] := fitRawData @ v[[ 2;; ]];
-fitValue[ _, _, _ ] := Missing[ "NotAvailable" ];
-fitValue // endDefinition;
+fitValue[ __ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -841,6 +857,156 @@ fitBool // ClearAll;
 fitBool[ 0 ] := False;
 fitBool[ 1 ] := True;
 fitBool[ ___ ] := Missing[ "NotAvailable" ];
+
+fitBoolA // ClearAll;
+fitBoolA[ b: { (0|1).. } ] := fitBool /@ b;
+fitBoolA[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitByte*)
+fitByte // ClearAll;
+fitByte[ $invalidUINT8 ] := Missing[ "NotAvailable" ];
+fitByte[ n_Integer ] := n;
+fitByte[ ___ ] := Missing[ "NotAvailable" ];
+
+fitByteA // ClearAll;
+fitByteA[ { $invalidUINT8... } ] := Missing[ "NotAvailable" ];
+fitByteA[ list_List ] := fitByte /@ list;
+fitByteA[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitSINT8*)
+fitSINT8 // ClearAll;
+fitSINT8[ $invalidSINT8 ] := Missing[ "NotAvailable" ];
+fitSINT8[ n_Integer ] := n;
+fitSINT8[ ___ ] := Missing[ "NotAvailable" ];
+
+fitSINT8A // ClearAll;
+fitSINT8A[ { $invalidSINT8... } ] := Missing[ "NotAvailable" ];
+fitSINT8A[ list_List ] := fitSINT8 /@ list;
+fitSINT8A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitUINT8*)
+fitUINT8 // ClearAll;
+fitUINT8[ $invalidUINT8 ] := Missing[ "NotAvailable" ];
+fitUINT8[ n_Integer ] := n;
+fitUINT8[ ___ ] := Missing[ "NotAvailable" ];
+
+fitUINT8A // ClearAll;
+fitUINT8A[ { $invalidUINT8... } ] := Missing[ "NotAvailable" ];
+fitUINT8A[ list_List ] := fitUINT8 /@ list;
+fitUINT8A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitUINT16*)
+fitUINT16 // ClearAll;
+fitUINT16[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
+fitUINT16[ n_Integer ] := n;
+fitUINT16[ ___ ] := Missing[ "NotAvailable" ];
+
+fitUINT16A // ClearAll;
+fitUINT16A[ { $invalidUINT16... } ] := Missing[ "NotAvailable" ];
+fitUINT16A[ list_List ] := fitUINT16 /@ list;
+fitUINT16A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitSINT16*)
+fitSINT16 // ClearAll;
+fitSINT16[ $invalidSINT16 ] := Missing[ "NotAvailable" ];
+fitSINT16[ n_Integer ] := n;
+fitSINT16[ ___ ] := Missing[ "NotAvailable" ];
+
+fitSINT16A // ClearAll;
+fitSINT16A[ { $invalidSINT16... } ] := Missing[ "NotAvailable" ];
+fitSINT16A[ list_List ] := fitSINT16 /@ list;
+fitSINT16A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitUINT32*)
+fitUINT32 // ClearAll;
+fitUINT32[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
+fitUINT32[ n_Integer ] := n;
+fitUINT32[ ___ ] := Missing[ "NotAvailable" ];
+
+fitSINT32A // ClearAll;
+fitSINT32A[ { $invalidSINT32... } ] := Missing[ "NotAvailable" ];
+fitSINT32A[ list_List ] := fitSINT32 /@ list;
+fitSINT32A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitUINT32Z*)
+fitUINT32Z // ClearAll;
+fitUINT32Z[ $invalidUINT32Z ] := Missing[ "NotAvailable" ];
+fitUINT32Z[ n_Integer ] := n;
+fitUINT32Z[ ___ ] := Missing[ "NotAvailable" ];
+
+fitUINT32ZA // ClearAll;
+fitUINT32ZA[ { $invalidUINT32Z... } ] := Missing[ "NotAvailable" ];
+fitUINT32ZA[ list_List ] := fitUINT32Z /@ list;
+fitUINT32ZA[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitSINT32*)
+fitSINT32 // ClearAll;
+fitSINT32[ $invalidSINT32 ] := Missing[ "NotAvailable" ];
+fitSINT32[ n_Integer ] := n;
+fitSINT32[ ___ ] := Missing[ "NotAvailable" ];
+
+fitSINT32A // ClearAll;
+fitSINT32A[ { $invalidSINT32... } ] := Missing[ "NotAvailable" ];
+fitSINT32A[ list_List ] := fitSINT32 /@ list;
+fitSINT32A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitFloat32*)
+fitFloat32 // ClearAll;
+fitFloat32[ $invalidFLOAT32 ] := Missing[ "NotAvailable" ];
+fitFloat32[ n_Integer ] := n / 65535.0;
+fitFloat32[ ___ ] := Missing[ "NotAvailable" ];
+
+fitFloat32A // ClearAll;
+fitFloat32A[ { $invalidFLOAT32... } ] := Missing[ "NotAvailable" ];
+fitFloat32A[ list_List ] := list / 65535.0;
+fitFloat32A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitFloat64*)
+fitFloat64 // ClearAll;
+fitFloat64[ $invalidFLOAT64 ] := Missing[ "NotAvailable" ];
+fitFloat64[ n_Integer ] := n / 65535.0;
+fitFloat64[ ___ ] := Missing[ "NotAvailable" ];
+
+fitFloat64A // ClearAll;
+fitFloat64A[ { $invalidFLOAT64... } ] := Missing[ "NotAvailable" ];
+fitFloat64A[ list_List ] := list / 65535.0;
+fitFloat64A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitString*)
+fitString // ClearAll;
+fitString[ { 0, ___ } ] := Missing[ "NotAvailable" ];
+fitString[ bytes: { __Integer } ] := FromCharacterCode[ TakeWhile[ bytes, Positive ], "UTF-8" ];
+fitString[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitUINT16BF*)
+fitUINT16BF // ClearAll;
+fitUINT16BF[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
+fitUINT16BF[ n_Integer ] := With[ { d = IntegerDigits[ n, 2 ] }, Pick[ Range @ Length @ d, d, 1 ] ];
+fitUINT16BF[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -868,86 +1034,6 @@ fitHexString[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*fitSINT8*)
-fitSINT8 // ClearAll;
-fitSINT8[ $invalidSINT8 ] := Missing[ "NotAvailable" ];
-fitSINT8[ n_Integer ] := n;
-fitSINT8[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitUINT8*)
-fitUINT8 // ClearAll;
-fitUINT8[ $invalidUINT8 ] := Missing[ "NotAvailable" ];
-fitUINT8[ n_Integer ] := n;
-fitUINT8[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitUINT16*)
-fitUINT16 // ClearAll;
-fitUINT16[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
-fitUINT16[ n_Integer ] := n;
-fitUINT16[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitSINT16*)
-fitSINT16 // ClearAll;
-fitSINT16[ $invalidSINT16 ] := Missing[ "NotAvailable" ];
-fitSINT16[ n_Integer ] := n;
-fitSINT16[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitUINT32*)
-fitUINT32 // ClearAll;
-fitUINT32[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
-fitUINT32[ n_Integer ] := n;
-fitUINT32[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitUINT32Z*)
-fitUINT32Z // ClearAll;
-fitUINT32Z[ $invalidUINT32Z ] := Missing[ "NotAvailable" ];
-fitUINT32Z[ n_Integer ] := n;
-fitUINT32Z[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitSINT32*)
-fitSINT32 // ClearAll;
-fitSINT32[ $invalidSINT32 ] := Missing[ "NotAvailable" ];
-fitSINT32[ n_Integer ] := n;
-fitSINT32[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitFloat32*)
-fitFloat32 // ClearAll;
-fitFloat32[ $invalidFloat32 ] := Missing[ "NotAvailable" ];
-fitFloat32[ n_Integer ] := n; (* TODO *)
-fitFloat32[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitString*)
-fitString // ClearAll;
-fitString[ { 0, ___ } ] := Missing[ "NotAvailable" ];
-fitString[ bytes: { __Integer } ] := FromCharacterCode[ TakeWhile[ bytes, Positive ], "UTF-8" ];
-fitString[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitUINT16BF*)
-fitUINT16BF // ClearAll;
-fitUINT16BF[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
-fitUINT16BF[ n_Integer ] := With[ { d = IntegerDigits[ n, 2 ] }, Pick[ Range @ Length @ d, d, 1 ] ];
-fitUINT16BF[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
 (*fitRawData*)
 fitRawData // ClearAll;
 fitRawData[ { a___, $fitTerm, ___ } ] := { a };
@@ -966,6 +1052,7 @@ fitGlobalID[ ___ ] := Missing[ "NotAvailable" ];
 (*fitDateTime*)
 fitDateTime // ClearAll;
 fitDateTime[ $invalidTimestamp ] := Missing[ "NotAvailable" ];
+fitDateTime[ n_Integer ] /; $failedTimeOffset := DateObject @ n;
 fitDateTime[ n_Integer ] := TimeZoneConvert @ DateObject[ n + $timeOffset, TimeZone -> 0 ];
 fitDateTime[ ___ ] := Missing[ "NotAvailable" ];
 
@@ -1984,6 +2071,7 @@ fitTrainingEffectDescription[ ___ ] := Missing[ "NotAvailable" ];
 (* ::Subsubsection::Closed:: *)
 (*fitHRV*)
 fitHRV // ClearAll;
+fitHRV[ { n_ } ] := fitHRV @ n;
 fitHRV[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
 fitHRV[ n_Integer ] := fitHRV[ 1.0*n, $lastHRV ];
 fitHRV[ a_Real, b_Real ] /; a/b > 1.75 := Missing[ "NotAvailable" ];

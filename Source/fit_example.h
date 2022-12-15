@@ -6458,8 +6458,8 @@ typedef struct
 
 // device_info message
 
-#define FIT_DEVICE_INFO_MESG_SIZE                                               51
-#define FIT_DEVICE_INFO_MESG_DEF_SIZE                                           59
+#define FIT_DEVICE_INFO_MESG_SIZE                                               52
+#define FIT_DEVICE_INFO_MESG_DEF_SIZE                                           62
 #define FIT_DEVICE_INFO_MESG_PRODUCT_NAME_COUNT                                 20
 #define FIT_DEVICE_INFO_MESG_DESCRIPTOR_COUNT                                   1
 
@@ -6483,6 +6483,7 @@ typedef struct
    FIT_UINT8Z ant_transmission_type; //
    FIT_ANT_NETWORK ant_network; //
    FIT_SOURCE_TYPE source_type; //
+   FIT_UINT8 battery_level; // 1 * % + 0,
 } FIT_DEVICE_INFO_MESG;
 
 typedef FIT_UINT8 FIT_DEVICE_INFO_FIELD_NUM;
@@ -6505,6 +6506,7 @@ typedef FIT_UINT8 FIT_DEVICE_INFO_FIELD_NUM;
 #define FIT_DEVICE_INFO_FIELD_NUM_ANT_TRANSMISSION_TYPE ((FIT_DEVICE_INFO_FIELD_NUM)20)
 #define FIT_DEVICE_INFO_FIELD_NUM_ANT_NETWORK ((FIT_DEVICE_INFO_FIELD_NUM)22)
 #define FIT_DEVICE_INFO_FIELD_NUM_SOURCE_TYPE ((FIT_DEVICE_INFO_FIELD_NUM)25)
+#define FIT_DEVICE_INFO_FIELD_NUM_BATTERY_LEVEL ((FIT_DEVICE_INFO_FIELD_NUM)32)
 
 typedef enum
 {
@@ -6526,6 +6528,7 @@ typedef enum
    FIT_DEVICE_INFO_MESG_ANT_TRANSMISSION_TYPE,
    FIT_DEVICE_INFO_MESG_ANT_NETWORK,
    FIT_DEVICE_INFO_MESG_SOURCE_TYPE,
+   FIT_DEVICE_INFO_MESG_BATTERY_LEVEL,
    FIT_DEVICE_INFO_MESG_FIELDS
 } FIT_DEVICE_INFO_MESG_FIELD;
 

@@ -679,7 +679,7 @@ device_info,,,""
 ,ant_network,,"1"
 ,source_type,,"1"
 ,product_name,,"20"
-,battery_level,,"0"
+,battery_level,,"1"
 
 device_aux_battery_info,,,""
 ,timestamp,,"1"

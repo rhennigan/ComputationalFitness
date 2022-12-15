@@ -269,14 +269,15 @@ fitImportOptionsBlock // Attributes = { HoldFirst };
 fitImportOptionsBlock[ eval_, opts: OptionsPattern[ FITImport ] ] :=
     catchTopAs[ FITImport ] @ Block[
         {
-            $UnitSystem     = setUnitSystem @ OptionValue @ UnitSystem, (* FIXME: fix it! *)
-            $ftp            = setFTP @ OptionValue @ FunctionalThresholdPower,
-            $maxHR          = setMaxHR @ OptionValue @ MaxHeartRate,
-            $weight         = setWeight @ OptionValue @ Weight,
-            $sport          = setSport @ OptionValue @ Sport,
-            $timeOffset     = 0,
-            $fileByteCount  = 0,
-            $lastHRV        = None,
+            $UnitSystem           = setUnitSystem @ OptionValue @ UnitSystem, (* FIXME: fix it! *)
+            $ftp                  = setFTP @ OptionValue @ FunctionalThresholdPower,
+            $maxHR                = setMaxHR @ OptionValue @ MaxHeartRate,
+            $weight               = setWeight @ OptionValue @ Weight,
+            $sport                = setSport @ OptionValue @ Sport,
+            $failedTimeOffset     = False,
+            $timeOffset           = 0,
+            $fileByteCount        = 0,
+            $lastHRV              = None,
             fitImportOptionsBlock = # &
         },
         eval
@@ -421,24 +422,39 @@ setAltitudePrefs // endDefinition;
 (* ::Subsubsection::Closed:: *)
 (*setTimeOffset*)
 setTimeOffset // beginDefinition;
+setTimeOffset[ config_Association ] := $timeOffset = getTimeOffset @ config;
+setTimeOffset // endDefinition;
 
-setTimeOffset[ config_Association ] :=
-    setTimeOffset[ config, config[ "Activity" ] ];
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*getTimeOffset*)
+getTimeOffset // beginDefinition;
 
-setTimeOffset[ config_, v_List ] :=
+getTimeOffset[ config_Association ] :=
+    getTimeOffset[ config, config[ "Activity" ] ];
+
+getTimeOffset[ config_, v_List ] :=
     Module[ { t1, t2 },
         t1 = fitValue[ "Activity", "Timestamp"     , v ];
         t2 = fitValue[ "Activity", "LocalTimestamp", v ];
-        If[ MatchQ[ { t1, t2 }, { _DateObject, _DateObject } ],
-            $timeOffset = AbsoluteTime @ t1 - AbsoluteTime @ t2,
-            $timeOffset = 0
+        getTimeOffset[ config, v, { t1, t2 } ]
+    ];
+
+getTimeOffset[ config_, _Missing ] := 0;
+
+getTimeOffset[ config_, v_, { t1_DateObject, t2_DateObject } ] :=
+    Module[ { offset },
+        offset = AbsoluteTime @ t1 - AbsoluteTime @ t2;
+        If[ Abs @ offset < 86400,
+            offset,
+            $failedTimeOffset = True;
+            0
         ]
     ];
 
-setTimeOffset[ data_, _Missing ] :=
-    Null;
+getTimeOffset[ config_, v_, { t1_, t2_ } ] := ($failedTimeOffset = True; 0);
 
-setTimeOffset // endDefinition;
+getTimeOffset // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -815,7 +831,10 @@ formatFitData0[ data_ ] :=
         fa = If[ TrueQ @ $debug,
                  $fitValueTimings = Internal`Bag[ ];
                  makeFitAssociationTimed /@ data,
-                 makeFitAssociation /@ data
+                 If[ TrueQ @ $parallelization,
+                     ParallelMap[ makeFitAssociation, data ],
+                     Map[ makeFitAssociation, data ]
+                ]
              ];
 
         If[ ! MatchQ[ fa, { __Association } ],

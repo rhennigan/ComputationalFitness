@@ -830,7 +830,7 @@ static const FIT_DEVICE_INFO_MESG_DEF device_info_mesg_def =
    0, // reserved_1
    FIT_ARCH_ENDIAN, // arch
    FIT_MESG_NUM_DEVICE_INFO, // global_mesg_num
-   18, // num_fields
+   19, // num_fields
    { // field_def_num, size, base_type
       FIT_DEVICE_INFO_FIELD_NUM_TIMESTAMP, (sizeof(FIT_DATE_TIME)*1), FIT_BASE_TYPE_UINT32,
       FIT_DEVICE_INFO_FIELD_NUM_SERIAL_NUMBER, (sizeof(FIT_UINT32Z)*1), FIT_BASE_TYPE_UINT32Z,
@@ -850,6 +850,7 @@ static const FIT_DEVICE_INFO_MESG_DEF device_info_mesg_def =
       FIT_DEVICE_INFO_FIELD_NUM_ANT_TRANSMISSION_TYPE, (sizeof(FIT_UINT8Z)*1), FIT_BASE_TYPE_UINT8Z,
       FIT_DEVICE_INFO_FIELD_NUM_ANT_NETWORK, (sizeof(FIT_ANT_NETWORK)*1), FIT_BASE_TYPE_ENUM,
       FIT_DEVICE_INFO_FIELD_NUM_SOURCE_TYPE, (sizeof(FIT_SOURCE_TYPE)*1), FIT_BASE_TYPE_ENUM,
+      FIT_DEVICE_INFO_FIELD_NUM_BATTERY_LEVEL, (sizeof(FIT_UINT8)*1), FIT_BASE_TYPE_UINT8,
    }
 };
 

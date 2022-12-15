@@ -2347,7 +2347,8 @@ static void import_device_info(WolframLibraryData libData, MTensor data, int idx
     ImportInteger(36, libData, data, pos, mesg->ant_transmission_type);
     ImportInteger(37, libData, data, pos, mesg->ant_network);
     ImportInteger(38, libData, data, pos, mesg->source_type);
-    ImportFinish(39, libData, data, pos);
+    ImportInteger(39, libData, data, pos, mesg->battery_level);
+    ImportFinish(40, libData, data, pos);
 }
 
 static void import_device_aux_battery_info(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVICE_AUX_BATTERY_INFO_MESG *mesg)

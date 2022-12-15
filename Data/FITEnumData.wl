@@ -95,7 +95,7 @@
         119 -> "WeightScale",
         120 -> "HeartRate",
         121 -> "BikeSpeedCadence",
-        122 -> "BikeCadenceence",
+        122 -> "BikeCadence",
         123 -> "BikeSpeed",
         124 -> "StrideSpeedDistance",
         255 -> Missing[ "Invalid" ]
