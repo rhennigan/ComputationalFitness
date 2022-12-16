@@ -1231,48 +1231,119 @@ addDefaultFunction[ as_ ] := DeleteMissing @ Append[ as, "Interpreter" -> defaul
 (* ::Subsubsection::Closed:: *)
 (*defaultFunction*)
 defaultFunction // ClearAll;
-defaultFunction[ as_Association ] := defaultFunction[ as[ "Type" ], as[ "Dimensions" ] ];
+defaultFunction[ as_Association ] :=
+    defaultFunction[
+        typeFunction[ as[ "Type" ], as[ "Dimensions" ] ],
+        commentFormula @ as[ "Comment" ]
+    ];
 
-defaultFunction[ "Bool"              , {   } ] := "fitBool";
-defaultFunction[ "Bool"              , { _ } ] := "fitBoolA";
-defaultFunction[ "Byte"              , {   } ] := "fitByte";
-defaultFunction[ "Byte"              , { _ } ] := "fitByteA";
-defaultFunction[ "Real32"            , {   } ] := "fitFloat32";
-defaultFunction[ "Real32"            , { _ } ] := "fitFloat32A";
-defaultFunction[ "Real64"            , {   } ] := "fitFloat64";
-defaultFunction[ "Real64"            , { _ } ] := "fitFloat64A";
-defaultFunction[ "SignedInteger8"    , {   } ] := "fitSINT8";
-defaultFunction[ "SignedInteger8"    , { _ } ] := "fitSINT8A";
-defaultFunction[ "SignedInteger16"   , {   } ] := "fitSINT16";
-defaultFunction[ "SignedInteger16"   , { _ } ] := "fitSINT16A";
-defaultFunction[ "SignedInteger32"   , {   } ] := "fitSINT32";
-defaultFunction[ "SignedInteger32"   , { _ } ] := "fitSINT32A";
-defaultFunction[ "SignedInteger64"   , {   } ] := "fitSINT64";
-defaultFunction[ "SignedInteger64"   , { _ } ] := "fitSINT64A";
-defaultFunction[ "UnsignedInteger8"  , {   } ] := "fitUINT8";
-defaultFunction[ "UnsignedInteger8"  , { _ } ] := "fitUINT8A";
-defaultFunction[ "UnsignedInteger8z" , {   } ] := "fitUINT8Z";
-defaultFunction[ "UnsignedInteger8z" , { _ } ] := "fitUINT8ZA";
-defaultFunction[ "UnsignedInteger16" , {   } ] := "fitUINT16";
-defaultFunction[ "UnsignedInteger16" , { _ } ] := "fitUINT16A";
-defaultFunction[ "UnsignedInteger16z", {   } ] := "fitUINT16Z";
-defaultFunction[ "UnsignedInteger16z", { _ } ] := "fitUINT16ZA";
-defaultFunction[ "UnsignedInteger32" , {   } ] := "fitUINT32";
-defaultFunction[ "UnsignedInteger32" , { _ } ] := "fitUINT32A";
-defaultFunction[ "UnsignedInteger32z", {   } ] := "fitUINT32Z";
-defaultFunction[ "UnsignedInteger32z", { _ } ] := "fitUINT32ZA";
-defaultFunction[ "UnsignedInteger64" , {   } ] := "fitUINT64";
-defaultFunction[ "UnsignedInteger64" , { _ } ] := "fitUINT64A";
-defaultFunction[ "DateTime"          , {   } ] := "fitDateTime";
-defaultFunction[ "String"            , { _ } ] := "fitString";
+defaultFunction[ enum_List    , _ ] := enum;
+defaultFunction[ "fitMissing" , _ ] := "fitMissing";
+defaultFunction[ "fitDateTime", _ ] := "fitDateTime";
 
-defaultFunction[ type_String, _ ] :=
+(* Special Function Types *)
+defaultFunction[ typeFunc_, "0.7111111 * degrees + 0"    ] := { "fitQuantity", typeFunc, "AngularDegrees"           , 0.7111111 , 0   };
+defaultFunction[ typeFunc_, "1 * semicircles + 0"        ] := { "fitQuantity", typeFunc, "AngularDegrees"           , 11930464.7, 0   };
+defaultFunction[ typeFunc_, "1 * bpm + 0"                ] := { "fitQuantity", typeFunc, "Beats"/"Minutes"          , 1         , 0   };
+defaultFunction[ typeFunc_, "1 * cycles + 0"             ] := { "fitQuantity", typeFunc, "Cycles"                   , 1         , 0   };
+defaultFunction[ typeFunc_, "2 * cycles + 0"             ] := { "fitQuantity", typeFunc, "Cycles"                   , 2         , 0   };
+defaultFunction[ typeFunc_, "1 * 2 * cycles (steps) + 0" ] := { "fitQuantity", typeFunc, "Steps"                    , 2         , 0   };
+defaultFunction[ typeFunc_, "100 * C + 0"                ] := { "fitQuantity", typeFunc, "DegreesCelsius"           , 100       , 0   };
+defaultFunction[ typeFunc_, "1 * C + 0"                  ] := { "fitQuantity", typeFunc, "DegreesCelsius"           , 1         , 0   };
+defaultFunction[ typeFunc_, "1 * kcal + 0"               ] := { "fitQuantity", typeFunc, "DietaryCalories"          , 1         , 0   };
+defaultFunction[ typeFunc_, "10 * kcal / min + 0"        ] := { "fitQuantity", typeFunc, "DietaryCalories"/"Minutes", 1         , 0   };
+defaultFunction[ typeFunc_, "10 * kg + 0"                ] := { "fitQuantity", typeFunc, "Grams"                    , 0.01      , 0   };
+defaultFunction[ typeFunc_, "100 * g/dL + 0"             ] := { "fitQuantity", typeFunc, "Grams"/"Deciliters"       , 100       , 0   };
+defaultFunction[ typeFunc_, "1 * J + 0"                  ] := { "fitQuantity", typeFunc, "Joules"                   , 1         , 0   };
+defaultFunction[ typeFunc_, "1 * m + 0"                  ] := { "fitQuantity", typeFunc, "Meters"                   , 1         , 0   };
+defaultFunction[ typeFunc_, "5 * m + 500"                ] := { "fitQuantity", typeFunc, "Meters"                   , 5         , 500 };
+defaultFunction[ typeFunc_, "100 * m + 0"                ] := { "fitQuantity", typeFunc, "Meters"                   , 100       , 0   };
+defaultFunction[ typeFunc_, "1000 * m + 0"               ] := { "fitQuantity", typeFunc, "Meters"                   , 1000      , 0   };
+defaultFunction[ typeFunc_, "1 * km + 0"                 ] := { "fitQuantity", typeFunc, "Meters"                   , 0.001     , 0   };
+defaultFunction[ typeFunc_, "1 * mm + 0"                 ] := { "fitQuantity", typeFunc, "Meters"                   , 1000      , 0   };
+defaultFunction[ typeFunc_, "10 * mm + 0"                ] := { "fitQuantity", typeFunc, "Meters"                   , 100       , 0   };
+defaultFunction[ typeFunc_, "1000 * m/s + 0"             ] := { "fitQuantity", typeFunc, "MetersPerSecond"          , 1000      , 0   };
+defaultFunction[ typeFunc_, "100 * m/s + 0"              ] := { "fitQuantity", typeFunc, "MetersPerSecond"          , 100       , 0   };
+defaultFunction[ typeFunc_, "16 * m/s + 0"               ] := { "fitQuantity", typeFunc, "MetersPerSecond"          , 16        , 0   };
+defaultFunction[ typeFunc_, "1 * Pa + 0"                 ] := { "fitQuantity", typeFunc, "Pascals"                  , 1         , 0   };
+defaultFunction[ typeFunc_, "1 * percent + 0"            ] := { "fitQuantity", typeFunc, "Percent"                  , 1         , 0   };
+defaultFunction[ typeFunc_, "2 * percent + 0"            ] := { "fitQuantity", typeFunc, "Percent"                  , 2         , 0   };
+defaultFunction[ typeFunc_, "10 * percent + 0"           ] := { "fitQuantity", typeFunc, "Percent"                  , 10        , 0   };
+defaultFunction[ typeFunc_, "100 * percent + 0"          ] := { "fitQuantity", typeFunc, "Percent"                  , 100       , 0   };
+defaultFunction[ typeFunc_, "1 * % + 0"                  ] := { "fitQuantity", typeFunc, "Percent"                  , 1         , 0   };
+defaultFunction[ typeFunc_, "2 * % + 0"                  ] := { "fitQuantity", typeFunc, "Percent"                  , 2         , 0   };
+defaultFunction[ typeFunc_, "10 * % + 0"                 ] := { "fitQuantity", typeFunc, "Percent"                  , 10        , 0   };
+defaultFunction[ typeFunc_, "100 * % + 0"                ] := { "fitQuantity", typeFunc, "Percent"                  , 100       , 0   };
+defaultFunction[ typeFunc_, "256 * rpm + 0"              ] := { "fitQuantity", typeFunc, "RevolutionsPerMinute"     , 256       , 0   };
+defaultFunction[ typeFunc_, "128 * rpm + 0"              ] := { "fitQuantity", typeFunc, "RevolutionsPerMinute"     , 128       , 0   };
+defaultFunction[ typeFunc_, "1 * rpm + 0"                ] := { "fitQuantity", typeFunc, "RevolutionsPerMinute"     , 1         , 0   };
+defaultFunction[ typeFunc_, "1000 * s + 0"               ] := { "fitQuantity", typeFunc, "Seconds"                  , 1000      , 0   };
+defaultFunction[ typeFunc_, "128 * s + 0"                ] := { "fitQuantity", typeFunc, "Seconds"                  , 128       , 0   };
+defaultFunction[ typeFunc_, "1 * s + 0"                  ] := { "fitQuantity", typeFunc, "Seconds"                  , 1         , 0   };
+defaultFunction[ typeFunc_, "1 * ms + 0"                 ] := { "fitQuantity", typeFunc, "Seconds"                  , 1000      , 0   };
+defaultFunction[ typeFunc_, "10 * ms + 0"                ] := { "fitQuantity", typeFunc, "Seconds"                  , 10000     , 0   };
+defaultFunction[ typeFunc_, "1 * watts + 0"              ] := { "fitQuantity", typeFunc, "Watts"                    , 1         , 0   };
+defaultFunction[ typeFunc_, "1 * years + 0"              ] := { "fitQuantity", typeFunc, "Years"                    , 1         , 0   };
+
+(* Defaults *)
+defaultFunction[ typeFunc_, _ ] := typeFunc;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*typeFunction*)
+typeFunction // ClearAll;
+
+typeFunction[ "Language"        , {   } ] := "fitLanguage";
+typeFunction[ "MessageIndex"    , {   } ] := "fitUINT16";
+typeFunction[ "MessageIndex"    , { _ } ] := "fitUINT16A";
+typeFunction[ "LocalTimeIntoDay", {   } ] := "fitTimeOfDay";
+typeFunction[ "LocalDateTime"   , {   } ] := "fitLocalTimestamp";
+
+typeFunction[ type_String, _ ] :=
     With[ { enum = $enumTypeData @ type },
         { "fitEnum", type } /; AssociationQ @ enum
     ];
 
-defaultFunction[ type_String, _ ] := { "fitMissing", type      };
-defaultFunction[ ___            ] := { "fitMissing", "Unknown" };
+typeFunction[ "Bool"              , {   } ] := "fitBool";
+typeFunction[ "Bool"              , { _ } ] := "fitBoolA";
+typeFunction[ "Byte"              , {   } ] := "fitByte";
+typeFunction[ "Byte"              , { _ } ] := "fitByteA";
+typeFunction[ "Real32"            , {   } ] := "fitFloat32";
+typeFunction[ "Real32"            , { _ } ] := "fitFloat32A";
+typeFunction[ "Real64"            , {   } ] := "fitFloat64";
+typeFunction[ "Real64"            , { _ } ] := "fitFloat64A";
+typeFunction[ "SignedInteger8"    , {   } ] := "fitSINT8";
+typeFunction[ "SignedInteger8"    , { _ } ] := "fitSINT8A";
+typeFunction[ "SignedInteger16"   , {   } ] := "fitSINT16";
+typeFunction[ "SignedInteger16"   , { _ } ] := "fitSINT16A";
+typeFunction[ "SignedInteger32"   , {   } ] := "fitSINT32";
+typeFunction[ "SignedInteger32"   , { _ } ] := "fitSINT32A";
+typeFunction[ "SignedInteger64"   , {   } ] := "fitSINT64";
+typeFunction[ "SignedInteger64"   , { _ } ] := "fitSINT64A";
+typeFunction[ "UnsignedInteger8"  , {   } ] := "fitUINT8";
+typeFunction[ "UnsignedInteger8"  , { _ } ] := "fitUINT8A";
+typeFunction[ "UnsignedInteger8z" , {   } ] := "fitUINT8Z";
+typeFunction[ "UnsignedInteger8z" , { _ } ] := "fitUINT8ZA";
+typeFunction[ "UnsignedInteger16" , {   } ] := "fitUINT16";
+typeFunction[ "UnsignedInteger16" , { _ } ] := "fitUINT16A";
+typeFunction[ "UnsignedInteger16z", {   } ] := "fitUINT16Z";
+typeFunction[ "UnsignedInteger16z", { _ } ] := "fitUINT16ZA";
+typeFunction[ "UnsignedInteger32" , {   } ] := "fitUINT32";
+typeFunction[ "UnsignedInteger32" , { _ } ] := "fitUINT32A";
+typeFunction[ "UnsignedInteger32z", {   } ] := "fitUINT32Z";
+typeFunction[ "UnsignedInteger32z", { _ } ] := "fitUINT32ZA";
+typeFunction[ "UnsignedInteger64" , {   } ] := "fitUINT64";
+typeFunction[ "UnsignedInteger64" , { _ } ] := "fitUINT64A";
+typeFunction[ "DateTime"          , {   } ] := "fitDateTime";
+typeFunction[ "String"            , { _ } ] := "fitString";
+typeFunction[ ___                         ] := "fitMissing";
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*commentFormula*)
+commentFormula // ClearAll;
+commentFormula[ c_String ] := First @ StringTrim @ StringSplit[ c, "," ];
+commentFormula[ ___      ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

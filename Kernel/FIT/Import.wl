@@ -144,7 +144,7 @@ FITImport[ file_, "MessageData", opts: OptionsPattern[ ] ] :=
 (* ::Subsection::Closed:: *)
 (*Special Properties*)
 FITImport[ _, "Elements", OptionsPattern[ ] ] :=
-    catchTopAs[ FITImport ] @ Union[ $fitElements, $messageTypes ];
+    catchTopAs[ FITImport ] @ Union[ $fitElements, $supportedMessageTypes ];
 
 FITImport[ file_, "FileType", OptionsPattern[ ] ] :=
     catchTopAs[ FITImport ] @ fitFileType @ file;

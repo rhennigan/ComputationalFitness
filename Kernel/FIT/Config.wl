@@ -107,7 +107,10 @@ $fitElements = {
 (* ::Subsection::Closed:: *)
 (*FIT Message Types*)
 $messageTypes // ClearAll;
-$messageTypes = {
+$messageTypes := $messageTypes = Keys @ $messageDefs;
+
+$supportedMessageTypes // ClearAll;
+$supportedMessageTypes = {
     "FileID",
     "Event",
     "Record",
@@ -250,9 +253,9 @@ $fitLapKeys = {
     "TotalCalories",
     "TotalFatCalories",
     "AverageSpeed",
-    "MaxSpeed",
+    "MaximumSpeed",
     "AveragePower",
-    "MaxPower",
+    "MaximumPower",
     "TotalAscent",
     "TotalDescent",
     "NumberOfLengths",
@@ -262,18 +265,18 @@ $fitLapKeys = {
     "AverageStrokeDistance",
     "NumberOfActiveLengths",
     "AverageAltitude",
-    "MaxAltitude",
+    "MaximumAltitude",
     "AverageGrade",
     "AveragePositiveGrade",
     "AverageNegativeGrade",
-    "MaxPositiveGrade",
-    "MaxNegativeGrade",
+    "MaximumPositiveGrade",
+    "MaximumNegativeGrade",
     "AveragePositiveVerticalSpeed",
     "AverageNegativeVerticalSpeed",
-    "MaxPositiveVerticalSpeed",
-    "MaxNegativeVerticalSpeed",
+    "MaximumPositiveVerticalSpeed",
+    "MaximumNegativeVerticalSpeed",
     "RepetitionNumber",
-    "MinAltitude",
+    "MinimumAltitude",
     "WorkoutStepIndex",
     "OpponentScore",
     "StrokeCount",
@@ -292,9 +295,9 @@ $fitLapKeys = {
     "Event",
     "EventType",
     "AverageHeartRate",
-    "MaxHeartRate",
+    "MaximumHeartRate",
     "AverageCadence",
-    "MaxCadence",
+    "MaximumCadence",
     "Intensity",
     "LapTrigger",
     "Sport",
@@ -303,8 +306,8 @@ $fitLapKeys = {
     "SubSport",
     "GPSAccuracy",
     "AverageTemperature",
-    "MaxTemperature",
-    "MinHeartRate"
+    "MaximumTemperature",
+    "MinimumHeartRate"
 };
 
 (* ::**********************************************************************:: *)
@@ -783,6 +786,12 @@ messageTypeQ[ type_String ] := MemberQ[ $messageTypes, type ];
 messageTypeQ[ ___         ] := False;
 
 (* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*supportedMessageTypeQ*)
+supportedMessageTypeQ[ type_String ] := MemberQ[ $supportedMessageTypes, type ];
+supportedMessageTypeQ[ ___         ] := False;
+
+(* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Data*)
 
@@ -798,7 +807,7 @@ $fitIndex = Get @ FileNameJoin @ {
 If[ $debug,
     Module[ { names, unsupported },
         names       = Keys @ $fitIndex;
-        unsupported = Complement[ names, $messageTypes ];
+        unsupported = Complement[ names, $supportedMessageTypes ];
         If[ MatchQ[ unsupported, { __ } ],
             messagePrint[
                 "UnsupportedMessageTypes",

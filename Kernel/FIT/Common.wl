@@ -77,7 +77,7 @@ unsupportedMessageTypeQ[ ___ ] := False;
 
 $unsupportedMessageTypes = Complement[
     Values @ $fitMessageTypes,
-    $messageTypes
+    $supportedMessageTypes
 ];
 
 (* ::**********************************************************************:: *)

@@ -31,7 +31,7 @@ indexTranslate[ name_String, sym_Symbol ] :=
                     ]
             ];
 
-        If[ $debug,
+        If[ $debug && ! MemberQ[ Internal`BagPart[ $generatedDefinitions, All ], HoldComplete @ sym ],
             Replace[
                 Complement[
                     Keys @ $fitIndex @ name,
@@ -134,6 +134,61 @@ checkKeyCoverage // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
+(*Definition Generation*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*Unsupported Messages*)
+$generatedDefinitions = Internal`Bag[ ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsubsection::Closed:: *)
+(*makeInterpreter*)
+makeInterpreter // beginDefinition;
+makeInterpreter[ { s_String, a_String } ] := Symbol[ s ][ a ];
+makeInterpreter[ { "fitQuantity", s_String, units_, a___ } ] := fitQuantity[ Symbol @ s, units, a ];
+makeInterpreter[ s_String ] := Symbol @ s;
+makeInterpreter // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsubsection::Closed:: *)
+(*setFieldDefinitions*)
+setFieldDefinitions // beginDefinition;
+
+setFieldDefinitions[ name_String ] :=
+    setFieldDefinitions[ Symbol[ "fit" <> name <> "Value$G" ], name ];
+
+setFieldDefinitions[ sym_Symbol, name_String ] :=
+    setFieldDefinitions[ sym, name, $messageDefs @ name ];
+
+setFieldDefinitions[ valueSym_Symbol, name_String, defs_Association ] := (
+    fitValue[ name, field_, value_ ] := valueSym[ field, value ];
+
+    valueSym // ClearAll;
+    KeyValueMap[
+        Function @ With[
+            {
+                int = makeInterpreter @ #2[ "Interpreter" ],
+                idx = #2[ "Index" ]
+            },
+            valueSym[ #1, v_ ] := int @ v[[ idx ]]
+        ],
+        defs
+    ];
+    valueSym[ _, _ ] := Missing[ "NotAvailable" ];
+
+    Internal`StuffBag[ $generatedDefinitions, HoldComplete @ valueSym ]
+);
+
+setFieldDefinitions // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsubsection::Closed:: *)
+(*Generate Definitions*)
+setFieldDefinitions /@ Complement[ Keys @ $messageDefs, $supportedMessageTypes ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*fitValue*)
 fitValue // ClearAll;
 fitValue[ type_, "MessageType", v_ ] := type;
@@ -141,157 +196,50 @@ fitValue[ type_, "MessageType", v_ ] := type;
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*FileID*)
-fitValue[ "FileID", name_, value_ ] := fitFileIDValue[ name, value ];
+setFieldDefinitions[ fitFileIDValue, "FileID" ];
 
-fitFileIDValue // ClearAll;
-fitFileIDValue[ "SerialNumber", v_ ] := fitSerialNumber @ v[[ "SerialNumber" ]];
-fitFileIDValue[ "TimeCreated" , v_ ] := fitDateTime @ v[[ "TimeCreated" ]];
-fitFileIDValue[ "Manufacturer", v_ ] := fitManufacturer @ v[[ "Manufacturer" ]];
-fitFileIDValue[ "Product"     , v_ ] := fitProduct @ v[[ "Product" ]];
-fitFileIDValue[ "Number"      , v_ ] := fitUINT16 @ v[[ "Number" ]];
-fitFileIDValue[ "Type"        , v_ ] := fitFile @ v[[ "Type" ]];
-fitFileIDValue[ "ProductName" , v_ ] := fitProductName[ v[[ { "Manufacturer", "Product" } ]], v[[ "ProductName" ]] ];
-fitFileIDValue[ _             , _  ] := Missing[ "NotAvailable" ];
+fitFileIDValue[ "ProductName", v_ ] := fitProductName[ v[[ { "Manufacturer", "Product" } ]], v[[ "ProductName" ]] ];
+fitFileIDValue[ _            , _  ] := Missing[ "NotAvailable" ];
 
 indexTranslate[ "FileID", fitFileIDValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*UserProfile*)
-fitValue[ "UserProfile", name_, value_ ] := fitUserProfileValue[ name, value ];
+setFieldDefinitions[ fitUserProfileValue, "UserProfile" ];
 
-fitUserProfileValue // ClearAll;
-fitUserProfileValue[ "MessageIndex"              , v_ ] := fitUINT16 @ v[[ "MessageIndex" ]];
-fitUserProfileValue[ "Weight"                    , v_ ] := fitWeight @ v[[ "Weight" ]];
-fitUserProfileValue[ "LocalID"                   , v_ ] := fitUINT16 @ v[[ "LocalID" ]];
-fitUserProfileValue[ "UserRunningStepLength"     , v_ ] := fitStepLength @ v[[ "UserRunningStepLength" ]];
-fitUserProfileValue[ "UserWalkingStepLength"     , v_ ] := fitStepLength @ v[[ "UserWalkingStepLength" ]];
-fitUserProfileValue[ "Gender"                    , v_ ] := fitGender @ v[[ "Gender" ]];
-fitUserProfileValue[ "Age"                       , v_ ] := fitAge @ v[[ "Age" ]];
-fitUserProfileValue[ "Height"                    , v_ ] := fitHeight @ v[[ "Height" ]];
-fitUserProfileValue[ "Language"                  , v_ ] := fitLanguage @ v[[ "Language" ]];
-fitUserProfileValue[ "ElevationSetting"          , v_ ] := fitDisplayMeasure @ v[[ "ElevationSetting" ]];
-fitUserProfileValue[ "WeightSetting"             , v_ ] := fitDisplayMeasure @ v[[ "WeightSetting" ]];
-fitUserProfileValue[ "RestingHeartRate"          , v_ ] := fitHeartRate @ v[[ "RestingHeartRate" ]];
-fitUserProfileValue[ "DefaultMaxRunningHeartRate", v_ ] := fitHeartRate @ v[[ "DefaultMaximumRunningHeartRate" ]];
-fitUserProfileValue[ "DefaultMaxBikingHeartRate" , v_ ] := fitHeartRate @ v[[ "DefaultMaximumBikingHeartRate" ]];
-fitUserProfileValue[ "DefaultMaxHeartRate"       , v_ ] := fitHeartRate @ v[[ "DefaultMaximumHeartRate" ]];
-fitUserProfileValue[ "HeartRateSetting"          , v_ ] := fitDisplayHeart @ v[[ "HeartRateSetting" ]];
-fitUserProfileValue[ "SpeedSetting"              , v_ ] := fitDisplayMeasure @ v[[ "SpeedSetting" ]];
-fitUserProfileValue[ "DistanceSetting"           , v_ ] := fitDisplayMeasure @ v[[ "DistanceSetting" ]];
-fitUserProfileValue[ "PowerSetting"              , v_ ] := fitDisplayPower @ v[[ "PowerSetting" ]];
-fitUserProfileValue[ "ActivityClass"             , v_ ] := fitActivityClass @ v[[ "ActivityClass" ]];
-fitUserProfileValue[ "PositionSetting"           , v_ ] := fitDisplayPosition @ v[[ "PositionSetting" ]];
-fitUserProfileValue[ "TemperatureSetting"        , v_ ] := fitDisplayMeasure @ v[[ "TemperatureSetting" ]];
-fitUserProfileValue[ "HeightSetting"             , v_ ] := fitDisplayMeasure @ v[[ "HeightSetting" ]];
-fitUserProfileValue[ "FriendlyName"              , v_ ] := fitString @ v[[ "FriendlyName" ]];
-fitUserProfileValue[ "GlobalID"                  , v_ ] := fitGlobalID @ v[[ "GlobalID" ]];
-fitUserProfileValue[ "DepthSetting"              , v_ ] := fitDisplayMeasure @ v[[ "DepthSetting" ]];
-fitUserProfileValue[ "DiveCount"                 , v_ ] := fitUINT32 @ v[[ "DiveCount" ]];
-fitUserProfileValue[ "SleepTime"                 , v_ ] := fitTimeOfDay @ v[[ "SleepTime" ]];
-fitUserProfileValue[ "WakeTime"                  , v_ ] := fitTimeOfDay @ v[[ "WakeTime" ]];
-fitUserProfileValue[ _                           , _  ] := Missing[ "NotAvailable" ];
+fitUserProfileValue[ "GlobalID"             , v_ ] := fitGlobalID @ v[[ "GlobalID" ]];
+fitUserProfileValue[ "Height"               , v_ ] := fitHeight @ v[[ "Height" ]];
+fitUserProfileValue[ "UserRunningStepLength", v_ ] := fitStepLength @ v[[ "UserRunningStepLength" ]];
+fitUserProfileValue[ "UserWalkingStepLength", v_ ] := fitStepLength @ v[[ "UserWalkingStepLength" ]];
+fitUserProfileValue[ _                      , _  ] := Missing[ "NotAvailable" ];
 
 indexTranslate[ "UserProfile", fitUserProfileValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Activity*)
-fitValue[ "Activity", name_, value_ ] := fitActivityValue[ name, value ];
-
-fitActivityValue // ClearAll;
-fitActivityValue[ "Timestamp"       , v_ ] := fitDateTime @ v[[ "Timestamp" ]];
-fitActivityValue[ "TotalTimerTime"  , v_ ] := fitTime32 @ v[[ "TotalTimerTime" ]];
-fitActivityValue[ "LocalTimestamp"  , v_ ] := fitLocalTimestamp @ v[[ "LocalTimestamp" ]];
-fitActivityValue[ "NumberOfSessions", v_ ] := fitUINT16 @ v[[ "NumberOfSessions" ]];
-fitActivityValue[ "Type"            , v_ ] := fitActivity @ v[[ "Type" ]];
-fitActivityValue[ "Event"           , v_ ] := fitEvent @ v[[ "Event" ]];
-fitActivityValue[ "EventType"       , v_ ] := fitEventType @ v[[ "EventType" ]];
-fitActivityValue[ "EventGroup"      , v_ ] := fitEventGroup @ v[[ "EventGroup" ]];
-fitActivityValue[ _                 , _  ] := Missing[ "NotAvailable" ];
-
-indexTranslate[ "Activity", fitActivityValue ];
+setFieldDefinitions[ fitActivityValue, "Activity" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Lap*)
-fitValue[ "Lap", name_, value_ ] := fitLapValue[ name, value ];
+setFieldDefinitions[ fitLapValue, "Lap" ];
 
-fitLapValue // ClearAll;
-fitLapValue[ "Timestamp"                          , v_ ] := fitDateTime @ v[[ "Timestamp" ]];
-fitLapValue[ "StartTime"                          , v_ ] := fitDateTime @ v[[ "StartTime" ]];
-fitLapValue[ "StartPosition"                      , v_ ] := fitGeoPosition @ v[[ { "StartPositionLatitude", "StartPositionLongitude" } ]];
-fitLapValue[ "EndPosition"                        , v_ ] := fitGeoPosition @ v[[ { "EndPositionLatitude", "EndPositionLongitude" } ]];
-fitLapValue[ "TotalElapsedTime"                   , v_ ] := fitTime32 @ v[[ "TotalElapsedTime" ]];
-fitLapValue[ "TotalTimerTime"                     , v_ ] := fitTime32 @ v[[ "TotalTimerTime" ]];
-fitLapValue[ "TotalDistance"                      , v_ ] := fitDistance @ v[[ "TotalDistance" ]];
-fitLapValue[ "TotalCycles"                        , v_ ] := fitCycles32[ v[[ "TotalCycles" ]], v[[ "TotalFractionalCycles" ]] ];
-fitLapValue[ "TotalWork"                          , v_ ] := fitWork @ v[[ "TotalWork" ]];
-fitLapValue[ "TotalMovingTime"                    , v_ ] := fitTime32 @ v[[ "TotalMovingTime" ]];
-fitLapValue[ "TimeInHeartRateZone"                , v_ ] := fitTimeInZone @ v[[ "TimeInHeartRateZone" ]];
-fitLapValue[ "TimeInSpeedZone"                    , v_ ] := fitTimeInZone @ v[[ "TimeInSpeedZone" ]];
-fitLapValue[ "TimeInCadenceZone"                  , v_ ] := fitTimeInZone @ v[[ "TimeInCadenceZone" ]];
-fitLapValue[ "TimeInPowerZone"                    , v_ ] := fitTimeInZone @ v[[ "TimeInPowerZone" ]];
-fitLapValue[ "MessageIndex"                       , v_ ] := fitMessageIndex @ v[[ "MessageIndex" ]];
-fitLapValue[ "TotalCalories"                      , v_ ] := fitCalories @ v[[ "TotalCalories" ]];
-fitLapValue[ "TotalFatCalories"                   , v_ ] := fitCalories @ v[[ "TotalFatCalories" ]];
-fitLapValue[ "AverageSpeed"                       , v_ ] := fitSpeedSelect[ v[[ "EnhancedAverageSpeed" ]], v[[ "AverageSpeed" ]] ];
-fitLapValue[ "MaxSpeed"                           , v_ ] := fitSpeedSelect[ v[[ "EnhancedMaximumSpeed" ]], v[[ "MaximumSpeed" ]] ];
-fitLapValue[ "AveragePower"                       , v_ ] := fitPower16 @ v[[ "AveragePower" ]];
-fitLapValue[ "MaxPower"                           , v_ ] := fitPower16 @ v[[ "MaximumPower" ]];
-fitLapValue[ "TotalAscent"                        , v_ ] := fitAscent @ v[[ "TotalAscent" ]];
-fitLapValue[ "TotalDescent"                       , v_ ] := fitAscent @ v[[ "TotalDescent" ]];
-fitLapValue[ "NumberOfLengths"                    , v_ ] := fitLengths @ v[[ "NumberOfLengths" ]];
-fitLapValue[ "NormalizedPower"                    , v_ ] := fitPower16 @ v[[ "NormalizedPower" ]];
-fitLapValue[ "LeftRightBalance"                   , v_ ] := fitLeftRightBalance100 @ v[[ "LeftRightBalance" ]];
-fitLapValue[ "FirstLengthIndex"                   , v_ ] := fitUINT16 @ v[[ "FirstLengthIndex" ]];
-fitLapValue[ "AverageStrokeDistance"              , v_ ] := fitMeters100 @ v[[ "AverageStrokeDistance" ]];
-fitLapValue[ "NumberOfActiveLengths"              , v_ ] := fitLengths @ v[[ "NumberActiveLengths" ]];
-fitLapValue[ "AverageAltitude"                    , v_ ] := fitAltitudeSelect[ v[[ "EnhancedAverageAltitude" ]], v[[ "AverageAltitude" ]] ];
-fitLapValue[ "MaxAltitude"                        , v_ ] := fitAltitudeSelect[ v[[ "EnhancedMaximumAltitude" ]], v[[ "MaximumAltitude" ]] ];
-fitLapValue[ "AverageGrade"                       , v_ ] := fitGrade @ v[[ "AverageGrade" ]];
-fitLapValue[ "AveragePositiveGrade"               , v_ ] := fitGrade @ v[[ "AveragePositiveGrade" ]];
-fitLapValue[ "AverageNegativeGrade"               , v_ ] := fitGrade @ v[[ "AverageNegativeGrade" ]];
-fitLapValue[ "MaxPositiveGrade"                   , v_ ] := fitGrade @ v[[ "MaximumPositiveGrade" ]];
-fitLapValue[ "MaxNegativeGrade"                   , v_ ] := fitGrade @ v[[ "MaximumNegativeGrade" ]];
-fitLapValue[ "AveragePositiveVerticalSpeed"       , v_ ] := fitVerticalSpeed @ v[[ "AveragePositiveVerticalSpeed" ]];
-fitLapValue[ "AverageNegativeVerticalSpeed"       , v_ ] := fitVerticalSpeed @ v[[ "AverageNegativeVerticalSpeed" ]];
-fitLapValue[ "MaxPositiveVerticalSpeed"           , v_ ] := fitVerticalSpeed @ v[[ "MaximumPositiveVerticalSpeed" ]];
-fitLapValue[ "MaxNegativeVerticalSpeed"           , v_ ] := fitVerticalSpeed @ v[[ "MaximumNegativeVerticalSpeed" ]];
-fitLapValue[ "RepetitionNumber"                   , v_ ] := fitUINT16 @ v[[ "RepetitionNumber" ]];
-fitLapValue[ "MinAltitude"                        , v_ ] := fitAltitudeSelect[ v[[ "EnhancedMinimumAltitude" ]], v[[ "MinimumAltitude" ]] ];
-fitLapValue[ "WorkoutStepIndex"                   , v_ ] := fitUINT16 @ v[[ "WorkoutStepIndex" ]];
-fitLapValue[ "OpponentScore"                      , v_ ] := fitUINT16 @ v[[ "OpponentScore" ]];
-fitLapValue[ "StrokeCount"                        , v_ ] := fitStrokeCount @ v[[ "StrokeCount" ]];
-fitLapValue[ "ZoneCount"                          , v_ ] := fitZoneCount @ v[[ "ZoneCount" ]];
-fitLapValue[ "AverageVerticalOscillation"         , v_ ] := fitVerticalOscillation @ v[[ "AverageVerticalOscillation" ]];
-fitLapValue[ "AverageStanceTimePercent"           , v_ ] := fitStanceTimePercent @ v[[ "AverageStanceTimePercent" ]];
-fitLapValue[ "AverageStanceTime"                  , v_ ] := fitStanceTime @ v[[ "AverageStanceTime" ]];
-fitLapValue[ "PlayerScore"                        , v_ ] := fitUINT16 @ v[[ "PlayerScore" ]];
-fitLapValue[ "AverageTotalHemoglobinConcentration", v_ ] := fitHemoglobin @ v[[ "AverageTotalHemoglobinConcentration" ]];
-fitLapValue[ "MinimumTotalHemoglobinConcentration", v_ ] := fitHemoglobin @ v[[ "MinimumTotalHemoglobinConcentration" ]];
-fitLapValue[ "MaximumTotalHemoglobinConcentration", v_ ] := fitHemoglobin @ v[[ "MaximumTotalHemoglobinConcentration" ]];
-fitLapValue[ "AverageSaturatedHemoglobinPercent"  , v_ ] := fitHemoglobinPercent @ v[[ "AverageSaturatedHemoglobinPercent" ]];
-fitLapValue[ "MinimumSaturatedHemoglobinPercent"  , v_ ] := fitHemoglobinPercent @ v[[ "MinimumSaturatedHemoglobinPercent" ]];
-fitLapValue[ "MaximumSaturatedHemoglobinPercent"  , v_ ] := fitHemoglobinPercent @ v[[ "MaximumSaturatedHemoglobinPercent" ]];
-fitLapValue[ "AverageVAM"                         , v_ ] := fitVAM @ v[[ "AverageAverageAscentSpeed" ]];
-fitLapValue[ "Event"                              , v_ ] := fitEvent @ v[[ "Event" ]];
-fitLapValue[ "EventType"                          , v_ ] := fitEventType @ v[[ "EventType" ]];
-fitLapValue[ "AverageHeartRate"                   , v_ ] := fitHeartRate @ v[[ "AverageHeartRate" ]];
-fitLapValue[ "MaxHeartRate"                       , v_ ] := fitHeartRate @ v[[ "MaximumHeartRate" ]];
-fitLapValue[ "AverageCadence"                     , v_ ] := fitCadence[ v[[ "AverageCadence" ]], v[[ "AverageFractionalCadence" ]] ];
-fitLapValue[ "MaxCadence"                         , v_ ] := fitCadence[ v[[ "MaximumCadence" ]], v[[ "MaximumFractionalCadence" ]] ];
-fitLapValue[ "Intensity"                          , v_ ] := fitIntensity @ v[[ "Intensity" ]];
-fitLapValue[ "LapTrigger"                         , v_ ] := fitLapTrigger @ v[[ "LapTrigger" ]];
-fitLapValue[ "Sport"                              , v_ ] := fitSport @ v[[ "Sport" ]];
-fitLapValue[ "EventGroup"                         , v_ ] := fitUINT8 @ v[[ "EventGroup" ]];
-fitLapValue[ "SwimStroke"                         , v_ ] := fitSwimStroke @ v[[ "SwimStroke" ]];
-fitLapValue[ "SubSport"                           , v_ ] := fitSubSport @ v[[ "SubSport" ]];
-fitLapValue[ "GPSAccuracy"                        , v_ ] := fitGPSAccuracy @ v[[ "GPSAccuracy" ]];
-fitLapValue[ "AverageTemperature"                 , v_ ] := fitTemperature8 @ v[[ "AverageTemperature" ]];
-fitLapValue[ "MaxTemperature"                     , v_ ] := fitTemperature8 @ v[[ "MaximumTemperature" ]];
-fitLapValue[ "MinHeartRate"                       , v_ ] := fitHeartRate @ v[[ "MinimumHeartRate" ]];
-fitLapValue[ _                                    , v_ ] := Missing[ "NotAvailable" ];
+fitLapValue[ "StartPosition"        , v_ ] := fitGeoPosition @ v[[ { "StartPositionLatitude", "StartPositionLongitude" } ]];
+fitLapValue[ "EndPosition"          , v_ ] := fitGeoPosition @ v[[ { "EndPositionLatitude", "EndPositionLongitude" } ]];
+fitLapValue[ "TotalCycles"          , v_ ] := fitCycles32[ v[[ "TotalCycles" ]], v[[ "TotalFractionalCycles" ]] ];
+fitLapValue[ "AverageSpeed"         , v_ ] := fitSpeedSelect[ v[[ "EnhancedAverageSpeed" ]], v[[ "AverageSpeed" ]] ];
+fitLapValue[ "MaximumSpeed"         , v_ ] := fitSpeedSelect[ v[[ "EnhancedMaximumSpeed" ]], v[[ "MaximumSpeed" ]] ];
+fitLapValue[ "NumberOfLengths"      , v_ ] := fitLengths @ v[[ "NumberOfLengths" ]];
+fitLapValue[ "LeftRightBalance"     , v_ ] := fitLeftRightBalance100 @ v[[ "LeftRightBalance" ]];
+fitLapValue[ "NumberOfActiveLengths", v_ ] := fitLengths @ v[[ "NumberActiveLengths" ]];
+fitLapValue[ "AverageAltitude"      , v_ ] := fitAltitudeSelect[ v[[ "EnhancedAverageAltitude" ]], v[[ "AverageAltitude" ]] ];
+fitLapValue[ "MaximumAltitude"      , v_ ] := fitAltitudeSelect[ v[[ "EnhancedMaximumAltitude" ]], v[[ "MaximumAltitude" ]] ];
+fitLapValue[ "MinimumAltitude"      , v_ ] := fitAltitudeSelect[ v[[ "EnhancedMinimumAltitude" ]], v[[ "MinimumAltitude" ]] ];
+fitLapValue[ "StrokeCount"          , v_ ] := fitStrokeCount @ v[[ "StrokeCount" ]];
+fitLapValue[ "AverageCadence"       , v_ ] := fitCadence[ v[[ "AverageCadence" ]], v[[ "AverageFractionalCadence" ]] ];
+fitLapValue[ "MaximumCadence"       , v_ ] := fitCadence[ v[[ "MaximumCadence" ]], v[[ "MaximumFractionalCadence" ]] ];
 
 indexTranslate[ "Lap", fitLapValue ];
 
@@ -399,9 +347,9 @@ fitRecordValue[ "Grit"                           , v_ ] := fitFloat32 @ v[[ "Gri
 fitRecordValue[ "N2Load"                         , v_ ] := fitUINT16 @ v[[ "NitrogenLoad" ]];
 fitRecordValue[ "NDLTime"                        , v_ ] := fitUINT32 @ v[[ "NoDecompressionLimitTime" ]];
 fitRecordValue[ "NextStopDepth"                  , v_ ] := fitDepth @ v[[ "NextStopDepth" ]];
-fitRecordValue[ "NextStopTime"                   , v_ ] := fitSeconds @ v[[ "NextStopTime" ]];
+fitRecordValue[ "NextStopTime"                   , v_ ] := fitSeconds32 @ v[[ "NextStopTime" ]];
 fitRecordValue[ "Speed1S"                        , v_ ] := fitUINT8 @ v[[ "Speed1S" ]];
-fitRecordValue[ "TimeToSurface"                  , v_ ] := fitSeconds @ v[[ "TimeToSurface" ]];
+fitRecordValue[ "TimeToSurface"                  , v_ ] := fitSeconds32 @ v[[ "TimeToSurface" ]];
 (* fitRecordValue[ "Unknown61"                      , v_ ] := fitUINT16 @ v[[ 64 ]];
 fitRecordValue[ "PerformanceCondition"           , v_ ] := fitSINT8 @ v[[ 65 ]];
 fitRecordValue[ "Unknown90"                      , v_ ] := fitSINT8 @ v[[ 66 ]];
@@ -474,19 +422,19 @@ fitSessionValue // ClearAll;
 fitSessionValue[ "Timestamp"                              , v_ ] := fitDateTime @ v[[ "Timestamp" ]];
 fitSessionValue[ "StartTime"                              , v_ ] := fitDateTime @ v[[ "StartTime" ]];
 fitSessionValue[ "StartPosition"                          , v_ ] := fitGeoPosition @ v[[ { "StartPositionLatitude", "StartPositionLongitude" } ]];
-fitSessionValue[ "TotalElapsedTime"                       , v_ ] := fitTime32 @ v[[ "TotalElapsedTime" ]];
-fitSessionValue[ "TotalTimerTime"                         , v_ ] := fitTime32 @ v[[ "TotalTimerTime" ]];
+fitSessionValue[ "TotalElapsedTime"                       , v_ ] := fitKiloSeconds32 @ v[[ "TotalElapsedTime" ]];
+fitSessionValue[ "TotalTimerTime"                         , v_ ] := fitKiloSeconds32 @ v[[ "TotalTimerTime" ]];
 fitSessionValue[ "TotalDistance"                          , v_ ] := fitDistance @ v[[ "TotalDistance" ]];
 fitSessionValue[ "TotalCycles"                            , v_ ] := fitCycles32[ v[[ "TotalCycles" ]], v[[ "TotalFractionalCycles" ]] ];
 fitSessionValue[ "GeoBoundingBox"                         , v_ ] := fitGeoBoundingBox @ v[[ { "NorthEastCornerLatitude", "NorthEastCornerLongitude", "SouthWestCornerLatitude", "SouthWestCornerLongitude" } ]];
 fitSessionValue[ "AverageStrokeCount"                     , v_ ] := fitAverageStrokeCount @ v[[ "AverageStrokeCount" ]];
 fitSessionValue[ "TotalWork"                              , v_ ] := fitWork @ v[[ "TotalWork" ]];
-fitSessionValue[ "TotalMovingTime"                        , v_ ] := fitTime32 @ v[[ "TotalMovingTime" ]];
+fitSessionValue[ "TotalMovingTime"                        , v_ ] := fitKiloSeconds32 @ v[[ "TotalMovingTime" ]];
 fitSessionValue[ "TimeInHeartRateZone"                    , v_ ] := fitTimeInZone @ v[[ "TimeInHeartRateZone" ]];
 fitSessionValue[ "TimeInSpeedZone"                        , v_ ] := fitTimeInZone @ v[[ "TimeInSpeedZone" ]];
 fitSessionValue[ "TimeInCadenceZone"                      , v_ ] := fitTimeInZone @ v[[ "TimeInCadenceZone" ]];
 fitSessionValue[ "TimeInPowerZone"                        , v_ ] := fitTimeInZone @ v[[ "TimeInPowerZone" ]];
-fitSessionValue[ "AverageLapTime"                         , v_ ] := fitTime32 @ v[[ "AverageLapTime" ]];
+fitSessionValue[ "AverageLapTime"                         , v_ ] := fitKiloSeconds32 @ v[[ "AverageLapTime" ]];
 fitSessionValue[ "MessageIndex"                           , v_ ] := fitMessageIndex @ v[[ "MessageIndex" ]];
 fitSessionValue[ "TotalCalories"                          , v_ ] := fitCalories @ v[[ "TotalCalories" ]];
 fitSessionValue[ "TotalFatCalories"                       , v_ ] := fitCalories @ v[[ "TotalFatCalories" ]];
@@ -531,7 +479,7 @@ fitSessionValue[ "AverageStanceTimePercent"               , v_ ] := fitStanceTim
 fitSessionValue[ "AverageStanceTime"                      , v_ ] := fitStanceTime @ v[[ "AverageStanceTime" ]];
 fitSessionValue[ "AverageStanceTimeBalance"               , v_ ] := fitPercent16 @ v[[ "AverageStanceTimeBalance" ]];
 fitSessionValue[ "StandCount"                             , v_ ] := fitUINT16 @ v[[ "StandCount" ]];
-fitSessionValue[ "TimeStanding"                           , v_ ] := fitTime32 @ v[[ "TimeStanding" ]];
+fitSessionValue[ "TimeStanding"                           , v_ ] := fitKiloSeconds32 @ v[[ "TimeStanding" ]];
 fitSessionValue[ "AverageStepLength"                      , v_ ] := fitStepLength @ v[[ "AverageStepLength" ]];
 fitSessionValue[ "AverageVerticalRatio"                   , v_ ] := fitPercent16 @ v[[ "AverageVerticalRatio" ]];
 fitSessionValue[ "AverageVAM"                             , v_ ] := fitVAM @ v[[ "AverageAverageAscentSpeed" ]];
@@ -776,7 +724,7 @@ fitMessageInformationValue // ClearAll;
 fitMessageInformationValue[ "MessageTypeName", v_ ] := fitMessageType @ v[[ 2 ]];
 fitMessageInformationValue[ "MessageIDNumber", v_ ] := v[[ 2 ]];
 fitMessageInformationValue[ "MessageSize"    , v_ ] := v[[ 3 ]];
-fitMessageInformationValue[ "Supported"      , v_ ] := messageTypeQ @ fitMessageType @ v[[ 2 ]];
+fitMessageInformationValue[ "Supported"      , v_ ] := supportedMessageTypeQ @ fitMessageType @ v[[ 2 ]];
 fitMessageInformationValue[ "ByteOrdering"   , v_ ] := fitByteOrder @ v[[ 4 ]];
 fitMessageInformationValue[ "FieldCount"     , v_ ] := v[[ 5 ]];
 (* fitMessageInformationValue[ "FileOffset"     , v_ ] := fitFileOffset @ v[[ 6 ]]; *)
@@ -784,55 +732,6 @@ fitMessageInformationValue[ "MessageIndex"   , v_ ] := v[[ 6 ]];
 fitMessageInformationValue[ _                , _  ] := Missing[ "NotAvailable" ];
 
 (* Do not translate index for fitMessageInformationValue *)
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*Unsupported Messages*)
-
-$generatedDefinitions = Internal`Bag[ ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsubsection::Closed:: *)
-(*makeInterpreter*)
-makeInterpreter // beginDefinition;
-makeInterpreter[ { s_String, a_String } ] := Symbol[ s ][ a ];
-makeInterpreter[ s_String ] := Symbol @ s;
-makeInterpreter // endDefinition;
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsubsection::Closed:: *)
-(*setValueDefinitions*)
-setValueDefinitions // beginDefinition;
-
-setValueDefinitions[ name_String ] :=
-    setValueDefinitions[ name, $messageDefs @ name ];
-
-setValueDefinitions[ name_String, defs_Association ] :=
-    With[ { valueSym = Symbol[ "fit" <> name <> "Value$Generated" ] },
-        fitValue[ name, field_, value_ ] := valueSym[ field, value ];
-
-        valueSym // ClearAll;
-        KeyValueMap[
-            Function @ With[
-                {
-                    int = makeInterpreter @ #2[ "Interpreter" ],
-                    idx = #2[ "Index" ]
-                },
-                valueSym[ #1, v_ ] := int @ v[[ idx ]]
-            ],
-            defs
-        ];
-        valueSym[ _, _ ] := Missing[ "NotAvailable" ];
-
-        Internal`StuffBag[ $generatedDefinitions, HoldComplete @ valueSym ]
-    ];
-
-setValueDefinitions // endDefinition;
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsubsection::Closed:: *)
-(*Generate Definitions*)
-setValueDefinitions /@ Complement[ Keys @ $messageDefs, $messageTypes ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -849,6 +748,41 @@ fitEnum[ ___ ][ ___ ] := Missing[ "NotAvailable" ];
 
 fitEnum0[ _Missing ] := Missing[ "NotAvailable" ];
 fitEnum0[ v_ ] := v;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitMissing*)
+fitMissing // ClearAll;
+fitMissing[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitQuantity*)
+(* TODO: hook this up! *)
+
+fitQuantity // ClearAll;
+fitQuantity[ fitMissing, ___ ] := fitMissing;
+fitQuantity[ valFunc_, units_ ] := fitQuantity[ valFunc, units, 1.0 ];
+fitQuantity[ valFunc_, units_, scale_ ] := fitQuantity[ valFunc, units, scale, 0.0 ];
+fitQuantity[ valFunc_, units_, scale_, offset_ ][ value_ ] := fitQuantity0[ valFunc @ value, units, scale, offset ];
+fitQuantity[ ___ ][ ___ ] := Missing[ "NotAvailable" ];
+
+fitQuantity0 // ClearAll;
+fitQuantity0[ m_Missing, _, _, _ ] := m;
+
+fitQuantity0[ value_, "Joules"              , scale_, offset_ ] := joulesToQuantity[    (1.0 * value - offset) / scale ];
+fitQuantity0[ value_, "Grams"               , scale_, offset_ ] := gramsToQuantity[     (1.0 * value - offset) / scale ];
+fitQuantity0[ value_, "Meters"              , scale_, offset_ ] := metersToQuantity[    (1.0 * value - offset) / scale ];
+fitQuantity0[ value_, "Pascals"             , scale_, offset_ ] := pascalsToQuantity[   (1.0 * value - offset) / scale ];
+fitQuantity0[ value_, "MetersPerSecond"     , scale_, offset_ ] := speedQuantity[       (1.0 * value - offset) / scale ];
+fitQuantity0[ value_, "DegreesCelsius"      , scale_, offset_ ] := temperatureQuantity[ (1.0 * value - offset) / scale ];
+fitQuantity0[ value_, "Cycles"              , scale_, offset_ ] := cycleQuantity[       (1.0 * value - offset) / scale ];
+fitQuantity0[ value_, "RevolutionsPerMinute", scale_, offset_ ] := cadenceQuantity[     (1.0 * value - offset) / scale ];
+fitQuantity0[ value_, "Seconds"             , scale_, offset_ ] := secondsToQuantity[   (1.0 * value - offset) / scale ];
+
+fitQuantity0[ value_, units_, scale_, offset_ ] := Quantity[ (1.0 * value - offset) / scale, units ];
+
+fitQuantity0[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -872,7 +806,7 @@ fitByte[ ___ ] := Missing[ "NotAvailable" ];
 
 fitByteA // ClearAll;
 fitByteA[ { $invalidUINT8... } ] := Missing[ "NotAvailable" ];
-fitByteA[ list_List ] := fitByte /@ list;
+fitByteA[ list_List ] := ByteArray[ fitByte /@ list ];
 fitByteA[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
@@ -903,6 +837,19 @@ fitUINT8A[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
+(*fitUINT8Z*)
+fitUINT8Z // ClearAll;
+fitUINT8Z[ $invalidUINT8Z ] := Missing[ "NotAvailable" ];
+fitUINT8Z[ n_Integer ] := n;
+fitUINT8Z[ ___ ] := Missing[ "NotAvailable" ];
+
+fitUINT8ZA // ClearAll;
+fitUINT8ZA[ { $invalidUINT8Z... } ] := Missing[ "NotAvailable" ];
+fitUINT8ZA[ list_List ] := fitUINT8Z /@ list;
+fitUINT8ZA[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
 (*fitUINT16*)
 fitUINT16 // ClearAll;
 fitUINT16[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
@@ -913,6 +860,19 @@ fitUINT16A // ClearAll;
 fitUINT16A[ { $invalidUINT16... } ] := Missing[ "NotAvailable" ];
 fitUINT16A[ list_List ] := fitUINT16 /@ list;
 fitUINT16A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitUINT16Z*)
+fitUINT16Z // ClearAll;
+fitUINT16Z[ $invalidUINT16Z ] := Missing[ "NotAvailable" ];
+fitUINT16Z[ n_Integer ] := n;
+fitUINT16Z[ ___ ] := Missing[ "NotAvailable" ];
+
+fitUINT16ZA // ClearAll;
+fitUINT16ZA[ { $invalidUINT16Z... } ] := Missing[ "NotAvailable" ];
+fitUINT16ZA[ list_List ] := fitUINT16Z /@ list;
+fitUINT16ZA[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -935,10 +895,10 @@ fitUINT32[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
 fitUINT32[ n_Integer ] := n;
 fitUINT32[ ___ ] := Missing[ "NotAvailable" ];
 
-fitSINT32A // ClearAll;
-fitSINT32A[ { $invalidSINT32... } ] := Missing[ "NotAvailable" ];
-fitSINT32A[ list_List ] := fitSINT32 /@ list;
-fitSINT32A[ ___ ] := Missing[ "NotAvailable" ];
+fitUINT32A // ClearAll;
+fitUINT32A[ { $invalidUINT32... } ] := Missing[ "NotAvailable" ];
+fitUINT32A[ list_List ] := fitUINT32 /@ list;
+fitUINT32A[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -1066,24 +1026,42 @@ fitLocalTimestamp[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*fitTime16*)
-fitTime16 // ClearAll;
-fitTime16[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
-fitTime16[ n___ ] := fitTime @ n;
+(*fitSeconds32*)
+fitSeconds32 // ClearAll;
+fitSeconds32[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
+fitSeconds32[ n_Integer ] := secondsToQuantity @ n;
+fitSeconds32[ ___ ] := Missing[ "NotAvailable" ];
+
+fitSeconds32A // ClearAll;
+fitSeconds32A[ { $invalidUINT32... } ] := Missing[ "NotAvailable" ];
+fitSeconds32A[ list_List ] := fitSeconds32 /@ list;
+fitSeconds32A[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*fitTime32*)
-fitTime32 // ClearAll;
-fitTime32[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
-fitTime32[ n___ ] := fitTime @ n;
+(*fitKiloSeconds16*)
+fitKiloSeconds16 // ClearAll;
+fitKiloSeconds16[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
+fitKiloSeconds16[ n___ ] := fitKiloSeconds @ n;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*fitTime*)
-fitTime // ClearAll;
-fitTime[ n_Integer ] := secondsToQuantity[ n/1000.0 ];
-fitTime[ ___ ] := Missing[ "NotAvailable" ];
+(*fitKiloSeconds32*)
+fitKiloSeconds32 // ClearAll;
+fitKiloSeconds32[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
+fitKiloSeconds32[ n___ ] := fitKiloSeconds @ n;
+
+fitKiloSeconds32A // ClearAll;
+fitKiloSeconds32A[ { $invalidUINT32... } ] := Missing[ "NotAvailable" ];
+fitKiloSeconds32A[ list_List ] := fitKiloSeconds32 /@ list;
+fitKiloSeconds32A[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitKiloSeconds*)
+fitKiloSeconds // ClearAll;
+fitKiloSeconds[ n_Integer ] := secondsToQuantity[ n/1000.0 ];
+fitKiloSeconds[ ___ ] := Missing[ "NotAvailable" ];
 
 secondsToQuantity := secondsToQuantity =
     Block[ { PrintTemporary },
@@ -1097,14 +1075,6 @@ fitTimeOfDay // ClearAll;
 fitTimeOfDay[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
 fitTimeOfDay[ n_Integer ] := secondsToTimeObject @ n;
 fitTimeOfDay[ ___ ] := Missing[ "NotAvailable" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitSeconds*)
-fitSeconds // ClearAll;
-fitSeconds[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
-fitSeconds[ n_Integer ] := secondsToQuantity @ n;
-fitSeconds[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -1423,6 +1393,11 @@ fitPower8[ n___ ] := fitPower @ n;
 fitPower16 // ClearAll;
 fitPower16[ $invalidUINT16 ] := Quantity[ 0.0, "Watts" ];
 fitPower16[ n___ ] := fitPower @ n;
+
+fitPower16A // ClearAll;
+fitPower16A[ { $invalidUINT16... } ] := Missing[ "NotAvailable" ];
+fitPower16A[ list_List ] := fitPower16 /@ list;
+fitPower16A[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -2101,7 +2076,7 @@ fitWktDuration0 // ClearAll;
 fitWktDuration0[ _Missing, _        ] := Missing[ "NotAvailable" ];
 fitWktDuration0[ _       , _Missing ] := Missing[ "NotAvailable" ];
 
-fitWktDuration0[ w_, "Time"                 ] := fitTime @ w;
+fitWktDuration0[ w_, "Time"                 ] := fitKiloSeconds @ w;
 fitWktDuration0[ w_, "Distance"             ] := fitDistance @ w;
 fitWktDuration0[ w_, "HeartRateLessThan"    ] := fitHeartRate @ w;
 fitWktDuration0[ w_, "HeartRateGreaterThan" ] := fitHeartRate @ w;
@@ -2128,10 +2103,12 @@ fitWktTarget[ ___ ] := Missing[ "NotAvailable" ];
 
 
 $$wktStepPowerType = "Power" | "Power3S" | "Power10S" | "Power30S" | "PowerLap";
+$$wktStepHRType    = "HeartRate" | "HeartRate3S" | "HeartRate10S" | "HeartRate30S" | "HeartRateLap";
 
 fitWktTarget0 // ClearAll;
 fitWktTarget0[ w_, _Missing, _Missing, $$wktStepPowerType ] := fitWktTargetPower @ w;
 fitWktTarget0[ _, low_Integer, high_Integer, $$wktStepPowerType ] := fitPowerInterval[ low, high ];
+fitWktTarget0[ _, low_Integer, high_Integer, $$wktStepHRType ] := fitHRInterval[ low, high ];
 fitWktTarget0[ w_Integer, _Missing|0, _Missing|0, _Missing ] := w;
 fitWktTarget0[ w_Integer, _Missing|0, _Missing|0, "Open" ] := w;
 fitWktTarget0[ _Missing, _Missing|0, _Missing|0, _ ] := Missing[ "NotAvailable" ];
@@ -2180,6 +2157,22 @@ fitPowerInterval1[ ___ ] := Missing[ "NotAvailable" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
+(*fitHRInterval*)
+fitHRInterval // ClearAll;
+fitHRInterval[ a_, b_ ] := fitHRInterval0[ fitHeartRate @ a, fitHeartRate @ b ];
+fitHRInterval[ ___ ] := Missing[ "NotAvailable" ];
+
+fitHRInterval0 // ClearAll;
+fitHRInterval0[ a_Quantity, b_Quantity ] := fitHRInterval1 @ Interval[ { a, b } ];
+fitHRInterval0[ a_Interval, b_Interval ] := fitHRInterval1 @ IntervalUnion[ a, b ];
+
+fitHRInterval1 // ClearAll;
+fitHRInterval1[ q: Quantity[ _Interval, "Beats"/"Minutes" ] ] := q;
+fitHRInterval1[ q: Quantity[ _Interval, _ ] ] := UnitConvert[ q, "Beats"/"Minutes" ];
+fitHRInterval1[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
 (*fitWktTargetPower*)
 fitWktTargetPower // ClearAll;
 fitWktTargetPower[ w_ ] := If[ TrueQ[ w > 1000 ], fitPower16[ w - 1000 ], fitPZRange[ w ] ];
@@ -2210,7 +2203,87 @@ $pzBuckets := cached @ Append[
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
+(*gramsToQuantity*)
+gramsToQuantity // ClearAll;
+gramsToQuantity[ n_ ] := gramsToQuantity[ n, $weightUnits ];
+gramsToQuantity[ n_, "Imperial" ] := Quantity[ 0.00220462 * n, "Pounds" ];
+
+gramsToQuantity[ n_, _ ] :=
+    Which[ n > 1000, Quantity[  0.001 * n, "Kilograms"   ],
+           n > 1   , Quantity[  1.000 * n, "Grams"       ],
+           True    , Quantity[ 1000.0 * n, "Milligrams"  ]
+    ];
+
+gramsToQuantity[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*joulesToQuantity*)
+joulesToQuantity // ClearAll;
+
+joulesToQuantity[ n_ ] :=
+    Which[ n > 1000000, Quantity[ 0.000001 * n, "Megajoules"  ],
+           n > 1000   , Quantity[ 0.001 * n   , "Kilojoules"  ],
+           True       , Quantity[ 1.0 * n     , "Joules"      ]
+    ];
+
+joulesToQuantity[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*pascalsToQuantity*)
+pascalsToQuantity // ClearAll;
+pascalsToQuantity[ n_ ] := pressureQuantity[ n, $pressureUnits ];
+pascalsToQuantity[ n_, "Imperial" ] := Quantity[ 0.00014504 * n, "PoundsForce"/"Inches"^2 ];
+pascalsToQuantity[ n_, _ ] := Quantity[ 1.0 * n, "Pascals" ];
+pascalsToQuantity[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*metersToQuantity*)
+metersToQuantity // ClearAll;
+metersToQuantity[ n_ ] := metersToQuantity[ n, $distanceUnits ];
+metersToQuantity[ n_, "Imperial" ] := imperialDistance @ n;
+metersToQuantity[ n_, _ ] := metricDistance @ n;
+metersToQuantity[ ___ ] := Missing[ "NotAvailable" ];
+
+imperialDistance // ClearAll;
+imperialDistance[ n_ ] :=
+    Which[ n > 1609.34, Quantity[ 0.000621371 * n, "Miles"  ],
+           n > 0.3048 , Quantity[ 3.28084 * n    , "Feet"   ],
+           True       , Quantity[ 39.3701 * n    , "Inches" ]
+    ];
+
+metricDistance // ClearAll;
+metricDistance[ n_ ] :=
+    Which[ n > 1000, Quantity[  0.001 * n, "Kilometers"  ],
+           n > 1   , Quantity[  1.000 * n, "Meters"      ],
+           n > 0.05, Quantity[  100.0 * n, "Centimeters" ],
+           True    , Quantity[ 1000.0 * n, "Millimeters" ]
+    ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*speedQuantity*)
+speedQuantity // ClearAll;
+speedQuantity[ n_ ] := speedQuantity[ n, $speedUnits ];
+speedQuantity[ n_, "Imperial" ] := Quantity[ 2.23694 * n, "Miles"/"Hours" ];
+speedQuantity[ n_, _ ] := Quantity[ 1.0 * n, "Meters"/"Seconds" ];
+speedQuantity[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*temperatureQuantity*)
+temperatureQuantity // ClearAll;
+temperatureQuantity[ n_ ] := temperatureQuantity[ n, $temperatureUnits ];
+temperatureQuantity[ n_, "Imperial" ] := Quantity[ 32.0 + 1.8 n, "DegreesFahrenheit" ];
+temperatureQuantity[ n_, _ ] := Quantity[ 1.0 * n, "DegreesCelsius" ];
+temperatureQuantity[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
 (*cadenceQuantity*)
+cadenceQuantity // ClearAll;
 cadenceQuantity[ n_ ] := cadenceQuantity[ n, $sport ]; (* TODO: set this up in prefs *)
 cadenceQuantity[ n_, "Cycling" ] := Quantity[ 1.0*n, "Revolutions"/"Minutes" ];
 cadenceQuantity[ n_, "Walking"|"Running"|"Hiking" ] := Quantity[ 2.0*n, "Steps"/"Minutes" ];
@@ -2220,6 +2293,7 @@ cadenceQuantity[ n_, _ ] := Quantity[ 1.0 * n, IndependentUnit[ "Cycles" ]/"Minu
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*cycleQuantity*)
+cycleQuantity // ClearAll;
 cycleQuantity[ n_ ] := cycleQuantity[ n, $sport ];
 cycleQuantity[ n_, "Cycling" ] := Quantity[ 1.0*n, "Revolutions" ];
 cycleQuantity[ n_, "Walking"|"Running"|"Hiking" ] := Quantity[ 2.0*n, "Steps" ];

@@ -4108,7 +4108,7 @@ typedef struct
 // Messages
 ///////////////////////////////////////////////////////////////////////
 
-#define FIT_MESG_SIZE       310
+#define FIT_MESG_SIZE       362
 #define FIT_MESG_DEF_SIZE   398
 
 // pad message
@@ -5327,17 +5327,17 @@ typedef struct
 
 // session message
 
-#define FIT_SESSION_MESG_SIZE                                                   310
+#define FIT_SESSION_MESG_SIZE                                                   362
 #define FIT_SESSION_MESG_DEF_SIZE                                               398
-#define FIT_SESSION_MESG_TIME_IN_HR_ZONE_COUNT                                  1
+#define FIT_SESSION_MESG_TIME_IN_HR_ZONE_COUNT                                  5
 #define FIT_SESSION_MESG_TIME_IN_SPEED_ZONE_COUNT                               1
 #define FIT_SESSION_MESG_TIME_IN_CADENCE_ZONE_COUNT                             1
-#define FIT_SESSION_MESG_TIME_IN_POWER_ZONE_COUNT                               1
+#define FIT_SESSION_MESG_TIME_IN_POWER_ZONE_COUNT                               7
 #define FIT_SESSION_MESG_OPPONENT_NAME_COUNT                                    16
 #define FIT_SESSION_MESG_AVG_POWER_POSITION_COUNT                               2
 #define FIT_SESSION_MESG_MAX_POWER_POSITION_COUNT                               2
 #define FIT_SESSION_MESG_STROKE_COUNT_COUNT                                     1
-#define FIT_SESSION_MESG_ZONE_COUNT_COUNT                                       1
+#define FIT_SESSION_MESG_ZONE_COUNT_COUNT                                       7
 #define FIT_SESSION_MESG_AVG_TOTAL_HEMOGLOBIN_CONC_COUNT                        1
 #define FIT_SESSION_MESG_MIN_TOTAL_HEMOGLOBIN_CONC_COUNT                        1
 #define FIT_SESSION_MESG_MAX_TOTAL_HEMOGLOBIN_CONC_COUNT                        1
@@ -5767,14 +5767,14 @@ typedef struct
 
 // lap message
 
-#define FIT_LAP_MESG_SIZE                                                       189
+#define FIT_LAP_MESG_SIZE                                                       241
 #define FIT_LAP_MESG_DEF_SIZE                                                   254
-#define FIT_LAP_MESG_TIME_IN_HR_ZONE_COUNT                                      1
+#define FIT_LAP_MESG_TIME_IN_HR_ZONE_COUNT                                      5
 #define FIT_LAP_MESG_TIME_IN_SPEED_ZONE_COUNT                                   1
 #define FIT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT                                 1
-#define FIT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT                                   1
+#define FIT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT                                   7
 #define FIT_LAP_MESG_STROKE_COUNT_COUNT                                         1
-#define FIT_LAP_MESG_ZONE_COUNT_COUNT                                           1
+#define FIT_LAP_MESG_ZONE_COUNT_COUNT                                           7
 #define FIT_LAP_MESG_AVG_TOTAL_HEMOGLOBIN_CONC_COUNT                            1
 #define FIT_LAP_MESG_MIN_TOTAL_HEMOGLOBIN_CONC_COUNT                            1
 #define FIT_LAP_MESG_MAX_TOTAL_HEMOGLOBIN_CONC_COUNT                            1
@@ -6054,10 +6054,10 @@ typedef struct
 
 // length message
 
-#define FIT_LENGTH_MESG_SIZE                                                    38
+#define FIT_LENGTH_MESG_SIZE                                                    50
 #define FIT_LENGTH_MESG_DEF_SIZE                                                59
 #define FIT_LENGTH_MESG_STROKE_COUNT_COUNT                                      1
-#define FIT_LENGTH_MESG_ZONE_COUNT_COUNT                                        1
+#define FIT_LENGTH_MESG_ZONE_COUNT_COUNT                                        7
 
 typedef struct
 {
@@ -6458,16 +6458,17 @@ typedef struct
 
 // device_info message
 
-#define FIT_DEVICE_INFO_MESG_SIZE                                               52
+#define FIT_DEVICE_INFO_MESG_SIZE                                               71
 #define FIT_DEVICE_INFO_MESG_DEF_SIZE                                           62
+#define FIT_DEVICE_INFO_MESG_DESCRIPTOR_COUNT                                   20
 #define FIT_DEVICE_INFO_MESG_PRODUCT_NAME_COUNT                                 20
-#define FIT_DEVICE_INFO_MESG_DESCRIPTOR_COUNT                                   1
 
 typedef struct
 {
    FIT_DATE_TIME timestamp; // 1 * s + 0,
    FIT_UINT32Z serial_number; //
    FIT_UINT32 cum_operating_time; // 1 * s + 0, Reset by new battery or charge.
+   FIT_STRING descriptor[FIT_DEVICE_INFO_MESG_DESCRIPTOR_COUNT]; // Used to describe the sensor or location
    FIT_STRING product_name[FIT_DEVICE_INFO_MESG_PRODUCT_NAME_COUNT]; // Optional free form string to indicate the devices name or model
    FIT_MANUFACTURER manufacturer; //
    FIT_UINT16 product; //
@@ -6479,7 +6480,6 @@ typedef struct
    FIT_UINT8 hardware_version; //
    FIT_BATTERY_STATUS battery_status; //
    FIT_BODY_LOCATION sensor_position; // Indicates the location of the sensor
-   FIT_STRING descriptor[FIT_DEVICE_INFO_MESG_DESCRIPTOR_COUNT]; // Used to describe the sensor or location
    FIT_UINT8Z ant_transmission_type; //
    FIT_ANT_NETWORK ant_network; //
    FIT_SOURCE_TYPE source_type; //
@@ -6491,6 +6491,7 @@ typedef FIT_UINT8 FIT_DEVICE_INFO_FIELD_NUM;
 #define FIT_DEVICE_INFO_FIELD_NUM_TIMESTAMP ((FIT_DEVICE_INFO_FIELD_NUM)253)
 #define FIT_DEVICE_INFO_FIELD_NUM_SERIAL_NUMBER ((FIT_DEVICE_INFO_FIELD_NUM)3)
 #define FIT_DEVICE_INFO_FIELD_NUM_CUM_OPERATING_TIME ((FIT_DEVICE_INFO_FIELD_NUM)7)
+#define FIT_DEVICE_INFO_FIELD_NUM_DESCRIPTOR ((FIT_DEVICE_INFO_FIELD_NUM)19)
 #define FIT_DEVICE_INFO_FIELD_NUM_PRODUCT_NAME ((FIT_DEVICE_INFO_FIELD_NUM)27)
 #define FIT_DEVICE_INFO_FIELD_NUM_MANUFACTURER ((FIT_DEVICE_INFO_FIELD_NUM)2)
 #define FIT_DEVICE_INFO_FIELD_NUM_PRODUCT ((FIT_DEVICE_INFO_FIELD_NUM)4)
@@ -6502,7 +6503,6 @@ typedef FIT_UINT8 FIT_DEVICE_INFO_FIELD_NUM;
 #define FIT_DEVICE_INFO_FIELD_NUM_HARDWARE_VERSION ((FIT_DEVICE_INFO_FIELD_NUM)6)
 #define FIT_DEVICE_INFO_FIELD_NUM_BATTERY_STATUS ((FIT_DEVICE_INFO_FIELD_NUM)11)
 #define FIT_DEVICE_INFO_FIELD_NUM_SENSOR_POSITION ((FIT_DEVICE_INFO_FIELD_NUM)18)
-#define FIT_DEVICE_INFO_FIELD_NUM_DESCRIPTOR ((FIT_DEVICE_INFO_FIELD_NUM)19)
 #define FIT_DEVICE_INFO_FIELD_NUM_ANT_TRANSMISSION_TYPE ((FIT_DEVICE_INFO_FIELD_NUM)20)
 #define FIT_DEVICE_INFO_FIELD_NUM_ANT_NETWORK ((FIT_DEVICE_INFO_FIELD_NUM)22)
 #define FIT_DEVICE_INFO_FIELD_NUM_SOURCE_TYPE ((FIT_DEVICE_INFO_FIELD_NUM)25)
@@ -6513,6 +6513,7 @@ typedef enum
    FIT_DEVICE_INFO_MESG_TIMESTAMP,
    FIT_DEVICE_INFO_MESG_SERIAL_NUMBER,
    FIT_DEVICE_INFO_MESG_CUM_OPERATING_TIME,
+   FIT_DEVICE_INFO_MESG_DESCRIPTOR,
    FIT_DEVICE_INFO_MESG_PRODUCT_NAME,
    FIT_DEVICE_INFO_MESG_MANUFACTURER,
    FIT_DEVICE_INFO_MESG_PRODUCT,
@@ -6524,7 +6525,6 @@ typedef enum
    FIT_DEVICE_INFO_MESG_HARDWARE_VERSION,
    FIT_DEVICE_INFO_MESG_BATTERY_STATUS,
    FIT_DEVICE_INFO_MESG_SENSOR_POSITION,
-   FIT_DEVICE_INFO_MESG_DESCRIPTOR,
    FIT_DEVICE_INFO_MESG_ANT_TRANSMISSION_TYPE,
    FIT_DEVICE_INFO_MESG_ANT_NETWORK,
    FIT_DEVICE_INFO_MESG_SOURCE_TYPE,
@@ -7365,13 +7365,13 @@ typedef struct
 
 // segment_lap message
 
-#define FIT_SEGMENT_LAP_MESG_SIZE                                               210
+#define FIT_SEGMENT_LAP_MESG_SIZE                                               250
 #define FIT_SEGMENT_LAP_MESG_DEF_SIZE                                           224
 #define FIT_SEGMENT_LAP_MESG_NAME_COUNT                                         16
-#define FIT_SEGMENT_LAP_MESG_TIME_IN_HR_ZONE_COUNT                              1
+#define FIT_SEGMENT_LAP_MESG_TIME_IN_HR_ZONE_COUNT                              5
 #define FIT_SEGMENT_LAP_MESG_TIME_IN_SPEED_ZONE_COUNT                           1
 #define FIT_SEGMENT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT                         1
-#define FIT_SEGMENT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT                           1
+#define FIT_SEGMENT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT                           7
 #define FIT_SEGMENT_LAP_MESG_UUID_COUNT                                         33
 
 typedef struct
