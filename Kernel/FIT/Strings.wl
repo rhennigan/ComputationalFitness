@@ -14,6 +14,8 @@ Begin[ "`Private`" ];
 (* ::Subsection::Closed:: *)
 (*Utilities*)
 
+(* FIXME: move this string stuff to SDK utilities *)
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*toNiceCamelCase*)
@@ -36,7 +38,10 @@ snakeToCamel // beginDefinition;
 snakeToCamel[ s_String ] :=
     StringReplace[
         StringJoin @ ReplaceAll[
-            capitalize @ ToLowerCase @ StringSplit[ s, "_" ],
+            capitalize @ ToLowerCase @ StringSplit[
+                s,
+                { "_", d: DigitCharacter.. :> d }
+            ],
             $capitalizationRules1
         ],
         $capitalizationRules2
@@ -64,12 +69,15 @@ $capitalizationRules1 = {
     "Aux"             -> "Auxiliary",
     "AUX"             -> "Auxiliary",
     "Avg"             -> "Average",
+    "Bool"            -> "Boolean",
+    "Bosu"            -> "BOSU",
     "BPM"             -> "BeatsPerMinute",
     "Calc"            -> "Calculation",
     "Cmplt"           -> "Complete",
     "CNT"             -> "Count",
     "COMM"            -> "Communication",
     "Conc"            -> "Concentration",
+    "Connectiq"       -> "ConnectIQ",
     "Dist"            -> "Distance",
     "Elev"            -> "Elevation",
     "Enum"            -> "Enumeration",
@@ -111,6 +119,8 @@ $capitalizationRules1 = {
     "NUM"             -> "Number",
     "Obdii"           -> "OBDII",
     "Ohr"             -> "OHR",
+    "OHR"             -> "OpticalHeartRate",
+    "Oled"            -> "OLED",
     "PCO"             -> "PlatformCenterOffset",
     "PWR"             -> "Power",
     "Ref"             -> "Reference",
@@ -119,10 +129,12 @@ $capitalizationRules1 = {
     "Rso"             -> "RSO",
     "RX"              -> "Receive",
     "SDM"             -> "StrideAndDistanceMonitor",
+    "Sint"            -> "SignedInteger",
     "Soc"             -> "StateOfCharge",
     "SPD"             -> "Speed",
     "Spdcad"          -> "SpeedCadence",
     "TX"              -> "Transmit",
+    "Uint"            -> "UnsignedInteger",
     "Ups"             -> "UPS",
     "Us"              -> "US",
     "Utm"             -> "UTM",
@@ -139,6 +151,7 @@ $capitalizationRules2 // ClearAll;
 $capitalizationRules2 = {
 (* cSpell:disable *)
     "24H"~~EndOfString                   -> "24Hour",
+    "3Way"                               -> "ThreeWay",
     "ActiveMET"                          -> "ActiveMetabolicRate",
     "Antfs"                              -> "ANTFS",
     "Antplus"                            -> "ANTPlus",
@@ -181,17 +194,19 @@ $capitalizationRules2 = {
     "NumberLengths"                      -> "NumberOfLengths",
     "NumberSessions"                     -> "NumberOfSessions",
     "NumberValid"                        -> "NumberOfValid",
+    "OneDSensor"                         -> "OneDimensionalSensor",
     "PerSec"~~EndOfString                -> "PerSecond",
+    "Plyo"                               -> "Plyometrics",
     "PosGrade"                           -> "PositiveGrade",
     "PositionLat"~~EndOfString           -> "PositionLatitude",
     "PositionLong"~~EndOfString          -> "PositionLongitude",
     "PosVertical"                        -> "PositiveVertical",
-    "Sint"                               -> "SignedInteger",
     "Spdcad"                             -> "SpeedCadence",
     "SWCLat"                             -> "SouthWestCornerLatitude",
     "SWCLong"                            -> "SouthWestCornerLongitude",
+    "ThreeDSensor"                       -> "ThreeDimensionalSensor",
     "TransType"                          -> "TransmissionType",
-    "Uint"                               -> "UnsignedInteger",
+    "TwoDSensor"                         -> "TwoDimensionalSensor",
     "Wheelsize"                          -> "WheelSize",
     "Wifi"                               -> "WiFi",
     Nothing
@@ -325,80 +340,6 @@ $fitGender0 = <|
 |>;
 
 $fitGender = toNiceCamelCase /@ removePrefix[ $fitGender0, "FIT_GENDER_" ];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fitLanguage*)
-fitLanguage // ClearAll;
-fitLanguage[ n_Integer ] := Lookup[ $fitLanguage, n, Missing[ "NotAvailable" ] ];
-fitLanguage[ ___ ] := Missing[ "NotAvailable" ];
-
-$fitLanguage0 = <|
-    0   -> "FIT_LANGUAGE_ENGLISH",
-    1   -> "FIT_LANGUAGE_FRENCH",
-    2   -> "FIT_LANGUAGE_ITALIAN",
-    3   -> "FIT_LANGUAGE_GERMAN",
-    4   -> "FIT_LANGUAGE_SPANISH",
-    5   -> "FIT_LANGUAGE_CROATIAN",
-    6   -> "FIT_LANGUAGE_CZECH",
-    7   -> "FIT_LANGUAGE_DANISH",
-    8   -> "FIT_LANGUAGE_DUTCH",
-    9   -> "FIT_LANGUAGE_FINNISH",
-    10  -> "FIT_LANGUAGE_GREEK",
-    11  -> "FIT_LANGUAGE_HUNGARIAN",
-    12  -> "FIT_LANGUAGE_NORWEGIAN",
-    13  -> "FIT_LANGUAGE_POLISH",
-    14  -> "FIT_LANGUAGE_PORTUGUESE",
-    15  -> "FIT_LANGUAGE_SLOVAKIAN",
-    16  -> "FIT_LANGUAGE_SLOVENIAN",
-    17  -> "FIT_LANGUAGE_SWEDISH",
-    18  -> "FIT_LANGUAGE_RUSSIAN",
-    19  -> "FIT_LANGUAGE_TURKISH",
-    20  -> "FIT_LANGUAGE_LATVIAN",
-    21  -> "FIT_LANGUAGE_UKRAINIAN",
-    22  -> "FIT_LANGUAGE_ARABIC",
-    23  -> "FIT_LANGUAGE_FARSI",
-    24  -> "FIT_LANGUAGE_BULGARIAN",
-    25  -> "FIT_LANGUAGE_ROMANIAN",
-    26  -> "FIT_LANGUAGE_CHINESE",
-    27  -> "FIT_LANGUAGE_JAPANESE",
-    28  -> "FIT_LANGUAGE_KOREAN",
-    29  -> "FIT_LANGUAGE_TAIWANESE",
-    30  -> "FIT_LANGUAGE_THAI",
-    31  -> "FIT_LANGUAGE_HEBREW",
-    32  -> "FIT_LANGUAGE_BRAZILIAN_PORTUGUESE",
-    33  -> "FIT_LANGUAGE_INDONESIAN",
-    34  -> "FIT_LANGUAGE_MALAYSIAN",
-    35  -> "FIT_LANGUAGE_VIETNAMESE",
-    36  -> "FIT_LANGUAGE_BURMESE",
-    37  -> "FIT_LANGUAGE_MONGOLIAN",
-    254 -> "FIT_LANGUAGE_CUSTOM"
-|>;
-
-
-toLanguage // beginDefinition;
-
-toLanguage[ "Taiwanese"           ] := Entity[ "Language", "ChineseMinNan" ];
-toLanguage[ "Farsi"               ] := Entity[ "Language", "Dari"          ];
-toLanguage[ "Slovakian"           ] := Entity[ "Language", "Slovak"        ];
-toLanguage[ "BrazilianPortuguese" ] := Entity[ "Language", "Portuguese"    ];
-toLanguage[ "Malaysian"           ] := Entity[ "Language", "MalayStandard" ];
-
-toLanguage[ name_String ] :=
-    With[ { lang = LanguageData @ name },
-        If[ MatchQ[ lang, _Entity ],
-            lang,
-            Missing[ "NotAvailable" ]
-        ]
-    ];
-
-toLanguage // endDefinition;
-
-
-$fitLanguage = DeleteMissing @ Map[
-    toLanguage,
-    toNiceCamelCase /@ removePrefix[ $fitLanguage0, "FIT_LANGUAGE_" ]
-];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

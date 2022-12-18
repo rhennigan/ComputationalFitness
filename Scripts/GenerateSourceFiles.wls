@@ -49,6 +49,51 @@ Needs[ "RH`ComputationalFitness`Package`" -> "cf`" ];
 (* ::Section::Closed:: *)
 (*Definitions*)
 
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Enum Entity Processing*)
+
+processEnum // ClearAll;
+processEnum[ "Language", enum_Association ] := toLanguage /@ enum;
+processEnum[ "LanguageBits0", enum_Association ] := toLanguage /@ enum;
+processEnum[ "LanguageBits1", enum_Association ] := toLanguage /@ enum;
+processEnum[ "LanguageBits2", enum_Association ] := toLanguage /@ enum;
+processEnum[ "LanguageBits3", enum_Association ] := toLanguage /@ enum;
+processEnum[ "LanguageBits4", enum_Association ] := toLanguage /@ enum;
+processEnum[ _, enum_ ] := enum;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*toLanguage*)
+toLanguage // ClearAll;
+
+toLanguage[ "Taiwanese"           ] := Entity[ "Language", "ChineseMinNan" ];
+toLanguage[ "Farsi"               ] := Entity[ "Language", "Dari"          ];
+toLanguage[ "Slovakian"           ] := Entity[ "Language", "Slovak"        ];
+toLanguage[ "BrazilianPortuguese" ] := Entity[ "Language", "Portuguese"    ];
+toLanguage[ "Malaysian"           ] := Entity[ "Language", "MalayStandard" ];
+
+toLanguage[ name_String ] := With[ { entity = LanguageData @ name }, standardizeEntityName @ entity /; entityQ @ entity ];
+toLanguage[ other_ ] := other;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*standardizeEntityName*)
+standardizeEntityName // ClearAll;
+
+standardizeEntityName[ Entity[ type_, name_String ] ] :=
+    With[ { entity = Entity[ type, First @ StringSplit[ name, "::" ] ] },
+        entity /; entityQ @ entity
+    ];
+
+standardizeEntityName[ other_ ] := other;
+
+entityQ[ entity_Entity ] := ListQ @ entity[ "Properties" ];
+entityQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*niceMessageName*)
 niceMessageName // ClearAll;
 niceMessageName[ type_String ] :=
     cf`toNiceCamelCase @ StringDelete[
@@ -347,6 +392,7 @@ $importCaseTemplate = "\
 $exportCaseTemplate = "\
             case `MessageNumber`:
             {
+                exported++;
                 `ExportFunctionName`(libData, data, idx, fp);
                 break;
             }";
@@ -849,7 +895,7 @@ toExpression[ val_String ] :=
     ];
 
 toExpression[ val_String ] :=
-    With[ { new = StringDelete[ val, StartOfString ~~ "0x" ] },
+    With[ { new = StringDelete[ val, { StartOfString ~~ "0x", "L" ~~ EndOfString } ] },
         FromDigits[ new, 16 ] /; new =!= val
     ];
 
@@ -923,35 +969,66 @@ expandDefineValues[ defineValues_Association, defineData_List ] :=
 
 
 
+$definedTypeList = StringCases[
+    header,
+    StringExpression[
+        "typedef ",
+        (WordCharacter | "_")..,
+        " ",
+        type: (WordCharacter | "_")..,
+        ";"
+    ] :> type
+];
+
+otherTypePrefixQ // ClearAll;
+
+otherTypePrefixQ[ type_String, name_String ] := ContainsAny[
+    $definedTypeList,
+    Rest @ FoldList[ #1 <> "_" <> #2 &, type, StringSplit[ name, "_" ] ]
+];
+
+otherTypePrefixQ[ ___ ] := False;
+
+
+typePrefixQ // ClearAll;
+typePrefixQ[ type_String, name_, val_ ] :=
+    And[ ! TrueQ @ otherTypePrefixQ[ type, name ],
+         ! partialTypeNameQ @ name,
+         ! partialTypeNameQ @ val
+    ];
+
+typePrefixQ[ ___ ] := False;
+
+partialTypeNameQ // ClearAll;
+partialTypeNameQ[ name_String ] := Or[ StringStartsQ[ name, "_" ], StringEndsQ[ name, "_" ] ];
+partialTypeNameQ[ ___ ] := False;
+
+
 makeTypeRule // ClearAll;
 
 makeTypeRule[ type_ ] :=
     Module[ { content, rules },
 
-        content =
-            StringCases[
-                header,
-                StringExpression[
-                    "#define ",
-                    (WordCharacter | "_")...,
-                    type,
-                    "_",
-                    name: (WordCharacter | "_")..,
-                    WhitespaceCharacter...,
-                    val: Except[ WhitespaceCharacter | "\n" ]..,
-                    WhitespaceCharacter | "\n"
-                ] :> { name, type, toExpression[ type, val ] }
-            ];
+        content = StringCases[
+            header,
+            StringExpression[
+                "#define ",
+                (WordCharacter | "_")...,
+                type,
+                "_",
+                name: (WordCharacter | "_")..,
+                WhitespaceCharacter...,
+                val: Except[ WhitespaceCharacter | "\n" ]..,
+                WhitespaceCharacter | "\n"
+            ] /; typePrefixQ[ type, name, val ] :>
+                { name, type, toExpression[ type, val ] }
+        ];
 
-
-        rules =
-            KeySort @ Association @ Cases[
-                content,
-                { name_String, prefix_String, value_Integer } :>
-                    (value ->
-                        cf`toNiceCamelCase @ StringDelete[ name, StartOfString ~~ prefix ~~ "_" ]
-)
-            ];
+        rules = KeySort @ Association @ Cases[
+            content,
+            { name_String, prefix_String, value_Integer } :>
+                (value -> cf`toNiceCamelCase @ StringDelete[ name, StartOfString ~~ prefix ~~ "_" ])
+        ];
 
         enumTypeName @ type -> rules
     ];
@@ -996,10 +1073,15 @@ $enumTypeData = KeySort @ Replace[
     { 2 }
 ];
 
+$processedEnumData = Association @ KeyValueMap[
+    #1 -> processEnum[ #1, #2 ] &,
+    $enumTypeData
+];
+
 
 enumFile = FileNameJoin @ { $pacletDir, "Data", "FITEnumData.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ enumFile;
-$exportedEnumData = Export[ enumFile, formatWithNotice @ $enumTypeData, "String" ];
+$exportedEnumData = Export[ enumFile, formatWithNotice @ $processedEnumData, "String" ];
 cicd`ConsoleLog[ "Updated FIT enum data: " <> $exportedEnumData ];
 
 (* ::**********************************************************************:: *)
@@ -1147,6 +1229,25 @@ cicd`ConsoleLog[ "Updated export header file:" <> fitExportHFile ];
 (* ::Subsection::Closed:: *)
 (*Definitions*)
 
+$customInvalidValues = <|
+    "DateTime"    -> Lookup[ $defines, "FIT_DATE_TIME_INVALID" ] + 2840036400,
+    "Real32"      -> -9223372036854775808,
+    "Real64"      -> -9223372036854775808
+|>;
+
+$baseInvalidValues = KeyMap[
+    Composition[
+        cf`toNiceCamelCase,
+        StringDelete @ { StartOfString ~~ "FIT_", "_INVALID" ~~ EndOfString }
+    ],
+    KeySelect[ $defines, StringMatchQ[ "FIT_" ~~ __ ~~ "_INVALID" ] ]
+];
+
+$invalidValues = KeySort @ Association[
+    $baseInvalidValues,
+    $customInvalidValues
+];
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseType*)
@@ -1184,6 +1285,14 @@ niceType[ type_String ] :=
     ];
 
 niceType0 // ClearAll;
+
+niceType0[ type_, nice_ ] :=
+    With[ { invalid = Lookup[ $invalidValues, nice ] },
+        <|
+            "Type"    -> nice,
+            "Invalid" -> invalid
+        |> /; IntegerQ @ invalid
+    ];
 
 niceType0[ type_String, nice_String ] :=
     niceType0[ type, nice, $enumTypeData @ type ];
@@ -1310,8 +1419,8 @@ typeFunction[ type_String, _ ] :=
         { "fitEnum", type } /; AssociationQ @ enum
     ];
 
-typeFunction[ "Bool"              , {   } ] := "fitBool";
-typeFunction[ "Bool"              , { _ } ] := "fitBoolA";
+typeFunction[ "Boolean"           , {   } ] := "fitBool";
+typeFunction[ "Boolean"           , { _ } ] := "fitBoolA";
 typeFunction[ "Byte"              , {   } ] := "fitByte";
 typeFunction[ "Byte"              , { _ } ] := "fitByteA";
 typeFunction[ "Real32"            , {   } ] := "fitFloat32";
@@ -1328,16 +1437,16 @@ typeFunction[ "SignedInteger64"   , {   } ] := "fitSINT64";
 typeFunction[ "SignedInteger64"   , { _ } ] := "fitSINT64A";
 typeFunction[ "UnsignedInteger8"  , {   } ] := "fitUINT8";
 typeFunction[ "UnsignedInteger8"  , { _ } ] := "fitUINT8A";
-typeFunction[ "UnsignedInteger8z" , {   } ] := "fitUINT8Z";
-typeFunction[ "UnsignedInteger8z" , { _ } ] := "fitUINT8ZA";
+typeFunction[ "UnsignedInteger8Z" , {   } ] := "fitUINT8Z";
+typeFunction[ "UnsignedInteger8Z" , { _ } ] := "fitUINT8ZA";
 typeFunction[ "UnsignedInteger16" , {   } ] := "fitUINT16";
 typeFunction[ "UnsignedInteger16" , { _ } ] := "fitUINT16A";
-typeFunction[ "UnsignedInteger16z", {   } ] := "fitUINT16Z";
-typeFunction[ "UnsignedInteger16z", { _ } ] := "fitUINT16ZA";
+typeFunction[ "UnsignedInteger16Z", {   } ] := "fitUINT16Z";
+typeFunction[ "UnsignedInteger16Z", { _ } ] := "fitUINT16ZA";
 typeFunction[ "UnsignedInteger32" , {   } ] := "fitUINT32";
 typeFunction[ "UnsignedInteger32" , { _ } ] := "fitUINT32A";
-typeFunction[ "UnsignedInteger32z", {   } ] := "fitUINT32Z";
-typeFunction[ "UnsignedInteger32z", { _ } ] := "fitUINT32ZA";
+typeFunction[ "UnsignedInteger32Z", {   } ] := "fitUINT32Z";
+typeFunction[ "UnsignedInteger32Z", { _ } ] := "fitUINT32ZA";
 typeFunction[ "UnsignedInteger64" , {   } ] := "fitUINT64";
 typeFunction[ "UnsignedInteger64" , { _ } ] := "fitUINT64A";
 typeFunction[ "DateTime"          , {   } ] := "fitDateTime";
@@ -1360,14 +1469,13 @@ makeTypeData[ as_ ] :=
         index = makeIndex /@ KeyMap[ niceMessageName, as[ "Indices" ] ];
         typeData = parseLine /@ StringTrim @ StringSplit[ as[ "StructLines" ], "\n" ];
 
-
         res =
             Merge[
                 {
                     (<| "Index" -> #1 |> &) /@ index,
                     Association[
                         Map[
-                            #FieldName -> KeyDrop[ #1, "FieldName" ] &,
+                            #FieldName -> # &,
                             typeData
                         ]
                     ]
@@ -1405,16 +1513,19 @@ cicd`ConsoleLog[ "Updated FIT message data: " <> $exportedTypeData ];
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Configuration*)
-$invalidValues = Association @ Union @ Cases[
-    $messageDefinitions,
-    KeyValuePattern @ { "Type" -> type_, "Invalid" -> inv_ } :>
-        (type -> inv),
-    { 3 }
+$fullInvalidValues = Association[
+    Union @ Cases[
+        $messageDefinitions,
+        KeyValuePattern @ { "Type" -> type_, "Invalid" -> inv_ } :>
+            (type -> inv),
+        { 3 }
+    ],
+    $invalidValues
 ];
 
 $config = <|
     "MessageTensorRowWidth" -> $maxIndex,
-    "InitializationValues"  -> $invalidValues
+    "InitializationValues"  -> $fullInvalidValues
 |>;
 
 configFile = FileNameJoin @ { $pacletDir, "Data", "FITConfig.wl" };

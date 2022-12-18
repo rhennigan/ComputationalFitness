@@ -28,6 +28,7 @@ DLLEXPORT int FITExport(
     MTensor data;
     mint const * dims;
     mint count;
+    mint exported = 0;
 
 	data_crc = 0;
     
@@ -51,7 +52,6 @@ DLLEXPORT int FITExport(
         pos[0] = idx;
         pos[1] = 1;
         libData->MTensor_getInteger(data, pos, &m_num);
-        MArgument_setInteger(Res, m_num);
         FIT_MESG_NUM mesg_num = (FIT_MESG_NUM) m_num;
         switch (mesg_num)
         {
@@ -61,396 +61,462 @@ DLLEXPORT int FITExport(
 
             case FIT_MESG_NUM_FILE_ID:
             {
+                exported++;
                 export_file_id(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_FILE_CREATOR:
             {
+                exported++;
                 export_file_creator(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SOFTWARE:
             {
+                exported++;
                 export_software(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SLAVE_DEVICE:
             {
+                exported++;
                 export_slave_device(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_CAPABILITIES:
             {
+                exported++;
                 export_capabilities(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_FILE_CAPABILITIES:
             {
+                exported++;
                 export_file_capabilities(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_MESG_CAPABILITIES:
             {
+                exported++;
                 export_mesg_capabilities(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_FIELD_CAPABILITIES:
             {
+                exported++;
                 export_field_capabilities(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_DEVICE_SETTINGS:
             {
+                exported++;
                 export_device_settings(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_USER_PROFILE:
             {
+                exported++;
                 export_user_profile(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_HRM_PROFILE:
             {
+                exported++;
                 export_hrm_profile(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SDM_PROFILE:
             {
+                exported++;
                 export_sdm_profile(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_BIKE_PROFILE:
             {
+                exported++;
                 export_bike_profile(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_CONNECTIVITY:
             {
+                exported++;
                 export_connectivity(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_ZONES_TARGET:
             {
+                exported++;
                 export_zones_target(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SPORT:
             {
+                exported++;
                 export_sport(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_HR_ZONE:
             {
+                exported++;
                 export_hr_zone(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SPEED_ZONE:
             {
+                exported++;
                 export_speed_zone(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_CADENCE_ZONE:
             {
+                exported++;
                 export_cadence_zone(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_POWER_ZONE:
             {
+                exported++;
                 export_power_zone(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_MET_ZONE:
             {
+                exported++;
                 export_met_zone(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_DIVE_SETTINGS:
             {
+                exported++;
                 export_dive_settings(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_GOAL:
             {
+                exported++;
                 export_goal(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_ACTIVITY:
             {
+                exported++;
                 export_activity(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SESSION:
             {
+                exported++;
                 export_session(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_LAP:
             {
+                exported++;
                 export_lap(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_LENGTH:
             {
+                exported++;
                 export_length(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_RECORD:
             {
+                exported++;
                 export_record(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_EVENT:
             {
+                exported++;
                 export_event(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_DEVICE_INFO:
             {
+                exported++;
                 export_device_info(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_DEVICE_AUX_BATTERY_INFO:
             {
+                exported++;
                 export_device_aux_battery_info(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_TRAINING_FILE:
             {
+                exported++;
                 export_training_file(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_WEATHER_CONDITIONS:
             {
+                exported++;
                 export_weather_conditions(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_WEATHER_ALERT:
             {
+                exported++;
                 export_weather_alert(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_ACCELEROMETER_DATA:
             {
+                exported++;
                 export_accelerometer_data(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_NMEA_SENTENCE:
             {
+                exported++;
                 export_nmea_sentence(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_AVIATION_ATTITUDE:
             {
+                exported++;
                 export_aviation_attitude(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_VIDEO_TITLE:
             {
+                exported++;
                 export_video_title(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_VIDEO_DESCRIPTION:
             {
+                exported++;
                 export_video_description(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SET:
             {
+                exported++;
                 export_set(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_FIELD_DESCRIPTION:
             {
+                exported++;
                 export_field_description(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_DEVELOPER_DATA_ID:
             {
+                exported++;
                 export_developer_data_id(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_COURSE:
             {
+                exported++;
                 export_course(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_COURSE_POINT:
             {
+                exported++;
                 export_course_point(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SEGMENT_ID:
             {
+                exported++;
                 export_segment_id(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SEGMENT_LEADERBOARD_ENTRY:
             {
+                exported++;
                 export_segment_leaderboard_entry(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SEGMENT_POINT:
             {
+                exported++;
                 export_segment_point(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SEGMENT_LAP:
             {
+                exported++;
                 export_segment_lap(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SEGMENT_FILE:
             {
+                exported++;
                 export_segment_file(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_WORKOUT:
             {
+                exported++;
                 export_workout(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_WORKOUT_SESSION:
             {
+                exported++;
                 export_workout_session(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_WORKOUT_STEP:
             {
+                exported++;
                 export_workout_step(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_EXERCISE_TITLE:
             {
+                exported++;
                 export_exercise_title(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_SCHEDULE:
             {
+                exported++;
                 export_schedule(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_TOTALS:
             {
+                exported++;
                 export_totals(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_WEIGHT_SCALE:
             {
+                exported++;
                 export_weight_scale(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_BLOOD_PRESSURE:
             {
+                exported++;
                 export_blood_pressure(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_MONITORING_INFO:
             {
+                exported++;
                 export_monitoring_info(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_MONITORING:
             {
+                exported++;
                 export_monitoring(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_HR:
             {
+                exported++;
                 export_hr(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_ANT_RX:
             {
+                exported++;
                 export_ant_rx(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_ANT_TX:
             {
+                exported++;
                 export_ant_tx(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_EXD_SCREEN_CONFIGURATION:
             {
+                exported++;
                 export_exd_screen_configuration(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_EXD_DATA_FIELD_CONFIGURATION:
             {
+                exported++;
                 export_exd_data_field_configuration(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_EXD_DATA_CONCEPT_CONFIGURATION:
             {
+                exported++;
                 export_exd_data_concept_configuration(libData, data, idx, fp);
                 break;
             }
 
             case FIT_MESG_NUM_HRV:
             {
+                exported++;
                 export_hrv(libData, data, idx, fp);
                 break;
             }
@@ -610,6 +676,8 @@ DLLEXPORT int FITExport(
 	// 	WriteMessageDefinition(local_mesg_number, fit_mesg_defs[FIT_MESG_ACTIVITY], FIT_ACTIVITY_MESG_DEF_SIZE, fp);
 	// 	WriteMessage(local_mesg_number, &activity_mesg, FIT_ACTIVITY_MESG_SIZE, fp);
 	// }
+
+    MArgument_setInteger(Res, exported);
 
 	// Write CRC.
 	fwrite(&data_crc, 1, sizeof(FIT_UINT16), fp);
@@ -886,21 +954,21 @@ static void export_device_settings(WolframLibraryData libData, MTensor data, int
 
     ExportInteger(2, libData, data, pos, mesg.utc_offset);
     ExportIntegerSequence(3, libData, data, pos, mesg.time_offset, FIT_DEVICE_SETTINGS_MESG_TIME_OFFSET_COUNT);
-    ExportTimestamp(5, libData, data, pos, mesg.clock_time);
-    ExportIntegerSequence(6, libData, data, pos, mesg.pages_enabled, FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT);
-    ExportIntegerSequence(7, libData, data, pos, mesg.default_page, FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT);
-    ExportInteger(8, libData, data, pos, mesg.autosync_min_steps);
-    ExportInteger(9, libData, data, pos, mesg.autosync_min_time);
-    ExportInteger(10, libData, data, pos, mesg.active_time_zone);
-    ExportIntegerSequence(11, libData, data, pos, mesg.time_mode, FIT_DEVICE_SETTINGS_MESG_TIME_MODE_COUNT);
-    ExportIntegerSequence(13, libData, data, pos, mesg.time_zone_offset, FIT_DEVICE_SETTINGS_MESG_TIME_ZONE_OFFSET_COUNT);
-    ExportInteger(15, libData, data, pos, mesg.backlight_mode);
-    ExportInteger(16, libData, data, pos, mesg.activity_tracker_enabled);
-    ExportInteger(17, libData, data, pos, mesg.move_alert_enabled);
-    ExportInteger(18, libData, data, pos, mesg.date_mode);
-    ExportInteger(19, libData, data, pos, mesg.display_orientation);
-    ExportInteger(20, libData, data, pos, mesg.mounting_side);
-    ExportInteger(21, libData, data, pos, mesg.tap_sensitivity);
+    ExportTimestamp(4, libData, data, pos, mesg.clock_time);
+    ExportIntegerSequence(5, libData, data, pos, mesg.pages_enabled, FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT);
+    ExportIntegerSequence(6, libData, data, pos, mesg.default_page, FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT);
+    ExportInteger(7, libData, data, pos, mesg.autosync_min_steps);
+    ExportInteger(8, libData, data, pos, mesg.autosync_min_time);
+    ExportInteger(9, libData, data, pos, mesg.active_time_zone);
+    ExportIntegerSequence(10, libData, data, pos, mesg.time_mode, FIT_DEVICE_SETTINGS_MESG_TIME_MODE_COUNT);
+    ExportIntegerSequence(11, libData, data, pos, mesg.time_zone_offset, FIT_DEVICE_SETTINGS_MESG_TIME_ZONE_OFFSET_COUNT);
+    ExportInteger(12, libData, data, pos, mesg.backlight_mode);
+    ExportInteger(13, libData, data, pos, mesg.activity_tracker_enabled);
+    ExportInteger(14, libData, data, pos, mesg.move_alert_enabled);
+    ExportInteger(15, libData, data, pos, mesg.date_mode);
+    ExportInteger(16, libData, data, pos, mesg.display_orientation);
+    ExportInteger(17, libData, data, pos, mesg.mounting_side);
+    ExportInteger(18, libData, data, pos, mesg.tap_sensitivity);
 
     WriteMessageDefinition(FIT_MESG_NUM_DEVICE_SETTINGS, local_mesg_number, fit_mesg_defs[FIT_MESG_DEVICE_SETTINGS], FIT_DEVICE_SETTINGS_MESG_DEF_SIZE, fp);
     WriteMessage(local_mesg_number, &mesg, FIT_DEVICE_SETTINGS_MESG_SIZE, fp);

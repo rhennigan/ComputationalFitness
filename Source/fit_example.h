@@ -4441,13 +4441,13 @@ typedef struct
 
 // device_settings message
 
-#define FIT_DEVICE_SETTINGS_MESG_SIZE                                           36
+#define FIT_DEVICE_SETTINGS_MESG_SIZE                                           30
 #define FIT_DEVICE_SETTINGS_MESG_DEF_SIZE                                       56
-#define FIT_DEVICE_SETTINGS_MESG_TIME_OFFSET_COUNT                              2
+#define FIT_DEVICE_SETTINGS_MESG_TIME_OFFSET_COUNT                              1
 #define FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT                            1
 #define FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT                             1
-#define FIT_DEVICE_SETTINGS_MESG_TIME_MODE_COUNT                                2
-#define FIT_DEVICE_SETTINGS_MESG_TIME_ZONE_OFFSET_COUNT                         2
+#define FIT_DEVICE_SETTINGS_MESG_TIME_MODE_COUNT                                1
+#define FIT_DEVICE_SETTINGS_MESG_TIME_ZONE_OFFSET_COUNT                         1
 
 typedef struct
 {

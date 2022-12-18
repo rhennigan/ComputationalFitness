@@ -19,6 +19,9 @@ FITExport::InitializeMessageFailure =
 FITExport::InvalidMessage =
 "Invalid message data: `1`.";
 
+FITExport::InvalidMessages =
+"The given messages are not valid.";
+
 (* ::**********************************************************************:: *)
 (* ::Section:: *)
 (*Options*)
@@ -36,7 +39,7 @@ FITExport // Options = {
 
 FITExport[ file_, data_List? rawDataQ, opts: OptionsPattern[ ] ] :=
     fitExportOptionsBlock[
-        fitExportLibFunction[ file, data ],
+        fitExport[ file, data ],
         opts
     ];
 
@@ -81,6 +84,79 @@ fitExportOptionsBlock[ eval_, opts: OptionsPattern[ FITExport ] ] :=
     ];
 
 fitExportOptionsBlock // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*fitExport*)
+fitExport // beginDefinition;
+fitExport[ target: $$target, data_ ] := fitExport0[ target, data ];
+(* TODO: catch target errors here *)
+fitExport // endDefinition;
+
+
+fitExport0 // beginDefinition;
+
+fitExport0[ target: $$file|$$string, data_ ] :=
+    fitExport0[ target, ExpandFileName @ target, data ];
+
+(* TODO: CloudObject, LocalObject *)
+
+fitExport0[ target_, file_String, data_ ] :=
+    fitExport0[
+        target,
+        file,
+        data,
+        Quiet[ fitExportLibFunction[ file, data ], LibraryFunction::rterr ]
+    ];
+
+fitExport0[ target_, file_, data_, err_LibraryFunctionError ] :=
+    libraryError[ target, file, err ];
+
+fitExport0[ target_, file_, data_, exportCount_Integer ] :=
+    If[ exportCount === Length @ data,
+        File @ file,
+        (* TODO: *)
+        issueExportCountWarning[ target, file, Length @ data, exportCount ];
+        File @ file
+    ];
+
+fitExport0 // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*fitExportData*)
+fitExportData // beginDefinition;
+
+fitExportData[ file_, data_ ] :=
+    Module[ {},
+        fitExportLibFunction[ file, data ]
+    ]
+
+fitExportData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*makeRawData*)
+makeRawData // beginDefinition;
+
+makeRawData[ messages_ ] :=
+    Module[ { vectors, packed },
+        vectors = Select[ toMessageVector /@ messages, dev`PackedArrayQ ];
+        packed = dev`ToPackedArray @ vectors;
+        If[ packedIntegerArrayQ @ packed,
+            packed,
+            throwFailure[ FITExport::InvalidMessages, packed ]
+        ]
+    ];
+
+makeRawData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*messageListQ*)
+messageListQ // ClearAll;
+messageListQ[ { __? messageAssociationQ } ] := True;
+messageListQ[ ___ ] := False;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -165,27 +241,62 @@ messageAssociationQ[ ___ ] := False;
 (*toMessageVector*)
 toMessageVector // beginDefinition;
 
-toMessageVector[ message_Association? messageAssociationQ ] :=
-    Module[ { type, vector, definition, keys, usable, packed },
-        type       = message[ "MessageType" ];
-        vector     = initializeMessageVector @ type;
-        definition = $FITMessageDefinitions @ type;
-        keys       = Keys @ definition[ "Fields" ];
-        usable     = KeyTake[ message, keys ];
+toMessageVector[ message_ ] :=
+    Module[ { type, vector, fields, usable, exported, packed },
+        type     = message[ "MessageType" ];
+        vector   = initializeMessageVector @ type;
+        fields   = $FITMessageDefinitions[ type, "Fields" ];
+        usable   = KeyDrop[ DeleteMissing @ message, "MessageType" ];
+        exported = setMessageVector[ vector, type, fields, usable ];
+        packed   = dev`ToPackedArray @ vector;
 
-        (* FIXME: set parts here instead of in ifitValue defs *)
-        KeyValueMap[ ifitValue[ vector, type, #1, #2 ] &, usable ];
-
-        packed = dev`ToPackedArray @ vector;
+        (* TODO: unhandled keys in `exported` should probably produce a warning *)
 
         If[ packedIntegerArrayQ @ packed,
             packed,
             messagePrint[ FITExport::InvalidMessage, message, packed ];
-            $Failed
+            Nothing
         ]
     ];
 
 toMessageVector // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*setMessageVector*)
+setMessageVector // beginDefinition;
+setMessageVector // Attributes = { HoldFirst };
+setMessageVector[ vector_, type_, fields_, message_ ] :=
+    Map[ (* TODO: Scan might be faster, but would lose post-analysis capability *)
+        setMessageVectorValue[
+            vector,
+            #Index,
+            ifitValue[ type, #FieldName, #Dimensions, message ]
+        ] &,
+        fields
+    ];
+
+setMessageVector // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*setMessageVectorValue*)
+setMessageVectorValue // ClearAll;
+setMessageVectorValue // Attributes = { HoldFirst };
+
+setMessageVectorValue[ vector_, index_Integer, value_Integer ] := vector[[ index ]] = value;
+setMessageVectorValue[ vector_, Span[ a_, b_ ], value_ ] := setMessageVectorValueA[ vector, a, b, value ];
+setMessageVectorValue[ ___ ] := $Failed;
+
+setMessageVectorValueA // ClearAll;
+setMessageVectorValueA // Attributes = { HoldFirst };
+setMessageVectorValueA[ vector_, a_Integer, b_Integer, value: { __Integer } ] :=
+    If[ Length @ value == b - a + 1,
+        vector[[ a;;b ]] = dev`ToPackedArray @ value,
+        $Failed
+    ];
+
+setMessageVectorValueA[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

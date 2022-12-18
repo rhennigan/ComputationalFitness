@@ -183,40 +183,45 @@ setFieldDefinitions[ valueSym_Symbol, inverterSym_Symbol, name_String ] :=
     setFieldDefinitions[ valueSym, inverterSym, name, $FITMessageDefinitions[ name, "Fields" ] ];
 
 setFieldDefinitions[ valueSym_Symbol, inverterSym_Symbol, name_String, defs_Association ] := (
-    fitValue[ name, field_, value_ ] := valueSym[ field, value ];
-    (* FIXME: set parts in toMessageVector instead of here *)
-    ifitValue[ vv_, name, field_, value_ ] := inverterSym[ vv, field, value ];
+    fitValue[ name, field_, value_ ] :=
+        valueSym[ field, value ];
+
+    ifitValue[ name, field_, dimensions_, message_ ] :=
+        inverterSym[ field, dimensions, message ];
 
     valueSym // ClearAll;
-    KeyValueMap[
+    Scan[
         Function @ With[
             {
-                int = makeInterpreter @ #2[ "Interpreter" ],
-                idx = #2[ "Index" ]
+                int = makeInterpreter @ #Interpreter,
+                idx = #Index
             },
-            valueSym[ #1, vv_ ] := int @ vv[[ idx ]]
+            valueSym[ #FieldName, vv_ ] := int @ vv[[ idx ]]
         ],
         defs
     ];
-    valueSym[ _, _ ] := Missing[ "NotAvailable" ];
+    valueSym[ ___ ] := Missing[ "NotAvailable" ];
 
     inverterSym // ClearAll;
-    inverterSym // Attributes = { HoldFirst };
-    KeyValueMap[
+
+    inverterSym[ field_, dimensions_, message_Association ] :=
+        inverterSym[ field, dimensions, message @ field ];
+
+    Scan[
         Function @ With[
             {
-                inverter   = makeInverter @ #2[ "Interpreter" ],
-                index      = #2[ "Index" ],
-                dimensions = #2[ "Dimensions" ]
+                inverter   = makeInverter @ #Interpreter,
+                index      = #Index,
+                dimensions = #Dimensions
             },
             If[ dimensions === { },
-                inverterSym[ vv_, #1, xx_ ] := vv[[ index ]] = inverter @ xx,
-                inverterSym[ vv_, #1, xx_ ] := vv[[ index ]] = inverter[ xx, dimensions ]
+                inverterSym[ #FieldName, { }, xx_ ] := inverter @ xx,
+                inverterSym[ #FieldName, { nn_ }, xx_ ] := inverter[ xx, nn ]
             ]
         ],
         defs
     ];
-    inverterSym[ _, _, _ ] := $Failed;
+    inverterSym[ ___ ] := $Failed;
 
     Internal`StuffBag[ $generatedDefinitions, HoldComplete @ valueSym    ];
     Internal`StuffBag[ $generatedDefinitions, HoldComplete @ inverterSym ];
@@ -234,7 +239,7 @@ fitValue[ type_, "MessageType", v_ ] := type;
 (* ::Subsection::Closed:: *)
 (*ifitValue*)
 ifitValue // ClearAll;
-ifitValue // Attributes = { HoldFirst };
+ifitValue[ type_, "MessageType", { }, v_ ] := fitMessageTypeNumber @ type;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -244,7 +249,7 @@ setFieldDefinitions /@ Complement[ Keys @ $FITMessageDefinitions, $supportedMess
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*FileID*)
-setFieldDefinitions[ fitFileIDValue, "FileID" ];
+setFieldDefinitions[ fitFileIDValue, ifitFileIDValue, "FileID" ];
 
 fitFileIDValue[ "ProductName", v_ ] := fitProductName[ v[[ { "Manufacturer", "Product" } ]], v[[ "ProductName" ]] ];
 
@@ -253,44 +258,51 @@ indexTranslate[ "FileID", fitFileIDValue ];
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*UserProfile*)
-setFieldDefinitions[ fitUserProfileValue, "UserProfile" ];
+setFieldDefinitions[ fitUserProfileValue, ifitUserProfileValue, "UserProfile" ];
 
 fitUserProfileValue[ "GlobalID"             , v_ ] := fitGlobalID @ v[[ "GlobalID" ]];
 fitUserProfileValue[ "Height"               , v_ ] := fitHeight @ v[[ "Height" ]];
 fitUserProfileValue[ "UserRunningStepLength", v_ ] := fitStepLength @ v[[ "UserRunningStepLength" ]];
 fitUserProfileValue[ "UserWalkingStepLength", v_ ] := fitStepLength @ v[[ "UserWalkingStepLength" ]];
 
+ifitUserProfileValue[ "GlobalID"             , { n_ }, v_ ] := ifitGlobalID[ v, n ];
+ifitUserProfileValue[ "Height"               , {    }, v_ ] := ifitHeight @ v;
+ifitUserProfileValue[ "UserRunningStepLength", {    }, v_ ] := ifitStepLength @ v;
+ifitUserProfileValue[ "UserWalkingStepLength", {    }, v_ ] := ifitStepLength @ v;
+
 indexTranslate[ "UserProfile", fitUserProfileValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Activity*)
-setFieldDefinitions[ fitActivityValue, "Activity" ];
+setFieldDefinitions[ fitActivityValue, ifitActivityValue, "Activity" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Lap*)
-setFieldDefinitions[ fitLapValue, "Lap" ];
+setFieldDefinitions[ fitLapValue, ifitLapValue, "Lap" ];
 
-fitLapValue[ "StartPosition"        , v_ ] := fitGeoPosition @ v[[ { "StartPositionLatitude", "StartPositionLongitude" } ]];
-fitLapValue[ "EndPosition"          , v_ ] := fitGeoPosition @ v[[ { "EndPositionLatitude", "EndPositionLongitude" } ]];
-fitLapValue[ "TotalCycles"          , v_ ] := fitCycles32[ v[[ "TotalCycles" ]], v[[ "TotalFractionalCycles" ]] ];
-fitLapValue[ "AverageSpeed"         , v_ ] := fitSpeedSelect[ v[[ "EnhancedAverageSpeed" ]], v[[ "AverageSpeed" ]] ];
-fitLapValue[ "MaximumSpeed"         , v_ ] := fitSpeedSelect[ v[[ "EnhancedMaximumSpeed" ]], v[[ "MaximumSpeed" ]] ];
-fitLapValue[ "LeftRightBalance"     , v_ ] := fitLeftRightBalance100 @ v[[ "LeftRightBalance" ]];
-fitLapValue[ "AverageAltitude"      , v_ ] := fitAltitudeSelect[ v[[ "EnhancedAverageAltitude" ]], v[[ "AverageAltitude" ]] ];
-fitLapValue[ "MaximumAltitude"      , v_ ] := fitAltitudeSelect[ v[[ "EnhancedMaximumAltitude" ]], v[[ "MaximumAltitude" ]] ];
-fitLapValue[ "MinimumAltitude"      , v_ ] := fitAltitudeSelect[ v[[ "EnhancedMinimumAltitude" ]], v[[ "MinimumAltitude" ]] ];
-fitLapValue[ "StrokeCount"          , v_ ] := fitStrokeCount @ v[[ "StrokeCount" ]];
-fitLapValue[ "AverageCadence"       , v_ ] := fitCadence[ v[[ "AverageCadence" ]], v[[ "AverageFractionalCadence" ]] ];
-fitLapValue[ "MaximumCadence"       , v_ ] := fitCadence[ v[[ "MaximumCadence" ]], v[[ "MaximumFractionalCadence" ]] ];
+fitLapValue[ "StartPosition"   , v_ ] := fitGeoPosition @ v[[ { "StartPositionLatitude", "StartPositionLongitude" } ]];
+fitLapValue[ "EndPosition"     , v_ ] := fitGeoPosition @ v[[ { "EndPositionLatitude", "EndPositionLongitude" } ]];
+fitLapValue[ "TotalCycles"     , v_ ] := fitCycles32[ v[[ "TotalCycles" ]], v[[ "TotalFractionalCycles" ]] ];
+fitLapValue[ "AverageSpeed"    , v_ ] := fitSpeedSelect[ v[[ "EnhancedAverageSpeed" ]], v[[ "AverageSpeed" ]] ];
+fitLapValue[ "MaximumSpeed"    , v_ ] := fitSpeedSelect[ v[[ "EnhancedMaximumSpeed" ]], v[[ "MaximumSpeed" ]] ];
+fitLapValue[ "LeftRightBalance", v_ ] := fitLeftRightBalance100 @ v[[ "LeftRightBalance" ]];
+fitLapValue[ "AverageAltitude" , v_ ] := fitAltitudeSelect[ v[[ "EnhancedAverageAltitude" ]], v[[ "AverageAltitude" ]] ];
+fitLapValue[ "MaximumAltitude" , v_ ] := fitAltitudeSelect[ v[[ "EnhancedMaximumAltitude" ]], v[[ "MaximumAltitude" ]] ];
+fitLapValue[ "MinimumAltitude" , v_ ] := fitAltitudeSelect[ v[[ "EnhancedMinimumAltitude" ]], v[[ "MinimumAltitude" ]] ];
+fitLapValue[ "StrokeCount"     , v_ ] := fitStrokeCount @ v[[ "StrokeCount" ]];
+fitLapValue[ "AverageCadence"  , v_ ] := fitCadence[ v[[ "AverageCadence" ]], v[[ "AverageFractionalCadence" ]] ];
+fitLapValue[ "MaximumCadence"  , v_ ] := fitCadence[ v[[ "MaximumCadence" ]], v[[ "MaximumFractionalCadence" ]] ];
+
+(* FIXME: define ifitLapValue *)
 
 indexTranslate[ "Lap", fitLapValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*DeviceSettings*)
-setFieldDefinitions[ fitDeviceSettingsValue, "DeviceSettings" ];
+setFieldDefinitions[ fitDeviceSettingsValue, ifitDeviceSettingsValue, "DeviceSettings" ];
 
 fitDeviceSettingsValue[ "TimeOffset"    , v_ ] := fitTimeOffset @ v[[ "TimeOffset" ]];
 fitDeviceSettingsValue[ "PagesEnabled"  , v_ ] := fitUINT16BF @ v[[ "PagesEnabled" ]];
@@ -298,12 +310,20 @@ fitDeviceSettingsValue[ "DefaultPage"   , v_ ] := fitUINT16BF @ v[[ "DefaultPage
 fitDeviceSettingsValue[ "TimeMode"      , v_ ] := fitTimeModeArr @ v[[ "TimeMode" ]];
 fitDeviceSettingsValue[ "TimeZoneOffset", v_ ] := fitTimeZoneOffset @ v[[ "TimeZoneOffset" ]];
 
+ifitDeviceSettingsValue[ "TimeOffset"    , { n_ }, v_ ] := ifitTimeOffset[ v, n ];
+ifitDeviceSettingsValue[ "PagesEnabled"  , { n_ }, v_ ] := ifitUINT16BF[ v, n ];
+ifitDeviceSettingsValue[ "DefaultPage"   , { n_ }, v_ ] := ifitUINT16BF[ v, n ];
+ifitDeviceSettingsValue[ "TimeMode"      , { n_ }, v_ ] := ifitTimeModeArr[ v, n ];
+ifitDeviceSettingsValue[ "TimeZoneOffset", { n_ }, v_ ] := ifitTimeZoneOffset[ v, n ];
+
+(* FIXME: define ifitTimeZoneOffset *)
+
 indexTranslate[ "DeviceSettings", fitDeviceSettingsValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Record*)
-setFieldDefinitions[ fitRecordValue, "Record" ];
+setFieldDefinitions[ fitRecordValue, ifitRecordValue, "Record" ];
 
 fitRecordValue[ "AccumulatedPower"          , v_ ] := fitQuantity[ fitUINT32, "Joules", 1, 0 ] @ v[[ "AccumulatedPower" ]];
 fitRecordValue[ "Altitude"                  , v_ ] := fitAltitudeSelect[ v[[ "EnhancedAltitude" ]], v[[ "Altitude" ]] ];
@@ -324,31 +344,63 @@ fitRecordValue[ "RightPowerPhasePeakStart"  , v_ ] := fitPowerPhase @ v[[ "Right
 fitRecordValue[ "RightPowerPhaseStart"      , v_ ] := fitPowerPhase @ v[[ "RightPowerPhase" ]][[ 1 ]];
 fitRecordValue[ "Speed"                     , v_ ] := fitSpeedSelect[ v[[ "EnhancedSpeed" ]], v[[ "Speed" ]] ];
 
+
+ifitRecordValue[ "AccumulatedPower"          , { }, v_ ] := ifitQuantity[ fitUINT32, "Joules", 1, 0 ] @ v;
+ifitRecordValue[ "Altitude"                  , { }, v_ ] := ifitAltitude @ v;
+ifitRecordValue[ "Cadence"                   , { }, v_ ] := ifitCadence @ v;
+ifitRecordValue[ "CompressedAccumulatedPower", { }, v_ ] := ifitQuantity[ fitUINT16, "Joules", 1, 0 ] @ v;
+ifitRecordValue[ "LeftRightBalance"          , { }, v_ ] := ifitLeftRightBalance @ v;
+ifitRecordValue[ "Resistance"                , { }, v_ ] := ifitResistance @ v;
+
+ifitRecordValue[ "EnhancedAltitude"   , { }, as_Association ] := ifitQuantity[ fitUINT32, "Meters", 5, 500 ] @ as[ "Altitude" ];
+ifitRecordValue[ "EnhancedSpeed"      , { }, as_Association ] := ifitQuantity[ fitUINT32, "MetersPerSecond", 1000, 0 ] @ as[ "Speed" ];
+ifitRecordValue[ "FractionalCadence"  , { }, as_Association ] := ifitFractionalCadence @ as[ "Cadence" ];
+ifitRecordValue[ "PositionLatitude"   , { }, as_Association ] := ifitPositionLatitude @ as[ "GeoPosition" ];
+ifitRecordValue[ "PositionLongitude"  , { }, as_Association ] := ifitPositionLongitude @ as[ "GeoPosition" ];
+ifitRecordValue[ "LeftPowerPhase"     , { }, as_Association ] := ifitPowerPhase[ as[ "LeftPowerPhaseStart"      ], as[ "LeftPowerPhaseEnd"      ] ];
+ifitRecordValue[ "LeftPowerPhasePeak" , { }, as_Association ] := ifitPowerPhase[ as[ "LeftPowerPhasePeakStart"  ], as[ "LeftPowerPhasePeakEnd"  ] ];
+ifitRecordValue[ "RightPowerPhase"    , { }, as_Association ] := ifitPowerPhase[ as[ "RightPowerPhaseStart"     ], as[ "RightPowerPhaseEnd"     ] ];
+ifitRecordValue[ "RightPowerPhasePeak", { }, as_Association ] := ifitPowerPhase[ as[ "RightPowerPhasePeakStart" ], as[ "RightPowerPhasePeakEnd" ] ];
+
+(* FIXME: define
+    ifitCadence
+    ifitLeftRightBalance
+    ifitResistance
+    ifitFractionalCadence
+    ifitPowerPhase
+*)
+
 indexTranslate[ "Record", fitRecordValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Event*)
-setFieldDefinitions[ fitEventValue, "Event" ];
+setFieldDefinitions[ fitEventValue, ifitEventValue, "Event" ];
+
+(* TODO: convert stance events using the "RiderPositionType" enum *)
 
 fitEventValue[ "RadarThreatLevelMaximum", v_ ] := fitRadarThreatLevelType @ v[[ "RadarThreatLevelMaximum" ]];
+
+(* FIXME: define ifitEventValue *)
 
 indexTranslate[ "Event", fitEventValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*DeviceInformation*)
-setFieldDefinitions[ fitDeviceInformationValue, "DeviceInformation" ];
+setFieldDefinitions[ fitDeviceInformationValue, ifitDeviceInformationValue, "DeviceInformation" ];
 
-fitDeviceInformationValue[ "DeviceType" , v_ ] := fitANTPlusDeviceType @ v[[ "DeviceType" ]];
+fitDeviceInformationValue[ "DeviceType" , v_ ] := fitEnum[ "ANTPlusDeviceType" ][ v[[ "DeviceType" ]] ];
 fitDeviceInformationValue[ "ProductName", v_ ] := fitProductName[ v[[ { "Manufacturer", "Product" } ]], v[[ "ProductName" ]] ];
+
+ifitDeviceInformationValue[ "DeviceType", { }, x_ ] := ifitEnum[ "ANTPlusDeviceType" ][ x ];
 
 indexTranslate[ "DeviceInformation", fitDeviceInformationValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Session*)
-setFieldDefinitions[ fitSessionValue, "Session" ];
+setFieldDefinitions[ fitSessionValue, ifitSessionValue, "Session" ];
 
 fitSessionValue[ "AverageAltitude"                        , v_ ] := fitAltitudeSelect[ v[[ "EnhancedAverageAltitude" ]], v[[ "AverageAltitude" ]] ];
 fitSessionValue[ "AverageCadence"                         , v_ ] := fitCadence[ v[[ "AverageCadence" ]], v[[ "AverageFractionalCadence" ]] ];
@@ -380,55 +432,62 @@ fitSessionValue[ "TotalCycles"                            , v_ ] := fitCycles32[
 fitSessionValue[ "TotalDescent"                           , v_ ] := fitAscent[ v[[ "TotalDescent" ]], v[[ "TotalFractionalDescent" ]] ];
 fitSessionValue[ "TrainingStressScore"                    , v_ ] := fitTrainingStressScore @ v[[ "TrainingStressScore" ]];
 
+(* FIXME: define ifitSessionValue *)
+
 indexTranslate[ "Session", fitSessionValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*ZonesTarget*)
-setFieldDefinitions[ fitZonesTargetValue, "ZonesTarget" ];
+setFieldDefinitions[ fitZonesTargetValue, ifitZonesTargetValue, "ZonesTarget" ];
 
 fitZonesTargetValue[ "FunctionalThresholdPower", v_ ] := fitFTPSetting @ v[[ "FunctionalThresholdPower" ]];
 fitZonesTargetValue[ "MaximumHeartRate"        , v_ ] := fitMaxHRSetting @ v[[ "MaximumHeartRate" ]];
+
+ifitZonesTargetValue[ "FunctionalThresholdPower", { }, v_ ] := ifitFTPSetting @ v;
+ifitZonesTargetValue[ "MaximumHeartRate"        , { }, v_ ] := ifitMaxHRSetting @ v;
 
 indexTranslate[ "ZonesTarget", fitZonesTargetValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*FileCreator*)
-setFieldDefinitions[ fitFileCreatorValue, "FileCreator" ];
+setFieldDefinitions[ fitFileCreatorValue, ifitFileCreatorValue, "FileCreator" ];
 indexTranslate[ "FileCreator", fitFileCreatorValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Sport*)
-setFieldDefinitions[ fitSportValue, "Sport" ];
+setFieldDefinitions[ fitSportValue, ifitSportValue, "Sport" ];
 indexTranslate[ "Sport", fitSportValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*DeveloperDataID*)
-setFieldDefinitions[ fitDeveloperDataIDValue, "DeveloperDataID" ];
+setFieldDefinitions[ fitDeveloperDataIDValue, ifitDeveloperDataIDValue, "DeveloperDataID" ];
 indexTranslate[ "DeveloperDataID", fitDeveloperDataIDValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*FieldDescription*)
-setFieldDefinitions[ fitFieldDescriptionValue, "FieldDescription" ];
+setFieldDefinitions[ fitFieldDescriptionValue, ifitFieldDescriptionValue, "FieldDescription" ];
 indexTranslate[ "FieldDescription", fitFieldDescriptionValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*TrainingFile*)
-setFieldDefinitions[ fitTrainingFileValue, "TrainingFile" ];
+setFieldDefinitions[ fitTrainingFileValue, ifitTrainingFileValue, "TrainingFile" ];
 
 fitTrainingFileValue[ "ProductName", v_ ] := fitProductName @ v[[ { "Manufacturer", "Product" } ]];
+
+(* FIXME: define ifitTrainingFileValue (maybe?) *)
 
 indexTranslate[ "TrainingFile", fitTrainingFileValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*WorkoutStep*)
-setFieldDefinitions[ fitWorkoutStepValue, "WorkoutStep" ];
+setFieldDefinitions[ fitWorkoutStepValue, ifitWorkoutStepValue, "WorkoutStep" ];
 
 fitWorkoutStepValue[ "CustomTargetValueHigh"         , v_ ] := fitWktTargetValue[ v[[ "CustomTargetValueHigh" ]], v[[ "TargetType" ]] ];
 fitWorkoutStepValue[ "CustomTargetValueLow"          , v_ ] := fitWktTargetValue[ v[[ "CustomTargetValueLow" ]], v[[ "TargetType" ]] ];
@@ -439,45 +498,30 @@ fitWorkoutStepValue[ "SecondaryTargetValue"          , v_ ] := fitWktTargetValue
 fitWorkoutStepValue[ "Target"                        , v_ ] := fitWktTarget[ v[[ "TargetValue" ]], v[[ "CustomTargetValueLow" ]], v[[ "CustomTargetValueHigh" ]], v[[ "TargetType" ]] ];
 fitWorkoutStepValue[ "TargetValue"                   , v_ ] := fitWktTargetValue[ v[[ "TargetValue" ]], v[[ "TargetType" ]] ];
 
+(* FIXME: define ifitWorkoutStepValue *)
+
 indexTranslate[ "WorkoutStep", fitWorkoutStepValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Workout*)
-setFieldDefinitions[ fitWorkoutValue, "Workout" ];
+setFieldDefinitions[ fitWorkoutValue, ifitWorkoutValue, "Workout" ];
 indexTranslate[ "Workout", fitWorkoutValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*HeartRateVariability*)
-fitValue[ "HeartRateVariability", name_, value_ ] := fitHeartRateVariabilityValue[ name, value ];
-
-fitHeartRateVariabilityValue // ClearAll;
+setFieldDefinitions[ fitHeartRateVariabilityValue, ifitHeartRateVariabilityValue, "HeartRateVariability" ];
 fitHeartRateVariabilityValue[ "Time", v_ ] := fitHRV @ v[[ "Time" ]];
-fitHeartRateVariabilityValue[ _     , _  ] := Missing[ "NotAvailable" ];
+
+(* FIXME: define ifitHeartRateVariabilityValue *)
 
 indexTranslate[ "HeartRateVariability", fitHeartRateVariabilityValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*AccelerometerData*)
-fitValue[ "AccelerometerData", name_, value_ ] := fitAccelerometerDataValue[ name, value ];
-
-fitAccelerometerDataValue // ClearAll;
-fitAccelerometerDataValue[ "Timestamp"                        , v_ ] := fitDateTime @ v[[ "Timestamp" ]];
-fitAccelerometerDataValue[ "CalibratedAccelerationX"          , v_ ] := fitFloat32A @ v[[ "CalibratedAccelerationX" ]];
-fitAccelerometerDataValue[ "CalibratedAccelerationY"          , v_ ] := fitFloat32A @ v[[ "CalibratedAccelerationY" ]];
-fitAccelerometerDataValue[ "CalibratedAccelerationZ"          , v_ ] := fitFloat32A @ v[[ "CalibratedAccelerationZ" ]];
-fitAccelerometerDataValue[ "TimestampMilliseconds"            , v_ ] := fitUINT16 @ v[[ "TimestampMilliseconds" ]];
-fitAccelerometerDataValue[ "SampleTimeOffset"                 , v_ ] := fitUINT16A @ v[[ "SampleTimeOffset" ]];
-fitAccelerometerDataValue[ "AccelerationX"                    , v_ ] := fitUINT16A @ v[[ "AccelerationX" ]];
-fitAccelerometerDataValue[ "AccelerationY"                    , v_ ] := fitUINT16A @ v[[ "AccelerationY" ]];
-fitAccelerometerDataValue[ "AccelerationZ"                    , v_ ] := fitUINT16A @ v[[ "AccelerationZ" ]];
-fitAccelerometerDataValue[ "CompressedCalibratedAccelerationX", v_ ] := fitSINT16A @ v[[ "CompressedCalibratedAccelerationX" ]];
-fitAccelerometerDataValue[ "CompressedCalibratedAccelerationY", v_ ] := fitSINT16A @ v[[ "CompressedCalibratedAccelerationY" ]];
-fitAccelerometerDataValue[ "CompressedCalibratedAccelerationZ", v_ ] := fitSINT16A @ v[[ "CompressedCalibratedAccelerationZ" ]];
-fitAccelerometerDataValue[ _                                  , _  ] := Missing[ "NotAvailable" ];
-
+setFieldDefinitions[ fitAccelerometerDataValue, ifitAccelerometerDataValue, "AccelerometerData" ];
 indexTranslate[ "AccelerometerData", fitAccelerometerDataValue ];
 
 (* ::**********************************************************************:: *)
@@ -518,17 +562,18 @@ fitEnum0[ v_ ] := v;
 (* ::Subsubsection::Closed:: *)
 (*ifitEnum*)
 ifitEnum // ClearAll;
-ifitEnum[ name_ ][ value_ ] := ifitEnum0 @ $iEnumTypeData[ name, value ];
-ifitEnum[ name_ ][ value_, { n_ } ] := ifitEnum1[ $iEnumTypeData[ name, value ], n ];
+ifitEnum[ name_ ][ value_ ] := ifitEnum0[ name, $iEnumTypeData[ name, value ] ];
+ifitEnum[ name_ ][ value_, { n_ } ] := ifitEnum1[ name, $iEnumTypeData[ name, value ], n ];
 
 ifitEnum0 // ClearAll;
-ifitEnum0[ v_Integer ] := v;
+ifitEnum0[ name_, v_Integer ] := v;
+ifitEnum0[ name_, _ ] := Lookup[ $iEnumTypeData @ name, Missing[ "Invalid" ], $invalidEnum ];
 ifitEnum0[ ___ ] := $invalidEnum;
 
 ifitEnum1 // ClearAll;
-ifitEnum1[ v_Integer, n_Integer ] := ConstantArray[ v, n ];
-ifitEnum1[ list_List, n_Integer ] /; Length @ list === n := ifitEnum0 /@ list;
-ifitEnum1[ _, n_Integer ] := ConstantArray[ $invalidEnum, n ];
+ifitEnum1[ name_, v_Integer, n_Integer ] := ConstantArray[ v, n ];
+ifitEnum1[ name_, list_List, n_Integer ] /; Length @ list === n := ifitEnum[ name ] /@ list;
+ifitEnum1[ name_, _, n_Integer ] := ConstantArray[ Lookup[ $iEnumTypeData @ name, Missing[ "Invalid" ], $invalidEnum ], n ];
 ifitEnum1[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
@@ -575,8 +620,50 @@ ifitQuantity[ iFunc_, units_, scale_, offset_ ][ value_ ] := ifitQuantity0[ iFun
 ifitQuantity[ iFunc_, units_, scale_, offset_ ][ value_, dims_ ] := ifitQuantity1[ iFunc, value, units, scale, offset, dims ];
 ifitQuantity[ ___ ][ ___ ] := $Failed;
 
+
+$$workUnit = "Megajoules"|"Kilojoules"|"Joules";
+$$cycleUnit = IndependentUnit[ "Cycles" ] | "Strokes";
+
+
 ifitQuantity0 // ClearAll;
-ifitQuantity0[ iFunc_, Quantity[ value_, units_ ], units_, 1, 0 ] := iFunc @ value;
+
+ifitQuantity0[ iFunc_, Quantity[ value_, units_ ], units_, 1, 0 ] :=
+    iFunc @ value;
+
+ifitQuantity0[ iFunc_, Quantity[ value_, units_ ], units_, scale_, offset_ ] :=
+    iFunc @ (scale * value + offset);
+
+(* FIXME: define fast conversions for fitValue generated units (like fitQuantity1) and refactor all this Steps/Cycles stuff *)
+ifitQuantity0[ iFunc_, Quantity[ value_, units: $$workUnit ], "Watts", scale_, offset_ ] :=
+    ifitQuantity0[ iFunc, Quantity[ value, units ], "Joules", scale, offset ];
+
+ifitQuantity0[ iFunc_, Quantity[ value_, units_ ], "RevolutionsPerMinute", scale_, offset_ ] :=
+    With[ { new = units /. $$cycleUnit -> "Revolutions" },
+        ifitQuantity0[ iFunc, Quantity[ value, new ], "Revolutions"/"Minutes", scale, offset ]
+    ];
+
+ifitQuantity0[ iFunc_, Quantity[ value_, units_ ], "Cycles", scale_, offset_ ] :=
+    With[ { new = units /. "Revolutions"|$$cycleUnit -> "Revolutions" },
+        ifitQuantity0[ iFunc, Quantity[ value, new ], "Revolutions", scale, offset ] /; new =!= units
+    ];
+
+ifitQuantity0[ iFunc_, Quantity[ value_, "Steps" / t1_ ], "Revolutions" / t2_, scale_, offset_ ] :=
+    ifitQuantity0[ iFunc, Quantity[ value / 2, "Revolutions" / t1 ], "Revolutions" / t2, scale, offset ];
+
+ifitQuantity0[ iFunc_, Quantity[ value_, "Steps" ], "Revolutions", scale_, offset_ ] :=
+    ifitQuantity0[ iFunc, Quantity[ value / 2, "Revolutions" ], "Revolutions", scale, offset ];
+
+ifitQuantity0[ iFunc_, Quantity[ value_, "Steps" ], "Cycles", scale_, offset_ ] :=
+    ifitQuantity0[ iFunc, Quantity[ value / 2, "Revolutions" ], "Revolutions", scale, offset ];
+
+ifitQuantity0[ iFunc_, Quantity[ value_, units_ ], "MetersPerSecond", scale_, offset_ ] :=
+    ifitQuantity0[ iFunc, Quantity[ value, units ], "Meters"/"Seconds", scale, offset ];
+
+ifitQuantity0[ iFunc_, q_Quantity, units_, scale_, offset_ ] :=
+    With[ { converted = UnitConvert[ q, units ] },
+        ifitQuantity0[ iFunc, converted, units, scale, offset ] /;
+            MatchQ[ converted, Quantity[ _, units ] ]
+    ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -598,7 +685,7 @@ ifitBool[ ___   ] := $invalidBool;
 ifitBoolA // ClearAll;
 ifitBoolA[ False, { n_Integer } ] := ConstantArray[ 0, n ];
 ifitBoolA[ True , { n_Integer } ] := ConstantArray[ 1, n ];
-ifitBoolA[ list_List, _ ] := dev`ToPackedArray[ ifitBool /@ list ];
+ifitBoolA[ list_List, _ ] := ifitBool /@ list;
 ifitBoolA[ _, { n_Integer } ] := ConstantArray[ $invalidBool, n ];
 ifitBoolA[ ___ ] := $Failed;
 
@@ -614,6 +701,14 @@ fitByteA // ClearAll;
 fitByteA[ { $invalidUINT8... } ] := Missing[ "NotAvailable" ];
 fitByteA[ list_List ] := ByteArray[ fitByte /@ list ];
 fitByteA[ ___ ] := Missing[ "NotAvailable" ];
+
+(* FIXME: Define this! *)
+ifitByte // ClearAll;
+ifitByte[ ___ ] := $Failed;
+
+(* FIXME: Define this! *)
+ifitByteA // ClearAll;
+ifitByteA[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -636,7 +731,7 @@ ifitSINT8[ ___ ] := $invalidSINT8;
 ifitSINT8A // ClearAll;
 ifitSINT8A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitSINT8A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitSINT8A[ list_List, _ ] := dev`ToPackedArray[ ifitSINT8 /@ list ];
+ifitSINT8A[ list_List, _ ] := ifitSINT8 /@ list;
 ifitSINT8A[ _, { n_Integer } ] := ConstantArray[ $invalidSINT8, n ];
 ifitSINT8A[ ___ ] := $Failed;
 
@@ -661,7 +756,7 @@ ifitUINT8[ ___ ] := $invalidUINT8;
 ifitUINT8A // ClearAll;
 ifitUINT8A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT8A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT8A[ list_List, _ ] := dev`ToPackedArray[ ifitUINT8 /@ list ];
+ifitUINT8A[ list_List, _ ] := ifitUINT8 /@ list;
 ifitUINT8A[ _, { n_Integer } ] := ConstantArray[ $invalidUINT8, n ];
 ifitUINT8A[ ___ ] := $Failed;
 
@@ -686,7 +781,7 @@ ifitUINT8Z[ ___ ] := $invalidUINT8Z;
 ifitUINT8ZA // ClearAll;
 ifitUINT8ZA[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT8ZA[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT8ZA[ list_List, _ ] := dev`ToPackedArray[ ifitUINT8Z /@ list ];
+ifitUINT8ZA[ list_List, _ ] := ifitUINT8Z /@ list;
 ifitUINT8ZA[ _, { n_Integer } ] := ConstantArray[ $invalidUINT8Z, n ];
 ifitUINT8ZA[ ___ ] := $Failed;
 
@@ -711,7 +806,7 @@ ifitUINT16[ ___ ] := $invalidUINT16;
 ifitUINT16A // ClearAll;
 ifitUINT16A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT16A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT16A[ list_List, _ ] := dev`ToPackedArray[ ifitUINT16 /@ list ];
+ifitUINT16A[ list_List, _ ] := ifitUINT16 /@ list;
 ifitUINT16A[ _, { n_Integer } ] := ConstantArray[ $invalidUINT16, n ];
 ifitUINT16A[ ___ ] := $Failed;
 
@@ -736,7 +831,7 @@ ifitUINT16Z[ ___ ] := $invalidUINT16Z;
 ifitUINT16ZA // ClearAll;
 ifitUINT16ZA[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT16ZA[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT16ZA[ list_List, _ ] := dev`ToPackedArray[ ifitUINT16Z /@ list ];
+ifitUINT16ZA[ list_List, _ ] := ifitUINT16Z /@ list;
 ifitUINT16ZA[ _, { n_Integer } ] := ConstantArray[ $invalidUINT16Z, n ];
 ifitUINT16ZA[ ___ ] := $Failed;
 
@@ -761,7 +856,7 @@ ifitSINT16[ ___ ] := $invalidSINT16;
 ifitSINT16A // ClearAll;
 ifitSINT16A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitSINT16A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitSINT16A[ list_List, _ ] := dev`ToPackedArray[ ifitSINT16 /@ list ];
+ifitSINT16A[ list_List, _ ] := ifitSINT16 /@ list;
 ifitSINT16A[ _, { n_Integer } ] := ConstantArray[ $invalidSINT16, n ];
 ifitSINT16A[ ___ ] := $Failed;
 
@@ -786,7 +881,7 @@ ifitUINT32[ ___ ] := $invalidUINT32;
 ifitUINT32A // ClearAll;
 ifitUINT32A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT32A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT32A[ list_List, _ ] := dev`ToPackedArray[ ifitUINT32 /@ list ];
+ifitUINT32A[ list_List, _ ] := ifitUINT32 /@ list;
 ifitUINT32A[ _, { n_Integer } ] := ConstantArray[ $invalidUINT32, n ];
 ifitUINT32A[ ___ ] := $Failed;
 
@@ -811,7 +906,7 @@ ifitUINT32Z[ ___ ] := $invalidUINT32Z;
 ifitUINT32ZA // ClearAll;
 ifitUINT32ZA[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT32ZA[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT32ZA[ list_List, _ ] := dev`ToPackedArray[ ifitUINT32Z /@ list ];
+ifitUINT32ZA[ list_List, _ ] := ifitUINT32Z /@ list;
 ifitUINT32ZA[ _, { n_Integer } ] := ConstantArray[ $invalidUINT32Z, n ];
 ifitUINT32ZA[ ___ ] := $Failed;
 
@@ -836,7 +931,7 @@ ifitSINT32[ ___ ] := $invalidSINT32;
 ifitSINT32A // ClearAll;
 ifitSINT32A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitSINT32A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitSINT32A[ list_List, _ ] := dev`ToPackedArray[ ifitSINT32 /@ list ];
+ifitSINT32A[ list_List, _ ] := ifitSINT32 /@ list;
 ifitSINT32A[ _, { n_Integer } ] := ConstantArray[ $invalidSINT32, n ];
 ifitSINT32A[ ___ ] := $Failed;
 
@@ -853,6 +948,16 @@ fitFloat32A[ { $invalidFLOAT32... } ] := Missing[ "NotAvailable" ];
 fitFloat32A[ list_List ] := list / 65535.0;
 fitFloat32A[ ___ ] := Missing[ "NotAvailable" ];
 
+
+
+(* FIXME: Define this! *)
+ifitFloat32 // ClearAll;
+ifitFloat32[ ___ ] := $Failed;
+
+(* FIXME: Define this! *)
+ifitFloat32A // ClearAll;
+ifitFloat32A[ ___ ] := $Failed;
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitFloat64*)
@@ -866,6 +971,15 @@ fitFloat64A[ { $invalidFLOAT64... } ] := Missing[ "NotAvailable" ];
 fitFloat64A[ list_List ] := list / 65535.0;
 fitFloat64A[ ___ ] := Missing[ "NotAvailable" ];
 
+
+(* FIXME: Define this! *)
+ifitFloat64 // ClearAll;
+ifitFloat64[ ___ ] := $Failed;
+
+(* FIXME: Define this! *)
+ifitFloat64A // ClearAll;
+ifitFloat64A[ ___ ] := $Failed;
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitString*)
@@ -875,8 +989,9 @@ fitString[ bytes: { __Integer } ] := FromCharacterCode[ TakeWhile[ bytes, Positi
 fitString[ ___ ] := Missing[ "NotAvailable" ];
 
 ifitString // ClearAll;
-ifitString[ s_String, { n_Integer } ] := PadRight[ ToCharacterCode[ s, "UTF-8" ], n ];
-ifitString[ _, { n_Integer } ] := ConstantArray[ 0, n ];
+ifitString[ s_, { n_Integer } ] := ifitString[ s, n ];
+ifitString[ s_String, n_Integer ] := PadRight[ ToCharacterCode[ s, "UTF-8" ], n ];
+ifitString[ _, n_Integer ] := ConstantArray[ 0, n ];
 ifitString[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
@@ -884,8 +999,12 @@ ifitString[ ___ ] := $Failed;
 (*fitUINT16BF*)
 fitUINT16BF // ClearAll;
 fitUINT16BF[ $invalidUINT16 ] := Missing[ "NotAvailable" ];
-fitUINT16BF[ n_Integer ] := With[ { d = IntegerDigits[ n, 2 ] }, Pick[ Range @ Length @ d, d, 1 ] ];
+fitUINT16BF[ n_Integer ] := With[ { d = Reverse @ IntegerDigits[ n, 2, 16 ] }, Pick[ Range @ Length @ d, d, 1 ] ];
 fitUINT16BF[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitUINT16BF // ClearAll;
+ifitUINT16BF[ bf: { __Integer }, _ ] := Total[ 2^(bf - 1) ];
+ifitUINT16BF[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -926,6 +1045,10 @@ fitGlobalID[ { 255 .. } ] := Missing[ "NotAvailable" ];
 fitGlobalID[ bytes: { __Integer } ] := FromDigits[ bytes, 256 ];
 fitGlobalID[ ___ ] := Missing[ "NotAvailable" ];
 
+ifitGlobalID // ClearAll;
+ifitGlobalID[ id_Integer, n_Integer ] := IntegerDigits[ id, 256, n ];
+ifitGlobalID[ ___ ] := $Failed;
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitDateTime*)
@@ -937,9 +1060,11 @@ fitDateTime[ ___ ] := Missing[ "NotAvailable" ];
 
 ifitDateTime // ClearAll;
 ifitDateTime[ v_Integer ] := v;
-ifitDateTime[ date_DateObject ] := ifitDateTime @ AbsoluteTime @ date;
+ifitDateTime[ date_DateObject ] := ifitDateTime @ AbsoluteTime[ date, TimeZone -> 0 ];
 ifitDateTime[ date_Real ] := ifitDateTime @ Round @ date;
-ifitDateTime[ ___ ] := 2840036399;
+ifitDateTime[ ___ ] := $invalidFitDateTime;
+
+$invalidFitDateTime = $fitInitValues[ "DateTime" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -948,6 +1073,50 @@ fitLocalTimestamp // ClearAll;
 fitLocalTimestamp[ $invalidTimestamp ] := Missing[ "NotAvailable" ];
 fitLocalTimestamp[ n_Integer ] := TimeZoneConvert @ DateObject[ n, TimeZone -> 0 ];
 fitLocalTimestamp[ ___ ] := Missing[ "NotAvailable" ];
+
+
+(* FIXME: Define this! *)
+ifitLocalTimestamp // ClearAll;
+ifitLocalTimestamp[ ___ ] := $Failed;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitLanguage*)
+fitLanguage // ClearAll;
+fitLanguage[ n_Integer ] := fitLanguage[ n, $enumTypeData[ "Language", n ] ];
+fitLanguage[ _, _Missing ] := Missing[ "NotAvailable" ];
+fitLanguage[ _, lang_ ] := lang;
+fitLanguage[ ___ ] := Missing[ "NotAvailable" ];
+
+
+ifitLanguage // ClearAll;
+ifitLanguage[ language_ ] := With[ { n = $iEnumTypeData[ "Language", language ] }, n /; IntegerQ @ n ];
+ifitLanguage[ language_Entity ] := Quiet @ ifitLanguage0 @ standardizeEntityName @ language;
+ifitLanguage[ language_String ] := Quiet @ ifitLanguage0 @ languageData @ language;
+ifitLanguage[ Automatic       ] := With[ { lang = $Language }, ifitLanguage @ lang /; lang =!= Automatic ];
+ifitLanguage[ ___             ] := $Failed;
+
+ifitLanguage0 // ClearAll;
+ifitLanguage0[ language_Entity ] := Lookup[ $iEnumTypeData[ "Language" ], language, $Failed ];
+ifitLanguage0[ ___ ] := $Failed;
+
+
+languageData // ClearAll;
+languageData[ name_String ] := languageData[ name ] = Quiet @ standardizeEntityName @ LanguageData @ name;
+languageData[ ___ ] := $Failed;
+
+
+standardizeEntityName // ClearAll;
+
+standardizeEntityName[ e: Entity[ type_, name_String ] ] :=
+    With[ { entity = Entity[ type, First @ StringSplit[ name, "::" ] ] },
+        (standardizeEntityName[ e ] = entity) /; entityQ @ entity
+    ];
+
+standardizeEntityName[ other_ ] := other;
+
+entityQ[ entity_Entity ] := ListQ @ entity[ "Properties" ];
+entityQ[ ___ ] := False;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -996,6 +1165,12 @@ fitTimeOfDay[ $invalidUINT32 ] := Missing[ "NotAvailable" ];
 fitTimeOfDay[ n_Integer ] := secondsToTimeObject @ n;
 fitTimeOfDay[ ___ ] := Missing[ "NotAvailable" ];
 
+ifitTimeOfDay // ClearAll;
+ifitTimeOfDay[ v_Integer ] := v;
+ifitTimeOfDay[ v_Real ] := Round @ v;
+ifitTimeOfDay[ t: TimeObject[ { h_, m_, s_ }, __ ] ] := ifitTimeOfDay[ h*3600 + m*60 + s ];
+ifitTimeOfDay[ ___ ] := $Failed;
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitMinutes*)
@@ -1012,6 +1187,23 @@ fitGeoPosition[ { $invalidSINT32|0, _ } ] := Missing[ "NotAvailable" ];
 fitGeoPosition[ { _, $invalidSINT32|0 } ] := Missing[ "NotAvailable" ];
 fitGeoPosition[ { a_, b_ } ] := GeoPosition[ 8.381903175442434*^-8*{ a, b } ];
 fitGeoPosition[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitPositionLatitude // ClearAll;
+ifitPositionLatitude[ GeoPosition[ { lat_, __ } ] ] := geoPartToInteger @ lat;
+ifitPositionLatitude[ GeoPosition[ { lat_, __ }, "ITRF00" ] ] := geoPartToInteger @ lat;
+ifitPositionLatitude[ pos_GeoPosition ] := GeoPosition[ pos, "ITRF00" ][ "Latitude" ];
+ifitPositionLatitude[ ___ ] := $Failed;
+
+ifitPositionLongitude // ClearAll;
+ifitPositionLongitude[ GeoPosition[ { _, lon_, ___ } ] ] := geoPartToInteger @ lon;
+ifitPositionLongitude[ GeoPosition[ { _, lon_, ___ }, "ITRF00" ] ] := geoPartToInteger @ lon;
+ifitPositionLongitude[ pos_GeoPosition ] := GeoPosition[ pos, "ITRF00" ][ "Longitude" ];
+ifitPositionLongitude[ ___ ] := $Failed;
+
+geoPartToInteger // ClearAll;
+geoPartToInteger[ v_Real    ] := Round[ 1.19305*10^7 * v ];
+geoPartToInteger[ v_Integer ] := Round[ 1.19305*10^7 * v ];
+geoPartToInteger[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -1056,6 +1248,14 @@ fitHeight[ n_Integer ] := fitHeight[ n, $heightUnits ];
 fitHeight[ n_Integer, "Imperial" ] := Quantity[ With[ { x = 0.0328 * n }, MixedMagnitude @ { IntegerPart @ x, 12 * FractionalPart @ x } ], MixedUnit @ { "Feet", "Inches" } ];
 fitHeight[ n_Integer, _ ] := Quantity[ n/100.0, "Meters" ];
 fitHeight[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitHeight // ClearAll;
+ifitHeight[ v_Integer ] := 100 * v;
+ifitHeight[ v_Real ] := Round[ 100 * v ];
+ifitHeight[ Quantity[ m_, "Meters" ] ] := ifitHeight @ m;
+ifitHeight[ q: Quantity[ { ft_, in_ }, MixedUnit[ { "Feet", "Inches" } ] ] ] := ifitHeight[ 0.3048*ft + 0.3048*in ];
+ifitHeight[ q_Quantity ] := With[ { m = QuantityMagnitude @ UnitConvert[ q, "Meters" ] }, ifitHeight @ m ];
+ifitHeight[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -1248,6 +1448,14 @@ fitAltitude[ n_, "Imperial" ] := Quantity[ 0.656168 n - 1640.42, "Feet" ];
 fitAltitude[ n_, _ ] := Quantity[ 0.2 n - 500.0, "Meters" ];
 fitAltitude[ ___ ] := Missing[ "NotAvailable" ];
 
+ifitAltitude // ClearAll;
+ifitAltitude[ n_Integer ] := n;
+ifitAltitude[ n_Real ] := Round @ n;
+ifitAltitude[ Quantity[ ft_, "Feet" ] ] := Round[ 2500 + 1.524 ft ];
+ifitAltitude[ Quantity[ m_, "Meters" ] ] := Round[ 2500 + 5 * m ];
+ifitAltitude[ q_Quantity ] := ifitAltitude @ UnitConvert[ q, "Meters" ];
+ifitAltitude[ ___ ] := $Failed;
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitAscent*)
@@ -1334,6 +1542,12 @@ fitFTPSetting[ n_ ] := fitFTPSetting[ fitPower16 @ n, $ftp ];
 fitFTPSetting[ watts_Quantity, Automatic ] := ($ftp = setFTP @ watts; watts);
 fitFTPSetting[ watts_Quantity, _ ] := watts;
 fitFTPSetting[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitFTPSetting // ClearAll;
+ifitFTPSetting[ watts_Integer ] := watts;
+ifitFTPSetting[ watts_Real ] := Round @ watts;
+ifitFTPSetting[ Quantity[ watts_, "Watts" ] ] := ifitFTPSetting @ watts;
+ifitFTPSetting[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -1471,6 +1685,12 @@ fitMaxHRSetting[ hr_Quantity, Automatic ] := ($maxHR = setMaxHR @ hr; hr);
 fitMaxHRSetting[ hr_Quantity, _ ] := hr;
 fitMaxHRSetting[ ___ ] := Missing[ "NotAvailable" ];
 
+ifitMaxHRSetting // ClearAll;
+ifitMaxHRSetting[ bpm_Integer ] := bpm;
+ifitMaxHRSetting[ bpm_Real ] := Round @ bpm;
+ifitMaxHRSetting[ Quantity[ bpm_, "Beats"/"Minutes" ] ] := ifitMaxHRSetting @ bpm;
+ifitMaxHRSetting[ ___ ] := $Failed;
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitCadence*)
@@ -1567,6 +1787,15 @@ fitStepLength[ n_Integer ] := fitStepLength[ n, $distanceUnits ];
 fitStepLength[ n_Integer, "Imperial" ] := Quantity[ 0.00328084 * n, "Feet" ];
 fitStepLength[ n_Integer, _ ] := Quantity[ 0.001 * n, "Meters" ];
 fitStepLength[ ___ ] := Missing[ "NotAvailable" ];
+
+
+ifitStepLength // ClearAll;
+ifitStepLength[ Automatic ] := 0;
+ifitStepLength[ n_Integer ] := 1000 * n;
+ifitStepLength[ n_Real ] := Round[ 1000 * n ];
+ifitStepLength[ Quantity[ m_, "Meters" ] ] := ifitStepLength @ m;
+ifitStepLength[ q_Quantity ] := ifitStepLength @ QuantityMagnitude @ UnitConvert[ q, "Meters" ];
+ifitStepLength[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -1793,12 +2022,26 @@ fitTimeOffset[ { $invalidUINT32, $invalidUINT32 } ] := Missing[ "NotAvailable" ]
 fitTimeOffset[ { a_Integer, b_Integer } ] := { a, b };
 fitTimeOffset[ ___ ] := Missing[ "NotAvailable" ];
 
+ifitTimeOffset // ClearAll;
+ifitTimeOffset[ list:{ __Integer }, n_ ] := list;
+ifitTimeOffset[ ___ ] := $Failed;
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitTimeModeArr*)
 fitTimeModeArr // ClearAll;
-fitTimeModeArr[ { a_Integer, b_Integer } ] := fitTimeMode @ a;
+fitTimeModeArr[ list_List ] := fitTimeModeArr0[ fitTimeMode /@ list ];
 fitTimeModeArr[ ___ ] := Missing[ "NotAvailable" ];
+
+fitTimeModeArr0 // ClearAll;
+fitTimeModeArr0[ { } ] := Missing[ "NotAvailable" ];
+fitTimeModeArr0[ { mode_ } ] := mode;
+fitTimeModeArr0[ modes_List ] := modes;
+fitTimeModeArr0[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitTimeModeArr // ClearAll;
+ifitTimeModeArr[ mode_String, 1 ] := { ifitEnum[ "TimeMode" ][ mode ] };
+ifitTimeModeArr[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

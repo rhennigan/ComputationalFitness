@@ -42,19 +42,6 @@ fieldPosition // endDefinition;
 
 $fitIndex = SortBy[ fieldPosition ] /@ $FITMessageDefinitions[[ All, "Fields", All, "Index" ]];
 
-If[ $debug,
-    Module[ { names, unsupported },
-        names       = Keys @ $fitIndex;
-        unsupported = Complement[ names, $supportedMessageTypes ];
-        If[ MatchQ[ unsupported, { __ } ],
-            messagePrint[
-                "UnsupportedMessageTypes",
-                HoldForm @ Evaluate @ unsupported
-            ]
-        ]
-    ]
-];
-
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*$enumTypeData*)

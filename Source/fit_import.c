@@ -1715,22 +1715,22 @@ static void import_device_settings(WolframLibraryData libData, MTensor data, int
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_DEVICE_SETTINGS);
     ImportInteger(2, libData, data, pos, mesg->utc_offset);
     ImportIntegerSequence(3, libData, data, pos, mesg->time_offset, FIT_DEVICE_SETTINGS_MESG_TIME_OFFSET_COUNT);
-    ImportInteger(5, libData, data, pos, WLTimestamp(mesg->clock_time));
-    ImportIntegerSequence(6, libData, data, pos, mesg->pages_enabled, FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT);
-    ImportIntegerSequence(7, libData, data, pos, mesg->default_page, FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT);
-    ImportInteger(8, libData, data, pos, mesg->autosync_min_steps);
-    ImportInteger(9, libData, data, pos, mesg->autosync_min_time);
-    ImportInteger(10, libData, data, pos, mesg->active_time_zone);
-    ImportIntegerSequence(11, libData, data, pos, mesg->time_mode, FIT_DEVICE_SETTINGS_MESG_TIME_MODE_COUNT);
-    ImportIntegerSequence(13, libData, data, pos, mesg->time_zone_offset, FIT_DEVICE_SETTINGS_MESG_TIME_ZONE_OFFSET_COUNT);
-    ImportInteger(15, libData, data, pos, mesg->backlight_mode);
-    ImportInteger(16, libData, data, pos, mesg->activity_tracker_enabled);
-    ImportInteger(17, libData, data, pos, mesg->move_alert_enabled);
-    ImportInteger(18, libData, data, pos, mesg->date_mode);
-    ImportInteger(19, libData, data, pos, mesg->display_orientation);
-    ImportInteger(20, libData, data, pos, mesg->mounting_side);
-    ImportInteger(21, libData, data, pos, mesg->tap_sensitivity);
-    ImportFinish(22, libData, data, pos);
+    ImportInteger(4, libData, data, pos, WLTimestamp(mesg->clock_time));
+    ImportIntegerSequence(5, libData, data, pos, mesg->pages_enabled, FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT);
+    ImportIntegerSequence(6, libData, data, pos, mesg->default_page, FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT);
+    ImportInteger(7, libData, data, pos, mesg->autosync_min_steps);
+    ImportInteger(8, libData, data, pos, mesg->autosync_min_time);
+    ImportInteger(9, libData, data, pos, mesg->active_time_zone);
+    ImportIntegerSequence(10, libData, data, pos, mesg->time_mode, FIT_DEVICE_SETTINGS_MESG_TIME_MODE_COUNT);
+    ImportIntegerSequence(11, libData, data, pos, mesg->time_zone_offset, FIT_DEVICE_SETTINGS_MESG_TIME_ZONE_OFFSET_COUNT);
+    ImportInteger(12, libData, data, pos, mesg->backlight_mode);
+    ImportInteger(13, libData, data, pos, mesg->activity_tracker_enabled);
+    ImportInteger(14, libData, data, pos, mesg->move_alert_enabled);
+    ImportInteger(15, libData, data, pos, mesg->date_mode);
+    ImportInteger(16, libData, data, pos, mesg->display_orientation);
+    ImportInteger(17, libData, data, pos, mesg->mounting_side);
+    ImportInteger(18, libData, data, pos, mesg->tap_sensitivity);
+    ImportFinish(19, libData, data, pos);
 }
 
 static void import_user_profile(WolframLibraryData libData, MTensor data, int idx, const FIT_USER_PROFILE_MESG *mesg)

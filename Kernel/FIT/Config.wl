@@ -24,23 +24,27 @@ $weight                   = Automatic;
 $sport                    = Automatic;
 $fileByteCount            = 0;
 $pzPlotWidth              = 650;
+$fitTerm                  = 1685024357;
+$powerZoneThresholds      = { 0.05, 0.55, 0.75, 0.9, 1.05, 1.2, 1.5 };
+$fitMessageTensorRowWidth = $fitConfig[ "MessageTensorRowWidth" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Invalid Type Values*)
 $invalidSINT16            = $fitInitValues[ "SignedInteger16"    ];
 $invalidSINT32            = $fitInitValues[ "SignedInteger32"    ];
 $invalidSINT8             = $fitInitValues[ "SignedInteger8"     ];
 $invalidUINT16            = $fitInitValues[ "UnsignedInteger16"  ];
-$invalidUINT16Z           = $fitInitValues[ "UnsignedInteger16z" ];
+$invalidUINT16Z           = $fitInitValues[ "UnsignedInteger16Z" ];
 $invalidUINT32            = $fitInitValues[ "UnsignedInteger32"  ];
-$invalidUINT32Z           = $fitInitValues[ "UnsignedInteger32z" ];
+$invalidUINT32Z           = $fitInitValues[ "UnsignedInteger32Z" ];
 $invalidUINT8             = $fitInitValues[ "UnsignedInteger8"   ];
-$invalidUINT8Z            = $fitInitValues[ "UnsignedInteger8z"  ];
-$invalidFLOAT32           = -9223372036854775808;
-$invalidFLOAT64           = -9223372036854775808;
-$invalidBool              = 255;
-$invalidEnum              = 255;
-$invalidTimestamp         = 2840036399|2840036400|7135003695;
-$fitTerm                  = 1685024357;
-$powerZoneThresholds      = { 0.05, 0.55, 0.75, 0.9, 1.05, 1.2, 1.5 };
-$fitMessageTensorRowWidth = $fitConfig[ "MessageTensorRowWidth" ];
+$invalidUINT8Z            = $fitInitValues[ "UnsignedInteger8Z"  ];
+$invalidFLOAT32           = $fitInitValues[ "Real32"             ];
+$invalidFLOAT64           = $fitInitValues[ "Real64"             ];
+$invalidBool              = $fitInitValues[ "Boolean"            ];
+$invalidEnum              = $fitInitValues[ "Enumeration"        ];
+$invalidTimestamp         = 2840036399|2840036400|$fitInitValues[ "DateTime" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -71,6 +75,7 @@ $$co            = HoldPattern[ CloudObject ][ $$string, OptionsPattern[ ] ];
 $$lo            = HoldPattern[ LocalObject ][ $$string, OptionsPattern[ ] ];
 $$resp          = HoldPattern[ HTTPResponse ][ $$bytes, $$assoc, OptionsPattern[ ] ];
 $$source        = $$string | $$file | $$url | $$co | $$lo | $$resp;
+$$target        = $$string | $$file | $$co | $$lo;
 $$fitRecordKeys = _? fitRecordKeyQ  | { ___? fitRecordKeyQ  };
 $$fitEventKeys  = _? fitEventKeyQ | { ___? fitEventKeyQ };
 $$elements      = _? elementQ | { ___? elementQ };
@@ -430,6 +435,22 @@ messageTypeQ[ ___         ] := False;
 (*supportedMessageTypeQ*)
 supportedMessageTypeQ[ type_String ] := MemberQ[ $supportedMessageTypes, type ];
 supportedMessageTypeQ[ ___         ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Debug*)
+If[ $debug,
+    Module[ { names, unsupported },
+        names       = Keys @ $fitIndex;
+        unsupported = Complement[ names, $supportedMessageTypes ];
+        If[ MatchQ[ unsupported, { __ } ],
+            messagePrint[
+                "UnsupportedMessageTypes",
+                HoldForm @ Evaluate @ unsupported
+            ]
+        ]
+    ]
+];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

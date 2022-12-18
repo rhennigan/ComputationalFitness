@@ -8,6 +8,7 @@
             "AccelerationX" -> <|
                 "Comment"         -> "1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AccelerationX",
                 "Index"           -> 8;;8,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -19,6 +20,7 @@
             "AccelerationY" -> <|
                 "Comment"         -> "1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AccelerationY",
                 "Index"           -> 9;;9,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -30,6 +32,7 @@
             "AccelerationZ" -> <|
                 "Comment"         -> "1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AccelerationZ",
                 "Index"           -> 10;;10,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -41,8 +44,10 @@
             "CalibratedAccelerationX" -> <|
                 "Comment"         -> "1 * g + 0, Calibrated accel reading",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "CalibratedAccelerationX",
                 "Index"           -> 3;;3,
                 "Interpreter"     -> "fitFloat32A",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "calibrated_accel_x",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -51,8 +56,10 @@
             "CalibratedAccelerationY" -> <|
                 "Comment"         -> "1 * g + 0, Calibrated accel reading",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "CalibratedAccelerationY",
                 "Index"           -> 4;;4,
                 "Interpreter"     -> "fitFloat32A",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "calibrated_accel_y",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -61,8 +68,10 @@
             "CalibratedAccelerationZ" -> <|
                 "Comment"         -> "1 * g + 0, Calibrated accel reading",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "CalibratedAccelerationZ",
                 "Index"           -> 5;;5,
                 "Interpreter"     -> "fitFloat32A",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "calibrated_accel_z",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -71,6 +80,7 @@
             "CompressedCalibratedAccelerationX" -> <|
                 "Comment"         -> "1 * mG + 0, Calibrated accel reading",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "CompressedCalibratedAccelerationX",
                 "Index"           -> 11;;11,
                 "Interpreter"     -> "fitSINT16A",
                 "Invalid"         -> 32767,
@@ -82,6 +92,7 @@
             "CompressedCalibratedAccelerationY" -> <|
                 "Comment"         -> "1 * mG + 0, Calibrated accel reading",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "CompressedCalibratedAccelerationY",
                 "Index"           -> 12;;12,
                 "Interpreter"     -> "fitSINT16A",
                 "Invalid"         -> 32767,
@@ -93,6 +104,7 @@
             "CompressedCalibratedAccelerationZ" -> <|
                 "Comment"         -> "1 * mG + 0, Calibrated accel reading",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "CompressedCalibratedAccelerationZ",
                 "Index"           -> 13;;13,
                 "Interpreter"     -> "fitSINT16A",
                 "Invalid"         -> 32767,
@@ -104,6 +116,7 @@
             "SampleTimeOffset" -> <|
                 "Comment"         -> "1 * ms + 0, Each time in the array describes the time at which the accelerometer sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in accel_x and accel_y and accel_z",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "SampleTimeOffset",
                 "Index"           -> 7;;7,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Seconds", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -115,9 +128,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0, Whole second part of the timestamp",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -126,6 +140,7 @@
             "TimestampMilliseconds" -> <|
                 "Comment"         -> "1 * ms + 0, Millisecond part of the timestamp.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimestampMilliseconds",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Seconds", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -143,6 +158,7 @@
         "Fields"        -> <|
             "Event" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Event",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitEnum", "Event" },
                 "Invalid"         -> 255,
@@ -153,6 +169,7 @@
             ,
             "EventGroup" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventGroup",
                 "Index"           -> 9,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -163,6 +180,7 @@
             ,
             "EventType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventType",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitEnum", "EventType" },
                 "Invalid"         -> 255,
@@ -174,6 +192,7 @@
             "LocalTimestamp" -> <|
                 "Comment"         -> "timestamp epoch expressed in local time, used to convert activity timestamps to local time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "LocalTimestamp",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitLocalTimestamp",
                 "Invalid"         -> 4294967295,
@@ -184,6 +203,7 @@
             ,
             "NumberOfSessions" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "NumberOfSessions",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -194,9 +214,10 @@
             ,
             "Timestamp" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -205,6 +226,7 @@
             "TotalTimerTime" -> <|
                 "Comment"         -> "1000 * s + 0, Exclude pauses",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalTimerTime",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -215,6 +237,7 @@
             ,
             "Type" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitEnum", "Activity" },
                 "Invalid"         -> 255,
@@ -232,6 +255,7 @@
         "Fields"        -> <|
             "ChannelNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ChannelNumber",
                 "Index"           -> 22,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -242,6 +266,7 @@
             ,
             "Data" -> <|
                 "Dimensions"      -> { 8 },
+                "FieldName"       -> "Data",
                 "Index"           -> 3;;10,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -253,6 +278,7 @@
             "FractionalTimestamp" -> <|
                 "Comment"         -> "32768 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FractionalTimestamp",
                 "Index"           -> 11,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -263,6 +289,7 @@
             ,
             "MessageData" -> <|
                 "Dimensions"      -> { 9 },
+                "FieldName"       -> "MessageData",
                 "Index"           -> 13;;21,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -273,6 +300,7 @@
             ,
             "MessageID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageID",
                 "Index"           -> 12,
                 "Interpreter"     -> "fitByte",
                 "Invalid"         -> 255,
@@ -284,9 +312,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -301,6 +330,7 @@
         "Fields"        -> <|
             "ChannelNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ChannelNumber",
                 "Index"           -> 22,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -311,6 +341,7 @@
             ,
             "Data" -> <|
                 "Dimensions"      -> { 8 },
+                "FieldName"       -> "Data",
                 "Index"           -> 3;;10,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -322,6 +353,7 @@
             "FractionalTimestamp" -> <|
                 "Comment"         -> "32768 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FractionalTimestamp",
                 "Index"           -> 11,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -332,6 +364,7 @@
             ,
             "MessageData" -> <|
                 "Dimensions"      -> { 9 },
+                "FieldName"       -> "MessageData",
                 "Index"           -> 13;;21,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -342,6 +375,7 @@
             ,
             "MessageID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageID",
                 "Index"           -> 12,
                 "Interpreter"     -> "fitByte",
                 "Invalid"         -> 255,
@@ -353,9 +387,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -371,6 +406,7 @@
             "AccelerationLateral" -> <|
                 "Comment"         -> "100 * m/s^2 + 0, Range -78.4 to +78.4 (-8 Gs to 8 Gs)",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AccelerationLateral",
                 "Index"           -> 7;;7,
                 "Interpreter"     -> "fitSINT16A",
                 "Invalid"         -> 32767,
@@ -382,6 +418,7 @@
             "AccelerationNormal" -> <|
                 "Comment"         -> "100 * m/s^2 + 0, Range -78.4 to +78.4 (-8 Gs to 8 Gs)",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AccelerationNormal",
                 "Index"           -> 8;;8,
                 "Interpreter"     -> "fitSINT16A",
                 "Invalid"         -> 32767,
@@ -393,6 +430,7 @@
             "AttitudeStageComplete" -> <|
                 "Comment"         -> "1 * % + 0, The percent complete of the current attitude stage. Set to 0 for attitude stages 0, 1 and 2 and to 100 for attitude stage 3 by AHRS modules that do not support it. Range - 100",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AttitudeStageComplete",
                 "Index"           -> 13;;13,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "Percent", 1, 0 },
                 "Invalid"         -> 255,
@@ -404,6 +442,7 @@
             "Pitch" -> <|
                 "Comment"         -> "10430.38 * radians + 0, Range -PI/2 to +PI/2",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Pitch",
                 "Index"           -> 5;;5,
                 "Interpreter"     -> "fitSINT16A",
                 "Invalid"         -> 32767,
@@ -415,6 +454,7 @@
             "Roll" -> <|
                 "Comment"         -> "10430.38 * radians + 0, Range -PI to +PI",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Roll",
                 "Index"           -> 6;;6,
                 "Interpreter"     -> "fitSINT16A",
                 "Invalid"         -> 32767,
@@ -425,6 +465,7 @@
             ,
             "Stage" -> <|
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Stage",
                 "Index"           -> 12;;12,
                 "Interpreter"     -> { "fitEnum", "AttitudeStage" },
                 "Invalid"         -> 255,
@@ -436,6 +477,7 @@
             "SystemTime" -> <|
                 "Comment"         -> "1 * ms + 0, System time associated with sample expressed in ms.",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "SystemTime",
                 "Index"           -> 3;;3,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -447,9 +489,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0, Timestamp message was output",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -458,6 +501,7 @@
             "TimestampMilliseconds" -> <|
                 "Comment"         -> "1 * ms + 0, Fractional part of timestamp, added to timestamp",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimestampMilliseconds",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Seconds", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -469,6 +513,7 @@
             "Track" -> <|
                 "Comment"         -> "10430.38 * radians + 0, Track Angle/Heading Range 0 - 2pi",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Track",
                 "Index"           -> 10;;10,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -480,6 +525,7 @@
             "TurnRate" -> <|
                 "Comment"         -> "1024 * radians/second + 0, Range -8.727 to +8.727 (-500 degs/sec to +500 degs/sec)",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "TurnRate",
                 "Index"           -> 9;;9,
                 "Interpreter"     -> "fitSINT16A",
                 "Invalid"         -> 32767,
@@ -490,6 +536,7 @@
             ,
             "Validity" -> <|
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Validity",
                 "Index"           -> 11;;11,
                 "Interpreter"     -> { "fitEnum", "AttitudeValidity" },
                 "Invalid"         -> 65535,
@@ -507,27 +554,30 @@
         "Fields"        -> <|
             "AutomaticPowerZero" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "AutomaticPowerZero",
                 "Index"           -> 47,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "auto_power_zero",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "AutomaticWheelCalibration" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "AutomaticWheelCalibration",
                 "Index"           -> 46,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "auto_wheel_cal",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "AutomaticWheelSize" -> <|
                 "Comment"         -> "1000 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AutomaticWheelSize",
                 "Index"           -> 41,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -538,87 +588,96 @@
             ,
             "BikeCadenceANTID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikeCadenceANTID",
                 "Index"           -> 37,
                 "Interpreter"     -> "fitUINT16Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "bike_cad_ant_id",
                 "NativeType"      -> "FIT_UINT16Z",
-                "Type"            -> "UnsignedInteger16z"
+                "Type"            -> "UnsignedInteger16Z"
             |>
             ,
             "BikeCadenceANTIDTransmissionType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikeCadenceANTIDTransmissionType",
                 "Index"           -> 56,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "bike_cad_ant_id_trans_type",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "BikePowerANTID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikePowerANTID",
                 "Index"           -> 39,
                 "Interpreter"     -> "fitUINT16Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "bike_power_ant_id",
                 "NativeType"      -> "FIT_UINT16Z",
-                "Type"            -> "UnsignedInteger16z"
+                "Type"            -> "UnsignedInteger16Z"
             |>
             ,
             "BikePowerANTIDTransmissionType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikePowerANTIDTransmissionType",
                 "Index"           -> 58,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "bike_power_ant_id_trans_type",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "BikeSpeedANTID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikeSpeedANTID",
                 "Index"           -> 36,
                 "Interpreter"     -> "fitUINT16Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "bike_spd_ant_id",
                 "NativeType"      -> "FIT_UINT16Z",
-                "Type"            -> "UnsignedInteger16z"
+                "Type"            -> "UnsignedInteger16Z"
             |>
             ,
             "BikeSpeedANTIDTransmissionType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikeSpeedANTIDTransmissionType",
                 "Index"           -> 55,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "bike_spd_ant_id_trans_type",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "BikeSpeedCadenceANTID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikeSpeedCadenceANTID",
                 "Index"           -> 38,
                 "Interpreter"     -> "fitUINT16Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "bike_spdcad_ant_id",
                 "NativeType"      -> "FIT_UINT16Z",
-                "Type"            -> "UnsignedInteger16z"
+                "Type"            -> "UnsignedInteger16Z"
             |>
             ,
             "BikeSpeedCadenceANTIDTransmissionType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikeSpeedCadenceANTIDTransmissionType",
                 "Index"           -> 57,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "bike_spdcad_ant_id_trans_type",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "BikeWeight" -> <|
                 "Comment"         -> "10 * kg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BikeWeight",
                 "Index"           -> 42,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Grams", 0.01, 0 },
                 "Invalid"         -> 65535,
@@ -629,17 +688,19 @@
             ,
             "CadenceEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "CadenceEnabled",
                 "Index"           -> 50,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "cad_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "CrankLength" -> <|
                 "Comment"         -> "2 * mm + -110",
                 "Dimensions"      -> { },
+                "FieldName"       -> "CrankLength",
                 "Index"           -> 53,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 2000, -110 },
                 "Invalid"         -> 255,
@@ -651,6 +712,7 @@
             "CustomWheelSize" -> <|
                 "Comment"         -> "1000 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "CustomWheelSize",
                 "Index"           -> 40,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -661,38 +723,42 @@
             ,
             "Enabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Enabled",
                 "Index"           -> 54,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "FrontGear" -> <|
                 "Comment"         -> "Number of teeth on each gear 0 is innermost",
                 "Dimensions"      -> { 3 },
+                "FieldName"       -> "FrontGear",
                 "Index"           -> 61;;63,
                 "Interpreter"     -> "fitUINT8ZA",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "front_gear",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "FrontGearNumber" -> <|
                 "Comment"         -> "Number of front gears",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FrontGearNumber",
                 "Index"           -> 60,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "front_gear_num",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "ID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ID",
                 "Index"           -> 48,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -703,6 +769,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 35,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -713,6 +780,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 32 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;33,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -724,6 +792,7 @@
             "Odometer" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Odometer",
                 "Index"           -> 34,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -735,6 +804,7 @@
             "OdometerRollover" -> <|
                 "Comment"         -> "Rollover counter that can be used to extend the odometer",
                 "Dimensions"      -> { },
+                "FieldName"       -> "OdometerRollover",
                 "Index"           -> 59,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -746,6 +816,7 @@
             "PowerCalibrationFactor" -> <|
                 "Comment"         -> "10 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PowerCalibrationFactor",
                 "Index"           -> 43,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -756,68 +827,75 @@
             ,
             "PowerEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PowerEnabled",
                 "Index"           -> 52,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "power_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "RearGear" -> <|
                 "Comment"         -> "Number of teeth on each gear 0 is innermost",
                 "Dimensions"      -> { 15 },
+                "FieldName"       -> "RearGear",
                 "Index"           -> 65;;79,
                 "Interpreter"     -> "fitUINT8ZA",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "rear_gear",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "RearGearNumber" -> <|
                 "Comment"         -> "Number of rear gears",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RearGearNumber",
                 "Index"           -> 64,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "rear_gear_num",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "ShimanoDI2Enabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ShimanoDI2Enabled",
                 "Index"           -> 80,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "shimano_di2_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "SpeedCadenceEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SpeedCadenceEnabled",
                 "Index"           -> 51,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "spdcad_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "SpeedEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SpeedEnabled",
                 "Index"           -> 49,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "spd_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 44,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -828,6 +906,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 45,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -846,6 +925,7 @@
             "DiastolicPressure" -> <|
                 "Comment"         -> "1 * mmHg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "DiastolicPressure",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -857,6 +937,7 @@
             "HeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeartRate",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -867,6 +948,7 @@
             ,
             "HeartRateType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeartRateType",
                 "Index"           -> 11,
                 "Interpreter"     -> { "fitEnum", "HeartRateType" },
                 "Invalid"         -> 255,
@@ -878,6 +960,7 @@
             "Map3SampleMean" -> <|
                 "Comment"         -> "1 * mmHg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Map3SampleMean",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -889,6 +972,7 @@
             "MapEveningValues" -> <|
                 "Comment"         -> "1 * mmHg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MapEveningValues",
                 "Index"           -> 8,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -900,6 +984,7 @@
             "MapMorningValues" -> <|
                 "Comment"         -> "1 * mmHg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MapMorningValues",
                 "Index"           -> 7,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -911,6 +996,7 @@
             "MeanArterialPressure" -> <|
                 "Comment"         -> "1 * mmHg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MeanArterialPressure",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -921,6 +1007,7 @@
             ,
             "Status" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Status",
                 "Index"           -> 12,
                 "Interpreter"     -> { "fitEnum", "BPStatus" },
                 "Invalid"         -> 255,
@@ -932,6 +1019,7 @@
             "SystolicPressure" -> <|
                 "Comment"         -> "1 * mmHg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SystolicPressure",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -943,9 +1031,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -954,6 +1043,7 @@
             "UserProfileIndex" -> <|
                 "Comment"         -> "Associates this blood pressure message to a user. This corresponds to the index of the user profile message in the blood pressure file.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "UserProfileIndex",
                 "Index"           -> 9,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -972,6 +1062,7 @@
             "HighValue" -> <|
                 "Comment"         -> "1 * rpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "HighValue",
                 "Index"           -> 19,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -982,6 +1073,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -992,6 +1084,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -1009,6 +1102,7 @@
         "Fields"        -> <|
             "ConnectivitySupported" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ConnectivitySupported",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitEnum", "ConnectivityCapabilities" },
                 "Invalid"         -> 0,
@@ -1020,17 +1114,19 @@
             "Languages" -> <|
                 "Comment"         -> "Use language_bits_x types where x is index of array.",
                 "Dimensions"      -> { 4 },
+                "FieldName"       -> "Languages",
                 "Index"           -> 2;;5,
                 "Interpreter"     -> "fitUINT8ZA",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "languages",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "Sports" -> <|
                 "Comment"         -> "Use sport_bits_x types where x is index of array.",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Sports",
                 "Index"           -> 8;;8,
                 "Interpreter"     -> { "fitEnum", "SportBits0" },
                 "Invalid"         -> 0,
@@ -1041,6 +1137,7 @@
             ,
             "WorkoutsSupported" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "WorkoutsSupported",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitEnum", "WorkoutCapabilities" },
                 "Invalid"         -> 0,
@@ -1059,98 +1156,108 @@
             "ANTEnabled" -> <|
                 "Comment"         -> "Use ANT for connectivity features",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ANTEnabled",
                 "Index"           -> 28,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "ant_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "AutomaticActivityUploadEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "AutomaticActivityUploadEnabled",
                 "Index"           -> 32,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "auto_activity_upload_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "BluetoothEnabled" -> <|
                 "Comment"         -> "Use Bluetooth for connectivity features",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BluetoothEnabled",
                 "Index"           -> 26,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "bluetooth_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "BluetoothLEEnabled" -> <|
                 "Comment"         -> "Use Bluetooth Low Energy for connectivity features",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BluetoothLEEnabled",
                 "Index"           -> 27,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "bluetooth_le_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "CourseDownloadEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "CourseDownloadEnabled",
                 "Index"           -> 33,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "course_download_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "GPSEphemerisDownloadEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "GPSEphemerisDownloadEnabled",
                 "Index"           -> 35,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "gps_ephemeris_download_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "GroupTrackEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "GroupTrackEnabled",
                 "Index"           -> 37,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "grouptrack_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "IncidentDetectionEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "IncidentDetectionEnabled",
                 "Index"           -> 36,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "incident_detection_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "LiveTrackingEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LiveTrackingEnabled",
                 "Index"           -> 29,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "live_tracking_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "Name" -> <|
                 "Dimensions"      -> { 24 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;25,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -1161,32 +1268,35 @@
             ,
             "WeatherAlertsEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "WeatherAlertsEnabled",
                 "Index"           -> 31,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "weather_alerts_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "WeatherConditionsEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "WeatherConditionsEnabled",
                 "Index"           -> 30,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "weather_conditions_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "WorkoutDownloadEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "WorkoutDownloadEnabled",
                 "Index"           -> 34,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "workout_download_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
         |>
     |>
@@ -1198,6 +1308,7 @@
         "Fields"        -> <|
             "Capabilities" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Capabilities",
                 "Index"           -> 18,
                 "Interpreter"     -> { "fitEnum", "CourseCapabilities" },
                 "Invalid"         -> 0,
@@ -1208,6 +1319,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -1218,6 +1330,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 19,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -1228,6 +1341,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 20,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -1246,6 +1360,7 @@
             "Distance" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Distance",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -1256,16 +1371,18 @@
             ,
             "Favorite" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Favorite",
                 "Index"           -> 24,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "favorite",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 22,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -1276,6 +1393,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 6;;21,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -1287,6 +1405,7 @@
             "PositionLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PositionLatitude",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -1298,6 +1417,7 @@
             "PositionLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PositionLongitude",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -1308,9 +1428,10 @@
             ,
             "Timestamp" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -1318,6 +1439,7 @@
             ,
             "Type" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 23,
                 "Interpreter"     -> { "fitEnum", "CoursePoint" },
                 "Invalid"         -> 255,
@@ -1335,6 +1457,7 @@
         "Fields"        -> <|
             "ApplicationID" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "ApplicationID",
                 "Index"           -> 18;;33,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -1345,6 +1468,7 @@
             ,
             "ApplicationVersion" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ApplicationVersion",
                 "Index"           -> 34,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -1355,6 +1479,7 @@
             ,
             "DeveloperDataIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeveloperDataIndex",
                 "Index"           -> 36,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -1365,6 +1490,7 @@
             ,
             "DeveloperID" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "DeveloperID",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -1375,6 +1501,7 @@
             ,
             "ManufacturerID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ManufacturerID",
                 "Index"           -> 35,
                 "Interpreter"     -> { "fitEnum", "Manufacturer" },
                 "Invalid"         -> 65535,
@@ -1392,6 +1519,7 @@
         "Fields"        -> <|
             "BatteryIdentifier" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BatteryIdentifier",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -1402,6 +1530,7 @@
             ,
             "BatteryStatus" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BatteryStatus",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitEnum", "BatteryStatus" },
                 "Invalid"         -> 255,
@@ -1413,6 +1542,7 @@
             "BatteryVoltage" -> <|
                 "Comment"         -> "256 * V + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BatteryVoltage",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Volts", 256, 0 },
                 "Invalid"         -> 65535,
@@ -1423,6 +1553,7 @@
             ,
             "DeviceIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeviceIndex",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitEnum", "DeviceIndex" },
                 "Invalid"         -> 255,
@@ -1433,9 +1564,10 @@
             ,
             "Timestamp" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -1450,16 +1582,18 @@
         "Fields"        -> <|
             "ANTDeviceNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ANTDeviceNumber",
                 "Index"           -> 49,
                 "Interpreter"     -> "fitUINT16Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "ant_device_number",
                 "NativeType"      -> "FIT_UINT16Z",
-                "Type"            -> "UnsignedInteger16z"
+                "Type"            -> "UnsignedInteger16Z"
             |>
             ,
             "ANTNetwork" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ANTNetwork",
                 "Index"           -> 56,
                 "Interpreter"     -> { "fitEnum", "ANTNetwork" },
                 "Invalid"         -> 255,
@@ -1470,17 +1604,19 @@
             ,
             "ANTTransmissionType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ANTTransmissionType",
                 "Index"           -> 55,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "ant_transmission_type",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "BatteryLevel" -> <|
                 "Comment"         -> "1 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BatteryLevel",
                 "Index"           -> 58,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 1, 0 },
                 "Invalid"         -> 255,
@@ -1491,6 +1627,7 @@
             ,
             "BatteryStatus" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BatteryStatus",
                 "Index"           -> 53,
                 "Interpreter"     -> { "fitEnum", "BatteryStatus" },
                 "Invalid"         -> 255,
@@ -1502,6 +1639,7 @@
             "BatteryVoltage" -> <|
                 "Comment"         -> "256 * V + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BatteryVoltage",
                 "Index"           -> 48,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Volts", 256, 0 },
                 "Invalid"         -> 65535,
@@ -1513,6 +1651,7 @@
             "CumulativeOperatingTime" -> <|
                 "Comment"         -> "1 * s + 0, Reset by new battery or charge.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "CumulativeOperatingTime",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -1524,6 +1663,7 @@
             "Descriptor" -> <|
                 "Comment"         -> "Used to describe the sensor or location",
                 "Dimensions"      -> { 20 },
+                "FieldName"       -> "Descriptor",
                 "Index"           -> 5;;24,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -1534,6 +1674,7 @@
             ,
             "DeviceIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeviceIndex",
                 "Index"           -> 50,
                 "Interpreter"     -> { "fitEnum", "DeviceIndex" },
                 "Invalid"         -> 255,
@@ -1544,6 +1685,7 @@
             ,
             "DeviceType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeviceType",
                 "Index"           -> 51,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -1554,6 +1696,7 @@
             ,
             "HardwareVersion" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HardwareVersion",
                 "Index"           -> 52,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -1564,6 +1707,7 @@
             ,
             "Manufacturer" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Manufacturer",
                 "Index"           -> 45,
                 "Interpreter"     -> { "fitEnum", "Manufacturer" },
                 "Invalid"         -> 65535,
@@ -1574,6 +1718,7 @@
             ,
             "Product" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Product",
                 "Index"           -> 46,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -1585,6 +1730,7 @@
             "ProductName" -> <|
                 "Comment"         -> "Optional free form string to indicate the devices name or model",
                 "Dimensions"      -> { 20 },
+                "FieldName"       -> "ProductName",
                 "Index"           -> 25;;44,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -1596,6 +1742,7 @@
             "SensorPosition" -> <|
                 "Comment"         -> "Indicates the location of the sensor",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SensorPosition",
                 "Index"           -> 54,
                 "Interpreter"     -> { "fitEnum", "BodyLocation" },
                 "Invalid"         -> 255,
@@ -1606,16 +1753,18 @@
             ,
             "SerialNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SerialNumber",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT32Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "serial_number",
                 "NativeType"      -> "FIT_UINT32Z",
-                "Type"            -> "UnsignedInteger32z"
+                "Type"            -> "UnsignedInteger32Z"
             |>
             ,
             "SoftwareVersion" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SoftwareVersion",
                 "Index"           -> 47,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -1626,6 +1775,7 @@
             ,
             "SourceType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SourceType",
                 "Index"           -> 57,
                 "Interpreter"     -> { "fitEnum", "SourceType" },
                 "Invalid"         -> 255,
@@ -1637,9 +1787,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -1650,12 +1801,13 @@
     "DeviceSettings" -> <|
         "MessageName"   -> "DeviceSettings",
         "MessageNumber" -> 2,
-        "Size"          -> 21,
+        "Size"          -> 18,
         "Fields"        -> <|
             "ActiveTimeZone" -> <|
                 "Comment"         -> "Index into time zone arrays.",
                 "Dimensions"      -> { },
-                "Index"           -> 10,
+                "FieldName"       -> "ActiveTimeZone",
+                "Index"           -> 9,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "active_time_zone",
@@ -1666,18 +1818,20 @@
             "ActivityTrackerEnabled" -> <|
                 "Comment"         -> "Enabled state of the activity tracker functionality",
                 "Dimensions"      -> { },
-                "Index"           -> 16,
+                "FieldName"       -> "ActivityTrackerEnabled",
+                "Index"           -> 13,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "activity_tracker_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "AutoSyncMinimumSteps" -> <|
                 "Comment"         -> "1 * steps + 0, Minimum steps before an autosync can occur",
                 "Dimensions"      -> { },
-                "Index"           -> 8,
+                "FieldName"       -> "AutoSyncMinimumSteps",
+                "Index"           -> 7,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "autosync_min_steps",
@@ -1688,7 +1842,8 @@
             "AutoSyncMinimumTime" -> <|
                 "Comment"         -> "1 * minutes + 0, Minimum minutes before an autosync can occur",
                 "Dimensions"      -> { },
-                "Index"           -> 9,
+                "FieldName"       -> "AutoSyncMinimumTime",
+                "Index"           -> 8,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Seconds", 1 / 60, 0 },
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "autosync_min_time",
@@ -1699,7 +1854,8 @@
             "BacklightMode" -> <|
                 "Comment"         -> "Mode for backlight",
                 "Dimensions"      -> { },
-                "Index"           -> 15,
+                "FieldName"       -> "BacklightMode",
+                "Index"           -> 12,
                 "Interpreter"     -> { "fitEnum", "BacklightMode" },
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "backlight_mode",
@@ -1710,9 +1866,10 @@
             "ClockTime" -> <|
                 "Comment"         -> "UTC timestamp used to set the devices clock and date",
                 "Dimensions"      -> { },
-                "Index"           -> 5,
+                "FieldName"       -> "ClockTime",
+                "Index"           -> 4,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "clock_time",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -1721,7 +1878,8 @@
             "DateMode" -> <|
                 "Comment"         -> "Display mode for the date",
                 "Dimensions"      -> { },
-                "Index"           -> 18,
+                "FieldName"       -> "DateMode",
+                "Index"           -> 15,
                 "Interpreter"     -> { "fitEnum", "DateMode" },
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "date_mode",
@@ -1732,7 +1890,8 @@
             "DefaultPage" -> <|
                 "Comment"         -> "Bitfield to indicate one page as default for each supported loop",
                 "Dimensions"      -> { 1 },
-                "Index"           -> 7;;7,
+                "FieldName"       -> "DefaultPage",
+                "Index"           -> 6;;6,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "default_page",
@@ -1742,7 +1901,8 @@
             ,
             "DisplayOrientation" -> <|
                 "Dimensions"      -> { },
-                "Index"           -> 19,
+                "FieldName"       -> "DisplayOrientation",
+                "Index"           -> 16,
                 "Interpreter"     -> { "fitEnum", "DisplayOrientation" },
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "display_orientation",
@@ -1752,7 +1912,8 @@
             ,
             "MountingSide" -> <|
                 "Dimensions"      -> { },
-                "Index"           -> 20,
+                "FieldName"       -> "MountingSide",
+                "Index"           -> 17,
                 "Interpreter"     -> { "fitEnum", "Side" },
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "mounting_side",
@@ -1763,18 +1924,20 @@
             "MoveAlertEnabled" -> <|
                 "Comment"         -> "Enabled state of the move alert",
                 "Dimensions"      -> { },
-                "Index"           -> 17,
+                "FieldName"       -> "MoveAlertEnabled",
+                "Index"           -> 14,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "move_alert_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "PagesEnabled" -> <|
                 "Comment"         -> "Bitfield to configure enabled screens for each supported loop",
                 "Dimensions"      -> { 1 },
-                "Index"           -> 6;;6,
+                "FieldName"       -> "PagesEnabled",
+                "Index"           -> 5;;5,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "pages_enabled",
@@ -1785,7 +1948,8 @@
             "TapSensitivity" -> <|
                 "Comment"         -> "Used to hold the tap threshold setting",
                 "Dimensions"      -> { },
-                "Index"           -> 21,
+                "FieldName"       -> "TapSensitivity",
+                "Index"           -> 18,
                 "Interpreter"     -> { "fitEnum", "TapSensitivity" },
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "tap_sensitivity",
@@ -1795,8 +1959,9 @@
             ,
             "TimeMode" -> <|
                 "Comment"         -> "Display mode for the time",
-                "Dimensions"      -> { 2 },
-                "Index"           -> 11;;12,
+                "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeMode",
+                "Index"           -> 10;;10,
                 "Interpreter"     -> { "fitEnum", "TimeMode" },
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "time_mode",
@@ -1806,8 +1971,9 @@
             ,
             "TimeOffset" -> <|
                 "Comment"         -> "1 * s + 0, Offset from system time.",
-                "Dimensions"      -> { 2 },
-                "Index"           -> 3;;4,
+                "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeOffset",
+                "Index"           -> 3;;3,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
                 "NativeFieldName" -> "time_offset",
@@ -1817,8 +1983,9 @@
             ,
             "TimeZoneOffset" -> <|
                 "Comment"         -> "4 * hr + 0, timezone offset in 1/4 hour increments",
-                "Dimensions"      -> { 2 },
-                "Index"           -> 13;;14,
+                "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeZoneOffset",
+                "Index"           -> 11;;11,
                 "Interpreter"     -> "fitSINT8A",
                 "Invalid"         -> 127,
                 "NativeFieldName" -> "time_zone_offset",
@@ -1829,6 +1996,7 @@
             "UTCOffset" -> <|
                 "Comment"         -> "Offset from system time. Required to convert timestamp from system time to UTC.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "UTCOffset",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -1846,6 +2014,7 @@
         "Fields"        -> <|
             "HeartRateSource" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeartRateSource",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -1856,6 +2025,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -1873,6 +2043,7 @@
         "Fields"        -> <|
             "Data" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Data",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -1883,6 +2054,7 @@
             ,
             "Data16" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Data16",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -1893,6 +2065,7 @@
             ,
             "Event" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Event",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitEnum", "Event" },
                 "Invalid"         -> 255,
@@ -1903,6 +2076,7 @@
             ,
             "EventGroup" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventGroup",
                 "Index"           -> 9,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -1913,6 +2087,7 @@
             ,
             "EventType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventType",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitEnum", "EventType" },
                 "Invalid"         -> 255,
@@ -1924,28 +2099,31 @@
             "FrontGear" -> <|
                 "Comment"         -> "Do not populate directly. Autogenerated by decoder for gear_change subfield components. Number of front teeth.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FrontGear",
                 "Index"           -> 11,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "front_gear",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "FrontGearNumber" -> <|
                 "Comment"         -> "Do not populate directly. Autogenerated by decoder for gear_change subfield components. Front gear number. 1 is innermost.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FrontGearNumber",
                 "Index"           -> 10,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "front_gear_num",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "OpponentScore" -> <|
                 "Comment"         -> "Do not populate directly. Autogenerated by decoder for sport_point subfield components",
                 "Dimensions"      -> { },
+                "FieldName"       -> "OpponentScore",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -1957,6 +2135,7 @@
             "RadarThreatCount" -> <|
                 "Comment"         -> "Do not populate directly. Autogenerated by decoder for threat_alert subfield components.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RadarThreatCount",
                 "Index"           -> 15,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -1968,6 +2147,7 @@
             "RadarThreatLevelMaximum" -> <|
                 "Comment"         -> "Do not populate directly. Autogenerated by decoder for threat_alert subfield components.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RadarThreatLevelMaximum",
                 "Index"           -> 14,
                 "Interpreter"     -> { "fitEnum", "RadarThreatLevelType" },
                 "Invalid"         -> 255,
@@ -1979,28 +2159,31 @@
             "RearGear" -> <|
                 "Comment"         -> "Do not populate directly. Autogenerated by decoder for gear_change subfield components. Number of rear teeth.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RearGear",
                 "Index"           -> 13,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "rear_gear",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "RearGearNumber" -> <|
                 "Comment"         -> "Do not populate directly. Autogenerated by decoder for gear_change subfield components. Rear gear number. 1 is innermost.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RearGearNumber",
                 "Index"           -> 12,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "rear_gear_num",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "Score" -> <|
                 "Comment"         -> "Do not populate directly. Autogenerated by decoder for sport_point subfield components",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Score",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2012,9 +2195,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -2029,6 +2213,7 @@
         "Fields"        -> <|
             "ExerciseCategory" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ExerciseCategory",
                 "Index"           -> 51,
                 "Interpreter"     -> { "fitEnum", "ExerciseCategory" },
                 "Invalid"         -> 65535,
@@ -2039,6 +2224,7 @@
             ,
             "ExerciseName" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ExerciseName",
                 "Index"           -> 52,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2049,6 +2235,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 50,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2059,6 +2246,7 @@
             ,
             "WorkoutStepName" -> <|
                 "Dimensions"      -> { 48 },
+                "FieldName"       -> "WorkoutStepName",
                 "Index"           -> 2;;49,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -2076,6 +2264,7 @@
         "Fields"        -> <|
             "ConceptField" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ConceptField",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitByte",
                 "Invalid"         -> 255,
@@ -2086,6 +2275,7 @@
             ,
             "ConceptIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ConceptIndex",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2096,6 +2286,7 @@
             ,
             "ConceptKey" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ConceptKey",
                 "Index"           -> 7,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2106,6 +2297,7 @@
             ,
             "DataPage" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DataPage",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2116,6 +2308,7 @@
             ,
             "DataUnits" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DataUnits",
                 "Index"           -> 9,
                 "Interpreter"     -> { "fitEnum", "ExtendedDisplayDataUnits" },
                 "Invalid"         -> 255,
@@ -2126,6 +2319,7 @@
             ,
             "Descriptor" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Descriptor",
                 "Index"           -> 11,
                 "Interpreter"     -> { "fitEnum", "ExtendedDisplayDescriptors" },
                 "Invalid"         -> 255,
@@ -2136,6 +2330,7 @@
             ,
             "FieldID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FieldID",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2146,16 +2341,18 @@
             ,
             "IsSigned" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "IsSigned",
                 "Index"           -> 12,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "is_signed",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "Qualifier" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Qualifier",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitEnum", "ExtendedDisplayQualifiers" },
                 "Invalid"         -> 255,
@@ -2166,6 +2363,7 @@
             ,
             "Scaling" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Scaling",
                 "Index"           -> 8,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2176,6 +2374,7 @@
             ,
             "ScreenIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ScreenIndex",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2193,6 +2392,7 @@
         "Fields"        -> <|
             "ConceptCount" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ConceptCount",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2203,6 +2403,7 @@
             ,
             "ConceptField" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ConceptField",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitByte",
                 "Invalid"         -> 255,
@@ -2213,6 +2414,7 @@
             ,
             "DisplayType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DisplayType",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitEnum", "ExtendedDisplayDisplayType" },
                 "Invalid"         -> 255,
@@ -2223,6 +2425,7 @@
             ,
             "FieldID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FieldID",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2233,6 +2436,7 @@
             ,
             "ScreenIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ScreenIndex",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2243,6 +2447,7 @@
             ,
             "Title" -> <|
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Title",
                 "Index"           -> 7;;7,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -2261,6 +2466,7 @@
             "FieldCount" -> <|
                 "Comment"         -> "number of fields in screen",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FieldCount",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2271,6 +2477,7 @@
             ,
             "Layout" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Layout",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitEnum", "ExtendedDisplayLayout" },
                 "Invalid"         -> 255,
@@ -2281,16 +2488,18 @@
             ,
             "ScreenEnabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ScreenEnabled",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "screen_enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "ScreenIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ScreenIndex",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2308,6 +2517,7 @@
         "Fields"        -> <|
             "Count" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Count",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2318,6 +2528,7 @@
             ,
             "FieldNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FieldNumber",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2328,6 +2539,7 @@
             ,
             "File" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "File",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitEnum", "File" },
                 "Invalid"         -> 255,
@@ -2338,6 +2550,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2348,6 +2561,7 @@
             ,
             "MessageNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageNumber",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitEnum", "MessageNumber" },
                 "Invalid"         -> 65535,
@@ -2365,6 +2579,7 @@
         "Fields"        -> <|
             "DeveloperDataIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeveloperDataIndex",
                 "Index"           -> 84,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2375,6 +2590,7 @@
             ,
             "FieldDefinitionNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FieldDefinitionNumber",
                 "Index"           -> 85,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2385,6 +2601,7 @@
             ,
             "FieldName" -> <|
                 "Dimensions"      -> { 64 },
+                "FieldName"       -> "FieldName",
                 "Index"           -> 2;;65,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -2395,6 +2612,7 @@
             ,
             "FitBaseTypeID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FitBaseTypeID",
                 "Index"           -> 86,
                 "Interpreter"     -> { "fitEnum", "FitBaseType" },
                 "Invalid"         -> 255,
@@ -2405,6 +2623,7 @@
             ,
             "FitBaseUnitID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FitBaseUnitID",
                 "Index"           -> 82,
                 "Interpreter"     -> { "fitEnum", "FitBaseUnit" },
                 "Invalid"         -> 65535,
@@ -2415,6 +2634,7 @@
             ,
             "NativeFieldNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "NativeFieldNumber",
                 "Index"           -> 89,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2425,6 +2645,7 @@
             ,
             "NativeMessageNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "NativeMessageNumber",
                 "Index"           -> 83,
                 "Interpreter"     -> { "fitEnum", "MessageNumber" },
                 "Invalid"         -> 65535,
@@ -2435,6 +2656,7 @@
             ,
             "Offset" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Offset",
                 "Index"           -> 88,
                 "Interpreter"     -> "fitSINT8",
                 "Invalid"         -> 127,
@@ -2445,6 +2667,7 @@
             ,
             "Scale" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Scale",
                 "Index"           -> 87,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2455,6 +2678,7 @@
             ,
             "Units" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Units",
                 "Index"           -> 66;;81,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -2472,6 +2696,7 @@
         "Fields"        -> <|
             "Directory" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Directory",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -2482,6 +2707,7 @@
             ,
             "Flags" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Flags",
                 "Index"           -> 22,
                 "Interpreter"     -> { "fitEnum", "FileFlags" },
                 "Invalid"         -> 0,
@@ -2492,6 +2718,7 @@
             ,
             "MaximumCount" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumCount",
                 "Index"           -> 20,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2503,6 +2730,7 @@
             "MaximumSize" -> <|
                 "Comment"         -> "1 * bytes + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumSize",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -2513,6 +2741,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 19,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2523,6 +2752,7 @@
             ,
             "Type" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 21,
                 "Interpreter"     -> { "fitEnum", "File" },
                 "Invalid"         -> 255,
@@ -2540,6 +2770,7 @@
         "Fields"        -> <|
             "HardwareVersion" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HardwareVersion",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2550,6 +2781,7 @@
             ,
             "SoftwareVersion" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SoftwareVersion",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2567,6 +2799,7 @@
         "Fields"        -> <|
             "Manufacturer" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Manufacturer",
                 "Index"           -> 24,
                 "Interpreter"     -> { "fitEnum", "Manufacturer" },
                 "Invalid"         -> 65535,
@@ -2578,6 +2811,7 @@
             "Number" -> <|
                 "Comment"         -> "Only set for files that are not created/erased.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Number",
                 "Index"           -> 26,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2588,6 +2822,7 @@
             ,
             "Product" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Product",
                 "Index"           -> 25,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2599,6 +2834,7 @@
             "ProductName" -> <|
                 "Comment"         -> "Optional free form string to indicate the devices name or model",
                 "Dimensions"      -> { 20 },
+                "FieldName"       -> "ProductName",
                 "Index"           -> 4;;23,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -2609,20 +2845,22 @@
             ,
             "SerialNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SerialNumber",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT32Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "serial_number",
                 "NativeType"      -> "FIT_UINT32Z",
-                "Type"            -> "UnsignedInteger32z"
+                "Type"            -> "UnsignedInteger32Z"
             |>
             ,
             "TimeCreated" -> <|
                 "Comment"         -> "Only set for files that are can be created/erased.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimeCreated",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "time_created",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -2630,6 +2868,7 @@
             ,
             "Type" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 27,
                 "Interpreter"     -> { "fitEnum", "File" },
                 "Invalid"         -> 255,
@@ -2647,19 +2886,21 @@
         "Fields"        -> <|
             "Enabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Enabled",
                 "Index"           -> 13,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "EndDate" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EndDate",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "end_date",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -2667,6 +2908,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2677,6 +2919,7 @@
             ,
             "Recurrence" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Recurrence",
                 "Index"           -> 12,
                 "Interpreter"     -> { "fitEnum", "GoalRecurrence" },
                 "Invalid"         -> 255,
@@ -2687,6 +2930,7 @@
             ,
             "RecurrenceValue" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "RecurrenceValue",
                 "Index"           -> 7,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2697,16 +2941,18 @@
             ,
             "Repeat" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Repeat",
                 "Index"           -> 11,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "repeat",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "Source" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Source",
                 "Index"           -> 14,
                 "Interpreter"     -> { "fitEnum", "GoalSource" },
                 "Invalid"         -> 255,
@@ -2717,6 +2963,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -2727,9 +2974,10 @@
             ,
             "StartDate" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartDate",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "start_date",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -2737,6 +2985,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 9,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -2747,6 +2996,7 @@
             ,
             "TargetValue" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "TargetValue",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -2757,6 +3007,7 @@
             ,
             "Type" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitEnum", "Goal" },
                 "Invalid"         -> 255,
@@ -2767,6 +3018,7 @@
             ,
             "Value" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Value",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -2785,6 +3037,7 @@
             "EventTimestamp" -> <|
                 "Comment"         -> "1024 * s + 0",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "EventTimestamp",
                 "Index"           -> 3;;3,
                 "Interpreter"     -> "fitUINT32A",
                 "Invalid"         -> 4294967295,
@@ -2795,6 +3048,7 @@
             ,
             "EventTimestamp12" -> <|
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "EventTimestamp12",
                 "Index"           -> 7;;7,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -2806,6 +3060,7 @@
             "FilteredBeatsPerMinute" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "FilteredBeatsPerMinute",
                 "Index"           -> 6;;6,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -2817,6 +3072,7 @@
             "FractionalTimestamp" -> <|
                 "Comment"         -> "32768 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FractionalTimestamp",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2828,6 +3084,7 @@
             "Time256" -> <|
                 "Comment"         -> "256 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Time256",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -2838,9 +3095,10 @@
             ,
             "Timestamp" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -2855,46 +3113,51 @@
         "Fields"        -> <|
             "Enabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Enabled",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "HeartRateMonitorANTID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeartRateMonitorANTID",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT16Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "hrm_ant_id",
                 "NativeType"      -> "FIT_UINT16Z",
-                "Type"            -> "UnsignedInteger16z"
+                "Type"            -> "UnsignedInteger16Z"
             |>
             ,
             "HeartRateMonitorANTIDTransmissionType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeartRateMonitorANTIDTransmissionType",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "hrm_ant_id_trans_type",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "LogHeartRateVariability" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LogHeartRateVariability",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "log_hrv",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2913,6 +3176,7 @@
             "Time" -> <|
                 "Comment"         -> "1000 * s + 0, Time between beats",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Time",
                 "Index"           -> 2;;2,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Seconds", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -2931,6 +3195,7 @@
             "HighBeatsPerMinute" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "HighBeatsPerMinute",
                 "Index"           -> 19,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -2941,6 +3206,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -2951,6 +3217,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -2969,6 +3236,7 @@
             "AverageAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageAltitude",
                 "Index"           -> 48,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -2980,6 +3248,7 @@
             "AverageAscentSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageAscentSpeed",
                 "Index"           -> 81,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -2991,6 +3260,7 @@
             "AverageCadence" -> <|
                 "Comment"         -> "1 * rpm + 0, total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageCadence",
                 "Index"           -> 86,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -3002,6 +3272,7 @@
             "AverageFractionalCadence" -> <|
                 "Comment"         -> "128 * rpm + 0, fractional part of the avg_cadence",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageFractionalCadence",
                 "Index"           -> 98,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 128, 0 },
                 "Invalid"         -> 255,
@@ -3013,6 +3284,7 @@
             "AverageGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageGrade",
                 "Index"           -> 50,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -3024,6 +3296,7 @@
             "AverageHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageHeartRate",
                 "Index"           -> 84,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -3035,6 +3308,7 @@
             "AverageNegativeGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageNegativeGrade",
                 "Index"           -> 52,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -3046,6 +3320,7 @@
             "AverageNegativeVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageNegativeVerticalSpeed",
                 "Index"           -> 56,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -3057,6 +3332,7 @@
             "AveragePositiveGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePositiveGrade",
                 "Index"           -> 51,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -3068,6 +3344,7 @@
             "AveragePositiveVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePositiveVerticalSpeed",
                 "Index"           -> 55,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -3079,6 +3356,7 @@
             "AveragePower" -> <|
                 "Comment"         -> "1 * watts + 0, total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePower",
                 "Index"           -> 38,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -3090,6 +3368,7 @@
             "AverageSaturatedHemoglobinPercent" -> <|
                 "Comment"         -> "10 * % + 0, Avg percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AverageSaturatedHemoglobinPercent",
                 "Index"           -> 78;;78,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -3101,6 +3380,7 @@
             "AverageSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageSpeed",
                 "Index"           -> 36,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -3112,6 +3392,7 @@
             "AverageStanceTime" -> <|
                 "Comment"         -> "10 * ms + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStanceTime",
                 "Index"           -> 73,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Seconds", 10000, 0 },
                 "Invalid"         -> 65535,
@@ -3123,6 +3404,7 @@
             "AverageStanceTimePercent" -> <|
                 "Comment"         -> "100 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStanceTimePercent",
                 "Index"           -> 72,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -3134,6 +3416,7 @@
             "AverageStrokeDistance" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStrokeDistance",
                 "Index"           -> 46,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -3145,6 +3428,7 @@
             "AverageTemperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageTemperature",
                 "Index"           -> 95,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -3156,6 +3440,7 @@
             "AverageTotalHemoglobinConcentration" -> <|
                 "Comment"         -> "100 * g/dL + 0, Avg saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AverageTotalHemoglobinConcentration",
                 "Index"           -> 75;;75,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -3167,6 +3452,7 @@
             "AverageVerticalOscillation" -> <|
                 "Comment"         -> "10 * mm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageVerticalOscillation",
                 "Index"           -> 71,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -3178,6 +3464,7 @@
             "EndPositionLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EndPositionLatitude",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -3189,6 +3476,7 @@
             "EndPositionLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EndPositionLongitude",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -3200,6 +3488,7 @@
             "EnhancedAverageAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedAverageAltitude",
                 "Index"           -> 30,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 5, 500 },
                 "Invalid"         -> 4294967295,
@@ -3211,6 +3500,7 @@
             "EnhancedAverageSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedAverageSpeed",
                 "Index"           -> 28,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3222,6 +3512,7 @@
             "EnhancedMaximumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedMaximumAltitude",
                 "Index"           -> 32,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 5, 500 },
                 "Invalid"         -> 4294967295,
@@ -3233,6 +3524,7 @@
             "EnhancedMaximumSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedMaximumSpeed",
                 "Index"           -> 29,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3244,6 +3536,7 @@
             "EnhancedMinimumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedMinimumAltitude",
                 "Index"           -> 31,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 5, 500 },
                 "Invalid"         -> 4294967295,
@@ -3254,6 +3547,7 @@
             ,
             "Event" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Event",
                 "Index"           -> 82,
                 "Interpreter"     -> { "fitEnum", "Event" },
                 "Invalid"         -> 255,
@@ -3264,6 +3558,7 @@
             ,
             "EventGroup" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventGroup",
                 "Index"           -> 91,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -3274,6 +3569,7 @@
             ,
             "EventType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventType",
                 "Index"           -> 83,
                 "Interpreter"     -> { "fitEnum", "EventType" },
                 "Invalid"         -> 255,
@@ -3284,6 +3580,7 @@
             ,
             "FirstLengthIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FirstLengthIndex",
                 "Index"           -> 45,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3295,6 +3592,7 @@
             "GPSAccuracy" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "GPSAccuracy",
                 "Index"           -> 94,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 1, 0 },
                 "Invalid"         -> 255,
@@ -3305,6 +3603,7 @@
             ,
             "Intensity" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Intensity",
                 "Index"           -> 88,
                 "Interpreter"     -> { "fitEnum", "Intensity" },
                 "Invalid"         -> 255,
@@ -3315,6 +3614,7 @@
             ,
             "LapTrigger" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LapTrigger",
                 "Index"           -> 89,
                 "Interpreter"     -> { "fitEnum", "LapTrigger" },
                 "Invalid"         -> 255,
@@ -3325,6 +3625,7 @@
             ,
             "LeftRightBalance" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LeftRightBalance",
                 "Index"           -> 44,
                 "Interpreter"     -> { "fitEnum", "LeftRightBalance100" },
                 "Invalid"         -> 65535,
@@ -3336,6 +3637,7 @@
             "MaximumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumAltitude",
                 "Index"           -> 49,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -3347,6 +3649,7 @@
             "MaximumCadence" -> <|
                 "Comment"         -> "1 * rpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumCadence",
                 "Index"           -> 87,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -3358,6 +3661,7 @@
             "MaximumFractionalCadence" -> <|
                 "Comment"         -> "128 * rpm + 0, fractional part of the max_cadence",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumFractionalCadence",
                 "Index"           -> 99,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 128, 0 },
                 "Invalid"         -> 255,
@@ -3369,6 +3673,7 @@
             "MaximumHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumHeartRate",
                 "Index"           -> 85,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -3380,6 +3685,7 @@
             "MaximumNegativeGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumNegativeGrade",
                 "Index"           -> 54,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -3391,6 +3697,7 @@
             "MaximumNegativeVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumNegativeVerticalSpeed",
                 "Index"           -> 58,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -3402,6 +3709,7 @@
             "MaximumPositiveGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPositiveGrade",
                 "Index"           -> 53,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -3413,6 +3721,7 @@
             "MaximumPositiveVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPositiveVerticalSpeed",
                 "Index"           -> 57,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -3424,6 +3733,7 @@
             "MaximumPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPower",
                 "Index"           -> 39,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -3435,6 +3745,7 @@
             "MaximumSaturatedHemoglobinPercent" -> <|
                 "Comment"         -> "10 * % + 0, Max percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "MaximumSaturatedHemoglobinPercent",
                 "Index"           -> 80;;80,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -3446,6 +3757,7 @@
             "MaximumSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumSpeed",
                 "Index"           -> 37,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -3457,6 +3769,7 @@
             "MaximumTemperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumTemperature",
                 "Index"           -> 96,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -3468,6 +3781,7 @@
             "MaximumTotalHemoglobinConcentration" -> <|
                 "Comment"         -> "100 * g/dL + 0, Max saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "MaximumTotalHemoglobinConcentration",
                 "Index"           -> 77;;77,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -3478,6 +3792,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 33,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3489,6 +3804,7 @@
             "MinimumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MinimumAltitude",
                 "Index"           -> 60,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -3500,6 +3816,7 @@
             "MinimumHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MinimumHeartRate",
                 "Index"           -> 97,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -3511,6 +3828,7 @@
             "MinimumSaturatedHemoglobinPercent" -> <|
                 "Comment"         -> "10 * % + 0, Min percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "MinimumSaturatedHemoglobinPercent",
                 "Index"           -> 79;;79,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -3522,6 +3840,7 @@
             "MinimumTotalHemoglobinConcentration" -> <|
                 "Comment"         -> "100 * g/dL + 0, Min saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "MinimumTotalHemoglobinConcentration",
                 "Index"           -> 76;;76,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -3533,6 +3852,7 @@
             "NormalizedPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NormalizedPower",
                 "Index"           -> 43,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -3544,6 +3864,7 @@
             "NumberOfActiveLengths" -> <|
                 "Comment"         -> "1 * lengths + 0, # of active lengths of swim pool",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NumberOfActiveLengths",
                 "Index"           -> 47,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3555,6 +3876,7 @@
             "NumberOfLengths" -> <|
                 "Comment"         -> "1 * lengths + 0, # of lengths of swim pool",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NumberOfLengths",
                 "Index"           -> 42,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3565,6 +3887,7 @@
             ,
             "OpponentScore" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "OpponentScore",
                 "Index"           -> 62,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3575,6 +3898,7 @@
             ,
             "PlayerScore" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PlayerScore",
                 "Index"           -> 74,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3585,6 +3909,7 @@
             ,
             "RepetitionNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "RepetitionNumber",
                 "Index"           -> 59,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3595,6 +3920,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 90,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -3606,6 +3932,7 @@
             "StartPositionLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartPositionLatitude",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -3617,6 +3944,7 @@
             "StartPositionLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartPositionLongitude",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -3627,9 +3955,10 @@
             ,
             "StartTime" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartTime",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "start_time",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -3638,6 +3967,7 @@
             "StrokeCount" -> <|
                 "Comment"         -> "1 * counts + 0, stroke_type enum used as the index",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "StrokeCount",
                 "Index"           -> 63;;63,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -3648,6 +3978,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 93,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -3658,6 +3989,7 @@
             ,
             "SwimStroke" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SwimStroke",
                 "Index"           -> 92,
                 "Interpreter"     -> { "fitEnum", "SwimStroke" },
                 "Invalid"         -> 255,
@@ -3669,6 +4001,7 @@
             "TimeInCadenceZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeInCadenceZone",
                 "Index"           -> 20;;20,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3680,6 +4013,7 @@
             "TimeInHeartRateZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 5 },
+                "FieldName"       -> "TimeInHeartRateZone",
                 "Index"           -> 14;;18,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3691,6 +4025,7 @@
             "TimeInPowerZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 7 },
+                "FieldName"       -> "TimeInPowerZone",
                 "Index"           -> 21;;27,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3702,6 +4037,7 @@
             "TimeInSpeedZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeInSpeedZone",
                 "Index"           -> 19;;19,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3713,9 +4049,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0, Lap end time.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -3724,6 +4061,7 @@
             "TotalAscent" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalAscent",
                 "Index"           -> 40,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1, 0 },
                 "Invalid"         -> 65535,
@@ -3735,6 +4073,7 @@
             "TotalCalories" -> <|
                 "Comment"         -> "1 * kcal + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalCalories",
                 "Index"           -> 34,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -3746,6 +4085,7 @@
             "TotalCycles" -> <|
                 "Comment"         -> "1 * cycles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalCycles",
                 "Index"           -> 11,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Cycles", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -3757,6 +4097,7 @@
             "TotalDescent" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalDescent",
                 "Index"           -> 41,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1, 0 },
                 "Invalid"         -> 65535,
@@ -3768,6 +4109,7 @@
             "TotalDistance" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalDistance",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -3779,6 +4121,7 @@
             "TotalElapsedTime" -> <|
                 "Comment"         -> "1000 * s + 0, Time (includes pauses)",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalElapsedTime",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3790,6 +4133,7 @@
             "TotalFatCalories" -> <|
                 "Comment"         -> "1 * kcal + 0, If New Leaf",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFatCalories",
                 "Index"           -> 35,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -3801,6 +4145,7 @@
             "TotalFractionalCycles" -> <|
                 "Comment"         -> "128 * cycles + 0, fractional part of the total_cycles",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFractionalCycles",
                 "Index"           -> 100,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -3812,6 +4157,7 @@
             "TotalMovingTime" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalMovingTime",
                 "Index"           -> 13,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3823,6 +4169,7 @@
             "TotalTimerTime" -> <|
                 "Comment"         -> "1000 * s + 0, Timer Time (excludes pauses)",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalTimerTime",
                 "Index"           -> 9,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -3834,6 +4181,7 @@
             "TotalWork" -> <|
                 "Comment"         -> "1 * J + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalWork",
                 "Index"           -> 12,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Joules", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -3844,6 +4192,7 @@
             ,
             "WorkoutStepIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "WorkoutStepIndex",
                 "Index"           -> 61,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3855,6 +4204,7 @@
             "ZoneCount" -> <|
                 "Comment"         -> "1 * counts + 0, zone number used as the index",
                 "Dimensions"      -> { 7 },
+                "FieldName"       -> "ZoneCount",
                 "Index"           -> 64;;70,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -3873,6 +4223,7 @@
             "AverageSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageSpeed",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -3884,6 +4235,7 @@
             "AverageSwimmingCadence" -> <|
                 "Comment"         -> "1 * strokes/min + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageSwimmingCadence",
                 "Index"           -> 23,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -3894,6 +4246,7 @@
             ,
             "Event" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Event",
                 "Index"           -> 20,
                 "Interpreter"     -> { "fitEnum", "Event" },
                 "Invalid"         -> 255,
@@ -3904,6 +4257,7 @@
             ,
             "EventGroup" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventGroup",
                 "Index"           -> 24,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -3914,6 +4268,7 @@
             ,
             "EventType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventType",
                 "Index"           -> 21,
                 "Interpreter"     -> { "fitEnum", "EventType" },
                 "Invalid"         -> 255,
@@ -3924,6 +4279,7 @@
             ,
             "LengthType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LengthType",
                 "Index"           -> 25,
                 "Interpreter"     -> { "fitEnum", "LengthType" },
                 "Invalid"         -> 255,
@@ -3934,6 +4290,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3944,6 +4301,7 @@
             ,
             "OpponentScore" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "OpponentScore",
                 "Index"           -> 11,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3954,6 +4312,7 @@
             ,
             "PlayerScore" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PlayerScore",
                 "Index"           -> 10,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -3964,9 +4323,10 @@
             ,
             "StartTime" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartTime",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "start_time",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -3975,6 +4335,7 @@
             "StrokeCount" -> <|
                 "Comment"         -> "1 * counts + 0, stroke_type enum used as the index",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "StrokeCount",
                 "Index"           -> 12;;12,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -3986,6 +4347,7 @@
             "SwimStroke" -> <|
                 "Comment"         -> "1 * swim_stroke + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SwimStroke",
                 "Index"           -> 22,
                 "Interpreter"     -> { "fitEnum", "SwimStroke" },
                 "Invalid"         -> 255,
@@ -3996,9 +4358,10 @@
             ,
             "Timestamp" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -4007,6 +4370,7 @@
             "TotalCalories" -> <|
                 "Comment"         -> "1 * kcal + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalCalories",
                 "Index"           -> 9,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4018,6 +4382,7 @@
             "TotalElapsedTime" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalElapsedTime",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -4029,6 +4394,7 @@
             "TotalStrokes" -> <|
                 "Comment"         -> "1 * strokes + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalStrokes",
                 "Index"           -> 7,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -4040,6 +4406,7 @@
             "TotalTimerTime" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalTimerTime",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -4051,6 +4418,7 @@
             "ZoneCount" -> <|
                 "Comment"         -> "1 * counts + 0, zone number used as the index",
                 "Dimensions"      -> { 7 },
+                "FieldName"       -> "ZoneCount",
                 "Index"           -> 13;;19,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -4068,6 +4436,7 @@
         "Fields"        -> <|
             "Count" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Count",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -4078,6 +4447,7 @@
             ,
             "CountType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "CountType",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitEnum", "MessageCount" },
                 "Invalid"         -> 255,
@@ -4088,6 +4458,7 @@
             ,
             "File" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "File",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitEnum", "File" },
                 "Invalid"         -> 255,
@@ -4098,6 +4469,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -4108,6 +4480,7 @@
             ,
             "MessageNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageNumber",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitEnum", "MessageNumber" },
                 "Invalid"         -> 65535,
@@ -4126,6 +4499,7 @@
             "Calories" -> <|
                 "Comment"         -> "10 * kcal / min + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Calories",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories" / "Minutes", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4137,6 +4511,7 @@
             "FatCalories" -> <|
                 "Comment"         -> "10 * kcal / min + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FatCalories",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "DietaryCalories" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -4147,6 +4522,7 @@
             ,
             "HighBeatsPerMinute" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HighBeatsPerMinute",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -4157,6 +4533,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -4175,6 +4552,7 @@
             "ActiveTime" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActiveTime",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -4186,6 +4564,7 @@
             "ActiveTime16" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActiveTime16",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Seconds", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4196,6 +4575,7 @@
             ,
             "ActivitySubtype" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActivitySubtype",
                 "Index"           -> 13,
                 "Interpreter"     -> { "fitEnum", "ActivitySubtype" },
                 "Invalid"         -> 255,
@@ -4206,6 +4586,7 @@
             ,
             "ActivityType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActivityType",
                 "Index"           -> 12,
                 "Interpreter"     -> { "fitEnum", "ActivityType" },
                 "Invalid"         -> 255,
@@ -4217,6 +4598,7 @@
             "Calories" -> <|
                 "Comment"         -> "1 * kcal + 0, Accumulated total calories. Maintained by MonitoringReader for each activity_type. See SDK documentation",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Calories",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4228,6 +4610,7 @@
             "Cycles" -> <|
                 "Comment"         -> "2 * cycles + 0, Accumulated cycles. Maintained by MonitoringReader for each activity_type. See SDK documentation.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Cycles",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Cycles", 2, 0 },
                 "Invalid"         -> 4294967295,
@@ -4239,6 +4622,7 @@
             "Cycles16" -> <|
                 "Comment"         -> "1 * 2 * cycles (steps) + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Cycles16",
                 "Index"           -> 9,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Steps", 2, 0 },
                 "Invalid"         -> 65535,
@@ -4250,6 +4634,7 @@
             "DeviceIndex" -> <|
                 "Comment"         -> "Associates this data to device_info message. Not required for file with single device (sensor).",
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeviceIndex",
                 "Index"           -> 11,
                 "Interpreter"     -> { "fitEnum", "DeviceIndex" },
                 "Invalid"         -> 255,
@@ -4261,6 +4646,7 @@
             "Distance" -> <|
                 "Comment"         -> "100 * m + 0, Accumulated distance. Maintained by MonitoringReader for each activity_type. See SDK documentation.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Distance",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -4272,6 +4658,7 @@
             "Distance16" -> <|
                 "Comment"         -> "1 * 100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Distance16",
                 "Index"           -> 8,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -4283,6 +4670,7 @@
             "LocalTimestamp" -> <|
                 "Comment"         -> "Must align to logging interval, for example, time must be 00:00:00 for daily log.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "LocalTimestamp",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitLocalTimestamp",
                 "Invalid"         -> 4294967295,
@@ -4294,9 +4682,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0, Must align to logging interval, for example, time must be 00:00:00 for daily log.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -4312,6 +4701,7 @@
             "LocalTimestamp" -> <|
                 "Comment"         -> "1 * s + 0, Use to convert activity timestamps to local time if device does not support time zone and daylight savings time correction.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "LocalTimestamp",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitLocalTimestamp", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -4323,9 +4713,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -4341,6 +4732,7 @@
             "Sentence" -> <|
                 "Comment"         -> "NMEA sentence",
                 "Dimensions"      -> { 83 },
+                "FieldName"       -> "Sentence",
                 "Index"           -> 4;;86,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -4352,9 +4744,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0, Timestamp message was output",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -4363,6 +4756,7 @@
             "TimestampMilliseconds" -> <|
                 "Comment"         -> "1 * ms + 0, Fractional part of timestamp, added to timestamp",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimestampMilliseconds",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Seconds", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -4381,6 +4775,7 @@
             "HighValue" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "HighValue",
                 "Index"           -> 19,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4391,6 +4786,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -4401,6 +4797,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -4419,6 +4816,7 @@
             "AbsolutePressure" -> <|
                 "Comment"         -> "1 * Pa + 0, Includes atmospheric pressure",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AbsolutePressure",
                 "Index"           -> 11,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Pascals", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -4430,6 +4828,7 @@
             "AccumulatedPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AccumulatedPower",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Watts", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -4440,6 +4839,7 @@
             ,
             "ActivityType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActivityType",
                 "Index"           -> 60,
                 "Interpreter"     -> { "fitEnum", "ActivityType" },
                 "Invalid"         -> 255,
@@ -4451,6 +4851,7 @@
             "Altitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Altitude",
                 "Index"           -> 19,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -4462,6 +4863,7 @@
             "BallSpeed" -> <|
                 "Comment"         -> "100 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BallSpeed",
                 "Index"           -> 29,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 100, 0 },
                 "Invalid"         -> 65535,
@@ -4473,6 +4875,7 @@
             "BatteryStateOfCharge" -> <|
                 "Comment"         -> "2 * percent + 0, lev battery state of charge",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BatteryStateOfCharge",
                 "Index"           -> 81,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -4484,6 +4887,7 @@
             "Cadence" -> <|
                 "Comment"         -> "1 * rpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Cadence",
                 "Index"           -> 45,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -4495,6 +4899,7 @@
             "Cadence256" -> <|
                 "Comment"         -> "256 * rpm + 0, Log cadence and fractional cadence for backwards compatability",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Cadence256",
                 "Index"           -> 30,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "RevolutionsPerMinute", 256, 0 },
                 "Invalid"         -> 65535,
@@ -4506,6 +4911,7 @@
             "Calories" -> <|
                 "Comment"         -> "1 * kcal + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Calories",
                 "Index"           -> 25,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4517,6 +4923,7 @@
             "CentralNervousSystemLoading" -> <|
                 "Comment"         -> "1 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "CentralNervousSystemLoading",
                 "Index"           -> 82,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 1, 0 },
                 "Invalid"         -> 255,
@@ -4528,6 +4935,7 @@
             "CombinedPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "CombinedPedalSmoothness",
                 "Index"           -> 65,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -4539,6 +4947,7 @@
             "CompressedAccumulatedPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "CompressedAccumulatedPower",
                 "Index"           -> 23,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4549,6 +4958,7 @@
             ,
             "CompressedSpeedDistance" -> <|
                 "Dimensions"      -> { 3 },
+                "FieldName"       -> "CompressedSpeedDistance",
                 "Index"           -> 46;;48,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -4560,6 +4970,7 @@
             "CoreTemperature" -> <|
                 "Comment"         -> "100 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "CoreTemperature",
                 "Index"           -> 43,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DegreesCelsius", 100, 0 },
                 "Invalid"         -> 65535,
@@ -4571,6 +4982,7 @@
             "CycleLength" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "CycleLength",
                 "Index"           -> 50,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 100, 0 },
                 "Invalid"         -> 255,
@@ -4582,6 +4994,7 @@
             "Cycles" -> <|
                 "Comment"         -> "1 * cycles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Cycles",
                 "Index"           -> 57,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Cycles", 1, 0 },
                 "Invalid"         -> 255,
@@ -4593,6 +5006,7 @@
             "Depth" -> <|
                 "Comment"         -> "1000 * m + 0, 0 if above water",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Depth",
                 "Index"           -> 12,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -4603,6 +5017,7 @@
             ,
             "DeviceIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeviceIndex",
                 "Index"           -> 70,
                 "Interpreter"     -> { "fitEnum", "DeviceIndex" },
                 "Invalid"         -> 255,
@@ -4614,6 +5029,7 @@
             "Distance" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Distance",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -4625,6 +5041,7 @@
             "ElectricBikeAssistLevelPercent" -> <|
                 "Comment"         -> "1 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ElectricBikeAssistLevelPercent",
                 "Index"           -> 85,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 1, 0 },
                 "Invalid"         -> 255,
@@ -4636,6 +5053,7 @@
             "ElectricBikeAssistMode" -> <|
                 "Comment"         -> "1 * depends on sensor + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ElectricBikeAssistMode",
                 "Index"           -> 84,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -4647,6 +5065,7 @@
             "ElectricBikeBatteryLevel" -> <|
                 "Comment"         -> "1 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ElectricBikeBatteryLevel",
                 "Index"           -> 83,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 1, 0 },
                 "Invalid"         -> 255,
@@ -4658,6 +5077,7 @@
             "ElectricBikeTravelRange" -> <|
                 "Comment"         -> "1 * km + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ElectricBikeTravelRange",
                 "Index"           -> 42,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 0.001, 0 },
                 "Invalid"         -> 65535,
@@ -4669,6 +5089,7 @@
             "EnhancedAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedAltitude",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 5, 500 },
                 "Invalid"         -> 4294967295,
@@ -4680,6 +5101,7 @@
             "EnhancedSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedSpeed",
                 "Index"           -> 9,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -4691,8 +5113,10 @@
             "Flow" -> <|
                 "Comment"         -> "The flow score estimates how long distance wise a cyclist deaccelerates over intervals where deacceleration is unnecessary such as smooth turns or small grade angle intervals.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Flow",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitFloat32",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "flow",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -4701,6 +5125,7 @@
             "FractionalCadence" -> <|
                 "Comment"         -> "128 * rpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "FractionalCadence",
                 "Index"           -> 69,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 128, 0 },
                 "Invalid"         -> 255,
@@ -4712,6 +5137,7 @@
             "GPSAccuracy" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "GPSAccuracy",
                 "Index"           -> 59,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 1, 0 },
                 "Invalid"         -> 255,
@@ -4723,6 +5149,7 @@
             "Grade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Grade",
                 "Index"           -> 22,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -4734,8 +5161,10 @@
             "Grit" -> <|
                 "Comment"         -> "The grit score estimates how challenging a route could be for a cyclist in terms of time spent going over sharp turns or large grade slopes.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Grit",
                 "Index"           -> 17,
                 "Interpreter"     -> "fitFloat32",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "grit",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -4744,6 +5173,7 @@
             "HeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeartRate",
                 "Index"           -> 44,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -4755,6 +5185,7 @@
             "LeftPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "LeftPedalSmoothness",
                 "Index"           -> 63,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -4766,6 +5197,7 @@
             "LeftPlatformCenterOffset" -> <|
                 "Comment"         -> "1 * mm + 0, Left platform center offset",
                 "Dimensions"      -> { },
+                "FieldName"       -> "LeftPlatformCenterOffset",
                 "Index"           -> 71,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "Meters", 1000, 0 },
                 "Invalid"         -> 127,
@@ -4777,6 +5209,7 @@
             "LeftPowerPhase" -> <|
                 "Comment"         -> "0.7111111 * degrees + 0, Left power phase angles. Data value indexes defined by power_phase_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "LeftPowerPhase",
                 "Index"           -> 73;;74,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "AngularDegrees", 0.7111111, 0 },
                 "Invalid"         -> 255,
@@ -4788,6 +5221,7 @@
             "LeftPowerPhasePeak" -> <|
                 "Comment"         -> "0.7111111 * degrees + 0, Left power phase peak angles. Data value indexes defined by power_phase_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "LeftPowerPhasePeak",
                 "Index"           -> 75;;76,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "AngularDegrees", 0.7111111, 0 },
                 "Invalid"         -> 255,
@@ -4798,6 +5232,7 @@
             ,
             "LeftRightBalance" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LeftRightBalance",
                 "Index"           -> 58,
                 "Interpreter"     -> { "fitEnum", "LeftRightBalance" },
                 "Invalid"         -> 255,
@@ -4809,6 +5244,7 @@
             "LeftTorqueEffectiveness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "LeftTorqueEffectiveness",
                 "Index"           -> 61,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -4820,6 +5256,7 @@
             "MotorPower" -> <|
                 "Comment"         -> "1 * watts + 0, lev motor power",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MotorPower",
                 "Index"           -> 37,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4828,9 +5265,22 @@
                 "Type"            -> "UnsignedInteger16"
             |>
             ,
+            "N2Load" -> <|
+                "Comment"         -> "1 * percent + 0",
+                "Dimensions"      -> { },
+                "FieldName"       -> "N2Load",
+                "Index"           -> 41,
+                "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 1, 0 },
+                "Invalid"         -> 65535,
+                "NativeFieldName" -> "n2_load",
+                "NativeType"      -> "FIT_UINT16",
+                "Type"            -> "UnsignedInteger16"
+            |>
+            ,
             "NextStopDepth" -> <|
                 "Comment"         -> "1000 * m + 0, 0 if above water",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NextStopDepth",
                 "Index"           -> 13,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -4842,6 +5292,7 @@
             "NextStopTime" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NextStopTime",
                 "Index"           -> 14,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -4850,20 +5301,10 @@
                 "Type"            -> "UnsignedInteger32"
             |>
             ,
-            "NitrogenLoad" -> <|
-                "Comment"         -> "1 * percent + 0",
-                "Dimensions"      -> { },
-                "Index"           -> 41,
-                "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 1, 0 },
-                "Invalid"         -> 65535,
-                "NativeFieldName" -> "n2_load",
-                "NativeType"      -> "FIT_UINT16",
-                "Type"            -> "UnsignedInteger16"
-            |>
-            ,
             "NoDecompressionLimitTime" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NoDecompressionLimitTime",
                 "Index"           -> 16,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -4875,6 +5316,7 @@
             "PositionLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PositionLatitude",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -4886,6 +5328,7 @@
             "PositionLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PositionLongitude",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -4897,6 +5340,7 @@
             "Power" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Power",
                 "Index"           -> 21,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -4908,6 +5352,7 @@
             "Resistance" -> <|
                 "Comment"         -> "Relative. 0 is none 254 is Max.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Resistance",
                 "Index"           -> 49,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -4919,6 +5364,7 @@
             "RightPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RightPedalSmoothness",
                 "Index"           -> 64,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -4930,6 +5376,7 @@
             "RightPlatformCenterOffset" -> <|
                 "Comment"         -> "1 * mm + 0, Right platform center offset",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RightPlatformCenterOffset",
                 "Index"           -> 72,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "Meters", 1000, 0 },
                 "Invalid"         -> 127,
@@ -4941,6 +5388,7 @@
             "RightPowerPhase" -> <|
                 "Comment"         -> "0.7111111 * degrees + 0, Right power phase angles. Data value indexes defined by power_phase_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "RightPowerPhase",
                 "Index"           -> 77;;78,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "AngularDegrees", 0.7111111, 0 },
                 "Invalid"         -> 255,
@@ -4952,6 +5400,7 @@
             "RightPowerPhasePeak" -> <|
                 "Comment"         -> "0.7111111 * degrees + 0, Right power phase peak angles. Data value indexes defined by power_phase_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "RightPowerPhasePeak",
                 "Index"           -> 79;;80,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "AngularDegrees", 0.7111111, 0 },
                 "Invalid"         -> 255,
@@ -4963,6 +5412,7 @@
             "RightTorqueEffectiveness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RightTorqueEffectiveness",
                 "Index"           -> 62,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -4974,6 +5424,7 @@
             "SaturatedHemoglobinPercent" -> <|
                 "Comment"         -> "10 * % + 0, Percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SaturatedHemoglobinPercent",
                 "Index"           -> 34,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -4985,6 +5436,7 @@
             "SaturatedHemoglobinPercentMaximum" -> <|
                 "Comment"         -> "10 * % + 0, Max percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SaturatedHemoglobinPercentMaximum",
                 "Index"           -> 36,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -4996,6 +5448,7 @@
             "SaturatedHemoglobinPercentMinimum" -> <|
                 "Comment"         -> "10 * % + 0, Min percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SaturatedHemoglobinPercentMinimum",
                 "Index"           -> 35,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -5007,6 +5460,7 @@
             "Speed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Speed",
                 "Index"           -> 20,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -5018,6 +5472,7 @@
             "Speed1S" -> <|
                 "Comment"         -> "16 * m/s + 0, Speed at 1s intervals. Timestamp field indicates time of last array element.",
                 "Dimensions"      -> { 5 },
+                "FieldName"       -> "Speed1S",
                 "Index"           -> 52;;56,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "MetersPerSecond", 16, 0 },
                 "Invalid"         -> 255,
@@ -5029,6 +5484,7 @@
             "StanceTime" -> <|
                 "Comment"         -> "10 * ms + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StanceTime",
                 "Index"           -> 28,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Seconds", 10000, 0 },
                 "Invalid"         -> 65535,
@@ -5040,6 +5496,7 @@
             "StanceTimeBalance" -> <|
                 "Comment"         -> "100 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StanceTimeBalance",
                 "Index"           -> 39,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -5051,6 +5508,7 @@
             "StanceTimePercent" -> <|
                 "Comment"         -> "100 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StanceTimePercent",
                 "Index"           -> 27,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -5062,6 +5520,7 @@
             "StepLength" -> <|
                 "Comment"         -> "10 * mm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StepLength",
                 "Index"           -> 40,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -5072,6 +5531,7 @@
             ,
             "StrokeType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "StrokeType",
                 "Index"           -> 67,
                 "Interpreter"     -> { "fitEnum", "StrokeType" },
                 "Invalid"         -> 255,
@@ -5083,6 +5543,7 @@
             "Temperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Temperature",
                 "Index"           -> 51,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -5094,6 +5555,7 @@
             "Time128" -> <|
                 "Comment"         -> "128 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Time128",
                 "Index"           -> 66,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Seconds", 128, 0 },
                 "Invalid"         -> 255,
@@ -5105,6 +5567,7 @@
             "TimeFromCourse" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimeFromCourse",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 2147483647,
@@ -5116,9 +5579,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -5127,6 +5591,7 @@
             "TimeToSurface" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimeToSurface",
                 "Index"           -> 15,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -5138,6 +5603,7 @@
             "TotalCycles" -> <|
                 "Comment"         -> "1 * cycles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalCycles",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Cycles", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -5149,6 +5615,7 @@
             "TotalHemoglobinConcentration" -> <|
                 "Comment"         -> "100 * g/dL + 0, Total saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalHemoglobinConcentration",
                 "Index"           -> 31,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -5160,6 +5627,7 @@
             "TotalHemoglobinConcentrationMaximum" -> <|
                 "Comment"         -> "100 * g/dL + 0, Max saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalHemoglobinConcentrationMaximum",
                 "Index"           -> 33,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -5171,6 +5639,7 @@
             "TotalHemoglobinConcentrationMinimum" -> <|
                 "Comment"         -> "100 * g/dL + 0, Min saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalHemoglobinConcentrationMinimum",
                 "Index"           -> 32,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -5182,6 +5651,7 @@
             "VerticalOscillation" -> <|
                 "Comment"         -> "10 * mm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "VerticalOscillation",
                 "Index"           -> 26,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -5193,6 +5663,7 @@
             "VerticalRatio" -> <|
                 "Comment"         -> "100 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "VerticalRatio",
                 "Index"           -> 38,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -5204,6 +5675,7 @@
             "VerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "VerticalSpeed",
                 "Index"           -> 24,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -5214,6 +5686,7 @@
             ,
             "Zone" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Zone",
                 "Index"           -> 68,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -5232,17 +5705,19 @@
             "Completed" -> <|
                 "Comment"         -> "TRUE if this activity has been started",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Completed",
                 "Index"           -> 7,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "completed",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "Manufacturer" -> <|
                 "Comment"         -> "Corresponds to file_id of scheduled workout / course.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Manufacturer",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitEnum", "Manufacturer" },
                 "Invalid"         -> 65535,
@@ -5254,6 +5729,7 @@
             "Product" -> <|
                 "Comment"         -> "Corresponds to file_id of scheduled workout / course.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Product",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -5264,6 +5740,7 @@
             ,
             "ScheduledTime" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ScheduledTime",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitLocalTimestamp",
                 "Invalid"         -> 4294967295,
@@ -5275,20 +5752,22 @@
             "SerialNumber" -> <|
                 "Comment"         -> "Corresponds to file_id of scheduled workout / course.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SerialNumber",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT32Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "serial_number",
                 "NativeType"      -> "FIT_UINT32Z",
-                "Type"            -> "UnsignedInteger32z"
+                "Type"            -> "UnsignedInteger32Z"
             |>
             ,
             "TimeCreated" -> <|
                 "Comment"         -> "Corresponds to file_id of scheduled workout / course.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimeCreated",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "time_created",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -5296,6 +5775,7 @@
             ,
             "Type" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitEnum", "Schedule" },
                 "Invalid"         -> 255,
@@ -5314,17 +5794,19 @@
             "Enabled" -> <|
                 "Comment"         -> "Enabled state of the segment file",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Enabled",
                 "Index"           -> 7,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "FileUUID" -> <|
                 "Comment"         -> "UUID of the segment file",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "FileUUID",
                 "Index"           -> 6;;6,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -5336,6 +5818,7 @@
             "LeaderActivityID" -> <|
                 "Comment"         -> "Activity ID of each leader in the segment file",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "LeaderActivityID",
                 "Index"           -> 4;;4,
                 "Interpreter"     -> "fitUINT32A",
                 "Invalid"         -> 4294967295,
@@ -5347,6 +5830,7 @@
             "LeaderGroupPrimaryKey" -> <|
                 "Comment"         -> "Group primary key of each leader in the segment file",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "LeaderGroupPrimaryKey",
                 "Index"           -> 3;;3,
                 "Interpreter"     -> "fitUINT32A",
                 "Invalid"         -> 4294967295,
@@ -5358,6 +5842,7 @@
             "LeaderType" -> <|
                 "Comment"         -> "Leader type of each leader in the segment file",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "LeaderType",
                 "Index"           -> 8;;8,
                 "Interpreter"     -> { "fitEnum", "SegmentLeaderboardType" },
                 "Invalid"         -> 255,
@@ -5368,6 +5853,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -5379,6 +5865,7 @@
             "UserProfilePrimaryKey" -> <|
                 "Comment"         -> "Primary key of the user that created the segment file",
                 "Dimensions"      -> { },
+                "FieldName"       -> "UserProfilePrimaryKey",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -5397,6 +5884,7 @@
             "DefaultRaceLeader" -> <|
                 "Comment"         -> "Index for the Leader Board entry selected as the default race participant",
                 "Dimensions"      -> { },
+                "FieldName"       -> "DefaultRaceLeader",
                 "Index"           -> 92,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -5408,6 +5896,7 @@
             "DeleteStatus" -> <|
                 "Comment"         -> "Indicates if any segments should be deleted",
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeleteStatus",
                 "Index"           -> 93,
                 "Interpreter"     -> { "fitEnum", "SegmentDeleteStatus" },
                 "Invalid"         -> 255,
@@ -5419,6 +5908,7 @@
             "DeviceID" -> <|
                 "Comment"         -> "ID of the device that created the segment",
                 "Dimensions"      -> { },
+                "FieldName"       -> "DeviceID",
                 "Index"           -> 39,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -5430,17 +5920,19 @@
             "Enabled" -> <|
                 "Comment"         -> "Segment enabled for evaluation",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Enabled",
                 "Index"           -> 91,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "Name" -> <|
                 "Comment"         -> "Friendly name assigned to segment",
                 "Dimensions"      -> { 50 },
+                "FieldName"       -> "Name",
                 "Index"           -> 40;;89,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -5452,6 +5944,7 @@
             "SelectionType" -> <|
                 "Comment"         -> "Indicates how the segment was selected to be sent to the device",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SelectionType",
                 "Index"           -> 94,
                 "Interpreter"     -> { "fitEnum", "SegmentSelectionType" },
                 "Invalid"         -> 255,
@@ -5463,6 +5956,7 @@
             "Sport" -> <|
                 "Comment"         -> "Sport associated with the segment",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 90,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -5474,6 +5968,7 @@
             "UserProfilePrimaryKey" -> <|
                 "Comment"         -> "Primary key of the user that created the segment",
                 "Dimensions"      -> { },
+                "FieldName"       -> "UserProfilePrimaryKey",
                 "Index"           -> 38,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -5485,6 +5980,7 @@
             "UUID" -> <|
                 "Comment"         -> "UUID of the segment",
                 "Dimensions"      -> { 36 },
+                "FieldName"       -> "UUID",
                 "Index"           -> 2;;37,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -5503,6 +5999,7 @@
             "ActiveTime" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActiveTime",
                 "Index"           -> 48,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -5514,6 +6011,7 @@
             "AverageAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageAltitude",
                 "Index"           -> 60,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -5525,6 +6023,7 @@
             "AverageCadence" -> <|
                 "Comment"         -> "1 * rpm + 0, total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageCadence",
                 "Index"           -> 80,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -5536,6 +6035,7 @@
             "AverageCombinedPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageCombinedPedalSmoothness",
                 "Index"           -> 94,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -5547,6 +6047,7 @@
             "AverageFractionalCadence" -> <|
                 "Comment"         -> "128 * rpm + 0, fractional part of the avg_cadence",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageFractionalCadence",
                 "Index"           -> 129,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 128, 0 },
                 "Invalid"         -> 255,
@@ -5558,6 +6059,7 @@
             "AverageGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageGrade",
                 "Index"           -> 62,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -5569,6 +6071,7 @@
             "AverageHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageHeartRate",
                 "Index"           -> 78,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -5580,6 +6083,7 @@
             "AverageLeftPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageLeftPedalSmoothness",
                 "Index"           -> 92,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -5591,6 +6095,7 @@
             "AverageLeftTorqueEffectiveness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageLeftTorqueEffectiveness",
                 "Index"           -> 90,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -5602,6 +6107,7 @@
             "AverageNegativeGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageNegativeGrade",
                 "Index"           -> 64,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -5613,6 +6119,7 @@
             "AverageNegativeVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageNegativeVerticalSpeed",
                 "Index"           -> 68,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -5624,6 +6131,7 @@
             "AveragePositiveGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePositiveGrade",
                 "Index"           -> 63,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -5635,6 +6143,7 @@
             "AveragePositiveVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePositiveVerticalSpeed",
                 "Index"           -> 67,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -5646,6 +6155,7 @@
             "AveragePower" -> <|
                 "Comment"         -> "1 * watts + 0, total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePower",
                 "Index"           -> 54,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -5657,6 +6167,7 @@
             "AverageRightPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageRightPedalSmoothness",
                 "Index"           -> 93,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -5668,6 +6179,7 @@
             "AverageRightTorqueEffectiveness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageRightTorqueEffectiveness",
                 "Index"           -> 91,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -5679,6 +6191,7 @@
             "AverageSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageSpeed",
                 "Index"           -> 52,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -5690,6 +6203,7 @@
             "AverageTemperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageTemperature",
                 "Index"           -> 86,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -5701,6 +6215,7 @@
             "EndPositionLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EndPositionLatitude",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -5712,6 +6227,7 @@
             "EndPositionLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EndPositionLongitude",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -5722,6 +6238,7 @@
             ,
             "Event" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Event",
                 "Index"           -> 76,
                 "Interpreter"     -> { "fitEnum", "Event" },
                 "Invalid"         -> 255,
@@ -5732,6 +6249,7 @@
             ,
             "EventGroup" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventGroup",
                 "Index"           -> 83,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -5742,6 +6260,7 @@
             ,
             "EventType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventType",
                 "Index"           -> 77,
                 "Interpreter"     -> { "fitEnum", "EventType" },
                 "Invalid"         -> 255,
@@ -5752,6 +6271,7 @@
             ,
             "FrontGearShiftCount" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FrontGearShiftCount",
                 "Index"           -> 74,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -5763,6 +6283,7 @@
             "GPSAccuracy" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "GPSAccuracy",
                 "Index"           -> 85,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 1, 0 },
                 "Invalid"         -> 255,
@@ -5773,6 +6294,7 @@
             ,
             "LeftRightBalance" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LeftRightBalance",
                 "Index"           -> 59,
                 "Interpreter"     -> { "fitEnum", "LeftRightBalance100" },
                 "Invalid"         -> 65535,
@@ -5784,6 +6306,7 @@
             "MaximumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumAltitude",
                 "Index"           -> 61,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -5795,6 +6318,7 @@
             "MaximumCadence" -> <|
                 "Comment"         -> "1 * rpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumCadence",
                 "Index"           -> 81,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -5806,6 +6330,7 @@
             "MaximumFractionalCadence" -> <|
                 "Comment"         -> "128 * rpm + 0, fractional part of the max_cadence",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumFractionalCadence",
                 "Index"           -> 130,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 128, 0 },
                 "Invalid"         -> 255,
@@ -5817,6 +6342,7 @@
             "MaximumHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumHeartRate",
                 "Index"           -> 79,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -5828,6 +6354,7 @@
             "MaximumNegativeGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumNegativeGrade",
                 "Index"           -> 66,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -5839,6 +6366,7 @@
             "MaximumNegativeVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumNegativeVerticalSpeed",
                 "Index"           -> 70,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -5850,6 +6378,7 @@
             "MaximumPositiveGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPositiveGrade",
                 "Index"           -> 65,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -5861,6 +6390,7 @@
             "MaximumPositiveVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPositiveVerticalSpeed",
                 "Index"           -> 69,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -5872,6 +6402,7 @@
             "MaximumPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPower",
                 "Index"           -> 55,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -5883,6 +6414,7 @@
             "MaximumSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumSpeed",
                 "Index"           -> 53,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -5894,6 +6426,7 @@
             "MaximumTemperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumTemperature",
                 "Index"           -> 87,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -5904,6 +6437,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 49,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -5915,6 +6449,7 @@
             "MinimumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MinimumAltitude",
                 "Index"           -> 72,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -5926,6 +6461,7 @@
             "MinimumHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MinimumHeartRate",
                 "Index"           -> 88,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -5936,6 +6472,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 16;;31,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -5947,6 +6484,7 @@
             "NormalizedPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NormalizedPower",
                 "Index"           -> 58,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -5958,6 +6496,7 @@
             "NorthEastCornerLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0, North east corner latitude.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NorthEastCornerLatitude",
                 "Index"           -> 12,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -5969,6 +6508,7 @@
             "NorthEastCornerLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0, North east corner longitude.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NorthEastCornerLongitude",
                 "Index"           -> 13,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -5979,6 +6519,7 @@
             ,
             "RearGearShiftCount" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "RearGearShiftCount",
                 "Index"           -> 75,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -5989,6 +6530,7 @@
             ,
             "RepetitionNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "RepetitionNumber",
                 "Index"           -> 71,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -6000,6 +6542,7 @@
             "SouthWestCornerLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0, South west corner latitude.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SouthWestCornerLatitude",
                 "Index"           -> 14,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -6011,6 +6554,7 @@
             "SouthWestCornerLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0, South west corner latitude.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SouthWestCornerLongitude",
                 "Index"           -> 15,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -6021,6 +6565,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 82,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -6031,6 +6576,7 @@
             ,
             "SportEvent" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SportEvent",
                 "Index"           -> 89,
                 "Interpreter"     -> { "fitEnum", "SportEvent" },
                 "Invalid"         -> 255,
@@ -6042,6 +6588,7 @@
             "StartPositionLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartPositionLatitude",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -6053,6 +6600,7 @@
             "StartPositionLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartPositionLongitude",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -6063,9 +6611,10 @@
             ,
             "StartTime" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartTime",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "start_time",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -6073,6 +6622,7 @@
             ,
             "Status" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Status",
                 "Index"           -> 95,
                 "Interpreter"     -> { "fitEnum", "SegmentLapStatus" },
                 "Invalid"         -> 255,
@@ -6083,6 +6633,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 84,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -6094,6 +6645,7 @@
             "TimeInCadenceZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeInCadenceZone",
                 "Index"           -> 40;;40,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6105,6 +6657,7 @@
             "TimeInHeartRateZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 5 },
+                "FieldName"       -> "TimeInHeartRateZone",
                 "Index"           -> 34;;38,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6116,6 +6669,7 @@
             "TimeInPowerZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 7 },
+                "FieldName"       -> "TimeInPowerZone",
                 "Index"           -> 41;;47,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6127,6 +6681,7 @@
             "TimeInSpeedZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeInSpeedZone",
                 "Index"           -> 39;;39,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6138,9 +6693,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0, Lap end time.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -6149,6 +6705,7 @@
             "TotalAscent" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalAscent",
                 "Index"           -> 56,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1, 0 },
                 "Invalid"         -> 65535,
@@ -6160,6 +6717,7 @@
             "TotalCalories" -> <|
                 "Comment"         -> "1 * kcal + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalCalories",
                 "Index"           -> 50,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -6171,6 +6729,7 @@
             "TotalCycles" -> <|
                 "Comment"         -> "1 * cycles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalCycles",
                 "Index"           -> 11,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Cycles", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -6182,6 +6741,7 @@
             "TotalDescent" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalDescent",
                 "Index"           -> 57,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1, 0 },
                 "Invalid"         -> 65535,
@@ -6193,6 +6753,7 @@
             "TotalDistance" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalDistance",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -6204,6 +6765,7 @@
             "TotalElapsedTime" -> <|
                 "Comment"         -> "1000 * s + 0, Time (includes pauses)",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalElapsedTime",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6215,6 +6777,7 @@
             "TotalFatCalories" -> <|
                 "Comment"         -> "1 * kcal + 0, If New Leaf",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFatCalories",
                 "Index"           -> 51,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -6226,6 +6789,7 @@
             "TotalFractionalCycles" -> <|
                 "Comment"         -> "128 * cycles + 0, fractional part of the total_cycles",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFractionalCycles",
                 "Index"           -> 131,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -6237,6 +6801,7 @@
             "TotalMovingTime" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalMovingTime",
                 "Index"           -> 33,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6248,6 +6813,7 @@
             "TotalTimerTime" -> <|
                 "Comment"         -> "1000 * s + 0, Timer Time (excludes pauses)",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalTimerTime",
                 "Index"           -> 9,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6259,6 +6825,7 @@
             "TotalWork" -> <|
                 "Comment"         -> "1 * J + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalWork",
                 "Index"           -> 32,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Joules", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -6269,6 +6836,7 @@
             ,
             "UUID" -> <|
                 "Dimensions"      -> { 33 },
+                "FieldName"       -> "UUID",
                 "Index"           -> 96;;128,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -6279,6 +6847,7 @@
             ,
             "WorkoutStepIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "WorkoutStepIndex",
                 "Index"           -> 73,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -6297,6 +6866,7 @@
             "ActivityID" -> <|
                 "Comment"         -> "ID of the activity associated with this leader time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActivityID",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -6308,6 +6878,7 @@
             "GroupPrimaryKey" -> <|
                 "Comment"         -> "Primary user ID of this leader",
                 "Dimensions"      -> { },
+                "FieldName"       -> "GroupPrimaryKey",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -6318,6 +6889,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 5,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -6329,6 +6901,7 @@
             "Name" -> <|
                 "Comment"         -> "Friendly name assigned to leader",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "Name",
                 "Index"           -> 6;;6,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -6340,6 +6913,7 @@
             "SegmentTime" -> <|
                 "Comment"         -> "1000 * s + 0, Segment Time (includes pauses)",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SegmentTime",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6351,6 +6925,7 @@
             "Type" -> <|
                 "Comment"         -> "Leader classification",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitEnum", "SegmentLeaderboardType" },
                 "Invalid"         -> 255,
@@ -6369,6 +6944,7 @@
             "Altitude" -> <|
                 "Comment"         -> "5 * m + 500, Accumulated altitude along the segment at the described point",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Altitude",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -6380,6 +6956,7 @@
             "Distance" -> <|
                 "Comment"         -> "100 * m + 0, Accumulated distance along the segment at the described point",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Distance",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -6391,6 +6968,7 @@
             "LeaderTime" -> <|
                 "Comment"         -> "1000 * s + 0, Accumualted time each leader board member required to reach the described point. This value is zero for all leader board members at the starting point of the segment.",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "LeaderTime",
                 "Index"           -> 5;;5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6401,6 +6979,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -6412,6 +6991,7 @@
             "PositionLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PositionLatitude",
                 "Index"           -> 2,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -6423,6 +7003,7 @@
             "PositionLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PositionLongitude",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -6441,6 +7022,7 @@
             "AverageAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageAltitude",
                 "Index"           -> 83,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -6452,6 +7034,7 @@
             "AverageAscentSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageAscentSpeed",
                 "Index"           -> 123,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -6463,6 +7046,7 @@
             "AverageBallSpeed" -> <|
                 "Comment"         -> "100 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageBallSpeed",
                 "Index"           -> 107,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6474,6 +7058,7 @@
             "AverageCadence" -> <|
                 "Comment"         -> "1 * rpm + 0, total_cycles / total_timer_time if non_zero_avg_cadence otherwise total_cycles / total_elapsed_time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageCadence",
                 "Index"           -> 134,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -6485,6 +7070,7 @@
             "AverageCadencePosition" -> <|
                 "Comment"         -> "1 * rpm + 0, Average cadence by position. Data value indexes defined by rider_position_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "AverageCadencePosition",
                 "Index"           -> 164;;165,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -6496,6 +7082,7 @@
             "AverageCombinedPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageCombinedPedalSmoothness",
                 "Index"           -> 152,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -6507,6 +7094,7 @@
             "AverageCoreTemperature" -> <|
                 "Comment"         -> "100 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageCoreTemperature",
                 "Index"           -> 125,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DegreesCelsius", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6518,8 +7106,10 @@
             "AverageFlow" -> <|
                 "Comment"         -> "1 * Flow + 0, The flow score estimates how long distance wise a cyclist deaccelerates over intervals where deacceleration is unnecessary such as smooth turns or small grade angle intervals.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageFlow",
                 "Index"           -> 62,
                 "Interpreter"     -> "fitFloat32",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "avg_flow",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -6528,6 +7118,7 @@
             "AverageFractionalCadence" -> <|
                 "Comment"         -> "128 * rpm + 0, fractional part of the avg_cadence",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageFractionalCadence",
                 "Index"           -> 145,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 128, 0 },
                 "Invalid"         -> 255,
@@ -6539,6 +7130,7 @@
             "AverageGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageGrade",
                 "Index"           -> 85,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -6550,8 +7142,10 @@
             "AverageGrit" -> <|
                 "Comment"         -> "1 * kGrit + 0, The grit score estimates how challenging a route could be for a cyclist in terms of time spent going over sharp turns or large grade slopes.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageGrit",
                 "Index"           -> 61,
                 "Interpreter"     -> "fitFloat32",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "avg_grit",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -6560,6 +7154,7 @@
             "AverageHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0, average heart rate (excludes pause time)",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageHeartRate",
                 "Index"           -> 132,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -6571,6 +7166,7 @@
             "AverageLapTime" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageLapTime",
                 "Index"           -> 31,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6582,6 +7178,7 @@
             "AverageLeftPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageLeftPedalSmoothness",
                 "Index"           -> 150,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -6593,6 +7190,7 @@
             "AverageLeftPlatformCenterOffset" -> <|
                 "Comment"         -> "1 * mm + 0, Average platform center offset Left",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageLeftPlatformCenterOffset",
                 "Index"           -> 154,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "Meters", 1000, 0 },
                 "Invalid"         -> 127,
@@ -6604,6 +7202,7 @@
             "AverageLeftPowerPhase" -> <|
                 "Comment"         -> "0.7111111 * degrees + 0, Average left power phase angles. Indexes defined by power_phase_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "AverageLeftPowerPhase",
                 "Index"           -> 156;;157,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "AngularDegrees", 0.7111111, 0 },
                 "Invalid"         -> 255,
@@ -6615,6 +7214,7 @@
             "AverageLeftPowerPhasePeak" -> <|
                 "Comment"         -> "0.7111111 * degrees + 0, Average left power phase peak angles. Data value indexes defined by power_phase_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "AverageLeftPowerPhasePeak",
                 "Index"           -> 158;;159,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "AngularDegrees", 0.7111111, 0 },
                 "Invalid"         -> 255,
@@ -6626,6 +7226,7 @@
             "AverageLeftTorqueEffectiveness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageLeftTorqueEffectiveness",
                 "Index"           -> 148,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -6637,6 +7238,7 @@
             "AverageLightElectricalVehicleMotorPower" -> <|
                 "Comment"         -> "1 * watts + 0, lev average motor power during session",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageLightElectricalVehicleMotorPower",
                 "Index"           -> 118,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -6648,6 +7250,7 @@
             "AverageNegativeGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageNegativeGrade",
                 "Index"           -> 87,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -6659,6 +7262,7 @@
             "AverageNegativeVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageNegativeVerticalSpeed",
                 "Index"           -> 91,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -6670,6 +7274,7 @@
             "AveragePositiveGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePositiveGrade",
                 "Index"           -> 86,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -6681,6 +7286,7 @@
             "AveragePositiveVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePositiveVerticalSpeed",
                 "Index"           -> 90,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -6692,6 +7298,7 @@
             "AveragePower" -> <|
                 "Comment"         -> "1 * watts + 0, total_power / total_timer_time if non_zero_avg_power otherwise total_power / total_elapsed_time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AveragePower",
                 "Index"           -> 68,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -6703,6 +7310,7 @@
             "AveragePowerPosition" -> <|
                 "Comment"         -> "1 * watts + 0, Average power by position. Data value indexes defined by rider_position_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "AveragePowerPosition",
                 "Index"           -> 49;;50,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -6714,6 +7322,7 @@
             "AverageRightPedalSmoothness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageRightPedalSmoothness",
                 "Index"           -> 151,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -6725,6 +7334,7 @@
             "AverageRightPlatformCenterOffset" -> <|
                 "Comment"         -> "1 * mm + 0, Average platform center offset Right",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageRightPlatformCenterOffset",
                 "Index"           -> 155,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "Meters", 1000, 0 },
                 "Invalid"         -> 127,
@@ -6736,6 +7346,7 @@
             "AverageRightPowerPhase" -> <|
                 "Comment"         -> "0.7111111 * degrees + 0, Average right power phase angles. Data value indexes defined by power_phase_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "AverageRightPowerPhase",
                 "Index"           -> 160;;161,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "AngularDegrees", 0.7111111, 0 },
                 "Invalid"         -> 255,
@@ -6747,6 +7358,7 @@
             "AverageRightPowerPhasePeak" -> <|
                 "Comment"         -> "0.7111111 * degrees + 0, Average right power phase peak angles data value indexes defined by power_phase_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "AverageRightPowerPhasePeak",
                 "Index"           -> 162;;163,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "AngularDegrees", 0.7111111, 0 },
                 "Invalid"         -> 255,
@@ -6758,6 +7370,7 @@
             "AverageRightTorqueEffectiveness" -> <|
                 "Comment"         -> "2 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageRightTorqueEffectiveness",
                 "Index"           -> 149,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -6769,6 +7382,7 @@
             "AverageSaturatedHemoglobinPercent" -> <|
                 "Comment"         -> "10 * % + 0, Avg percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AverageSaturatedHemoglobinPercent",
                 "Index"           -> 114;;114,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -6780,6 +7394,7 @@
             "AverageSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0, total_distance / total_timer_time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageSpeed",
                 "Index"           -> 66,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -6791,6 +7406,7 @@
             "AverageStanceTime" -> <|
                 "Comment"         -> "10 * ms + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStanceTime",
                 "Index"           -> 110,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Seconds", 10000, 0 },
                 "Invalid"         -> 65535,
@@ -6802,6 +7418,7 @@
             "AverageStanceTimeBalance" -> <|
                 "Comment"         -> "100 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStanceTimeBalance",
                 "Index"           -> 121,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6813,6 +7430,7 @@
             "AverageStanceTimePercent" -> <|
                 "Comment"         -> "100 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStanceTimePercent",
                 "Index"           -> 109,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6824,6 +7442,7 @@
             "AverageStepLength" -> <|
                 "Comment"         -> "10 * mm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStepLength",
                 "Index"           -> 122,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6835,6 +7454,7 @@
             "AverageStrokeCount" -> <|
                 "Comment"         -> "10 * strokes/lap + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStrokeCount",
                 "Index"           -> 14,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -6846,6 +7466,7 @@
             "AverageStrokeDistance" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageStrokeDistance",
                 "Index"           -> 79,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6857,6 +7478,7 @@
             "AverageTemperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageTemperature",
                 "Index"           -> 142,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -6868,6 +7490,7 @@
             "AverageTotalHemoglobinConcentration" -> <|
                 "Comment"         -> "100 * g/dL + 0, Avg saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "AverageTotalHemoglobinConcentration",
                 "Index"           -> 111;;111,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6879,6 +7502,7 @@
             "AverageVerticalOscillation" -> <|
                 "Comment"         -> "10 * mm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageVerticalOscillation",
                 "Index"           -> 108,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6890,6 +7514,7 @@
             "AverageVerticalRatio" -> <|
                 "Comment"         -> "100 * percent + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "AverageVerticalRatio",
                 "Index"           -> 120,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -6900,6 +7525,7 @@
             ,
             "BestLapIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "BestLapIndex",
                 "Index"           -> 94,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -6911,6 +7537,7 @@
             "EnhancedAverageAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedAverageAltitude",
                 "Index"           -> 55,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 5, 500 },
                 "Invalid"         -> 4294967295,
@@ -6922,6 +7549,7 @@
             "EnhancedAverageSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0, total_distance / total_timer_time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedAverageSpeed",
                 "Index"           -> 53,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6933,6 +7561,7 @@
             "EnhancedMaximumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedMaximumAltitude",
                 "Index"           -> 57,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 5, 500 },
                 "Invalid"         -> 4294967295,
@@ -6944,6 +7573,7 @@
             "EnhancedMaximumSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedMaximumSpeed",
                 "Index"           -> 54,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -6955,6 +7585,7 @@
             "EnhancedMinimumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EnhancedMinimumAltitude",
                 "Index"           -> 56,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 5, 500 },
                 "Invalid"         -> 4294967295,
@@ -6966,6 +7597,7 @@
             "Event" -> <|
                 "Comment"         -> "session",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Event",
                 "Index"           -> 128,
                 "Interpreter"     -> { "fitEnum", "Event" },
                 "Invalid"         -> 255,
@@ -6976,6 +7608,7 @@
             ,
             "EventGroup" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventGroup",
                 "Index"           -> 137,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -6987,6 +7620,7 @@
             "EventType" -> <|
                 "Comment"         -> "stop",
                 "Dimensions"      -> { },
+                "FieldName"       -> "EventType",
                 "Index"           -> 129,
                 "Interpreter"     -> { "fitEnum", "EventType" },
                 "Invalid"         -> 255,
@@ -6997,6 +7631,7 @@
             ,
             "FirstLapIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FirstLapIndex",
                 "Index"           -> 72,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7008,6 +7643,7 @@
             "GPSAccuracy" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "GPSAccuracy",
                 "Index"           -> 141,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 1, 0 },
                 "Invalid"         -> 255,
@@ -7019,6 +7655,7 @@
             "IntensityFactor" -> <|
                 "Comment"         -> "1000 * if + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "IntensityFactor",
                 "Index"           -> 77,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7029,6 +7666,7 @@
             ,
             "JumpCount" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "JumpCount",
                 "Index"           -> 124,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7039,6 +7677,7 @@
             ,
             "LeftRightBalance" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LeftRightBalance",
                 "Index"           -> 78,
                 "Interpreter"     -> { "fitEnum", "LeftRightBalance100" },
                 "Invalid"         -> 65535,
@@ -7050,6 +7689,7 @@
             "LightElectricalVehicleBatteryConsumption" -> <|
                 "Comment"         -> "2 * percent + 0, lev battery consumption during session",
                 "Dimensions"      -> { },
+                "FieldName"       -> "LightElectricalVehicleBatteryConsumption",
                 "Index"           -> 168,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Percent", 2, 0 },
                 "Invalid"         -> 255,
@@ -7061,6 +7701,7 @@
             "MaximumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumAltitude",
                 "Index"           -> 84,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -7072,6 +7713,7 @@
             "MaximumBallSpeed" -> <|
                 "Comment"         -> "100 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumBallSpeed",
                 "Index"           -> 106,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 100, 0 },
                 "Invalid"         -> 65535,
@@ -7083,6 +7725,7 @@
             "MaximumCadence" -> <|
                 "Comment"         -> "1 * rpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumCadence",
                 "Index"           -> 135,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -7094,6 +7737,7 @@
             "MaximumCadencePosition" -> <|
                 "Comment"         -> "1 * rpm + 0, Maximum cadence by position. Data value indexes defined by rider_position_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "MaximumCadencePosition",
                 "Index"           -> 166;;167,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8A", "RevolutionsPerMinute", 1, 0 },
                 "Invalid"         -> 255,
@@ -7105,6 +7749,7 @@
             "MaximumCoreTemperature" -> <|
                 "Comment"         -> "100 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumCoreTemperature",
                 "Index"           -> 127,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DegreesCelsius", 100, 0 },
                 "Invalid"         -> 65535,
@@ -7116,6 +7761,7 @@
             "MaximumFractionalCadence" -> <|
                 "Comment"         -> "128 * rpm + 0, fractional part of the max_cadence",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumFractionalCadence",
                 "Index"           -> 146,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "RevolutionsPerMinute", 128, 0 },
                 "Invalid"         -> 255,
@@ -7127,6 +7773,7 @@
             "MaximumHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumHeartRate",
                 "Index"           -> 133,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -7138,6 +7785,7 @@
             "MaximumLightElectricalVehicleMotorPower" -> <|
                 "Comment"         -> "1 * watts + 0, lev maximum motor power during session",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumLightElectricalVehicleMotorPower",
                 "Index"           -> 119,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7149,6 +7797,7 @@
             "MaximumNegativeGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumNegativeGrade",
                 "Index"           -> 89,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -7160,6 +7809,7 @@
             "MaximumNegativeVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumNegativeVerticalSpeed",
                 "Index"           -> 93,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -7171,6 +7821,7 @@
             "MaximumPositiveGrade" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPositiveGrade",
                 "Index"           -> 88,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "Percent", 100, 0 },
                 "Invalid"         -> 32767,
@@ -7182,6 +7833,7 @@
             "MaximumPositiveVerticalSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPositiveVerticalSpeed",
                 "Index"           -> 92,
                 "Interpreter"     -> { "fitQuantity", "fitSINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 32767,
@@ -7193,6 +7845,7 @@
             "MaximumPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumPower",
                 "Index"           -> 69,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7204,6 +7857,7 @@
             "MaximumPowerPosition" -> <|
                 "Comment"         -> "1 * watts + 0, Maximum power by position. Data value indexes defined by rider_position_type.",
                 "Dimensions"      -> { 2 },
+                "FieldName"       -> "MaximumPowerPosition",
                 "Index"           -> 51;;52,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7215,6 +7869,7 @@
             "MaximumSaturatedHemoglobinPercent" -> <|
                 "Comment"         -> "10 * % + 0, Max percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "MaximumSaturatedHemoglobinPercent",
                 "Index"           -> 116;;116,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -7226,6 +7881,7 @@
             "MaximumSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumSpeed",
                 "Index"           -> 67,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -7237,6 +7893,7 @@
             "MaximumTemperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumTemperature",
                 "Index"           -> 143,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -7248,6 +7905,7 @@
             "MaximumTotalHemoglobinConcentration" -> <|
                 "Comment"         -> "100 * g/dL + 0, Max saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "MaximumTotalHemoglobinConcentration",
                 "Index"           -> 113;;113,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -7259,6 +7917,7 @@
             "MessageIndex" -> <|
                 "Comment"         -> "Selected bit is set for the current session.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 63,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7270,6 +7929,7 @@
             "MinimumAltitude" -> <|
                 "Comment"         -> "5 * m + 500",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MinimumAltitude",
                 "Index"           -> 95,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 5, 500 },
                 "Invalid"         -> 65535,
@@ -7281,6 +7941,7 @@
             "MinimumCoreTemperature" -> <|
                 "Comment"         -> "100 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MinimumCoreTemperature",
                 "Index"           -> 126,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DegreesCelsius", 100, 0 },
                 "Invalid"         -> 65535,
@@ -7292,6 +7953,7 @@
             "MinimumHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MinimumHeartRate",
                 "Index"           -> 144,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -7303,6 +7965,7 @@
             "MinimumSaturatedHemoglobinPercent" -> <|
                 "Comment"         -> "10 * % + 0, Min percentage of hemoglobin saturated with oxygen",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "MinimumSaturatedHemoglobinPercent",
                 "Index"           -> 115;;115,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -7314,6 +7977,7 @@
             "MinimumTotalHemoglobinConcentration" -> <|
                 "Comment"         -> "100 * g/dL + 0, Min saturated and unsaturated hemoglobin",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "MinimumTotalHemoglobinConcentration",
                 "Index"           -> 112;;112,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Deciliters"^(-1) * "Grams", 100, 0 },
                 "Invalid"         -> 65535,
@@ -7325,6 +7989,7 @@
             "NormalizedPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NormalizedPower",
                 "Index"           -> 75,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7336,6 +8001,7 @@
             "NorthEastCornerLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0, North east corner latitude",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NorthEastCornerLatitude",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -7347,6 +8013,7 @@
             "NorthEastCornerLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0, North east corner longitude",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NorthEastCornerLongitude",
                 "Index"           -> 11,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -7358,6 +8025,7 @@
             "NumberOfActiveLengths" -> <|
                 "Comment"         -> "1 * lengths + 0, # of active lengths of swim pool",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NumberOfActiveLengths",
                 "Index"           -> 82,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7368,6 +8036,7 @@
             ,
             "NumberOfLaps" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "NumberOfLaps",
                 "Index"           -> 73,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7379,6 +8048,7 @@
             "NumberOfLengths" -> <|
                 "Comment"         -> "1 * lengths + 0, # of lengths of swim pool",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NumberOfLengths",
                 "Index"           -> 74,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7389,6 +8059,7 @@
             ,
             "OpponentName" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "OpponentName",
                 "Index"           -> 32;;47,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -7399,6 +8070,7 @@
             ,
             "OpponentScore" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "OpponentScore",
                 "Index"           -> 97,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7409,6 +8081,7 @@
             ,
             "PlayerScore" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PlayerScore",
                 "Index"           -> 96,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7420,6 +8093,7 @@
             "PoolLength" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PoolLength",
                 "Index"           -> 80,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -7430,6 +8104,7 @@
             ,
             "PoolLengthUnit" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PoolLengthUnit",
                 "Index"           -> 140,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -7441,6 +8116,7 @@
             "SouthWestCornerLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0, South west corner latitude",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SouthWestCornerLatitude",
                 "Index"           -> 12,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -7452,6 +8128,7 @@
             "SouthWestCornerLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0, South west corner longitude",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SouthWestCornerLongitude",
                 "Index"           -> 13,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -7462,6 +8139,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 130,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -7472,6 +8150,7 @@
             ,
             "SportIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SportIndex",
                 "Index"           -> 153,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -7483,6 +8162,7 @@
             "StandCount" -> <|
                 "Comment"         -> "Number of transitions to the standing state",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StandCount",
                 "Index"           -> 117,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7494,6 +8174,7 @@
             "StartPositionLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartPositionLatitude",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -7505,6 +8186,7 @@
             "StartPositionLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartPositionLongitude",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -7515,9 +8197,10 @@
             ,
             "StartTime" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "StartTime",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "start_time",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -7526,6 +8209,7 @@
             "StrokeCount" -> <|
                 "Comment"         -> "1 * counts + 0, stroke_type enum used as the index",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "StrokeCount",
                 "Index"           -> 98;;98,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -7536,6 +8220,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 131,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -7547,6 +8232,7 @@
             "SwimStroke" -> <|
                 "Comment"         -> "1 * swim_stroke + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SwimStroke",
                 "Index"           -> 139,
                 "Interpreter"     -> { "fitEnum", "SwimStroke" },
                 "Invalid"         -> 255,
@@ -7558,6 +8244,7 @@
             "ThresholdPower" -> <|
                 "Comment"         -> "1 * watts + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ThresholdPower",
                 "Index"           -> 81,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Watts", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7569,6 +8256,7 @@
             "TimeInCadenceZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeInCadenceZone",
                 "Index"           -> 23;;23,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -7580,6 +8268,7 @@
             "TimeInHeartRateZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 5 },
+                "FieldName"       -> "TimeInHeartRateZone",
                 "Index"           -> 17;;21,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -7591,6 +8280,7 @@
             "TimeInPowerZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 7 },
+                "FieldName"       -> "TimeInPowerZone",
                 "Index"           -> 24;;30,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -7602,6 +8292,7 @@
             "TimeInSpeedZone" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { 1 },
+                "FieldName"       -> "TimeInSpeedZone",
                 "Index"           -> 22;;22,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32A", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -7613,9 +8304,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0, Sesson end time.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -7624,6 +8316,7 @@
             "TimeStanding" -> <|
                 "Comment"         -> "1000 * s + 0, Total time spend in the standing position",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimeStanding",
                 "Index"           -> 48,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -7634,6 +8327,7 @@
             ,
             "TotalAnaerobicTrainingEffect" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalAnaerobicTrainingEffect",
                 "Index"           -> 169,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -7645,6 +8339,7 @@
             "TotalAscent" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalAscent",
                 "Index"           -> 70,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7656,6 +8351,7 @@
             "TotalCalories" -> <|
                 "Comment"         -> "1 * kcal + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalCalories",
                 "Index"           -> 64,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7667,6 +8363,7 @@
             "TotalCycles" -> <|
                 "Comment"         -> "1 * cycles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalCycles",
                 "Index"           -> 9,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Cycles", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -7678,6 +8375,7 @@
             "TotalDescent" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalDescent",
                 "Index"           -> 71,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7689,6 +8387,7 @@
             "TotalDistance" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalDistance",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -7700,6 +8399,7 @@
             "TotalElapsedTime" -> <|
                 "Comment"         -> "1000 * s + 0, Time (includes pauses)",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalElapsedTime",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -7711,6 +8411,7 @@
             "TotalFatCalories" -> <|
                 "Comment"         -> "1 * kcal + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFatCalories",
                 "Index"           -> 65,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 65535,
@@ -7722,8 +8423,10 @@
             "TotalFlow" -> <|
                 "Comment"         -> "1 * Flow + 0, The flow score estimates how long distance wise a cyclist deaccelerates over intervals where deacceleration is unnecessary such as smooth turns or small grade angle intervals.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFlow",
                 "Index"           -> 60,
                 "Interpreter"     -> "fitFloat32",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "total_flow",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -7732,6 +8435,7 @@
             "TotalFractionalAscent" -> <|
                 "Comment"         -> "100 * m + 0, fractional part of total_ascent",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFractionalAscent",
                 "Index"           -> 170,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 100, 0 },
                 "Invalid"         -> 255,
@@ -7743,6 +8447,7 @@
             "TotalFractionalCycles" -> <|
                 "Comment"         -> "128 * cycles + 0, fractional part of the total_cycles",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFractionalCycles",
                 "Index"           -> 147,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -7754,6 +8459,7 @@
             "TotalFractionalDescent" -> <|
                 "Comment"         -> "100 * m + 0, fractional part of total_descent",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalFractionalDescent",
                 "Index"           -> 171,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 100, 0 },
                 "Invalid"         -> 255,
@@ -7765,8 +8471,10 @@
             "TotalGrit" -> <|
                 "Comment"         -> "1 * kGrit + 0, The grit score estimates how challenging a route could be for a cyclist in terms of time spent going over sharp turns or large grade slopes.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalGrit",
                 "Index"           -> 59,
                 "Interpreter"     -> "fitFloat32",
+                "Invalid"         -> -9223372036854775808,
                 "NativeFieldName" -> "total_grit",
                 "NativeType"      -> "FIT_FLOAT32",
                 "Type"            -> "Real32"
@@ -7775,6 +8483,7 @@
             "TotalMovingTime" -> <|
                 "Comment"         -> "1000 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalMovingTime",
                 "Index"           -> 16,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -7786,6 +8495,7 @@
             "TotalTimerTime" -> <|
                 "Comment"         -> "1000 * s + 0, Timer Time (excludes pauses)",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalTimerTime",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1000, 0 },
                 "Invalid"         -> 4294967295,
@@ -7796,6 +8506,7 @@
             ,
             "TotalTrainingEffect" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalTrainingEffect",
                 "Index"           -> 136,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -7807,6 +8518,7 @@
             "TotalWork" -> <|
                 "Comment"         -> "1 * J + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TotalWork",
                 "Index"           -> 15,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Joules", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -7817,6 +8529,7 @@
             ,
             "TrainingLoadPeak" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "TrainingLoadPeak",
                 "Index"           -> 58,
                 "Interpreter"     -> "fitSINT32",
                 "Invalid"         -> 2147483647,
@@ -7828,6 +8541,7 @@
             "TrainingStressScore" -> <|
                 "Comment"         -> "10 * tss + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TrainingStressScore",
                 "Index"           -> 76,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7838,6 +8552,7 @@
             ,
             "Trigger" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Trigger",
                 "Index"           -> 138,
                 "Interpreter"     -> { "fitEnum", "SessionTrigger" },
                 "Invalid"         -> 255,
@@ -7849,6 +8564,7 @@
             "ZoneCount" -> <|
                 "Comment"         -> "1 * counts + 0, zone number used as the index",
                 "Dimensions"      -> { 7 },
+                "FieldName"       -> "ZoneCount",
                 "Index"           -> 99;;105,
                 "Interpreter"     -> "fitUINT16A",
                 "Invalid"         -> 65535,
@@ -7866,6 +8582,7 @@
         "Fields"        -> <|
             "WeightDisplayUnit" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "WeightDisplayUnit",
                 "Index"           -> 2,
                 "Interpreter"     -> { "fitEnum", "FitBaseUnit" },
                 "Invalid"         -> 65535,
@@ -7883,6 +8600,7 @@
         "Fields"        -> <|
             "Manufacturer" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Manufacturer",
                 "Index"           -> 2,
                 "Interpreter"     -> { "fitEnum", "Manufacturer" },
                 "Invalid"         -> 65535,
@@ -7893,6 +8611,7 @@
             ,
             "Product" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Product",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7910,6 +8629,7 @@
         "Fields"        -> <|
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7920,6 +8640,7 @@
             ,
             "PartNumber" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "PartNumber",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -7930,6 +8651,7 @@
             ,
             "Version" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Version",
                 "Index"           -> 19,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7948,6 +8670,7 @@
             "HighValue" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "HighValue",
                 "Index"           -> 19,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -7958,6 +8681,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -7968,6 +8692,7 @@
             ,
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -7985,6 +8710,7 @@
         "Fields"        -> <|
             "Name" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "Name",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -7995,6 +8721,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 18,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -8005,6 +8732,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 19,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -8022,16 +8750,18 @@
         "Fields"        -> <|
             "Enabled" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Enabled",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "enabled",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8043,6 +8773,7 @@
             "Odometer" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Odometer",
                 "Index"           -> 2,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 100, 0 },
                 "Invalid"         -> 4294967295,
@@ -8054,6 +8785,7 @@
             "OdometerRollover" -> <|
                 "Comment"         -> "Rollover counter that can be used to extend the odometer",
                 "Dimensions"      -> { },
+                "FieldName"       -> "OdometerRollover",
                 "Index"           -> 9,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -8065,37 +8797,41 @@
             "SpeedSource" -> <|
                 "Comment"         -> "Use footpod for speed source instead of GPS",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SpeedSource",
                 "Index"           -> 7,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "speed_source",
                 "NativeType"      -> "FIT_BOOL",
-                "Type"            -> "Bool"
+                "Type"            -> "Boolean"
             |>
             ,
             "StrideAndDistanceMonitorANTID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "StrideAndDistanceMonitorANTID",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT16Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "sdm_ant_id",
                 "NativeType"      -> "FIT_UINT16Z",
-                "Type"            -> "UnsignedInteger16z"
+                "Type"            -> "UnsignedInteger16Z"
             |>
             ,
             "StrideAndDistanceMonitorANTIDTransmissionType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "StrideAndDistanceMonitorANTIDTransmissionType",
                 "Index"           -> 8,
                 "Interpreter"     -> "fitUINT8Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "sdm_ant_id_trans_type",
                 "NativeType"      -> "FIT_UINT8Z",
-                "Type"            -> "UnsignedInteger8z"
+                "Type"            -> "UnsignedInteger8Z"
             |>
             ,
             "StrideAndDistanceMonitorCalibrationFactor" -> <|
                 "Comment"         -> "10 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "StrideAndDistanceMonitorCalibrationFactor",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 10, 0 },
                 "Invalid"         -> 65535,
@@ -8114,6 +8850,7 @@
             "ActiveTime" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActiveTime",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -8125,6 +8862,7 @@
             "Calories" -> <|
                 "Comment"         -> "1 * kcal + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Calories",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "DietaryCalories", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -8136,6 +8874,7 @@
             "Distance" -> <|
                 "Comment"         -> "1 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Distance",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Meters", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -8147,6 +8886,7 @@
             "ElapsedTime" -> <|
                 "Comment"         -> "1 * s + 0, Includes pauses",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ElapsedTime",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -8157,6 +8897,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 8,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8167,6 +8908,7 @@
             ,
             "Sessions" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sessions",
                 "Index"           -> 9,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8177,6 +8919,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 10,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -8188,6 +8931,7 @@
             "TimerTime" -> <|
                 "Comment"         -> "1 * s + 0, Excludes pauses",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimerTime",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitQuantity", "fitUINT32", "Seconds", 1, 0 },
                 "Invalid"         -> 4294967295,
@@ -8199,9 +8943,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -8216,6 +8961,7 @@
         "Fields"        -> <|
             "Manufacturer" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Manufacturer",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitEnum", "Manufacturer" },
                 "Invalid"         -> 65535,
@@ -8226,6 +8972,7 @@
             ,
             "Product" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Product",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8236,19 +8983,21 @@
             ,
             "SerialNumber" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SerialNumber",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT32Z",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "serial_number",
                 "NativeType"      -> "FIT_UINT32Z",
-                "Type"            -> "UnsignedInteger32z"
+                "Type"            -> "UnsignedInteger32Z"
             |>
             ,
             "TimeCreated" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "TimeCreated",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "time_created",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -8256,9 +9005,10 @@
             ,
             "Timestamp" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -8266,6 +9016,7 @@
             ,
             "Type" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitEnum", "File" },
                 "Invalid"         -> 255,
@@ -8283,6 +9034,7 @@
         "Fields"        -> <|
             "ActivityClass" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActivityClass",
                 "Index"           -> 40,
                 "Interpreter"     -> { "fitEnum", "ActivityClass" },
                 "Invalid"         -> 255,
@@ -8294,6 +9046,7 @@
             "Age" -> <|
                 "Comment"         -> "1 * years + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Age",
                 "Index"           -> 27,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Years", 1, 0 },
                 "Invalid"         -> 255,
@@ -8305,6 +9058,7 @@
             "DefaultMaximumBikingHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "DefaultMaximumBikingHeartRate",
                 "Index"           -> 34,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -8316,6 +9070,7 @@
             "DefaultMaximumHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "DefaultMaximumHeartRate",
                 "Index"           -> 35,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -8327,6 +9082,7 @@
             "DefaultMaximumRunningHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "DefaultMaximumRunningHeartRate",
                 "Index"           -> 33,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -8337,6 +9093,7 @@
             ,
             "DepthSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DepthSetting",
                 "Index"           -> 50,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -8347,6 +9104,7 @@
             ,
             "DistanceSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DistanceSetting",
                 "Index"           -> 38,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -8357,6 +9115,7 @@
             ,
             "DiveCount" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DiveCount",
                 "Index"           -> 20,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -8367,6 +9126,7 @@
             ,
             "ElevationSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ElevationSetting",
                 "Index"           -> 30,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -8377,6 +9137,7 @@
             ,
             "FriendlyName" -> <|
                 "Dimensions"      -> { 16 },
+                "FieldName"       -> "FriendlyName",
                 "Index"           -> 2;;17,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -8387,6 +9148,7 @@
             ,
             "Gender" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Gender",
                 "Index"           -> 26,
                 "Interpreter"     -> { "fitEnum", "Gender" },
                 "Invalid"         -> 255,
@@ -8397,6 +9159,7 @@
             ,
             "GlobalID" -> <|
                 "Dimensions"      -> { 6 },
+                "FieldName"       -> "GlobalID",
                 "Index"           -> 43;;48,
                 "Interpreter"     -> "fitByteA",
                 "Invalid"         -> 255,
@@ -8407,6 +9170,7 @@
             ,
             "HeartRateSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeartRateSetting",
                 "Index"           -> 36,
                 "Interpreter"     -> { "fitEnum", "DisplayHeart" },
                 "Invalid"         -> 255,
@@ -8418,6 +9182,7 @@
             "Height" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Height",
                 "Index"           -> 28,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Meters", 100, 0 },
                 "Invalid"         -> 255,
@@ -8428,6 +9193,7 @@
             ,
             "HeightSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeightSetting",
                 "Index"           -> 49,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -8438,6 +9204,7 @@
             ,
             "Language" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Language",
                 "Index"           -> 29,
                 "Interpreter"     -> "fitLanguage",
                 "Invalid"         -> 255,
@@ -8448,6 +9215,7 @@
             ,
             "LocalID" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "LocalID",
                 "Index"           -> 23,
                 "Interpreter"     -> { "fitEnum", "UserLocalID" },
                 "Invalid"         -> 65535,
@@ -8458,6 +9226,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 21,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8468,6 +9237,7 @@
             ,
             "PositionSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PositionSetting",
                 "Index"           -> 41,
                 "Interpreter"     -> { "fitEnum", "DisplayPosition" },
                 "Invalid"         -> 255,
@@ -8478,6 +9248,7 @@
             ,
             "PowerSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PowerSetting",
                 "Index"           -> 39,
                 "Interpreter"     -> { "fitEnum", "DisplayPower" },
                 "Invalid"         -> 255,
@@ -8489,6 +9260,7 @@
             "RestingHeartRate" -> <|
                 "Comment"         -> "1 * bpm + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "RestingHeartRate",
                 "Index"           -> 32,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Beats" / "Minutes", 1, 0 },
                 "Invalid"         -> 255,
@@ -8500,6 +9272,7 @@
             "SleepTime" -> <|
                 "Comment"         -> "Typical bed time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "SleepTime",
                 "Index"           -> 19,
                 "Interpreter"     -> "fitTimeOfDay",
                 "Invalid"         -> 4294967295,
@@ -8510,6 +9283,7 @@
             ,
             "SpeedSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SpeedSetting",
                 "Index"           -> 37,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -8520,6 +9294,7 @@
             ,
             "TemperatureSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "TemperatureSetting",
                 "Index"           -> 42,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -8531,6 +9306,7 @@
             "UserRunningStepLength" -> <|
                 "Comment"         -> "1000 * m + 0, User defined running step length set to 0 for auto length",
                 "Dimensions"      -> { },
+                "FieldName"       -> "UserRunningStepLength",
                 "Index"           -> 24,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -8542,6 +9318,7 @@
             "UserWalkingStepLength" -> <|
                 "Comment"         -> "1000 * m + 0, User defined walking step length set to 0 for auto length",
                 "Dimensions"      -> { },
+                "FieldName"       -> "UserWalkingStepLength",
                 "Index"           -> 25,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -8553,6 +9330,7 @@
             "WakeTime" -> <|
                 "Comment"         -> "Typical wake time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "WakeTime",
                 "Index"           -> 18,
                 "Interpreter"     -> "fitTimeOfDay",
                 "Invalid"         -> 4294967295,
@@ -8564,6 +9342,7 @@
             "Weight" -> <|
                 "Comment"         -> "10 * kg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Weight",
                 "Index"           -> 22,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Grams", 0.01, 0 },
                 "Invalid"         -> 65535,
@@ -8574,6 +9353,7 @@
             ,
             "WeightSetting" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "WeightSetting",
                 "Index"           -> 31,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -8592,6 +9372,7 @@
             "MessageCount" -> <|
                 "Comment"         -> "Total number of description parts",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageCount",
                 "Index"           -> 131,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8603,6 +9384,7 @@
             "MessageIndex" -> <|
                 "Comment"         -> "Long descriptions will be split into multiple parts",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 130,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8613,6 +9395,7 @@
             ,
             "Text" -> <|
                 "Dimensions"      -> { 128 },
+                "FieldName"       -> "Text",
                 "Index"           -> 2;;129,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -8631,6 +9414,7 @@
             "MessageCount" -> <|
                 "Comment"         -> "Total number of title parts",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageCount",
                 "Index"           -> 83,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8642,6 +9426,7 @@
             "MessageIndex" -> <|
                 "Comment"         -> "Long titles will be split into multiple parts",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 82,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8652,6 +9437,7 @@
             ,
             "Text" -> <|
                 "Dimensions"      -> { 80 },
+                "FieldName"       -> "Text",
                 "Index"           -> 2;;81,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -8670,9 +9456,10 @@
             "ExpireTime" -> <|
                 "Comment"         -> "Time alert expires",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ExpireTime",
                 "Index"           -> 16,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "expire_time",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -8681,9 +9468,10 @@
             "IssueTime" -> <|
                 "Comment"         -> "Time alert was issued",
                 "Dimensions"      -> { },
+                "FieldName"       -> "IssueTime",
                 "Index"           -> 15,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "issue_time",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -8692,6 +9480,7 @@
             "ReportID" -> <|
                 "Comment"         -> "Unique identifier from GCS report ID string, length is 12",
                 "Dimensions"      -> { 12 },
+                "FieldName"       -> "ReportID",
                 "Index"           -> 3;;14,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -8703,6 +9492,7 @@
             "Severity" -> <|
                 "Comment"         -> "Warning, Watch, Advisory, Statement",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Severity",
                 "Index"           -> 17,
                 "Interpreter"     -> { "fitEnum", "WeatherSeverity" },
                 "Invalid"         -> 255,
@@ -8713,9 +9503,10 @@
             ,
             "Timestamp" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -8724,6 +9515,7 @@
             "Type" -> <|
                 "Comment"         -> "Tornado, Severe Thunderstorm, etc.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Type",
                 "Index"           -> 18,
                 "Interpreter"     -> { "fitEnum", "WeatherSevereType" },
                 "Invalid"         -> 255,
@@ -8742,6 +9534,7 @@
             "Condition" -> <|
                 "Comment"         -> "Corresponds to GSC Response weatherIcon field",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Condition",
                 "Index"           -> 74,
                 "Interpreter"     -> { "fitEnum", "WeatherStatus" },
                 "Invalid"         -> 255,
@@ -8752,6 +9545,7 @@
             ,
             "DayOfWeek" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DayOfWeek",
                 "Index"           -> 78,
                 "Interpreter"     -> { "fitEnum", "DayOfWeek" },
                 "Invalid"         -> 255,
@@ -8763,6 +9557,7 @@
             "HighTemperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "HighTemperature",
                 "Index"           -> 79,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -8774,6 +9569,7 @@
             "Location" -> <|
                 "Comment"         -> "string corresponding to GCS response location string",
                 "Dimensions"      -> { 64 },
+                "FieldName"       -> "Location",
                 "Index"           -> 3;;66,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -8785,6 +9581,7 @@
             "LowTemperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "LowTemperature",
                 "Index"           -> 80,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -8795,9 +9592,10 @@
             ,
             "ObservedAtTime" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ObservedAtTime",
                 "Index"           -> 67,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "observed_at_time",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -8806,6 +9604,7 @@
             "ObservedLatitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ObservedLatitude",
                 "Index"           -> 68,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -8817,6 +9616,7 @@
             "ObservedLongitude" -> <|
                 "Comment"         -> "1 * semicircles + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ObservedLongitude",
                 "Index"           -> 69,
                 "Interpreter"     -> { "fitQuantity", "fitSINT32", "AngularDegrees", 1.19304647*^7, 0 },
                 "Invalid"         -> 2147483647,
@@ -8828,6 +9628,7 @@
             "PrecipitationProbability" -> <|
                 "Comment"         -> "range 0-100",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PrecipitationProbability",
                 "Index"           -> 75,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -8838,6 +9639,7 @@
             ,
             "RelativeHumidity" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "RelativeHumidity",
                 "Index"           -> 77,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -8849,6 +9651,7 @@
             "Temperature" -> <|
                 "Comment"         -> "1 * C + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Temperature",
                 "Index"           -> 73,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -8860,6 +9663,7 @@
             "TemperatureFeelsLike" -> <|
                 "Comment"         -> "1 * C + 0, Heat Index if GCS heatIdx above or equal to 90F or wind chill if GCS windChill below or equal to 32F",
                 "Dimensions"      -> { },
+                "FieldName"       -> "TemperatureFeelsLike",
                 "Index"           -> 76,
                 "Interpreter"     -> { "fitQuantity", "fitSINT8", "DegreesCelsius", 1, 0 },
                 "Invalid"         -> 127,
@@ -8871,9 +9675,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "time of update for current conditions, else forecast time",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -8882,6 +9687,7 @@
             "WeatherReport" -> <|
                 "Comment"         -> "Current or forecast",
                 "Dimensions"      -> { },
+                "FieldName"       -> "WeatherReport",
                 "Index"           -> 72,
                 "Interpreter"     -> { "fitEnum", "WeatherReport" },
                 "Invalid"         -> 255,
@@ -8893,6 +9699,7 @@
             "WindDirection" -> <|
                 "Comment"         -> "1 * degrees + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "WindDirection",
                 "Index"           -> 70,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8904,6 +9711,7 @@
             "WindSpeed" -> <|
                 "Comment"         -> "1000 * m/s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "WindSpeed",
                 "Index"           -> 71,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "MetersPerSecond", 1000, 0 },
                 "Invalid"         -> 65535,
@@ -8922,6 +9730,7 @@
             "ActiveMetabolicRate" -> <|
                 "Comment"         -> "4 * kcal/day + 0, ~4kJ per kcal, 0.25 allows max 16384 kcal",
                 "Dimensions"      -> { },
+                "FieldName"       -> "ActiveMetabolicRate",
                 "Index"           -> 10,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8933,6 +9742,7 @@
             "BasalMetabolicRate" -> <|
                 "Comment"         -> "4 * kcal/day + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BasalMetabolicRate",
                 "Index"           -> 9,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8944,6 +9754,7 @@
             "BoneMass" -> <|
                 "Comment"         -> "100 * kg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "BoneMass",
                 "Index"           -> 7,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8955,6 +9766,7 @@
             "MetabolicAge" -> <|
                 "Comment"         -> "1 * years + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MetabolicAge",
                 "Index"           -> 13,
                 "Interpreter"     -> { "fitQuantity", "fitUINT8", "Years", 1, 0 },
                 "Invalid"         -> 255,
@@ -8966,6 +9778,7 @@
             "MuscleMass" -> <|
                 "Comment"         -> "100 * kg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "MuscleMass",
                 "Index"           -> 8,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -8977,6 +9790,7 @@
             "PercentFat" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PercentFat",
                 "Index"           -> 4,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -8988,6 +9802,7 @@
             "PercentHydration" -> <|
                 "Comment"         -> "100 * % + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PercentHydration",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Percent", 100, 0 },
                 "Invalid"         -> 65535,
@@ -8998,6 +9813,7 @@
             ,
             "PhysiqueRating" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PhysiqueRating",
                 "Index"           -> 12,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -9009,9 +9825,10 @@
             "Timestamp" -> <|
                 "Comment"         -> "1 * s + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Timestamp",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitDateTime",
-                "Invalid"         -> 4294967295,
+                "Invalid"         -> 7135003695,
                 "NativeFieldName" -> "timestamp",
                 "NativeType"      -> "FIT_DATE_TIME",
                 "Type"            -> "DateTime"
@@ -9020,6 +9837,7 @@
             "UserProfileIndex" -> <|
                 "Comment"         -> "Associates this weight scale message to a user. This corresponds to the index of the user profile message in the weight scale file.",
                 "Dimensions"      -> { },
+                "FieldName"       -> "UserProfileIndex",
                 "Index"           -> 11,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -9031,6 +9849,7 @@
             "VisceralFatMass" -> <|
                 "Comment"         -> "100 * kg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "VisceralFatMass",
                 "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -9041,6 +9860,7 @@
             ,
             "VisceralFatRating" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "VisceralFatRating",
                 "Index"           -> 14,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -9052,6 +9872,7 @@
             "Weight" -> <|
                 "Comment"         -> "100 * kg + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "Weight",
                 "Index"           -> 3,
                 "Interpreter"     -> { "fitEnum", "Weight" },
                 "Invalid"         -> 65535,
@@ -9069,6 +9890,7 @@
         "Fields"        -> <|
             "Capabilities" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Capabilities",
                 "Index"           -> 2,
                 "Interpreter"     -> { "fitEnum", "WorkoutCapabilities" },
                 "Invalid"         -> 0,
@@ -9080,6 +9902,7 @@
             "NumberOfValidSteps" -> <|
                 "Comment"         -> "number of valid steps",
                 "Dimensions"      -> { },
+                "FieldName"       -> "NumberOfValidSteps",
                 "Index"           -> 103,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -9091,6 +9914,7 @@
             "PoolLength" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PoolLength",
                 "Index"           -> 104,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -9101,6 +9925,7 @@
             ,
             "PoolLengthUnit" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PoolLengthUnit",
                 "Index"           -> 107,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -9111,6 +9936,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 105,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -9121,6 +9947,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 106,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -9131,6 +9958,7 @@
             ,
             "WorkoutName" -> <|
                 "Dimensions"      -> { 100 },
+                "FieldName"       -> "WorkoutName",
                 "Index"           -> 3;;102,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -9148,6 +9976,7 @@
         "Fields"        -> <|
             "FirstStepIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FirstStepIndex",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -9158,6 +9987,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -9168,6 +9998,7 @@
             ,
             "NumberOfValidSteps" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "NumberOfValidSteps",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -9179,6 +10010,7 @@
             "PoolLength" -> <|
                 "Comment"         -> "100 * m + 0",
                 "Dimensions"      -> { },
+                "FieldName"       -> "PoolLength",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16", "Meters", 100, 0 },
                 "Invalid"         -> 65535,
@@ -9189,6 +10021,7 @@
             ,
             "PoolLengthUnit" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PoolLengthUnit",
                 "Index"           -> 8,
                 "Interpreter"     -> { "fitEnum", "DisplayMeasure" },
                 "Invalid"         -> 255,
@@ -9199,6 +10032,7 @@
             ,
             "Sport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Sport",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitEnum", "Sport" },
                 "Invalid"         -> 255,
@@ -9209,6 +10043,7 @@
             ,
             "SubSport" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SubSport",
                 "Index"           -> 7,
                 "Interpreter"     -> { "fitEnum", "SubSport" },
                 "Invalid"         -> 255,
@@ -9226,6 +10061,7 @@
         "Fields"        -> <|
             "CustomTargetValueHigh" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "CustomTargetValueHigh",
                 "Index"           -> 53,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -9236,6 +10072,7 @@
             ,
             "CustomTargetValueLow" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "CustomTargetValueLow",
                 "Index"           -> 52,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -9246,6 +10083,7 @@
             ,
             "DurationType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DurationType",
                 "Index"           -> 59,
                 "Interpreter"     -> { "fitEnum", "WorkoutStepDuration" },
                 "Invalid"         -> 255,
@@ -9256,6 +10094,7 @@
             ,
             "DurationValue" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "DurationValue",
                 "Index"           -> 50,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -9266,6 +10105,7 @@
             ,
             "Equipment" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Equipment",
                 "Index"           -> 112,
                 "Interpreter"     -> { "fitEnum", "WorkoutEquipment" },
                 "Invalid"         -> 255,
@@ -9276,6 +10116,7 @@
             ,
             "ExerciseCategory" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ExerciseCategory",
                 "Index"           -> 58,
                 "Interpreter"     -> { "fitEnum", "ExerciseCategory" },
                 "Invalid"         -> 65535,
@@ -9286,6 +10127,7 @@
             ,
             "Intensity" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "Intensity",
                 "Index"           -> 61,
                 "Interpreter"     -> { "fitEnum", "Intensity" },
                 "Invalid"         -> 255,
@@ -9296,6 +10138,7 @@
             ,
             "MessageIndex" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MessageIndex",
                 "Index"           -> 57,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -9306,6 +10149,7 @@
             ,
             "Notes" -> <|
                 "Dimensions"      -> { 50 },
+                "FieldName"       -> "Notes",
                 "Index"           -> 62;;111,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -9316,6 +10160,7 @@
             ,
             "SecondaryCustomTargetValueHigh" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SecondaryCustomTargetValueHigh",
                 "Index"           -> 56,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -9326,6 +10171,7 @@
             ,
             "SecondaryCustomTargetValueLow" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SecondaryCustomTargetValueLow",
                 "Index"           -> 55,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -9336,6 +10182,7 @@
             ,
             "SecondaryTargetType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SecondaryTargetType",
                 "Index"           -> 113,
                 "Interpreter"     -> { "fitEnum", "WorkoutStepTarget" },
                 "Invalid"         -> 255,
@@ -9346,6 +10193,7 @@
             ,
             "SecondaryTargetValue" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "SecondaryTargetValue",
                 "Index"           -> 54,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -9356,6 +10204,7 @@
             ,
             "TargetType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "TargetType",
                 "Index"           -> 60,
                 "Interpreter"     -> { "fitEnum", "WorkoutStepTarget" },
                 "Invalid"         -> 255,
@@ -9366,6 +10215,7 @@
             ,
             "TargetValue" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "TargetValue",
                 "Index"           -> 51,
                 "Interpreter"     -> "fitUINT32",
                 "Invalid"         -> 4294967295,
@@ -9376,6 +10226,7 @@
             ,
             "WorkoutStepName" -> <|
                 "Dimensions"      -> { 48 },
+                "FieldName"       -> "WorkoutStepName",
                 "Index"           -> 2;;49,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
@@ -9393,6 +10244,7 @@
         "Fields"        -> <|
             "FunctionalThresholdPower" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "FunctionalThresholdPower",
                 "Index"           -> 2,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
@@ -9403,6 +10255,7 @@
             ,
             "HeartRateCalculationType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "HeartRateCalculationType",
                 "Index"           -> 5,
                 "Interpreter"     -> { "fitEnum", "HeartRateZoneCalculation" },
                 "Invalid"         -> 255,
@@ -9413,6 +10266,7 @@
             ,
             "MaximumHeartRate" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "MaximumHeartRate",
                 "Index"           -> 3,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
@@ -9423,6 +10277,7 @@
             ,
             "PowerCalculationType" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "PowerCalculationType",
                 "Index"           -> 6,
                 "Interpreter"     -> { "fitEnum", "PowerZoneCalculation" },
                 "Invalid"         -> 255,
@@ -9433,6 +10288,7 @@
             ,
             "ThresholdHeartRate" -> <|
                 "Dimensions"      -> { },
+                "FieldName"       -> "ThresholdHeartRate",
                 "Index"           -> 4,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
