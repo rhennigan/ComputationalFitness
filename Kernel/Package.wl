@@ -11,19 +11,21 @@ Needs[ "GeneralUtilities`" -> None ];
 (* Preserve values if already set: *)
 HoldComplete[
     `$FunctionalThresholdPower,
-    `$MaxHeartRate,
+    `$MaximumHeartRate,
     `$Sport,
     `$Weight
 ];
 
 (* Clear for new definitions: *)
 GeneralUtilities`UnprotectAndClearAll[
+    `$FITMessageDefinitions,
     `ComputationalFitness,
     `FITExport,
     `FITFileType,
     `FITImport,
+    `FITInterpreter,
     `FunctionalThresholdPower,
-    `MaxHeartRate,
+    `MaximumHeartRate,
     `PowerZoneColorFunction,
     `Sport,
     `TCXImport,

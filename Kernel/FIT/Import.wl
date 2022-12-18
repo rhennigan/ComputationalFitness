@@ -50,7 +50,7 @@ FITImport::NoRecordsAvailable =
 (*Options*)
 FITImport // Options = {
     FunctionalThresholdPower :> $FunctionalThresholdPower,
-    MaxHeartRate             :> $MaxHeartRate,
+    MaximumHeartRate         :> $MaximumHeartRate,
     Sport                    :> $Sport,
     UnitSystem               :> $UnitSystem,
     Weight                   :> $Weight
@@ -271,9 +271,10 @@ fitImportOptionsBlock[ eval_, opts: OptionsPattern[ FITImport ] ] :=
         {
             $UnitSystem           = setUnitSystem @ OptionValue @ UnitSystem, (* FIXME: fix it! *)
             $ftp                  = setFTP @ OptionValue @ FunctionalThresholdPower,
-            $maxHR                = setMaxHR @ OptionValue @ MaxHeartRate,
+            $maxHR                = setMaxHR @ OptionValue @ MaximumHeartRate,
             $weight               = setWeight @ OptionValue @ Weight,
             $sport                = setSport @ OptionValue @ Sport,
+            $fileType             = None,
             $failedTimeOffset     = False,
             $timeOffset           = 0,
             $fileByteCount        = 0,
@@ -299,15 +300,17 @@ setPreferences[ data_ ] := (
 );
 
 setPreferences[ data_List ] :=
-    Module[ { reverse, profile, activity, session, sport },
+    Module[ { reverse, file, profile, activity, session, sport },
 
         reverse  = Reverse @ data;
+        file     = selectFirstMessageType[ data   , "FileID"      ];
         profile  = selectFirstMessageType[ data   , "UserProfile" ];
         activity = selectFirstMessageType[ reverse, "Activity"    ];
         session  = selectFirstMessageType[ reverse, "Session"     ];
         sport    = selectFirstMessageType[ data   , "Sport"       ];
 
         setPreferences0 @ DeleteMissing @ <|
+            "FileID"      -> file,
             "UserProfile" -> profile,
             "Activity"    -> activity,
             "Session"     -> session,
@@ -319,6 +322,7 @@ setPreferences // endDefinition;
 
 setPreferences0 // beginDefinition;
 setPreferences0[ config_ ] := (
+    setFileType   @ config;
     setSportPref  @ config;
     setUnitPrefs  @ config;
     setTimeOffset @ config;
@@ -327,6 +331,14 @@ setPreferences0[ config_ ] := (
     setMaxHRPref  @ config;
 );
 setPreferences0 // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*setFileType*)
+setFileType // beginDefinition;
+setFileType[ config_ ] := setFileType[ config, Lookup[ config, "FileID" ] ];
+setFileType[ config_, v_List ] := $fileType = fitValue[ "FileID", "Type", v ];
+setFileType // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -496,15 +508,15 @@ setMaxHRPref[ config_, _ ] := Null;
 
 setMaxHRPref[ config_, Automatic, v_List ] :=
     Module[ { maxHR },
-        maxHR = fitValue[ "UserProfile", "DefaultMaxHeartRate", v ];
+        maxHR = fitValue[ "UserProfile", "DefaultMaximumHeartRate", v ];
         If[ TrueQ @ Positive @ maxHR,
             $maxHR = setMaxHR @ maxHR,
-            $maxHR = setMaxHR @ PersistentSymbol[ "ComputationalFitness/MaxHeartRate" ]
+            $maxHR = setMaxHR @ PersistentSymbol[ "ComputationalFitness/MaximumHeartRate" ]
         ]
     ];
 
 setMaxHRPref[ config_, Automatic, _ ] :=
-    $maxHR = setMaxHR @ PersistentSymbol[ "ComputationalFitness/MaxHeartRate" ];
+    $maxHR = setMaxHR @ PersistentSymbol[ "ComputationalFitness/MaximumHeartRate" ];
 
 setMaxHRPref // endDefinition;
 

@@ -1615,6 +1615,8 @@ static int count_fit_messages(char* input, mint* err)
 
 
 
+// TODO: Define a message that tracks changes to each field per message type and append to the end of the message list.
+
 // --- START MESSAGE IMPORT FUNCTIONS ---
 // This section is auto-generated. Do not edit manually.
 static void import_file_id(WolframLibraryData libData, MTensor data, int idx, const FIT_FILE_ID_MESG *mesg)
@@ -1799,38 +1801,38 @@ static void import_bike_profile(WolframLibraryData libData, MTensor data, int id
     mint pos[2] = {idx, 0};
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_BIKE_PROFILE);
     ImportString(2, libData, data, pos, mesg->name, FIT_BIKE_PROFILE_MESG_NAME_COUNT);
-    ImportInteger(18, libData, data, pos, mesg->odometer);
-    ImportInteger(19, libData, data, pos, mesg->message_index);
-    ImportInteger(20, libData, data, pos, mesg->bike_spd_ant_id);
-    ImportInteger(21, libData, data, pos, mesg->bike_cad_ant_id);
-    ImportInteger(22, libData, data, pos, mesg->bike_spdcad_ant_id);
-    ImportInteger(23, libData, data, pos, mesg->bike_power_ant_id);
-    ImportInteger(24, libData, data, pos, mesg->custom_wheelsize);
-    ImportInteger(25, libData, data, pos, mesg->auto_wheelsize);
-    ImportInteger(26, libData, data, pos, mesg->bike_weight);
-    ImportInteger(27, libData, data, pos, mesg->power_cal_factor);
-    ImportInteger(28, libData, data, pos, mesg->sport);
-    ImportInteger(29, libData, data, pos, mesg->sub_sport);
-    ImportInteger(30, libData, data, pos, mesg->auto_wheel_cal);
-    ImportInteger(31, libData, data, pos, mesg->auto_power_zero);
-    ImportInteger(32, libData, data, pos, mesg->id);
-    ImportInteger(33, libData, data, pos, mesg->spd_enabled);
-    ImportInteger(34, libData, data, pos, mesg->cad_enabled);
-    ImportInteger(35, libData, data, pos, mesg->spdcad_enabled);
-    ImportInteger(36, libData, data, pos, mesg->power_enabled);
-    ImportInteger(37, libData, data, pos, mesg->crank_length);
-    ImportInteger(38, libData, data, pos, mesg->enabled);
-    ImportInteger(39, libData, data, pos, mesg->bike_spd_ant_id_trans_type);
-    ImportInteger(40, libData, data, pos, mesg->bike_cad_ant_id_trans_type);
-    ImportInteger(41, libData, data, pos, mesg->bike_spdcad_ant_id_trans_type);
-    ImportInteger(42, libData, data, pos, mesg->bike_power_ant_id_trans_type);
-    ImportInteger(43, libData, data, pos, mesg->odometer_rollover);
-    ImportInteger(44, libData, data, pos, mesg->front_gear_num);
-    ImportIntegerSequence(45, libData, data, pos, mesg->front_gear, FIT_BIKE_PROFILE_MESG_FRONT_GEAR_COUNT);
-    ImportInteger(46, libData, data, pos, mesg->rear_gear_num);
-    ImportIntegerSequence(47, libData, data, pos, mesg->rear_gear, FIT_BIKE_PROFILE_MESG_REAR_GEAR_COUNT);
-    ImportInteger(48, libData, data, pos, mesg->shimano_di2_enabled);
-    ImportFinish(49, libData, data, pos);
+    ImportInteger(34, libData, data, pos, mesg->odometer);
+    ImportInteger(35, libData, data, pos, mesg->message_index);
+    ImportInteger(36, libData, data, pos, mesg->bike_spd_ant_id);
+    ImportInteger(37, libData, data, pos, mesg->bike_cad_ant_id);
+    ImportInteger(38, libData, data, pos, mesg->bike_spdcad_ant_id);
+    ImportInteger(39, libData, data, pos, mesg->bike_power_ant_id);
+    ImportInteger(40, libData, data, pos, mesg->custom_wheelsize);
+    ImportInteger(41, libData, data, pos, mesg->auto_wheelsize);
+    ImportInteger(42, libData, data, pos, mesg->bike_weight);
+    ImportInteger(43, libData, data, pos, mesg->power_cal_factor);
+    ImportInteger(44, libData, data, pos, mesg->sport);
+    ImportInteger(45, libData, data, pos, mesg->sub_sport);
+    ImportInteger(46, libData, data, pos, mesg->auto_wheel_cal);
+    ImportInteger(47, libData, data, pos, mesg->auto_power_zero);
+    ImportInteger(48, libData, data, pos, mesg->id);
+    ImportInteger(49, libData, data, pos, mesg->spd_enabled);
+    ImportInteger(50, libData, data, pos, mesg->cad_enabled);
+    ImportInteger(51, libData, data, pos, mesg->spdcad_enabled);
+    ImportInteger(52, libData, data, pos, mesg->power_enabled);
+    ImportInteger(53, libData, data, pos, mesg->crank_length);
+    ImportInteger(54, libData, data, pos, mesg->enabled);
+    ImportInteger(55, libData, data, pos, mesg->bike_spd_ant_id_trans_type);
+    ImportInteger(56, libData, data, pos, mesg->bike_cad_ant_id_trans_type);
+    ImportInteger(57, libData, data, pos, mesg->bike_spdcad_ant_id_trans_type);
+    ImportInteger(58, libData, data, pos, mesg->bike_power_ant_id_trans_type);
+    ImportInteger(59, libData, data, pos, mesg->odometer_rollover);
+    ImportInteger(60, libData, data, pos, mesg->front_gear_num);
+    ImportIntegerSequence(61, libData, data, pos, mesg->front_gear, FIT_BIKE_PROFILE_MESG_FRONT_GEAR_COUNT);
+    ImportInteger(64, libData, data, pos, mesg->rear_gear_num);
+    ImportIntegerSequence(65, libData, data, pos, mesg->rear_gear, FIT_BIKE_PROFILE_MESG_REAR_GEAR_COUNT);
+    ImportInteger(80, libData, data, pos, mesg->shimano_di2_enabled);
+    ImportFinish(81, libData, data, pos);
 }
 
 static void import_connectivity(WolframLibraryData libData, MTensor data, int idx, const FIT_CONNECTIVITY_MESG *mesg)
@@ -2547,16 +2549,16 @@ static void import_segment_id(WolframLibraryData libData, MTensor data, int idx,
 {
     mint pos[2] = {idx, 0};
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_SEGMENT_ID);
-    ImportInteger(2, libData, data, pos, mesg->user_profile_primary_key);
-    ImportInteger(3, libData, data, pos, mesg->device_id);
-    ImportString(4, libData, data, pos, mesg->name, FIT_SEGMENT_ID_MESG_NAME_COUNT);
-    ImportString(5, libData, data, pos, mesg->uuid, FIT_SEGMENT_ID_MESG_UUID_COUNT);
-    ImportInteger(6, libData, data, pos, mesg->sport);
-    ImportInteger(7, libData, data, pos, mesg->enabled);
-    ImportInteger(8, libData, data, pos, mesg->default_race_leader);
-    ImportInteger(9, libData, data, pos, mesg->delete_status);
-    ImportInteger(10, libData, data, pos, mesg->selection_type);
-    ImportFinish(11, libData, data, pos);
+    ImportString(2, libData, data, pos, mesg->uuid, FIT_SEGMENT_ID_MESG_UUID_COUNT);
+    ImportInteger(38, libData, data, pos, mesg->user_profile_primary_key);
+    ImportInteger(39, libData, data, pos, mesg->device_id);
+    ImportString(40, libData, data, pos, mesg->name, FIT_SEGMENT_ID_MESG_NAME_COUNT);
+    ImportInteger(90, libData, data, pos, mesg->sport);
+    ImportInteger(91, libData, data, pos, mesg->enabled);
+    ImportInteger(92, libData, data, pos, mesg->default_race_leader);
+    ImportInteger(93, libData, data, pos, mesg->delete_status);
+    ImportInteger(94, libData, data, pos, mesg->selection_type);
+    ImportFinish(95, libData, data, pos);
 }
 
 static void import_segment_leaderboard_entry(WolframLibraryData libData, MTensor data, int idx, const FIT_SEGMENT_LEADERBOARD_ENTRY_MESG *mesg)

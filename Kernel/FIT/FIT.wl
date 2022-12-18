@@ -1,5 +1,6 @@
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
 
+<<`Data`;
 <<`Config`;
 <<`Strings`;
 <<`Common`;

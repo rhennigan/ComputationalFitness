@@ -4729,11 +4729,11 @@ typedef struct
 
 // bike_profile message
 
-#define FIT_BIKE_PROFILE_MESG_SIZE                                              59
+#define FIT_BIKE_PROFILE_MESG_SIZE                                              91
 #define FIT_BIKE_PROFILE_MESG_DEF_SIZE                                          101
-#define FIT_BIKE_PROFILE_MESG_NAME_COUNT                                        16
-#define FIT_BIKE_PROFILE_MESG_FRONT_GEAR_COUNT                                  1
-#define FIT_BIKE_PROFILE_MESG_REAR_GEAR_COUNT                                   1
+#define FIT_BIKE_PROFILE_MESG_NAME_COUNT                                        32
+#define FIT_BIKE_PROFILE_MESG_FRONT_GEAR_COUNT                                  3
+#define FIT_BIKE_PROFILE_MESG_REAR_GEAR_COUNT                                   15
 
 typedef struct
 {
@@ -7220,17 +7220,17 @@ typedef struct
 
 // segment_id message
 
-#define FIT_SEGMENT_ID_MESG_SIZE                                                15
+#define FIT_SEGMENT_ID_MESG_SIZE                                                99
 #define FIT_SEGMENT_ID_MESG_DEF_SIZE                                            32
-#define FIT_SEGMENT_ID_MESG_NAME_COUNT                                          1
-#define FIT_SEGMENT_ID_MESG_UUID_COUNT                                          1
+#define FIT_SEGMENT_ID_MESG_UUID_COUNT                                          36
+#define FIT_SEGMENT_ID_MESG_NAME_COUNT                                          50
 
 typedef struct
 {
+   FIT_STRING uuid[FIT_SEGMENT_ID_MESG_UUID_COUNT]; // UUID of the segment
    FIT_UINT32 user_profile_primary_key; // Primary key of the user that created the segment
    FIT_UINT32 device_id; // ID of the device that created the segment
    FIT_STRING name[FIT_SEGMENT_ID_MESG_NAME_COUNT]; // Friendly name assigned to segment
-   FIT_STRING uuid[FIT_SEGMENT_ID_MESG_UUID_COUNT]; // UUID of the segment
    FIT_SPORT sport; // Sport associated with the segment
    FIT_BOOL enabled; // Segment enabled for evaluation
    FIT_UINT8 default_race_leader; // Index for the Leader Board entry selected as the default race participant
@@ -7240,10 +7240,10 @@ typedef struct
 
 typedef FIT_UINT8 FIT_SEGMENT_ID_FIELD_NUM;
 
+#define FIT_SEGMENT_ID_FIELD_NUM_UUID ((FIT_SEGMENT_ID_FIELD_NUM)1)
 #define FIT_SEGMENT_ID_FIELD_NUM_USER_PROFILE_PRIMARY_KEY ((FIT_SEGMENT_ID_FIELD_NUM)4)
 #define FIT_SEGMENT_ID_FIELD_NUM_DEVICE_ID ((FIT_SEGMENT_ID_FIELD_NUM)5)
 #define FIT_SEGMENT_ID_FIELD_NUM_NAME ((FIT_SEGMENT_ID_FIELD_NUM)0)
-#define FIT_SEGMENT_ID_FIELD_NUM_UUID ((FIT_SEGMENT_ID_FIELD_NUM)1)
 #define FIT_SEGMENT_ID_FIELD_NUM_SPORT ((FIT_SEGMENT_ID_FIELD_NUM)2)
 #define FIT_SEGMENT_ID_FIELD_NUM_ENABLED ((FIT_SEGMENT_ID_FIELD_NUM)3)
 #define FIT_SEGMENT_ID_FIELD_NUM_DEFAULT_RACE_LEADER ((FIT_SEGMENT_ID_FIELD_NUM)6)
@@ -7252,10 +7252,10 @@ typedef FIT_UINT8 FIT_SEGMENT_ID_FIELD_NUM;
 
 typedef enum
 {
+   FIT_SEGMENT_ID_MESG_UUID,
    FIT_SEGMENT_ID_MESG_USER_PROFILE_PRIMARY_KEY,
    FIT_SEGMENT_ID_MESG_DEVICE_ID,
    FIT_SEGMENT_ID_MESG_NAME,
-   FIT_SEGMENT_ID_MESG_UUID,
    FIT_SEGMENT_ID_MESG_SPORT,
    FIT_SEGMENT_ID_MESG_ENABLED,
    FIT_SEGMENT_ID_MESG_DEFAULT_RACE_LEADER,

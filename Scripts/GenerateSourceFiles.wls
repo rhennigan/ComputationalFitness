@@ -1,5 +1,8 @@
 #!/usr/bin/env wolframscript
 
+
+(* FIXME: this whole thing needs to be cleaned up *)
+
 (* :!CodeAnalysis::BeginBlock:: *)
 (* :!CodeAnalysis::Disable::SuspiciousSessionSymbol:: *)
 
@@ -813,10 +816,10 @@ $fitIndex = KeySort[ KeySort /@ KeyMap[
     niceMessageName,
     Association[ (#Type -> KeyMap[ cf`toNiceCamelCase, makeIndex /@ #Indices ] &) /@ $functionData ]
 ] ];
-indexFile = FileNameJoin @ { $pacletDir, "Data", "FITStructIndex.wl" };
+(* indexFile = FileNameJoin @ { $pacletDir, "Data", "FITStructIndex.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ indexFile;
 $exportedIndex = Export[ indexFile, formatWithNotice @ $fitIndex, "String" ];
-cicd`ConsoleLog[ "Updated FIT struct index data: " <> $exportedIndex ];
+cicd`ConsoleLog[ "Updated FIT struct index data: " <> $exportedIndex ]; *)
 
 
 (* ::**********************************************************************:: *)
@@ -1242,48 +1245,51 @@ defaultFunction[ "fitMissing" , _ ] := "fitMissing";
 defaultFunction[ "fitDateTime", _ ] := "fitDateTime";
 
 (* Special Function Types *)
-defaultFunction[ typeFunc_, "0.7111111 * degrees + 0"    ] := { "fitQuantity", typeFunc, "AngularDegrees"           , 0.7111111 , 0   };
-defaultFunction[ typeFunc_, "1 * semicircles + 0"        ] := { "fitQuantity", typeFunc, "AngularDegrees"           , 11930464.7, 0   };
-defaultFunction[ typeFunc_, "1 * bpm + 0"                ] := { "fitQuantity", typeFunc, "Beats"/"Minutes"          , 1         , 0   };
-defaultFunction[ typeFunc_, "1 * cycles + 0"             ] := { "fitQuantity", typeFunc, "Cycles"                   , 1         , 0   };
-defaultFunction[ typeFunc_, "2 * cycles + 0"             ] := { "fitQuantity", typeFunc, "Cycles"                   , 2         , 0   };
-defaultFunction[ typeFunc_, "1 * 2 * cycles (steps) + 0" ] := { "fitQuantity", typeFunc, "Steps"                    , 2         , 0   };
-defaultFunction[ typeFunc_, "100 * C + 0"                ] := { "fitQuantity", typeFunc, "DegreesCelsius"           , 100       , 0   };
-defaultFunction[ typeFunc_, "1 * C + 0"                  ] := { "fitQuantity", typeFunc, "DegreesCelsius"           , 1         , 0   };
-defaultFunction[ typeFunc_, "1 * kcal + 0"               ] := { "fitQuantity", typeFunc, "DietaryCalories"          , 1         , 0   };
-defaultFunction[ typeFunc_, "10 * kcal / min + 0"        ] := { "fitQuantity", typeFunc, "DietaryCalories"/"Minutes", 1         , 0   };
-defaultFunction[ typeFunc_, "10 * kg + 0"                ] := { "fitQuantity", typeFunc, "Grams"                    , 0.01      , 0   };
-defaultFunction[ typeFunc_, "100 * g/dL + 0"             ] := { "fitQuantity", typeFunc, "Grams"/"Deciliters"       , 100       , 0   };
-defaultFunction[ typeFunc_, "1 * J + 0"                  ] := { "fitQuantity", typeFunc, "Joules"                   , 1         , 0   };
-defaultFunction[ typeFunc_, "1 * m + 0"                  ] := { "fitQuantity", typeFunc, "Meters"                   , 1         , 0   };
-defaultFunction[ typeFunc_, "5 * m + 500"                ] := { "fitQuantity", typeFunc, "Meters"                   , 5         , 500 };
-defaultFunction[ typeFunc_, "100 * m + 0"                ] := { "fitQuantity", typeFunc, "Meters"                   , 100       , 0   };
-defaultFunction[ typeFunc_, "1000 * m + 0"               ] := { "fitQuantity", typeFunc, "Meters"                   , 1000      , 0   };
-defaultFunction[ typeFunc_, "1 * km + 0"                 ] := { "fitQuantity", typeFunc, "Meters"                   , 0.001     , 0   };
-defaultFunction[ typeFunc_, "1 * mm + 0"                 ] := { "fitQuantity", typeFunc, "Meters"                   , 1000      , 0   };
-defaultFunction[ typeFunc_, "10 * mm + 0"                ] := { "fitQuantity", typeFunc, "Meters"                   , 100       , 0   };
-defaultFunction[ typeFunc_, "1000 * m/s + 0"             ] := { "fitQuantity", typeFunc, "MetersPerSecond"          , 1000      , 0   };
-defaultFunction[ typeFunc_, "100 * m/s + 0"              ] := { "fitQuantity", typeFunc, "MetersPerSecond"          , 100       , 0   };
-defaultFunction[ typeFunc_, "16 * m/s + 0"               ] := { "fitQuantity", typeFunc, "MetersPerSecond"          , 16        , 0   };
-defaultFunction[ typeFunc_, "1 * Pa + 0"                 ] := { "fitQuantity", typeFunc, "Pascals"                  , 1         , 0   };
-defaultFunction[ typeFunc_, "1 * percent + 0"            ] := { "fitQuantity", typeFunc, "Percent"                  , 1         , 0   };
-defaultFunction[ typeFunc_, "2 * percent + 0"            ] := { "fitQuantity", typeFunc, "Percent"                  , 2         , 0   };
-defaultFunction[ typeFunc_, "10 * percent + 0"           ] := { "fitQuantity", typeFunc, "Percent"                  , 10        , 0   };
-defaultFunction[ typeFunc_, "100 * percent + 0"          ] := { "fitQuantity", typeFunc, "Percent"                  , 100       , 0   };
-defaultFunction[ typeFunc_, "1 * % + 0"                  ] := { "fitQuantity", typeFunc, "Percent"                  , 1         , 0   };
-defaultFunction[ typeFunc_, "2 * % + 0"                  ] := { "fitQuantity", typeFunc, "Percent"                  , 2         , 0   };
-defaultFunction[ typeFunc_, "10 * % + 0"                 ] := { "fitQuantity", typeFunc, "Percent"                  , 10        , 0   };
-defaultFunction[ typeFunc_, "100 * % + 0"                ] := { "fitQuantity", typeFunc, "Percent"                  , 100       , 0   };
-defaultFunction[ typeFunc_, "256 * rpm + 0"              ] := { "fitQuantity", typeFunc, "RevolutionsPerMinute"     , 256       , 0   };
-defaultFunction[ typeFunc_, "128 * rpm + 0"              ] := { "fitQuantity", typeFunc, "RevolutionsPerMinute"     , 128       , 0   };
-defaultFunction[ typeFunc_, "1 * rpm + 0"                ] := { "fitQuantity", typeFunc, "RevolutionsPerMinute"     , 1         , 0   };
-defaultFunction[ typeFunc_, "1000 * s + 0"               ] := { "fitQuantity", typeFunc, "Seconds"                  , 1000      , 0   };
-defaultFunction[ typeFunc_, "128 * s + 0"                ] := { "fitQuantity", typeFunc, "Seconds"                  , 128       , 0   };
-defaultFunction[ typeFunc_, "1 * s + 0"                  ] := { "fitQuantity", typeFunc, "Seconds"                  , 1         , 0   };
-defaultFunction[ typeFunc_, "1 * ms + 0"                 ] := { "fitQuantity", typeFunc, "Seconds"                  , 1000      , 0   };
-defaultFunction[ typeFunc_, "10 * ms + 0"                ] := { "fitQuantity", typeFunc, "Seconds"                  , 10000     , 0   };
-defaultFunction[ typeFunc_, "1 * watts + 0"              ] := { "fitQuantity", typeFunc, "Watts"                    , 1         , 0   };
-defaultFunction[ typeFunc_, "1 * years + 0"              ] := { "fitQuantity", typeFunc, "Years"                    , 1         , 0   };
+defaultFunction[ tf_, "0.7111111 * degrees + 0"    ] := { "fitQuantity", tf, "AngularDegrees"           , 0.7111111 , 0    };
+defaultFunction[ tf_, "1 * semicircles + 0"        ] := { "fitQuantity", tf, "AngularDegrees"           , 11930464.7, 0    };
+defaultFunction[ tf_, "1 * bpm + 0"                ] := { "fitQuantity", tf, "Beats"/"Minutes"          , 1         , 0    };
+defaultFunction[ tf_, "1 * cycles + 0"             ] := { "fitQuantity", tf, "Cycles"                   , 1         , 0    };
+defaultFunction[ tf_, "2 * cycles + 0"             ] := { "fitQuantity", tf, "Cycles"                   , 2         , 0    };
+defaultFunction[ tf_, "1 * 2 * cycles (steps) + 0" ] := { "fitQuantity", tf, "Steps"                    , 2         , 0    };
+defaultFunction[ tf_, "100 * C + 0"                ] := { "fitQuantity", tf, "DegreesCelsius"           , 100       , 0    };
+defaultFunction[ tf_, "1 * C + 0"                  ] := { "fitQuantity", tf, "DegreesCelsius"           , 1         , 0    };
+defaultFunction[ tf_, "1 * kcal + 0"               ] := { "fitQuantity", tf, "DietaryCalories"          , 1         , 0    };
+defaultFunction[ tf_, "10 * kcal / min + 0"        ] := { "fitQuantity", tf, "DietaryCalories"/"Minutes", 1         , 0    };
+defaultFunction[ tf_, "10 * kg + 0"                ] := { "fitQuantity", tf, "Grams"                    , 0.01      , 0    };
+defaultFunction[ tf_, "100 * g/dL + 0"             ] := { "fitQuantity", tf, "Grams"/"Deciliters"       , 100       , 0    };
+defaultFunction[ tf_, "1 * J + 0"                  ] := { "fitQuantity", tf, "Joules"                   , 1         , 0    };
+defaultFunction[ tf_, "1 * m + 0"                  ] := { "fitQuantity", tf, "Meters"                   , 1         , 0    };
+defaultFunction[ tf_, "5 * m + 500"                ] := { "fitQuantity", tf, "Meters"                   , 5         , 500  };
+defaultFunction[ tf_, "100 * m + 0"                ] := { "fitQuantity", tf, "Meters"                   , 100       , 0    };
+defaultFunction[ tf_, "1000 * m + 0"               ] := { "fitQuantity", tf, "Meters"                   , 1000      , 0    };
+defaultFunction[ tf_, "1 * km + 0"                 ] := { "fitQuantity", tf, "Meters"                   , 0.001     , 0    };
+defaultFunction[ tf_, "1 * mm + 0"                 ] := { "fitQuantity", tf, "Meters"                   , 1000      , 0    };
+defaultFunction[ tf_, "10 * mm + 0"                ] := { "fitQuantity", tf, "Meters"                   , 100       , 0    };
+defaultFunction[ tf_, "2 * mm + -110"              ] := { "fitQuantity", tf, "Meters"                   , 2000      , -110 };
+defaultFunction[ tf_, "1000 * m/s + 0"             ] := { "fitQuantity", tf, "MetersPerSecond"          , 1000      , 0    };
+defaultFunction[ tf_, "100 * m/s + 0"              ] := { "fitQuantity", tf, "MetersPerSecond"          , 100       , 0    };
+defaultFunction[ tf_, "16 * m/s + 0"               ] := { "fitQuantity", tf, "MetersPerSecond"          , 16        , 0    };
+defaultFunction[ tf_, "1 * Pa + 0"                 ] := { "fitQuantity", tf, "Pascals"                  , 1         , 0    };
+defaultFunction[ tf_, "1 * percent + 0"            ] := { "fitQuantity", tf, "Percent"                  , 1         , 0    };
+defaultFunction[ tf_, "2 * percent + 0"            ] := { "fitQuantity", tf, "Percent"                  , 2         , 0    };
+defaultFunction[ tf_, "10 * percent + 0"           ] := { "fitQuantity", tf, "Percent"                  , 10        , 0    };
+defaultFunction[ tf_, "100 * percent + 0"          ] := { "fitQuantity", tf, "Percent"                  , 100       , 0    };
+defaultFunction[ tf_, "1 * % + 0"                  ] := { "fitQuantity", tf, "Percent"                  , 1         , 0    };
+defaultFunction[ tf_, "2 * % + 0"                  ] := { "fitQuantity", tf, "Percent"                  , 2         , 0    };
+defaultFunction[ tf_, "10 * % + 0"                 ] := { "fitQuantity", tf, "Percent"                  , 10        , 0    };
+defaultFunction[ tf_, "100 * % + 0"                ] := { "fitQuantity", tf, "Percent"                  , 100       , 0    };
+defaultFunction[ tf_, "256 * rpm + 0"              ] := { "fitQuantity", tf, "RevolutionsPerMinute"     , 256       , 0    };
+defaultFunction[ tf_, "128 * rpm + 0"              ] := { "fitQuantity", tf, "RevolutionsPerMinute"     , 128       , 0    };
+defaultFunction[ tf_, "1 * rpm + 0"                ] := { "fitQuantity", tf, "RevolutionsPerMinute"     , 1         , 0    };
+defaultFunction[ tf_, "1000 * s + 0"               ] := { "fitQuantity", tf, "Seconds"                  , 1000      , 0    };
+defaultFunction[ tf_, "128 * s + 0"                ] := { "fitQuantity", tf, "Seconds"                  , 128       , 0    };
+defaultFunction[ tf_, "1 * s + 0"                  ] := { "fitQuantity", tf, "Seconds"                  , 1         , 0    };
+defaultFunction[ tf_, "1 * ms + 0"                 ] := { "fitQuantity", tf, "Seconds"                  , 1000      , 0    };
+defaultFunction[ tf_, "10 * ms + 0"                ] := { "fitQuantity", tf, "Seconds"                  , 10000     , 0    };
+defaultFunction[ tf_, "1 * minutes + 0"            ] := { "fitQuantity", tf, "Seconds"                  , 1/60      , 0    };
+defaultFunction[ tf_, "256 * V + 0"                ] := { "fitQuantity", tf, "Volts"                    , 256       , 0    };
+defaultFunction[ tf_, "1 * watts + 0"              ] := { "fitQuantity", tf, "Watts"                    , 1         , 0    };
+defaultFunction[ tf_, "1 * years + 0"              ] := { "fitQuantity", tf, "Years"                    , 1         , 0    };
 
 (* Defaults *)
 defaultFunction[ typeFunc_, _ ] := typeFunc;
@@ -1375,12 +1381,46 @@ makeTypeData[ as_ ] :=
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Make Type Data*)
+$messageNumbers = AssociationMap[ Reverse, $enumTypeData[ "MessageNumber" ] ];
 $fitTypeData = KeySort /@ KeySort @ Association[ makeTypeData /@ $functionData ];
+
+messageSize[ m_ ] := Max[ m[[ All, "Index" ]] /. HoldPattern[ __;;(n_) ] :> n ];
+
+$messageDefinitions = Association @ KeyValueMap[
+    #1 -> <|
+        "MessageName"   -> #1,
+        "MessageNumber" -> $messageNumbers[ #1 ],
+        "Size"          -> messageSize[ #2 ],
+        "Fields"        -> #2
+    |> &,
+    $fitTypeData
+];
+
 
 typeFile = FileNameJoin @ { $pacletDir, "Data", "FITMessageDefinitions.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ typeFile;
-$exportedTypeData = Export[ typeFile, formatWithNotice @ $fitTypeData, "String" ];
+$exportedTypeData = Export[ typeFile, formatWithNotice @ $messageDefinitions, "String" ];
 cicd`ConsoleLog[ "Updated FIT message data: " <> $exportedTypeData ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Configuration*)
+$invalidValues = Association @ Union @ Cases[
+    $messageDefinitions,
+    KeyValuePattern @ { "Type" -> type_, "Invalid" -> inv_ } :>
+        (type -> inv),
+    { 3 }
+];
+
+$config = <|
+    "MessageTensorRowWidth" -> $maxIndex,
+    "InitializationValues"  -> $invalidValues
+|>;
+
+configFile = FileNameJoin @ { $pacletDir, "Data", "FITConfig.wl" };
+GeneralUtilities`EnsureDirectory @ DirectoryName @ configFile;
+$exportedConfigData = Export[ configFile, formatWithNotice @ $config, "String" ];
+cicd`ConsoleLog[ "Updated FIT config data: " <> $exportedConfigData ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

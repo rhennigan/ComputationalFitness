@@ -10,34 +10,37 @@ Begin[ "`Private`" ];
 (* ::Section::Closed:: *)
 (*Global Values*)
 setIfUndefined[ $FunctionalThresholdPower, Automatic ];
-setIfUndefined[ $MaxHeartRate            , Automatic ];
+setIfUndefined[ $MaximumHeartRate        , Automatic ];
 setIfUndefined[ $Sport                   , Automatic ];
 setIfUndefined[ $Weight                  , Automatic ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Config*)
-$timeOffset          = 0;
-$ftp                 = Automatic;
-$maxHR               = Automatic;
-$weight              = Automatic;
-$sport               = Automatic;
-$fileByteCount       = 0;
-$pzPlotWidth         = 650;
-$invalidSINT8        = 127;
-$invalidUINT8        = 255;
-$invalidUINT8Z       = 0;
-$invalidSINT16       = 32767;
-$invalidUINT16       = 65535;
-$invalidUINT16Z      = 0;
-$invalidSINT32       = 2147483647;
-$invalidUINT32       = 4294967295;
-$invalidUINT32Z      = 0;
-$invalidFLOAT32      = -9223372036854775808;
-$invalidFLOAT64      = -9223372036854775808;
-$invalidTimestamp    = 2840036399|2840036400|7135003695;
-$fitTerm             = 1685024357;
-$powerZoneThresholds = { 0.05, 0.55, 0.75, 0.9, 1.05, 1.2, 1.5 };
+$timeOffset               = 0;
+$ftp                      = Automatic;
+$maxHR                    = Automatic;
+$weight                   = Automatic;
+$sport                    = Automatic;
+$fileByteCount            = 0;
+$pzPlotWidth              = 650;
+$invalidSINT16            = $fitInitValues[ "SignedInteger16"    ];
+$invalidSINT32            = $fitInitValues[ "SignedInteger32"    ];
+$invalidSINT8             = $fitInitValues[ "SignedInteger8"     ];
+$invalidUINT16            = $fitInitValues[ "UnsignedInteger16"  ];
+$invalidUINT16Z           = $fitInitValues[ "UnsignedInteger16z" ];
+$invalidUINT32            = $fitInitValues[ "UnsignedInteger32"  ];
+$invalidUINT32Z           = $fitInitValues[ "UnsignedInteger32z" ];
+$invalidUINT8             = $fitInitValues[ "UnsignedInteger8"   ];
+$invalidUINT8Z            = $fitInitValues[ "UnsignedInteger8z"  ];
+$invalidFLOAT32           = -9223372036854775808;
+$invalidFLOAT64           = -9223372036854775808;
+$invalidBool              = 255;
+$invalidEnum              = 255;
+$invalidTimestamp         = 2840036399|2840036400|7135003695;
+$fitTerm                  = 1685024357;
+$powerZoneThresholds      = { 0.05, 0.55, 0.75, 0.9, 1.05, 1.2, 1.5 };
+$fitMessageTensorRowWidth = $fitConfig[ "MessageTensorRowWidth" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -107,285 +110,88 @@ $fitElements = {
 (* ::Subsection::Closed:: *)
 (*FIT Message Types*)
 $messageTypes // ClearAll;
-$messageTypes := $messageTypes = Keys @ $messageDefs;
+$messageTypes := $messageTypes = Keys @ $FITMessageDefinitions;
 
 $supportedMessageTypes // ClearAll;
 $supportedMessageTypes = {
-    "FileID",
-    "Event",
-    "Record",
-    "DeviceInformation",
-    "Session",
-    "UserProfile",
+    "AccelerometerData",
     "Activity",
-    "Lap",
-    "DeviceSettings",
-    "ZonesTarget",
-    "FileCreator",
-    "Sport",
     "DeveloperDataID",
+    "DeviceInformation",
+    "DeviceSettings",
+    "Event",
     "FieldDescription",
-    "TrainingFile",
+    "FileCreator",
+    "FileID",
     "HeartRateVariability",
-    "WorkoutStep",
+    "Lap",
+    "Record",
+    "Session",
+    "Sport",
+    "TrainingFile",
+    "UserProfile",
     "Workout",
-
-    (* Partial Support: *)
-    "AccelerometerData"
+    "WorkoutStep",
+    "ZonesTarget",
+    Nothing
 };
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*FIT Message Keys*)
 fitKeys // beginDefinition;
-fitKeys[ "FileID"               ] := $fitFileIDKeys;
-fitKeys[ "UserProfile"          ] := $fitUserProfileKeys;
-fitKeys[ "Activity"             ] := $fitActivityKeys;
-fitKeys[ "Lap"                  ] := $fitLapKeys;
-fitKeys[ "DeviceSettings"       ] := $fitDeviceSettingsKeys;
-fitKeys[ "Record"               ] := $fitRecordKeys;
-fitKeys[ "Event"                ] := $fitEventKeys;
-fitKeys[ "DeviceInformation"    ] := $fitDeviceInformationKeys;
-fitKeys[ "Session"              ] := $fitSessionKeys;
-fitKeys[ "ZonesTarget"          ] := $fitZonesTargetKeys;
-fitKeys[ "FileCreator"          ] := $fitFileCreatorKeys;
-fitKeys[ "Sport"                ] := $fitSportKeys;
-fitKeys[ "DeveloperDataID"      ] := $fitDeveloperDataIDKeys;
-fitKeys[ "FieldDescription"     ] := $fitFieldDescriptionKeys;
-fitKeys[ "TrainingFile"         ] := $fitTrainingFileKeys;
-fitKeys[ "HeartRateVariability" ] := $fitHeartRateVariabilityKeys;
-fitKeys[ "WorkoutStep"          ] := $fitWorkoutStepKeys;
-fitKeys[ "Workout"              ] := $fitWorkoutKeys;
-fitKeys[ "MessageInformation"   ] := $fitMessageInformationKeys;
-fitKeys[ name_                  ] := fallbackFitKeys @ name;
+fitKeys[ "MessageInformation" ] := $fitMessageInformationKeys;
+fitKeys[ name_                ] := makeFitKeys @ name;
 fitKeys // endDefinition;
 
 (* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitFileIDKeys*)
-$fitFileIDKeys // ClearAll;
-$fitFileIDKeys = {
-    "MessageType",
-    "SerialNumber",
-    "TimeCreated",
-    "Manufacturer",
-    "Product",
-    "Number",
-    "Type",
-    "ProductName"
-};
+(* ::Subsection::Closed:: *)
+(*Key Customization*)
+$preferredKeyOrder = <| |>;
+$ignoredKeys       = <| |>;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*$fitUserProfileKeys*)
-$fitUserProfileKeys // ClearAll;
-$fitUserProfileKeys = {
-    "MessageType",
-    "MessageIndex",
-    "Weight",
-    "LocalID",
-    "UserRunningStepLength",
-    "UserWalkingStepLength",
-    "Gender",
-    "Age",
-    "Height",
-    "Language",
-    "ElevationSetting",
-    "WeightSetting",
-    "RestingHeartRate",
-    "DefaultMaxRunningHeartRate",
-    "DefaultMaxBikingHeartRate",
-    "DefaultMaxHeartRate",
-    "HeartRateSetting",
-    "SpeedSetting",
-    "DistanceSetting",
-    "PowerSetting",
-    "ActivityClass",
-    "PositionSetting",
-    "TemperatureSetting",
-    "HeightSetting",
-    "FriendlyName",
-    "GlobalID",
-    "DepthSetting",
-    "DiveCount",
-    "SleepTime",
-    "WakeTime"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitActivityKeys*)
-$fitActivityKeys // ClearAll;
-$fitActivityKeys = {
-    "MessageType",
-    "Timestamp",
-    "TotalTimerTime",
-    "LocalTimestamp",
-    "NumberOfSessions",
-    "Type",
-    "Event",
-    "EventType",
-    "LocalTimestamp",
-    "EventGroup"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitLapKeys*)
-$fitLapKeys // ClearAll;
-$fitLapKeys = {
-    "MessageType",
+(*Lap*)
+$preferredKeyOrder[ "Lap" ] = {
     "Timestamp",
     "StartTime",
     "StartPosition",
     "EndPosition",
-    "TotalElapsedTime",
-    "TotalTimerTime",
-    "TotalDistance",
-    "TotalCycles",
-    "TotalWork",
-    "TotalMovingTime",
-    "TimeInHeartRateZone",
-    "TimeInSpeedZone",
-    "TimeInCadenceZone",
-    "TimeInPowerZone",
-    "MessageIndex",
-    "TotalCalories",
-    "TotalFatCalories",
-    "AverageSpeed",
-    "MaximumSpeed",
-    "AveragePower",
-    "MaximumPower",
-    "TotalAscent",
-    "TotalDescent",
-    "NumberOfLengths",
-    "NormalizedPower",
-    "LeftRightBalance",
-    "FirstLengthIndex",
-    "AverageStrokeDistance",
-    "NumberOfActiveLengths",
-    "AverageAltitude",
-    "MaximumAltitude",
-    "AverageGrade",
-    "AveragePositiveGrade",
-    "AverageNegativeGrade",
-    "MaximumPositiveGrade",
-    "MaximumNegativeGrade",
-    "AveragePositiveVerticalSpeed",
-    "AverageNegativeVerticalSpeed",
-    "MaximumPositiveVerticalSpeed",
-    "MaximumNegativeVerticalSpeed",
-    "RepetitionNumber",
-    "MinimumAltitude",
-    "WorkoutStepIndex",
-    "OpponentScore",
-    "StrokeCount",
-    "ZoneCount",
-    "AverageVerticalOscillation",
-    "AverageStanceTimePercent",
-    "AverageStanceTime",
-    "PlayerScore",
-    "AverageTotalHemoglobinConcentration",
-    "MinimumTotalHemoglobinConcentration",
-    "MaximumTotalHemoglobinConcentration",
-    "AverageSaturatedHemoglobinPercent",
-    "MinimumSaturatedHemoglobinPercent",
-    "MaximumSaturatedHemoglobinPercent",
-    "AverageVAM",
-    "Event",
-    "EventType",
-    "AverageHeartRate",
-    "MaximumHeartRate",
-    "AverageCadence",
-    "MaximumCadence",
-    "Intensity",
-    "LapTrigger",
-    "Sport",
-    "EventGroup",
-    "SwimStroke",
-    "SubSport",
-    "GPSAccuracy",
-    "AverageTemperature",
-    "MaximumTemperature",
-    "MinimumHeartRate"
+    Inherited
+};
+
+$ignoredKeys[ "Lap" ] = {
+    "AverageFractionalCadence",
+    "EndPositionLatitude",
+    "EndPositionLongitude",
+    "EnhancedAverageAltitude",
+    "EnhancedAverageSpeed",
+    "EnhancedMaximumAltitude",
+    "EnhancedMaximumSpeed",
+    "EnhancedMinimumAltitude",
+    "MaximumFractionalCadence",
+    "StartPositionLatitude",
+    "StartPositionLongitude",
+    "TotalFractionalCycles",
+    Nothing
 };
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*$fitDeviceSettingsKeys*)
-$fitDeviceSettingsKeys // ClearAll;
-$fitDeviceSettingsKeys = {
-    "MessageType",
-    "UTCOffset",
-    "TimeOffset",
-    "ClockTime",
-    "PagesEnabled",
-    "DefaultPage",
-    "AutoSyncMinSteps",
-    "AutoSyncMinTime",
-    "ActiveTimeZone",
-    "TimeMode",
-    "TimeZoneOffset",
-    "BacklightMode",
-    "ActivityTrackerEnabled",
-    "MoveAlertEnabled",
-    "DateMode",
-    "DisplayOrientation",
-    "MountingSide",
-    "TapSensitivity"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitRecordKeys*)
-$fitRecordKeys // ClearAll;
-$fitRecordKeys = {
-    "MessageType",
+(*Record*)
+$preferredKeyOrder[ "Record" ] = {
     "Timestamp",
     "GeoPosition",
     "Distance",
-    "TimeFromCourse",
-    "TotalCycles",
     "Altitude",
     "Speed",
-    "Power",
-    "Grade",
-    "CompressedAccumulatedPower",
-    "VerticalSpeed",
-    "Calories",
-    "VerticalOscillation",
-    "StanceTimePercent",
-    "StanceTime",
-    "BallSpeed",
-    "Cadence256",
-    "TotalHemoglobinConcentration",
-    "TotalHemoglobinConcentrationMin",
-    "TotalHemoglobinConcentrationMax",
-    "SaturatedHemoglobinPercent",
-    "SaturatedHemoglobinPercentMin",
-    "SaturatedHemoglobinPercentMax",
-    "HeartRate",
     "Cadence",
-    "Resistance",
-    "CycleLength",
-    "Temperature",
-    "Cycles",
-    "LeftRightBalance",
-    "GPSAccuracy",
-    "ActivityType",
-    "LeftTorqueEffectiveness",
-    "RightTorqueEffectiveness",
-    "LeftPedalSmoothness",
-    "RightPedalSmoothness",
-    "CombinedPedalSmoothness",
-    "Time128",
-    "StrokeType",
-    "Zone",
-    "DeviceIndex",
+    "Power",
     "PowerZone",
+    "HeartRate",
     "HeartRateZone",
-    "LeftPlatformCenterOffset",
-    "RightPlatformCenterOffset",
+    Inherited,
     "LeftPowerPhaseStart",
     "LeftPowerPhaseEnd",
     "LeftPowerPhasePeakStart",
@@ -394,341 +200,130 @@ $fitRecordKeys = {
     "RightPowerPhaseEnd",
     "RightPowerPhasePeakStart",
     "RightPowerPhasePeakEnd",
-    (* "PerformanceCondition", *)
-    (* "RespirationRate", *)
-    (* "HeartRateVariability", *)
-    "CNSLoad",
-    "AbsolutePressure",
-    "AccumulatedPower",
-    "BatterySOC",
+    "CompressedAccumulatedPower",
     "CompressedSpeedDistance",
-    "CoreTemperature",
-    "Depth",
-    "EBikeAssistLevel",
-    "EBikeAssistMode",
-    "EBikeBatteryLevel",
-    "EBikeTravelRange",
-    "Flow",
-    "Grit",
-    "MotorPower",
-    "N2Load",
-    "NDLTime",
-    "NextStopDepth",
-    "NextStopTime",
+    "Cadence256",
+    "Time128",
     "Speed1S",
-    "StanceTimeBalance",
-    "StepLength",
-    "TimeToSurface",
-    "VerticalRatio"
+    Nothing
+};
+
+$ignoredKeys[ "Record" ] = {
+    "AverageFractionalCadence",
+    "EndPositionLatitude",
+    "EndPositionLongitude",
+    "EnhancedAltitude",
+    "EnhancedAverageAltitude",
+    "EnhancedAverageSpeed",
+    "EnhancedMaximumAltitude",
+    "EnhancedMaximumSpeed",
+    "EnhancedMinimumAltitude",
+    "EnhancedSpeed",
+    "FractionalCadence",
+    "LeftPowerPhase",
+    "LeftPowerPhasePeak",
+    "MaximumFractionalCadence",
+    "PositionLatitude",
+    "PositionLongitude",
+    "RightPowerPhase",
+    "RightPowerPhasePeak",
+    "StartPositionLatitude",
+    "StartPositionLongitude",
+    "TotalFractionalCycles",
+    Nothing
 };
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*$fitEventKeys*)
-$fitEventKeys // ClearAll;
-$fitEventKeys = {
-    "MessageType",
-    "Timestamp",
-    "Data",
-    "Data16",
-    "Score",
-    "OpponentScore",
-    "Event",
-    "EventType",
-    "EventGroup",
-    "FrontGearNum",
-    "FrontGear",
-    "RearGearNum",
-    "RearGear",
-    "RadarThreatLevelType",
-    "RadarThreatCount"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitDeviceInformationKeys*)
-$fitDeviceInformationKeys // ClearAll;
-$fitDeviceInformationKeys = {
-    "MessageType",
-    "Timestamp",
-    "DeviceType",
-    "Manufacturer",
-    "ProductName",
-    "BatteryVoltage",
-    "BatteryStatus",
-    "Product",
-    "SerialNumber",
-    "CumulativeOperatingTime",
-    "SoftwareVersion",
-    "ANTDeviceNumber",
-    "DeviceIndex",
-    "HardwareVersion",
-    "SensorPosition",
-    "ANTTransmissionType",
-    "ANTNetwork",
-    "SourceType",
-    "Descriptor"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitSessionKeys*)
-$fitSessionKeys // ClearAll;
-$fitSessionKeys = {
-    "MessageType",
+(*Session*)
+$preferredKeyOrder[ "Session" ] = {
     "Sport",
     "SubSport",
     "Timestamp",
     "StartTime",
     "StartPosition",
-    "TotalElapsedTime",
-    "TotalTimerTime",
-    "TotalDistance",
-    "TotalCycles",
-    "AverageStrokeCount",
-    "TotalWork",
-    "TotalMovingTime",
-    "NormalizedPower",
-    "TrainingStressScore",
-    "IntensityFactor",
-    "LeftRightBalance",
-    "TimeInHeartRateZone",
-    "TimeInSpeedZone",
-    "TimeInCadenceZone",
-    "TimeInPowerZone",
-    "AverageLapTime",
-    "TotalCalories",
-    "TotalFatCalories",
-    "AverageSpeed",
-    "MaxSpeed",
-    "AveragePower",
-    "MaxPower",
-    "TotalAscent",
-    "TotalDescent",
-    "NumberOfLaps",
-    "NumberOfLengths",
-    "AverageStrokeDistance",
-    "PoolLength",
-    "ThresholdPower",
-    "NumberOfActiveLengths",
-    "AverageAltitude",
-    "MaxAltitude",
-    "AverageGrade",
-    "AveragePositiveGrade",
-    "AverageNegativeGrade",
-    "MaxPositiveGrade",
-    "MaxNegativeGrade",
-    "AveragePositiveVerticalSpeed",
-    "AverageNegativeVerticalSpeed",
-    "MaxPositiveVerticalSpeed",
-    "MaxNegativeVerticalSpeed",
-    "BestLapIndex",
-    "MinAltitude",
-    "PlayerScore",
-    "OpponentScore",
-    "StrokeCount",
-    "ZoneCount",
-    "MaxBallSpeed",
-    "AverageBallSpeed",
-    "AverageVerticalOscillation",
-    "AverageStanceTimePercent",
-    "AverageStanceTime",
-    "AverageVAM",
-    "Event",
-    "EventType",
-    "AverageHeartRate",
-    "MaxHeartRate",
-    "AverageCadence",
-    "MaxCadence",
+    "GeoBoundingBox",
+    Inherited,
     "TotalAerobicTrainingEffect",
     "TotalAerobicTrainingEffectDescription",
     "TotalAnaerobicTrainingEffect",
     "TotalAnaerobicTrainingEffectDescription",
-    "EventGroup",
-    "Trigger",
-    "SwimStroke",
-    "PoolLengthUnit",
-    "GeoBoundingBox",
-    "GPSAccuracy",
-    "AverageTemperature",
-    "MaxTemperature",
-    "MinHeartRate",
-    "FirstLapIndex",
-    "MessageIndex",
-    "AverageLeftPlatformCenterOffset",
-    "AverageRightPlatformCenterOffset",
     "AverageLeftPowerPhaseStart",
     "AverageLeftPowerPhaseEnd",
-    "AverageRightPowerPhaseStart",
-    "AverageRightPowerPhaseEnd",
     "AverageLeftPowerPhasePeakStart",
     "AverageLeftPowerPhasePeakEnd",
+    "AverageRightPowerPhaseStart",
+    "AverageRightPowerPhaseEnd",
     "AverageRightPowerPhasePeakStart",
     "AverageRightPowerPhasePeakEnd",
-    "SportIndex",
-    "AverageStanceTimeBalance",
-    "StandCount",
-    "TimeStanding",
-    "AverageCadencePosition",
-    "MaxCadencePosition",
-    "AveragePowerPosition",
-    "MaxPowerPosition",
-    "AverageLeftPedalSmoothness",
-    "AverageRightPedalSmoothness",
-    "AverageCombinedPedalSmoothness",
-    "AverageLeftTorqueEffectiveness",
-    "AverageRightTorqueEffectiveness",
-    "AverageCoreTemperature",
-    "AverageFlow",
-    "TotalFlow",
-    "AverageGrit",
-    "TotalGrit",
-    "MaxCoreTemperature",
-    "MinCoreTemperature",
-    "AverageTotalHemoglobinConcentration",
-    "MinTotalHemoglobinConcentration",
-    "MaxTotalHemoglobinConcentration",
-    "AverageSaturatedHemoglobinPercent",
-    "MinSaturatedHemoglobinPercent",
-    "MaxSaturatedHemoglobinPercent",
-    "AverageStepLength",
-    "AverageVerticalRatio",
-    "JumpCount",
-    "AverageLEVMotorPower",
-    "MaxLEVMotorPower",
-    "LEVBatteryConsumption",
-    "OpponentName",
-    "TrainingLoadPeak"
+    Nothing
+};
+
+$ignoredKeys[ "Session" ] = {
+    "EnhancedAverageAltitude",
+    "AverageFractionalCadence",
+    "AverageLeftPowerPhase",
+    "AverageLeftPowerPhasePeak",
+    "AverageRightPowerPhase",
+    "AverageRightPowerPhasePeak",
+    "EnhancedAverageSpeed",
+    "NorthEastCornerLatitude",
+    "NorthEastCornerLongitude",
+    "SouthWestCornerLatitude",
+    "SouthWestCornerLongitude",
+    "EnhancedMaximumAltitude",
+    "MaximumFractionalCadence",
+    "EnhancedMaximumSpeed",
+    "EnhancedMinimumAltitude",
+    "StartPositionLatitude",
+    "StartPositionLongitude",
+    "TotalTrainingEffect",
+    "TotalFractionalAscent",
+    "TotalFractionalDescent",
+    "TotalFractionalCycles",
+    Nothing
 };
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*$fitZonesTargetKeys*)
-$fitZonesTargetKeys // ClearAll;
-$fitZonesTargetKeys = {
-    "MessageType",
-    "FunctionalThresholdPower",
-    "MaxHeartRate",
-    "ThresholdHeartRate",
-    "HeartRateCalculationType",
-    "PowerZoneCalculationType"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitFileCreatorKeys*)
-$fitFileCreatorKeys // ClearAll;
-$fitFileCreatorKeys = {
-    "MessageType",
-    "SoftwareVersion",
-    "HardwareVersion"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitSportKeys*)
-$fitSportKeys // ClearAll;
-$fitSportKeys = {
-    "MessageType",
-    "Name",
-    "Sport",
-    "SubSport"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitDeveloperDataIDKeys*)
-$fitDeveloperDataIDKeys // ClearAll;
-$fitDeveloperDataIDKeys = {
-    "MessageType",
-    "DeveloperID",
-    "ApplicationID",
-    "ApplicationVersion",
-    "ManufacturerID",
-    "DeveloperDataIndex"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitFieldDescriptionKeys*)
-$fitFieldDescriptionKeys // ClearAll;
-$fitFieldDescriptionKeys = {
-    "MessageType",
-    "FieldName",
-    "Units",
-    "FitBaseUnitID",
-    "NativeMessageNumber",
-    "DeveloperDataIndex",
-    "FieldDefinitionNumber",
-    "FitBaseTypeID",
-    "Scale",
-    "Offset",
-    "NativeFieldNumber"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitTrainingFileKeys*)
-$fitTrainingFileKeys // ClearAll;
-$fitTrainingFileKeys = {
-    "MessageType",
+(*TrainingFile*)
+$preferredKeyOrder[ "TrainingFile" ] = {
+    "Type",
     "Timestamp",
-    "SerialNumber",
     "TimeCreated",
     "Manufacturer",
-    "Product",
     "ProductName",
-    "Type"
+    "Product",
+    Inherited,
+    Nothing
+};
+
+$ignoredKeys[ "TrainingFile" ] = {
+    Nothing
 };
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
-(*$fitHeartRateVariabilityKeys*)
-$fitHeartRateVariabilityKeys // ClearAll;
-$fitHeartRateVariabilityKeys = {
-    "MessageType",
-    "Time"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitWorkoutStepKeys*)
-$fitWorkoutStepKeys // ClearAll;
-$fitWorkoutStepKeys = {
-    "MessageType",
-    "MessageIndex",
+(*WorkoutStep*)
+$preferredKeyOrder[ "WorkoutStep" ] = {
     "WorkoutStepName",
     "Duration",
-    "DurationType",
     "Target",
-    "TargetValue",
+    "Intensity",
+    "DurationType",
+    "TargetType",
+    "Notes",
+    "MessageIndex",
+    Inherited,
     "CustomTargetValueLow",
     "CustomTargetValueHigh",
-    "TargetType",
-    "SecondaryTargetValue",
-    "SecondaryCustomTargetValueLow",
-    "SecondaryCustomTargetValueHigh",
-    "SecondaryTargetType",
-    "ExerciseCategory",
-    "Intensity",
-    "Notes",
-    "Equipment",
-    "SecondaryTargetType"
+    Nothing
 };
 
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$fitWorkoutKeys*)
-$fitWorkoutKeys // ClearAll;
-$fitWorkoutKeys = {
-    "MessageType",
-    "Capabilities",
-    "WorkoutName",
-    "NumberOfValidSteps",
-    "PoolLength",
-    "Sport",
-    "SubSport",
-    "PoolLengthUnit"
+$ignoredKeys[ "WorkoutStep" ] = {
+    "DurationValue",
+    "TargetValue",
+    Nothing
 };
 
 (* ::**********************************************************************:: *)
@@ -737,7 +332,8 @@ $fitWorkoutKeys = {
 $fitDefaultKeys // ClearAll;
 $fitDefaultKeys = {
     "MessageType",
-    "RawData"
+    "RawData",
+    Nothing
 };
 
 (* ::**********************************************************************:: *)
@@ -752,8 +348,52 @@ $fitMessageInformationKeys = {
     "FieldCount",
     "ByteOrdering",
     "FileOffset",
-    "Supported"
+    "Supported",
+    Nothing
 };
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*makeFitKeys*)
+makeFitKeys // beginDefinition;
+
+makeFitKeys[ name_String ] :=
+    With[ { keys = makeFitKeys0 @ name },
+        (makeFitKeys[ name ] = keys) /; MatchQ[ keys, { __String } ]
+    ];
+
+makeFitKeys // endDefinition;
+
+
+makeFitKeys0 // beginDefinition;
+
+makeFitKeys0[ name_String ] :=
+    Enclose @ Module[ { ignore, default, preferred, expanded, flat },
+        ignore    = ConfirmMatch[ Lookup[ $ignoredKeys, name, { } ], { ___String } ];
+        default   = ConfirmMatch[ DeleteCases[ defaultFitKeys @ name, Alternatives @@ ignore ],
+                                  { __String }
+                    ];
+        preferred = ConfirmMatch[ Lookup[ $preferredKeyOrder, name, { Inherited } ],
+                                  { (_String|Inherited)... }
+                    ];
+        expanded  = ReplaceAll[ preferred, Inherited -> default ];
+        flat      = Flatten @ { "MessageType", expanded, default };
+        DeleteCases[ DeleteDuplicates @ flat, Alternatives @@ ignore ]
+    ];
+
+makeFitKeys0 // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*defaultFitKeys*)
+defaultFitKeys // ClearAll;
+defaultFitKeys[ a___ ] := defaultFitKeys[ a ] = defaultFitKeys0 @ a;
+
+defaultFitKeys0 // beginDefinition;
+defaultFitKeys0[ name_String ] := defaultFitKeys[ name, $fitIndex[ name ] ];
+defaultFitKeys0[ name_, as_Association ] := Prepend[ Keys @ as, "MessageType" ];
+defaultFitKeys0[ name_, _Missing ] := $fitDefaultKeys;
+defaultFitKeys0 // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -790,59 +430,6 @@ messageTypeQ[ ___         ] := False;
 (*supportedMessageTypeQ*)
 supportedMessageTypeQ[ type_String ] := MemberQ[ $supportedMessageTypes, type ];
 supportedMessageTypeQ[ ___         ] := False;
-
-(* ::**********************************************************************:: *)
-(* ::Section::Closed:: *)
-(*Data*)
-
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*$fitIndex*)
-$fitIndex = Get @ FileNameJoin @ {
-    DirectoryName[ $InputFileName, 3 ],
-    "Data",
-    "FITStructIndex.wl"
-};
-
-If[ $debug,
-    Module[ { names, unsupported },
-        names       = Keys @ $fitIndex;
-        unsupported = Complement[ names, $supportedMessageTypes ];
-        If[ MatchQ[ unsupported, { __ } ],
-            messagePrint[
-                "UnsupportedMessageTypes",
-                HoldForm @ Evaluate @ unsupported
-            ]
-        ]
-    ]
-];
-
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*$enumTypeData*)
-$enumTypeData = Get @ FileNameJoin @ {
-    DirectoryName[ $InputFileName, 3 ],
-    "Data",
-    "FITEnumData.wl"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*$messageDefs*)
-$messageDefs = Get @ FileNameJoin @ {
-    DirectoryName[ $InputFileName, 3 ],
-    "Data",
-    "FITMessageDefinitions.wl"
-};
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*fallbackFitKeys*)
-fallbackFitKeys // beginDefinition;
-fallbackFitKeys[ name_String ] := fallbackFitKeys[ name, $fitIndex[ name ] ];
-fallbackFitKeys[ name_, as_Association ] := Prepend[ Keys @ as, "MessageType" ];
-fallbackFitKeys[ name_, _Missing ] := $fitDefaultKeys;
-fallbackFitKeys // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
