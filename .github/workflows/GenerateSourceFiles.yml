@@ -2,8 +2,6 @@ name: GenerateSourceFiles
 
 on: 
   workflow_dispatch:
-  push: 
-    branches: ["feature/FITExport"]
 
 concurrency: 
   group: ${{ github.ref }}
@@ -67,7 +65,7 @@ jobs:
         Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
         echo 'Installed Wolfram Engine.'
         Set-Alias -Name wolframscript -Value wolfram
-    
+
     - name: Generate SDK Files
       env: 
         WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
@@ -75,12 +73,11 @@ jobs:
       run: |
         $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
         wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/GenerateSourceFiles.wls
-    
-        
+
     - name: Upload generated files
       uses: actions/upload-artifact@v3
       with: 
+        retention-days: 1
         path: |
           Data/
-          SDK/
           Source/

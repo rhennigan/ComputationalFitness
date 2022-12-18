@@ -4126,40 +4126,40 @@ typedef struct
 
 // file_id message
 
-#define FIT_FILE_ID_MESG_SIZE                                                   35
+#define FIT_FILE_ID_MESG_SIZE                                                   65
 #define FIT_FILE_ID_MESG_DEF_SIZE                                               26
-#define FIT_FILE_ID_MESG_PRODUCT_NAME_COUNT                                     20
+#define FIT_FILE_ID_MESG_PRODUCT_NAME_COUNT                                     50
 
 typedef struct
 {
    FIT_UINT32Z serial_number; //
    FIT_DATE_TIME time_created; // Only set for files that are can be created/erased.
-   FIT_STRING product_name[FIT_FILE_ID_MESG_PRODUCT_NAME_COUNT]; // Optional free form string to indicate the devices name or model
    FIT_MANUFACTURER manufacturer; //
    FIT_UINT16 product; //
    FIT_UINT16 number; // Only set for files that are not created/erased.
    FIT_FILE type; //
+   FIT_STRING product_name[FIT_FILE_ID_MESG_PRODUCT_NAME_COUNT]; // Optional free form string to indicate the devices name or model
 } FIT_FILE_ID_MESG;
 
 typedef FIT_UINT8 FIT_FILE_ID_FIELD_NUM;
 
 #define FIT_FILE_ID_FIELD_NUM_SERIAL_NUMBER ((FIT_FILE_ID_FIELD_NUM)3)
 #define FIT_FILE_ID_FIELD_NUM_TIME_CREATED ((FIT_FILE_ID_FIELD_NUM)4)
-#define FIT_FILE_ID_FIELD_NUM_PRODUCT_NAME ((FIT_FILE_ID_FIELD_NUM)8)
 #define FIT_FILE_ID_FIELD_NUM_MANUFACTURER ((FIT_FILE_ID_FIELD_NUM)1)
 #define FIT_FILE_ID_FIELD_NUM_PRODUCT ((FIT_FILE_ID_FIELD_NUM)2)
 #define FIT_FILE_ID_FIELD_NUM_NUMBER ((FIT_FILE_ID_FIELD_NUM)5)
 #define FIT_FILE_ID_FIELD_NUM_TYPE ((FIT_FILE_ID_FIELD_NUM)0)
+#define FIT_FILE_ID_FIELD_NUM_PRODUCT_NAME ((FIT_FILE_ID_FIELD_NUM)8)
 
 typedef enum
 {
    FIT_FILE_ID_MESG_SERIAL_NUMBER,
    FIT_FILE_ID_MESG_TIME_CREATED,
-   FIT_FILE_ID_MESG_PRODUCT_NAME,
    FIT_FILE_ID_MESG_MANUFACTURER,
    FIT_FILE_ID_MESG_PRODUCT,
    FIT_FILE_ID_MESG_NUMBER,
    FIT_FILE_ID_MESG_TYPE,
+   FIT_FILE_ID_MESG_PRODUCT_NAME,
    FIT_FILE_ID_MESG_FIELDS
 } FIT_FILE_ID_MESG_FIELD;
 
@@ -8586,7 +8586,7 @@ extern const FIT_CONST_MESG_DEF_PTR fit_mesg_defs[FIT_MESGS];
 // Use FIT_MESG_OFFSET macro get byte offset of messages in a file.
 ///////////////////////////////////////////////////////////////////////
 
-#define FIT_FILE_DATA_SIZE       ((FIT_UINT32)63)
+#define FIT_FILE_DATA_SIZE       ((FIT_UINT32)93)
 #define FIT_FILE_SIZE            (FIT_FILE_HDR_SIZE + FIT_FILE_DATA_SIZE + sizeof(FIT_UINT16))
 #define FIT_FILE_MESG_COUNT      1
 
@@ -8603,7 +8603,7 @@ typedef enum {
 #define FIT_FILE_INDEX_DEVICE                                                   FIT_FILE_INDEX_DEVICE_0
 
 #define FIT_DEVICE_FILE_FILE_ID_MESGS                                           1
-#define FIT_DEVICE_FILE_DATA_SIZE                                               ((FIT_UINT32)63)
+#define FIT_DEVICE_FILE_DATA_SIZE                                               ((FIT_UINT32)93)
 #define FIT_DEVICE_FILE_SIZE                                                    (FIT_FILE_HDR_SIZE + FIT_DEVICE_FILE_DATA_SIZE + sizeof(FIT_UINT16))
 #define FIT_DEVICE_FILE_MESG_COUNT                                              1
 #define FIT_DEVICE_FILE_COUNT                                                   1

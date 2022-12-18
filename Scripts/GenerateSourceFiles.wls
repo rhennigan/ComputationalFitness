@@ -14,6 +14,10 @@ $sdkURL        = "https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_2
 $fitUseSTDINT  = True;
 $forceDownload = False;
 
+$productNumber      = 0;
+$manufacturerID     = 31337;
+$manufacturerString = "https://github.com/rhennigan";
+
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
@@ -47,6 +51,14 @@ Needs[ "RH`ComputationalFitness`Package`" -> "cf`" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Paclet Metadata*)
+$thisPaclet         = PacletObject @ File @ $pacletDir;
+$thisPacletName     = $thisPaclet[ "Name" ];
+$thisPacletVersion  = $thisPaclet[ "Version" ];
+$pacletSerialNumber = FromDigits[ ToExpression @ StringSplit[ $thisPacletVersion, "." ], 255 ];
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Definitions*)
 
 (* ::**********************************************************************:: *)
@@ -54,12 +66,17 @@ Needs[ "RH`ComputationalFitness`Package`" -> "cf`" ];
 (*Enum Entity Processing*)
 
 processEnum // ClearAll;
-processEnum[ "Language", enum_Association ] := toLanguage /@ enum;
+
+processEnum[ "Language"     , enum_Association ] := toLanguage /@ enum;
 processEnum[ "LanguageBits0", enum_Association ] := toLanguage /@ enum;
 processEnum[ "LanguageBits1", enum_Association ] := toLanguage /@ enum;
 processEnum[ "LanguageBits2", enum_Association ] := toLanguage /@ enum;
 processEnum[ "LanguageBits3", enum_Association ] := toLanguage /@ enum;
 processEnum[ "LanguageBits4", enum_Association ] := toLanguage /@ enum;
+
+processEnum[ "Manufacturer", enum_Association ] :=
+    KeySort @ Append[ enum, $manufacturerID -> $manufacturerString ];
+
 processEnum[ _, enum_ ] := enum;
 
 (* ::**********************************************************************:: *)
@@ -1524,6 +1541,12 @@ $fullInvalidValues = Association[
 ];
 
 $config = <|
+    "PacletName"            -> $thisPacletName,
+    "PacletVersion"         -> $thisPacletVersion,
+    "SerialNumber"          -> $pacletSerialNumber,
+    "ManufacturerID"        -> $manufacturerID,
+    "ManufacturerString"    -> $manufacturerString,
+    "ProductID"             -> $productNumber,
     "MessageTensorRowWidth" -> $maxIndex,
     "InitializationValues"  -> $fullInvalidValues
 |>;

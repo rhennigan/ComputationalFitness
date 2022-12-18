@@ -2795,12 +2795,12 @@
     "FileID" -> <|
         "MessageName"   -> "FileID",
         "MessageNumber" -> 0,
-        "Size"          -> 27,
+        "Size"          -> 57,
         "Fields"        -> <|
             "Manufacturer" -> <|
                 "Dimensions"      -> { },
                 "FieldName"       -> "Manufacturer",
-                "Index"           -> 24,
+                "Index"           -> 4,
                 "Interpreter"     -> { "fitEnum", "Manufacturer" },
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "manufacturer",
@@ -2812,7 +2812,7 @@
                 "Comment"         -> "Only set for files that are not created/erased.",
                 "Dimensions"      -> { },
                 "FieldName"       -> "Number",
-                "Index"           -> 26,
+                "Index"           -> 6,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "number",
@@ -2823,7 +2823,7 @@
             "Product" -> <|
                 "Dimensions"      -> { },
                 "FieldName"       -> "Product",
-                "Index"           -> 25,
+                "Index"           -> 5,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "product",
@@ -2833,9 +2833,9 @@
             ,
             "ProductName" -> <|
                 "Comment"         -> "Optional free form string to indicate the devices name or model",
-                "Dimensions"      -> { 20 },
+                "Dimensions"      -> { 50 },
                 "FieldName"       -> "ProductName",
-                "Index"           -> 4;;23,
+                "Index"           -> 8;;57,
                 "Interpreter"     -> "fitString",
                 "Invalid"         -> 0,
                 "NativeFieldName" -> "product_name",
@@ -2869,7 +2869,7 @@
             "Type" -> <|
                 "Dimensions"      -> { },
                 "FieldName"       -> "Type",
-                "Index"           -> 27,
+                "Index"           -> 7,
                 "Interpreter"     -> { "fitEnum", "File" },
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "type",

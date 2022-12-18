@@ -22,6 +22,9 @@ FITExport::InvalidMessage =
 FITExport::InvalidMessages =
 "The given messages are not valid.";
 
+FITExport::InvalidTSData =
+"The given time series data is not valid.";
+
 (* ::**********************************************************************:: *)
 (* ::Section:: *)
 (*Options*)
@@ -47,6 +50,12 @@ FITExport[ file_, data_List? rawDataQ, opts: OptionsPattern[ ] ] :=
 FITExport[ file_, ds_Dataset, opts: OptionsPattern[ ] ] :=
     fitExportOptionsBlock[
         FITExport[ file, Normal @ ds, opts ],
+        opts
+    ];
+
+FITExport[ file_, data_Association? tsDataQ, opts: OptionsPattern[ ] ] :=
+    fitExportOptionsBlock[
+        FITExport[ file, makeRawData @ tsToMessageList @ data, opts ],
         opts
     ];
 
@@ -90,7 +99,12 @@ fitExportOptionsBlock // endDefinition;
 (* ::Subsection::Closed:: *)
 (*fitExport*)
 fitExport // beginDefinition;
-fitExport[ target: $$target, data_ ] := fitExport0[ target, data ];
+
+fitExport[ target: $$target, data_ ] := (
+    setPreferences @ data;
+    fitExport0[ target, data ]
+);
+
 (* TODO: catch target errors here *)
 fitExport // endDefinition;
 
@@ -125,24 +139,13 @@ fitExport0 // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
-(*fitExportData*)
-fitExportData // beginDefinition;
-
-fitExportData[ file_, data_ ] :=
-    Module[ {},
-        fitExportLibFunction[ file, data ]
-    ]
-
-fitExportData // endDefinition;
-
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
 (*makeRawData*)
 makeRawData // beginDefinition;
 
 makeRawData[ messages_ ] :=
-    Module[ { vectors, packed },
-        vectors = Select[ toMessageVector /@ messages, dev`PackedArrayQ ];
+    Module[ { withFileID, vectors, packed },
+        withFileID = ensureFileID @ messages;
+        vectors = Select[ toMessageVector /@ withFileID, dev`PackedArrayQ ];
         packed = dev`ToPackedArray @ vectors;
         If[ packedIntegerArrayQ @ packed,
             packed,
@@ -151,6 +154,22 @@ makeRawData[ messages_ ] :=
     ];
 
 makeRawData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*ensureFileID*)
+ensureFileID // beginDefinition;
+
+ensureFileID[ messages: { ___Association } ] :=
+    Module[ { fileID },
+        fileID = FirstCase[ messages, KeyValuePattern[ "MessageType" -> "FileID" ] ];
+        If[ MissingQ @ fileID,
+            Prepend[ messages, newFileIDMessage @ guessFitFileType @ messages ],
+            messages
+        ]
+    ];
+
+ensureFileID // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -298,6 +317,81 @@ setMessageVectorValueA[ vector_, a_Integer, b_Integer, value: { __Integer } ] :=
     ];
 
 setMessageVectorValueA[ ___ ] := $Failed;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*tsDataQ*)
+tsDataQ // ClearAll;
+
+tsDataQ[ as_Association ] :=
+    And[ AllTrue[ Keys @ as, fitRecordKeyQ ],
+         AllTrue[ Values @ as, MatchQ[ _TemporalData | _TimeSeries ] ]
+    ];
+
+tsDataQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*tsToMessageList*)
+tsToMessageList // beginDefinition;
+
+tsToMessageList[ as_Association ] :=
+    Module[ { keys, td, messages },
+        keys = Keys @ as;
+        td = TemporalData @ Values @ as;
+        messages = KeyValueMap[
+            Association[
+                "MessageType" -> "Record",
+                "Timestamp" -> DateObject[ #1 ],
+                #2
+            ] &,
+            Merge[
+                makeTSRules /@ Transpose @ { keys, td[ "Paths" ] },
+                Association
+            ]
+        ];
+
+        If[ TrueQ @ messageListQ @ messages,
+            messages,
+            throwFailure[ FITExport::InvalidTSData, as, messages ]
+        ]
+    ];
+
+tsToMessageList // endDefinition;
+
+makeTSRules // beginDefinition;
+makeTSRules[ { key_, pairs_ } ] := (Apply[ #1 -> <| key -> #2 |> & ]) /@ pairs;
+makeTSRules // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Default Messages*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*guessFitFileType*)
+guessFitFileType // beginDefinition;
+guessFitFileType[ _ ] := "Activity"; (* TODO: make this do stuff *)
+guessFitFileType // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*newFileIDMessage*)
+newFileIDMessage // beginDefinition;
+
+newFileIDMessage[ ] := newFileIDMessage[ "Activity" ];
+
+newFileIDMessage[ type_? fitFileTypeQ ] := <|
+    "MessageType"  -> "FileID",
+    "Type"         -> type,
+    "TimeCreated"  -> DateObject[ TimeZone -> 0 ],
+    "SerialNumber" -> $pacletSerialNumber,
+    "Manufacturer" -> $manufacturerName,
+    "Product"      -> $productID,
+    "ProductName"  -> $productName
+|>;
+
+newFileIDMessage // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

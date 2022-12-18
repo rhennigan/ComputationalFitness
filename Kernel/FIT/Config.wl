@@ -8,6 +8,17 @@ Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Paclet Metadata*)
+$thisPacletName     = $fitConfig[ "PacletName"         ];
+$thisPacletVersion  = $fitConfig[ "PacletVersion"      ];
+$pacletSerialNumber = $fitConfig[ "SerialNumber"       ];
+$manufacturerID     = $fitConfig[ "ManufacturerID"     ];
+$manufacturerName   = $fitConfig[ "ManufacturerString" ];
+$productID          = $fitConfig[ "ProductID"          ];
+$productName        = $thisPacletName <> " " <> $thisPacletVersion;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Global Values*)
 setIfUndefined[ $FunctionalThresholdPower, Automatic ];
 setIfUndefined[ $MaximumHeartRate        , Automatic ];
@@ -408,14 +419,14 @@ defaultFitKeys0 // endDefinition;
 (* ::Subsection::Closed:: *)
 (*fitRecordKeyQ*)
 fitRecordKeyQ // ClearAll;
-fitRecordKeyQ[ key_ ] := MemberQ[ $fitRecordKeys, key ];
+fitRecordKeyQ[ key_ ] := MemberQ[ fitKeys[ "Record" ], key ];
 fitRecordKeyQ[ ___  ] := False;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitEventKeyQ*)
 fitEventKeyQ // ClearAll;
-fitEventKeyQ[ key_ ] := MemberQ[ $fitEventKeys, key ];
+fitEventKeyQ[ key_ ] := MemberQ[ fitKeys[ "Event" ], key ];
 fitEventKeyQ[ ___  ] := False;
 
 (* ::**********************************************************************:: *)

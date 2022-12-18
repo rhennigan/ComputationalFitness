@@ -792,11 +792,11 @@ static void export_file_id(WolframLibraryData libData, MTensor data, int idx, FI
 
     ExportInteger(2, libData, data, pos, mesg.serial_number);
     ExportTimestamp(3, libData, data, pos, mesg.time_created);
-    ExportString(4, libData, data, pos, mesg.product_name, FIT_FILE_ID_MESG_PRODUCT_NAME_COUNT);
-    ExportInteger(24, libData, data, pos, mesg.manufacturer);
-    ExportInteger(25, libData, data, pos, mesg.product);
-    ExportInteger(26, libData, data, pos, mesg.number);
-    ExportInteger(27, libData, data, pos, mesg.type);
+    ExportInteger(4, libData, data, pos, mesg.manufacturer);
+    ExportInteger(5, libData, data, pos, mesg.product);
+    ExportInteger(6, libData, data, pos, mesg.number);
+    ExportInteger(7, libData, data, pos, mesg.type);
+    ExportString(8, libData, data, pos, mesg.product_name, FIT_FILE_ID_MESG_PRODUCT_NAME_COUNT);
 
     WriteMessageDefinition(FIT_MESG_NUM_FILE_ID, local_mesg_number, fit_mesg_defs[FIT_MESG_FILE_ID], FIT_FILE_ID_MESG_DEF_SIZE, fp);
     WriteMessage(local_mesg_number, &mesg, FIT_FILE_ID_MESG_SIZE, fp);

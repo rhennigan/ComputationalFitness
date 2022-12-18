@@ -1625,12 +1625,12 @@ static void import_file_id(WolframLibraryData libData, MTensor data, int idx, co
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_FILE_ID);
     ImportInteger(2, libData, data, pos, mesg->serial_number);
     ImportInteger(3, libData, data, pos, WLTimestamp(mesg->time_created));
-    ImportString(4, libData, data, pos, mesg->product_name, FIT_FILE_ID_MESG_PRODUCT_NAME_COUNT);
-    ImportInteger(24, libData, data, pos, mesg->manufacturer);
-    ImportInteger(25, libData, data, pos, mesg->product);
-    ImportInteger(26, libData, data, pos, mesg->number);
-    ImportInteger(27, libData, data, pos, mesg->type);
-    ImportFinish(28, libData, data, pos);
+    ImportInteger(4, libData, data, pos, mesg->manufacturer);
+    ImportInteger(5, libData, data, pos, mesg->product);
+    ImportInteger(6, libData, data, pos, mesg->number);
+    ImportInteger(7, libData, data, pos, mesg->type);
+    ImportString(8, libData, data, pos, mesg->product_name, FIT_FILE_ID_MESG_PRODUCT_NAME_COUNT);
+    ImportFinish(58, libData, data, pos);
 }
 
 static void import_file_creator(WolframLibraryData libData, MTensor data, int idx, const FIT_FILE_CREATOR_MESG *mesg)

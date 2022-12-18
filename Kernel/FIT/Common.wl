@@ -8,11 +8,23 @@ Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*File Types*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*fitFileTypeQ*)
+fitFileTypeQ // ClearAll;
+fitFileTypeQ[ type_String ] := MemberQ[ $fileTypes, type ];
+fitFileTypeQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Raw Message Data*)
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*rawDataQ*)
+rawDataQ // ClearAll;
 rawDataQ[ { { } }  ] := False;
 rawDataQ[ raw_List ] := MatrixQ[ raw, IntegerQ ];
 rawDataQ[ ___      ] := False;

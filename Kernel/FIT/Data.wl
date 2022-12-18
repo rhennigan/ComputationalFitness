@@ -54,6 +54,18 @@ $enumTypeData = Get @ FileNameJoin @ {
 $iEnumTypeData = AssociationMap @ Reverse /@ $enumTypeData;
 
 (* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*$fileTypes*)
+$fileTypes = Keys @ KeyDrop[
+    $iEnumTypeData[ "File" ],
+    {
+        "ManufacturerRangeMinimum",
+        "ManufacturerRangeMaximum",
+        Missing[ "Invalid" ]
+    }
+];
+
+(* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

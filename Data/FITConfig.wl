@@ -1,5 +1,11 @@
 (* This file is auto-generated. Do not edit manually. *)
 <|
+    "PacletName"            -> "RH/ComputationalFitness",
+    "PacletVersion"         -> "0.2.1",
+    "SerialNumber"          -> 511,
+    "ManufacturerID"        -> 31337,
+    "ManufacturerString"    -> "https://github.com/rhennigan",
+    "ProductID"             -> 0,
     "MessageTensorRowWidth" -> 172,
     "InitializationValues"  -> <|
         "Activity"                              -> 255,

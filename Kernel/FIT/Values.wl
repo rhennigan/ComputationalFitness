@@ -305,16 +305,16 @@ indexTranslate[ "Lap", fitLapValue ];
 setFieldDefinitions[ fitDeviceSettingsValue, ifitDeviceSettingsValue, "DeviceSettings" ];
 
 fitDeviceSettingsValue[ "TimeOffset"    , v_ ] := fitTimeOffset @ v[[ "TimeOffset" ]];
-fitDeviceSettingsValue[ "PagesEnabled"  , v_ ] := fitUINT16BF @ v[[ "PagesEnabled" ]];
-fitDeviceSettingsValue[ "DefaultPage"   , v_ ] := fitUINT16BF @ v[[ "DefaultPage" ]];
-fitDeviceSettingsValue[ "TimeMode"      , v_ ] := fitTimeModeArr @ v[[ "TimeMode" ]];
-fitDeviceSettingsValue[ "TimeZoneOffset", v_ ] := fitTimeZoneOffset @ v[[ "TimeZoneOffset" ]];
+(* fitDeviceSettingsValue[ "PagesEnabled"  , v_ ] := fitUINT16BF @ v[[ "PagesEnabled" ]];
+fitDeviceSettingsValue[ "DefaultPage"   , v_ ] := fitUINT16BF @ v[[ "DefaultPage" ]]; *)
+(* fitDeviceSettingsValue[ "TimeMode"      , v_ ] := fitTimeModeArr @ v[[ "TimeMode" ]]; *)
+(* fitDeviceSettingsValue[ "TimeZoneOffset", v_ ] := fitTimeZoneOffset @ v[[ "TimeZoneOffset" ]]; *)
 
 ifitDeviceSettingsValue[ "TimeOffset"    , { n_ }, v_ ] := ifitTimeOffset[ v, n ];
-ifitDeviceSettingsValue[ "PagesEnabled"  , { n_ }, v_ ] := ifitUINT16BF[ v, n ];
-ifitDeviceSettingsValue[ "DefaultPage"   , { n_ }, v_ ] := ifitUINT16BF[ v, n ];
-ifitDeviceSettingsValue[ "TimeMode"      , { n_ }, v_ ] := ifitTimeModeArr[ v, n ];
-ifitDeviceSettingsValue[ "TimeZoneOffset", { n_ }, v_ ] := ifitTimeZoneOffset[ v, n ];
+(* ifitDeviceSettingsValue[ "PagesEnabled"  , { n_ }, v_ ] := ifitUINT16BF[ v, n ];
+ifitDeviceSettingsValue[ "DefaultPage"   , { n_ }, v_ ] := ifitUINT16BF[ v, n ]; *)
+(* ifitDeviceSettingsValue[ "TimeMode"      , { n_ }, v_ ] := ifitTimeModeArr[ v, n ]; *)
+(* ifitDeviceSettingsValue[ "TimeZoneOffset", { n_ }, v_ ] := ifitTimeZoneOffset[ v, n ]; *)
 
 (* FIXME: define ifitTimeZoneOffset *)
 
@@ -1059,11 +1059,12 @@ fitDateTime[ n_Integer ] := TimeZoneConvert @ DateObject[ n + $timeOffset, TimeZ
 fitDateTime[ ___ ] := Missing[ "NotAvailable" ];
 
 ifitDateTime // ClearAll;
-ifitDateTime[ v_Integer ] := v;
+ifitDateTime[ v_Integer ] := v - $timeOffset;
 ifitDateTime[ date_DateObject ] := ifitDateTime @ AbsoluteTime[ date, TimeZone -> 0 ];
 ifitDateTime[ date_Real ] := ifitDateTime @ Round @ date;
 ifitDateTime[ ___ ] := $invalidFitDateTime;
 
+(* $invalidFitDateTime = Mod[ $fitInitValues[ "DateTime" ], 2^32 ]; *)
 $invalidFitDateTime = $fitInitValues[ "DateTime" ];
 
 (* ::**********************************************************************:: *)
@@ -1075,9 +1076,11 @@ fitLocalTimestamp[ n_Integer ] := TimeZoneConvert @ DateObject[ n, TimeZone -> 0
 fitLocalTimestamp[ ___ ] := Missing[ "NotAvailable" ];
 
 
-(* FIXME: Define this! *)
 ifitLocalTimestamp // ClearAll;
-ifitLocalTimestamp[ ___ ] := $Failed;
+ifitLocalTimestamp[ v_Integer ] := v;
+ifitLocalTimestamp[ date_DateObject ] := ifitLocalTimestamp @ AbsoluteTime[ date, TimeZone -> 0 ];
+ifitLocalTimestamp[ date_Real ] := ifitLocalTimestamp @ Round @ date;
+ifitLocalTimestamp[ ___ ] := $invalidFitDateTime;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -2018,12 +2021,15 @@ fitCumulativeOperatingTime[ ___ ] := Missing[ "NotAvailable" ];
 (* ::Subsubsection::Closed:: *)
 (*fitTimeOffset*)
 fitTimeOffset // ClearAll;
-fitTimeOffset[ { $invalidUINT32, $invalidUINT32 } ] := Missing[ "NotAvailable" ];
-fitTimeOffset[ { a_Integer, b_Integer } ] := { a, b };
+fitTimeOffset[ { $invalidUINT32 } ] := Missing[ "NotAvailable" ];
+fitTimeOffset[ { a_Integer } ] := secondsToQuantity @ Mod[ a - 1, $invalidUINT32, -$invalidSINT32 ];
 fitTimeOffset[ ___ ] := Missing[ "NotAvailable" ];
 
 ifitTimeOffset // ClearAll;
-ifitTimeOffset[ list:{ __Integer }, n_ ] := list;
+ifitTimeOffset[ q_, n_         ] := ifitTimeOffset @ q;
+ifitTimeOffset[ q_Quantity     ] := ifitTimeOffset @ QuantityMagnitude @ UnitConvert[ q, "Seconds" ];
+ifitTimeOffset[ offset_Real    ] := ifitTimeOffset @ Round @ offset;
+ifitTimeOffset[ offset_Integer ] := { Mod[ offset, $invalidUINT32 ] + 1 };
 ifitTimeOffset[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
@@ -2050,6 +2056,10 @@ fitTimeZoneOffset // ClearAll;
 fitTimeZoneOffset[ { $invalidUINT32, $invalidUINT32 } ] := Missing[ "NotAvailable" ];
 fitTimeZoneOffset[ { a_Integer, b_Integer } ] := { a, b };
 fitTimeZoneOffset[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitTimeZoneOffset // ClearAll;
+ifitTimeZoneOffset[ list:{ __Integer }, n_ ] := list;
+ifitTimeZoneOffset[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

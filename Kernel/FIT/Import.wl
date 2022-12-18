@@ -338,6 +338,7 @@ setPreferences0 // endDefinition;
 setFileType // beginDefinition;
 setFileType[ config_ ] := setFileType[ config, Lookup[ config, "FileID" ] ];
 setFileType[ config_, v_List ] := $fileType = fitValue[ "FileID", "Type", v ];
+setFileType[ config_, _Missing ] := $fileType = None;
 setFileType // endDefinition;
 
 (* ::**********************************************************************:: *)
@@ -440,9 +441,9 @@ setTimeOffset // endDefinition;
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*getTimeOffset*)
-getTimeOffset // beginDefinition;
+getTimeOffset // ClearAll;
 
-getTimeOffset[ config_Association ] :=
+(* getTimeOffset[ config_Association ] :=
     getTimeOffset[ config, config[ "Activity" ] ];
 
 getTimeOffset[ config_, v_List ] :=
@@ -464,9 +465,11 @@ getTimeOffset[ config_, v_, { t1_DateObject, t2_DateObject } ] :=
         ]
     ];
 
-getTimeOffset[ config_, v_, { t1_, t2_ } ] := ($failedTimeOffset = True; 0);
+getTimeOffset[ config_, v_, { t1_, t2_ } ] := ($failedTimeOffset = True; 0); *)
 
-getTimeOffset // endDefinition;
+getTimeOffset[ ___ ] := 0;
+
+(* getTimeOffset // endDefinition; *)
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
