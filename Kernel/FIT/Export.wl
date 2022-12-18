@@ -29,6 +29,7 @@ FITExport // Options = {
     FunctionalThresholdPower :> $FunctionalThresholdPower,
     MaximumHeartRate         :> $MaximumHeartRate,
     Sport                    :> $Sport,
+    TimeZone                 :> $TimeZone, (* TODO *)
     UnitSystem               :> $UnitSystem,
     Weight                   :> $Weight
 };

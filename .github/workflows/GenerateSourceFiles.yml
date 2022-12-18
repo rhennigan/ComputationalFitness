@@ -1,0 +1,48 @@
+name: GenerateSourceFiles
+
+on: 
+  workflow_dispatch:
+
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+env: 
+  WOLFRAMSCRIPT_ENTITLEMENTID: ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}
+  WOLFRAM_SYSTEM_ID: Windows-x86-64
+  WOLFRAMENGINE_CACHE_KEY: WolframEngine-A
+  WOLFRAMENGINE_INSTALLATION_DIRECTORY: 'C:\Program Files\WolframEngine'
+  WOLFRAMINIT: "-pwfile !cloudlm.wolfram.com -entitlement ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}"
+
+jobs: 
+
+  GenerateSourceFiles: 
+    name: GenerateSourceFiles
+    runs-on: windows-latest
+    steps: 
+
+    - name: Checkout
+      id: checkout-code-step
+      uses: actions/checkout@v3
+
+    - name: RestoreCachedWolframEngine
+      id: cache-restore-step
+      uses: actions/cache@v3
+      with: 
+        path: ${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}
+        key: wolframengine-${{ env.WOLFRAM_SYSTEM_ID }}-${{ env.WOLFRAMENGINE_CACHE_KEY }}
+
+    - name: InstallWolframEngine
+      if: steps.cache-restore-step.outputs.cache-hit != 'true'
+      run: winget install WolframEngine
+    
+    - name: Generate SDK Files
+      run: wolfram -script Scripts/GenerateSourceFiles.wls
+        
+    - name: Upload generated files
+      uses: actions/upload-artifact@v3
+      with: 
+        path: |
+          Data/
+          SDK/
+          Source/
