@@ -2,6 +2,8 @@ name: GenerateSourceFiles
 
 on: 
   workflow_dispatch:
+  push: 
+    branches: ["feature/FITExport"]
 
 concurrency: 
   group: ${{ github.ref }}
