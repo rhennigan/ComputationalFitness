@@ -2,7 +2,6 @@ name: GenerateSourceFiles
 
 on: 
   workflow_dispatch:
-  push:
 
 concurrency: 
   group: ${{ github.ref }}
