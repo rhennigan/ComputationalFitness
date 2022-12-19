@@ -2,9 +2,7 @@
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`" ];
-
-ComputationalFitness;
-
+Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
@@ -14,13 +12,29 @@ ComputationalFitness::Internal =
 "An unexpected error occurred. `1`";
 
 ComputationalFitness::Unfinished =
-"Starting definition for `1` without ending the current one.";
+"Definition warning: Starting definition for `1` without ending the current one.";
+
+ComputationalFitness::IndexTranslation =
+"Definition error: Index translation failed for `1` part \"`2`\" in `3`.";
+
+ComputationalFitness::UnusedIndices =
+"Definition warning: Unused indices in `1`: `2`.";
+
+ComputationalFitness::KeysMissingDefinitions =
+"The following \"`1`\" keys are missing definitions in `2`: `3`.";
+
+ComputationalFitness::DefinitionsMissingKeys =
+"The following \"`1`\" keys are defined in `2` but not declared: `3`.";
+
+ComputationalFitness::UnsupportedMessageTypes =
+"The following message types are defined in the SDK but not handled at \
+top-level: `1`.";
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
 $inDef = False;
-$debug = False;
+$debug = TrueQ @ $debug;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -78,6 +92,15 @@ endDefinition[ s_Symbol, list_List ] :=
 endDefinition // endDefinition;
 
 (* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*setIfUndefined*)
+setIfUndefined // beginDefinition;
+setIfUndefined // Attributes = { HoldAll };
+setIfUndefined[ sym_Symbol? ValueQ, value_ ] := Null;
+setIfUndefined[ sym_Symbol, value_ ] := sym = value;
+setIfUndefined // endDefinition;
+
+(* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Caching*)
 $blockCache = <| |>;
@@ -103,7 +126,7 @@ cacheBlock // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
-(*fastCache*)
+(*cached*)
 cached // Attributes = { HoldFirst };
 
 cached[ eval_ ] /; $cacheBlock :=
@@ -135,12 +158,39 @@ catchTop // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
+(*catchTopAs*)
+catchTopAs // beginDefinition;
+
+catchTopAs[ sym_Symbol ] :=
+    Function[
+        eval,
+        Block[ { $messageSymbol = sym, catchTopAs = (#1 &) & },
+            catchTop @ eval
+        ],
+        { HoldAllComplete }
+    ];
+
+catchTopAs // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*catchMine*)
+catchMine // beginDefinition;
+
+catchMine // Attributes = { HoldFirst };
+
+catchMine /: HoldPattern[ f_Symbol[ args___ ] := catchMine[ rhs_ ] ] :=
+    f[ args ] := Block[ { $messageSymbol = f }, catchTop @ rhs ];
+
+catchMine[ eval_ ] := catchTop @ eval;
+
+catchMine // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*throwFailure*)
 throwFailure // beginDefinition;
 throwFailure // Attributes = { HoldFirst };
-
-throwFailure[ tag_String, params___ ] :=
-    throwFailure[ MessageName[ ComputationalFitness, tag ], params ];
 
 throwFailure[ msg_, args___ ] :=
     Module[ { failure },
@@ -154,21 +204,58 @@ throwFailure[ msg_, args___ ] :=
 throwFailure // endDefinition;
 
 (* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*$messageSymbol*)
+$messageSymbol := ComputationalFitness;
+
+(* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*messageFailure*)
 messageFailure // beginDefinition;
 messageFailure // Attributes = { HoldFirst };
 
+messageFailure[ t_String, args___ ] :=
+    With[ { s = $messageSymbol },
+        If[ StringQ @ MessageName[ s, t ],
+            messageFailure[ MessageName[ s, t ], args ],
+            If[ StringQ @ MessageName[ ComputationalFitness, t ],
+                MessageName[ s, t ] = MessageName[ ComputationalFitness, t ];
+                messageFailure[ MessageName[ s, t ], args ],
+                throwInternalFailure @ messageFailure[ t, args ]
+            ]
+        ]
+    ];
+
 messageFailure[ args___ ] :=
-    Module[ { quiet },
-        quiet = If[ TrueQ @ $failed, Quiet, Identity ];
+    Module[ { quiet, message },
+        quiet   = If[ TrueQ @ $failed, Quiet, Identity ];
+        message = messageFailure0;
         WithCleanup[
-            quiet @ ResourceFunction[ "MessageFailure" ][ args ],
+            StackInhibit @ quiet @ message @ args,
             $failed = True
         ]
     ];
 
 messageFailure // endDefinition;
+
+messageFailure0 := messageFailure0 =
+    Block[ { PrintTemporary },
+        ResourceFunction[ "MessageFailure", "Function" ]
+    ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*messagePrint*)
+messagePrint // beginDefinition;
+messagePrint // Attributes = { HoldFirst };
+
+messagePrint[ args___ ] := WithCleanup[
+    $failed = False,
+    messageFailure @ args,
+    $failed = False
+];
+
+messagePrint // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)

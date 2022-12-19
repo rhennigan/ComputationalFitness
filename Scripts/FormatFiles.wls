@@ -21,6 +21,11 @@ If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
 ];
 Needs[ "Wolfram`PacletCICD`" -> "cicd`" ];
 
+SetOptions[
+    ResourceFunction[ "SaveReadableNotebook" ],
+    "RealAccuracy" -> Infinity
+];
+
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Defaults*)
@@ -79,22 +84,22 @@ makeIgnorePatt[ str_String ] :=
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
-(*getNotebookFiles*)
-getNotebookFiles[             ] := getNotebookFiles @ $root;
-getNotebookFiles[ root_       ] := getNotebookFiles[ root, $ignore ];
-getNotebookFiles[ root_, None ] := FileNames[ "*.nb", root, Infinity ];
+(*getFiles*)
+getFiles[             ] := getFiles @ $root;
+getFiles[ root_       ] := getFiles[ root, $ignore ];
+getFiles[ root_, None ] := FileNames[ "*.nb", root, Infinity ];
 
-getNotebookFiles[ root_, ignore_ ] :=
-    getNotebookFiles[ root, ignore, getNotebookArgs[ ] ];
+getFiles[ root_, ignore_ ] :=
+    getFiles[ root, ignore, getNotebookArgs[ ] ];
 
-getNotebookFiles[ root_, ignore_, files: { ___String? FileExistsQ } ] := files;
+getFiles[ root_, ignore_, files: { ___String? FileExistsQ } ] := files;
 
-getNotebookFiles[ root_, ignore_, _ ] :=
-    Select[ FileNames[ "*.nb", root, Infinity ],
+getFiles[ root_, ignore_, _ ] :=
+    Select[ FileNames[ { "*.nb", "*.wlt" }, root, Infinity ],
             Not @* StringMatchQ[ ignore~~___ ]
     ];
 
-getNotebookArgs[ ] := getNotebookArgs @ getArg[ "notebooks", None ];
+getNotebookArgs[ ] := getNotebookArgs @ getArg[ "files", None ];
 
 getNotebookArgs[ nbs_String ] := getNotebookArgs @ StringSplit[ nbs, "\n" ];
 
@@ -122,10 +127,23 @@ makeUnreadable[ file_ ] := enclose[
     StringForm[ "Failed to unformat notebook: `1`", file ]
 ];
 
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*notebookFileQ*)
+notebookFileQ[ file_String ] := StringEndsQ[ file, ".nb", IgnoreCase -> True ];
+notebookFileQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*testFileQ*)
+testFileQ[ file_String ] := StringEndsQ[ file, ".wlt", IgnoreCase -> True ];
+testFileQ[ ___ ] := False;
+
 (******************************************************************************)
 (* ::Subsection::Closed:: *)
 (*makeReadable*)
-makeReadable[ file_ ] := makeReadable[ file, cicd`FormatNotebooks @ file ];
+makeReadable[ file_? notebookFileQ ] := makeReadable[ file, cicd`FormatNotebooks @ file ];
+makeReadable[ file_? testFileQ ] := makeReadable[ file, cicd`AnnotateTestIDs @ file ];
 
 makeReadable[ file_, Missing[ "Skipped", ___ ] ] :=
     print[ "Skipped: ", StringDelete[ file, StartOfString~~$root ] ];
@@ -137,8 +155,8 @@ makeReadable[ file_, formatted_File ] :=
 (* ::Section::Closed:: *)
 (*Run*)
 If[ MemberQ[ $ScriptCommandLine, "--unformat" ],
-    makeUnreadable /@ getNotebookFiles[ ],
-    makeReadable /@ getNotebookFiles[ ]
+    makeUnreadable /@ getFiles[ ],
+    makeReadable /@ Echo[ getFiles[ ] ]
 ]
 
 (* :!CodeAnalysis::EndBlock:: *)

@@ -34,6 +34,7 @@ $sourceFiles = cicd`ScriptConfirmMatch[
     FileNames[
         {
             "fit_import.c",
+            "fit_export.c",
             "fit.c",
             "fit_crc.c",
             "fit_example.c",
@@ -41,7 +42,7 @@ $sourceFiles = cicd`ScriptConfirmMatch[
         },
         $sourceDir
     ],
-    { _, _, _, _, _ }
+    { _, _, _, _, _, _ }
 ];
 
 $built = ccd`CreateLibrary[

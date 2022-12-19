@@ -1,0 +1,83 @@
+name: GenerateSourceFiles
+
+on: 
+  workflow_dispatch:
+
+concurrency: 
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+env: 
+  WOLFRAMSCRIPT_ENTITLEMENTID: ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}
+
+jobs: 
+
+  GenerateSourceFiles: 
+    name: GenerateSourceFiles
+    runs-on: windows-latest
+
+    env: 
+      WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
+      WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
+      WOLFRAM_SYSTEM_ID: Windows-x86-64
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A
+      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.0.0.0/WolframEngine_13.0.0_WIN.msi
+
+    steps: 
+
+    - name: Checkout
+      id: checkout-code-step
+      uses: actions/checkout@v3
+
+    - name: RestoreCachedWolframEngine
+      id: cache-restore-step
+      uses: actions/cache@v3
+      env: 
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+      with: 
+        path: ${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}
+        key: wolframengine-${{ env.WOLFRAM_SYSTEM_ID }}-${{ env.WOLFRAMENGINE_CACHE_KEY }}
+
+    - name: InstallWolframEngine
+      if: steps.cache-restore-step.outputs.cache-hit != 'true'
+      env: 
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+        WOLFRAMENGINE_INSTALL_MSI_PATH: '${{ runner.temp }}\WolframEngine-Install.msi'
+        WOLFRAMENGINE_INSTALL_LOG_PATH: '${{ runner.temp }}\WolframEngine-Install.log'
+      run: |
+        echo 'Downloading Wolfram Engine installer...'
+        $msiFile = '${{ env.WOLFRAMENGINE_INSTALL_MSI_PATH }}'
+        $logFile = '${{ env.WOLFRAMENGINE_INSTALL_LOG_PATH }}'
+        Import-Module BitsTransfer
+        Start-BitsTransfer '${{ env.WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL }}' $msiFile
+        echo 'Downloaded Wolfram Engine installer.'
+        $DataStamp = get-date -Format yyyyMMddTHHmmss
+        $MSIArguments = @(
+            "/i"
+            ('"{0}"' -f $msiFile)
+            'INSTALLLOCATION="${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}"'
+            "/qn"
+            "/norestart"
+            "/L*v"
+            $logFile
+        )
+        echo 'Installing Wolfram Engine...'
+        Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+        echo 'Installed Wolfram Engine.'
+        Set-Alias -Name wolframscript -Value wolfram
+
+    - name: Generate SDK Files
+      env: 
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+        WOLFRAMINIT: "-pwfile !cloudlm.wolfram.com -entitlement ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}"
+      run: |
+        $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/GenerateSourceFiles.wls
+
+    - name: Upload generated files
+      uses: actions/upload-artifact@v3
+      with: 
+        retention-days: 1
+        path: |
+          Data/
+          Source/

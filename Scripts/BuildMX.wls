@@ -12,6 +12,7 @@ If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
 
 Needs[ "Wolfram`PacletCICD`" -> "cicd`" ];
 Needs[ "GeneralUtilities`"   -> "gu`"   ];
+$ContextAliases[ "package`" ] = "RH`ComputationalFitness`Package`";
 
 cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
 cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
@@ -45,6 +46,9 @@ $mxDir = cDir @ gu`EnsureDirectory @ DirectoryName @ $mxFile;
 cicd`ConsoleLog[ "MX target directory: ", $mxDir  ];
 cicd`ConsoleLog[ "Building MX file: "   , $mxFile ];
 
+
+package`$debug = False;
+package`$thisPacletLocation // ClearAll;
 DumpSave[
     $mxFile,
     {
