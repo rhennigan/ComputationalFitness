@@ -1,0 +1,599 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* Created By: SaveReadableNotebook *)
+(* https://resources.wolframcloud.com/FunctionRepository/resources/SaveReadableNotebook *)
+
+Notebook[
+ {
+  Cell[
+   CellGroupData[
+    {
+     Cell["FITFileType", "ObjectName", CellID -> 324904646],
+     Cell[
+      TextData[
+       {
+        Cell["   ", "ModInfo"],
+        Cell[
+         BoxData[RowBox[{"FITFileType", "[", "]"}]],
+         "InlineFormula"
+        ],
+        " \[LineSeparator]XXXX"
+       }
+      ],
+      "Usage",
+      CellID -> 172809140
+     ],
+     Cell["XXXX", "Notes", CellID -> 75687437]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      TextData[
+       {
+        "Tech Notes",
+        Cell[
+         BoxData[
+          TemplateBox[
+           {
+            "TechNotes",
+            Cell[
+             BoxData[
+              FrameBox[
+               Cell["Insert links to related tech notes.", "MoreInfoText"],
+               BaseStyle -> "IFrameBox"
+              ]
+             ],
+             "MoreInfoTextOuter"
+            ]
+           },
+           "MoreInfoOpenerButtonTemplate"
+          ]
+         ]
+        ]
+       }
+      ],
+      "TechNotesSection",
+      CellID -> 412920084
+     ],
+     Cell["XXXX", "Tutorials", CellID -> 112982709]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      TextData[
+       {
+        "Related Links",
+        Cell[
+         BoxData[
+          TemplateBox[
+           {
+            "RelatedLinks",
+            Cell[
+             BoxData[
+              FrameBox[
+               Cell[
+                "Insert links to any related page, including web pages.",
+                "MoreInfoText"
+               ],
+               BaseStyle -> "IFrameBox"
+              ]
+             ],
+             "MoreInfoTextOuter"
+            ]
+           },
+           "MoreInfoOpenerButtonTemplate"
+          ]
+         ]
+        ]
+       }
+      ],
+      "RelatedLinksSection",
+      CellID -> 2627925
+     ],
+     Cell["XXXX", "RelatedLinks", CellID -> 136170345]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      TextData[
+       {
+        "See Also",
+        Cell[
+         BoxData[
+          TemplateBox[
+           {
+            "SeeAlso",
+            Cell[
+             BoxData[
+              FrameBox[
+               Cell[
+                "Insert links to any related reference (function) pages.",
+                "MoreInfoText"
+               ],
+               BaseStyle -> "IFrameBox"
+              ]
+             ],
+             "MoreInfoTextOuter"
+            ]
+           },
+           "MoreInfoOpenerButtonTemplate"
+          ]
+         ]
+        ]
+       }
+      ],
+      "SeeAlsoSection",
+      CellID -> 78422193
+     ],
+     Cell[
+      TextData[
+       {
+        Cell[
+         BoxData[
+          TagBox[FrameBox["\"XXXX\""], "FunctionPlaceholder"]
+         ],
+         "InlineSeeAlsoFunction",
+         TaggingRules -> {"PageType" -> "Function"}
+        ],
+        Cell[
+         BoxData[
+          RowBox[
+           {
+            Cell[
+             TextData[
+              StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"]
+             ]
+            ],
+            DynamicModuleBox[
+             {
+              nbobj$$ = 
+               NotebookObject[
+                "b610a722-5b2d-4e53-8f8f-cc62336db71e",
+                "1030b352-62ff-4609-9a84-4da4bdd0db71"
+               ],
+              cellobj$$ = 
+               CellObject[
+                "ca525167-c3a2-4c1a-a330-80ed985dab92",
+                "60521067-7140-4fbf-9183-db264e2b9b39"
+               ]
+             },
+             TemplateBox[
+              {
+               GraphicsBox[
+                {
+                 {
+                  Thickness[0.06],
+                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
+                  CircleBox[{0, 0}]
+                 },
+                 {
+                  Thickness[0.06],
+                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
+                  LineBox[{{0, 0.62}, {0, -0.62}}]
+                 },
+                 {
+                  Thickness[0.06],
+                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
+                  LineBox[{{-0.62, 0}, {0.62, 0}}]
+                 }
+                },
+                ImagePadding -> {{1., 1.}, {2.4, 1.}},
+                ImageSize -> 16,
+                PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}},
+                BaselinePosition -> Center -> Center
+               ],
+               nbobj$$,
+               cellobj$$
+              },
+              "InlineListingAddButton"
+             ],
+             Initialization :>
+              (nbobj$$ = EvaluationNotebook[];
+              cellobj$$ = EvaluationCell[])
+            ]
+           }
+          ]
+         ],
+         "InlineListingAddButton"
+        ]
+       }
+      ],
+      "SeeAlso",
+      CellID -> 119125684
+     ]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      "Related Guides",
+      "MoreAboutSection",
+      CellID -> 197486463
+     ],
+     Cell["XXXX", "MoreAbout", CellID -> 221890270]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      TextData[
+       {
+        "Examples Initialization",
+        Cell[
+         BoxData[
+          TemplateBox[
+           {
+            "ExamplesInitialization",
+            Cell[
+             BoxData[
+              FrameBox[
+               Cell[
+                "Input that is to be evaluated before any examples are run, e.g. Needs[\[Ellipsis]].",
+                "MoreInfoText"
+               ],
+               BaseStyle -> "IFrameBox"
+              ]
+             ],
+             "MoreInfoTextOuter"
+            ]
+           },
+           "MoreInfoOpenerButtonTemplate"
+          ]
+         ]
+        ]
+       }
+      ],
+      "ExamplesInitializationSection",
+      CellID -> 18169423
+     ],
+     Cell[
+      BoxData[
+       RowBox[{"Needs", "[", "\"RH`ComputationalFitness`\"", "]"}]
+      ],
+      "ExampleInitialization",
+      CellID -> 600312985
+     ]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   BoxData[
+    InterpretationBox[
+     GridBox[
+      {
+       {
+        StyleBox[
+         RowBox[{"Basic", " ", "Examples"}],
+         "PrimaryExamplesSection"
+        ],
+        ButtonBox[
+         RowBox[
+          {
+           RowBox[{"More", " ", "Examples"}],
+           " ",
+           "\[RightTriangle]"
+          }
+         ],
+         BaseStyle -> "ExtendedExamplesLink",
+         ButtonData :> "ExtendedExamples"
+        ]
+       }
+      }
+     ],
+     $Line = 0;
+    ]
+   ],
+   "PrimaryExamplesSection",
+   CellID -> 325907792
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      TextData[
+       {
+        "More Examples",
+        Cell[
+         BoxData[
+          TemplateBox[
+           {
+            "MoreExamples",
+            Cell[
+             BoxData[
+              FrameBox[
+               Cell[
+                "Extended examples in standardized sections.",
+                "MoreInfoText"
+               ],
+               BaseStyle -> "IFrameBox"
+              ]
+             ],
+             "MoreInfoTextOuter"
+            ]
+           },
+           "MoreInfoOpenerButtonTemplate"
+          ]
+         ]
+        ]
+       }
+      ],
+      "ExtendedExamplesSection",
+      CellTags -> "ExtendedExamples",
+      CellID -> 119499713
+     ],
+     Cell[
+      BoxData[
+       InterpretationBox[
+        Cell["Scope", "ExampleSection"],
+        $Line = 0;
+       ]
+      ],
+      "ExampleSection",
+      CellID -> 148283542
+     ],
+     Cell[
+      BoxData[
+       InterpretationBox[
+        Cell["Generalizations & Extensions", "ExampleSection"],
+        $Line = 0;
+       ]
+      ],
+      "ExampleSection",
+      CellID -> 442116311
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell[
+         BoxData[
+          InterpretationBox[
+           Cell["Options", "ExampleSection"],
+           $Line = 0;
+          ]
+         ],
+         "ExampleSection",
+         CellID -> 161298452
+        ],
+        Cell[
+         BoxData[
+          InterpretationBox[
+           Cell["XXXX", "ExampleSubsection"],
+           $Line = 0;
+          ]
+         ],
+         "ExampleSubsection",
+         CellID -> 85002578
+        ],
+        Cell[
+         BoxData[
+          InterpretationBox[
+           Cell["XXXX", "ExampleSubsection"],
+           $Line = 0;
+          ]
+         ],
+         "ExampleSubsection",
+         CellID -> 104277725
+        ]
+       },
+       Open
+      ]
+     ],
+     Cell[
+      BoxData[
+       InterpretationBox[
+        Cell["Applications", "ExampleSection"],
+        $Line = 0;
+       ]
+      ],
+      "ExampleSection",
+      CellID -> 374958934
+     ],
+     Cell[
+      BoxData[
+       InterpretationBox[
+        Cell["Properties & Relations", "ExampleSection"],
+        $Line = 0;
+       ]
+      ],
+      "ExampleSection",
+      CellID -> 95738336
+     ],
+     Cell[
+      BoxData[
+       InterpretationBox[
+        Cell["Possible Issues", "ExampleSection"],
+        $Line = 0;
+       ]
+      ],
+      "ExampleSection",
+      CellID -> 39376746
+     ],
+     Cell[
+      BoxData[
+       InterpretationBox[
+        Cell["Interactive Examples", "ExampleSection"],
+        $Line = 0;
+       ]
+      ],
+      "ExampleSection",
+      CellID -> 164574817
+     ],
+     Cell[
+      BoxData[
+       InterpretationBox[
+        Cell["Neat Examples", "ExampleSection"],
+        $Line = 0;
+       ]
+      ],
+      "ExampleSection",
+      CellID -> 112982993
+     ]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell["Metadata", "MetadataSection", CellID -> 99188116],
+     Cell[
+      TextData[
+       {
+        "New in: ",
+        Cell["XX", "HistoryData", CellTags -> "New"],
+        " | Modified in: ",
+        Cell[" ", "HistoryData", CellTags -> "Modified"],
+        " | Obsolete in: ",
+        Cell[" ", "HistoryData", CellTags -> "Obsolete"]
+       }
+      ],
+      "History",
+      CellID -> 586774090
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell[
+         TextData[
+          {
+           "Categorization",
+           Cell[
+            BoxData[
+             TemplateBox[
+              {
+               "Metadata",
+               Cell[
+                BoxData[
+                 FrameBox[
+                  Cell[
+                   "Metadata such as page URI, context, and type of documentation page.",
+                   "MoreInfoText"
+                  ],
+                  BaseStyle -> "IFrameBox"
+                 ]
+                ],
+                "MoreInfoTextOuter"
+               ]
+              },
+              "MoreInfoOpenerButtonTemplate"
+             ]
+            ]
+           ]
+          }
+         ],
+         "CategorizationSection",
+         CellID -> 965477516
+        ],
+        Cell[
+         "Symbol",
+         "Categorization",
+         CellLabel -> "Entity Type",
+         CellID -> 298469396
+        ],
+        Cell[
+         "RH/ComputationalFitness",
+         "Categorization",
+         CellLabel -> "Paclet Name",
+         CellID -> 3687874
+        ],
+        Cell[
+         "RH`ComputationalFitness`",
+         "Categorization",
+         CellLabel -> "Context",
+         CellID -> 57537543
+        ],
+        Cell[
+         "RH/ComputationalFitness/ref/FITFileType",
+         "Categorization",
+         CellLabel -> "URI",
+         CellID -> 380390498
+        ]
+       },
+       Closed
+      ]
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell["Keywords", "KeywordsSection", CellID -> 588935570],
+        Cell["XXXX", "Keywords", CellID -> 28683826]
+       },
+       Closed
+      ]
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell[
+         "Syntax Templates",
+         "TemplatesSection",
+         CellID -> 123718226
+        ],
+        Cell[
+         BoxData[""],
+         "Template",
+         CellLabel -> "Additional Function Template",
+         CellID -> 353495328
+        ],
+        Cell[
+         BoxData[""],
+         "Template",
+         CellLabel -> "Arguments Pattern",
+         CellID -> 61866842
+        ],
+        Cell[
+         BoxData[""],
+         "Template",
+         CellLabel -> "Local Variables",
+         CellID -> 388442267
+        ],
+        Cell[
+         BoxData[""],
+         "Template",
+         CellLabel -> "Color Equal Signs",
+         CellID -> 158540596
+        ]
+       },
+       Closed
+      ]
+     ]
+    },
+    Open
+   ]
+  ]
+ },
+ TaggingRules -> <|
+  "InformationPopupMenuItemAdded" -> True,
+  "Paclet" -> "RH/ComputationalFitness"
+ |>,
+ FrontEndVersion -> "13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
+ StyleDefinitions ->
+  FrontEnd`FileName[
+   {"Wolfram"},
+   "FunctionPageStylesExt.nb",
+   CharacterEncoding -> "UTF-8"
+  ],
+ ExpressionUUID -> "b610a722-5b2d-4e53-8f8f-cc62336db71e"
+]
