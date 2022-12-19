@@ -1548,7 +1548,7 @@ $config = <|
     "ManufacturerString"    -> $manufacturerString,
     "ProductID"             -> $productNumber,
     "MessageTensorRowWidth" -> $maxIndex,
-    "InitializationValues"  -> $fullInvalidValues
+    "InitializationValues"  -> KeySort @ $fullInvalidValues
 |>;
 
 configFile = FileNameJoin @ { $pacletDir, "Data", "FITConfig.wl" };

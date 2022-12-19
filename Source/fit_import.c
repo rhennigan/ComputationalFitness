@@ -279,6 +279,14 @@ DLLEXPORT int FITImport(
                         break;
                     }
 
+                    case FIT_MESG_NUM_TIMESTAMP_CORRELATION:
+                    {
+                        const FIT_TIMESTAMP_CORRELATION_MESG *new = (FIT_TIMESTAMP_CORRELATION_MESG *) mesg;
+                        idx++;
+                        import_timestamp_correlation(libData, data, idx, new);
+                        break;
+                    }
+
                     case FIT_MESG_NUM_SOFTWARE:
                     {
                         const FIT_SOFTWARE_MESG *new = (FIT_SOFTWARE_MESG *) mesg;
@@ -375,6 +383,22 @@ DLLEXPORT int FITImport(
                         break;
                     }
 
+                    case FIT_MESG_NUM_WATCHFACE_SETTINGS:
+                    {
+                        const FIT_WATCHFACE_SETTINGS_MESG *new = (FIT_WATCHFACE_SETTINGS_MESG *) mesg;
+                        idx++;
+                        import_watchface_settings(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_OHR_SETTINGS:
+                    {
+                        const FIT_OHR_SETTINGS_MESG *new = (FIT_OHR_SETTINGS_MESG *) mesg;
+                        idx++;
+                        import_ohr_settings(libData, data, idx, new);
+                        break;
+                    }
+
                     case FIT_MESG_NUM_ZONES_TARGET:
                     {
                         const FIT_ZONES_TARGET_MESG *new = (FIT_ZONES_TARGET_MESG *) mesg;
@@ -436,6 +460,22 @@ DLLEXPORT int FITImport(
                         const FIT_DIVE_SETTINGS_MESG *new = (FIT_DIVE_SETTINGS_MESG *) mesg;
                         idx++;
                         import_dive_settings(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_DIVE_ALARM:
+                    {
+                        const FIT_DIVE_ALARM_MESG *new = (FIT_DIVE_ALARM_MESG *) mesg;
+                        idx++;
+                        import_dive_alarm(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_DIVE_GAS:
+                    {
+                        const FIT_DIVE_GAS_MESG *new = (FIT_DIVE_GAS_MESG *) mesg;
+                        idx++;
+                        import_dive_gas(libData, data, idx, new);
                         break;
                     }
 
@@ -527,11 +567,83 @@ DLLEXPORT int FITImport(
                         break;
                     }
 
+                    case FIT_MESG_NUM_GPS_METADATA:
+                    {
+                        const FIT_GPS_METADATA_MESG *new = (FIT_GPS_METADATA_MESG *) mesg;
+                        idx++;
+                        import_gps_metadata(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_CAMERA_EVENT:
+                    {
+                        const FIT_CAMERA_EVENT_MESG *new = (FIT_CAMERA_EVENT_MESG *) mesg;
+                        idx++;
+                        import_camera_event(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_GYROSCOPE_DATA:
+                    {
+                        const FIT_GYROSCOPE_DATA_MESG *new = (FIT_GYROSCOPE_DATA_MESG *) mesg;
+                        idx++;
+                        import_gyroscope_data(libData, data, idx, new);
+                        break;
+                    }
+
                     case FIT_MESG_NUM_ACCELEROMETER_DATA:
                     {
                         const FIT_ACCELEROMETER_DATA_MESG *new = (FIT_ACCELEROMETER_DATA_MESG *) mesg;
                         idx++;
                         import_accelerometer_data(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_MAGNETOMETER_DATA:
+                    {
+                        const FIT_MAGNETOMETER_DATA_MESG *new = (FIT_MAGNETOMETER_DATA_MESG *) mesg;
+                        idx++;
+                        import_magnetometer_data(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_BAROMETER_DATA:
+                    {
+                        const FIT_BAROMETER_DATA_MESG *new = (FIT_BAROMETER_DATA_MESG *) mesg;
+                        idx++;
+                        import_barometer_data(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_THREE_D_SENSOR_CALIBRATION:
+                    {
+                        const FIT_THREE_D_SENSOR_CALIBRATION_MESG *new = (FIT_THREE_D_SENSOR_CALIBRATION_MESG *) mesg;
+                        idx++;
+                        import_three_d_sensor_calibration(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_ONE_D_SENSOR_CALIBRATION:
+                    {
+                        const FIT_ONE_D_SENSOR_CALIBRATION_MESG *new = (FIT_ONE_D_SENSOR_CALIBRATION_MESG *) mesg;
+                        idx++;
+                        import_one_d_sensor_calibration(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_VIDEO_FRAME:
+                    {
+                        const FIT_VIDEO_FRAME_MESG *new = (FIT_VIDEO_FRAME_MESG *) mesg;
+                        idx++;
+                        import_video_frame(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_OBDII_DATA:
+                    {
+                        const FIT_OBDII_DATA_MESG *new = (FIT_OBDII_DATA_MESG *) mesg;
+                        idx++;
+                        import_obdii_data(libData, data, idx, new);
                         break;
                     }
 
@@ -551,6 +663,14 @@ DLLEXPORT int FITImport(
                         break;
                     }
 
+                    case FIT_MESG_NUM_VIDEO:
+                    {
+                        const FIT_VIDEO_MESG *new = (FIT_VIDEO_MESG *) mesg;
+                        idx++;
+                        import_video(libData, data, idx, new);
+                        break;
+                    }
+
                     case FIT_MESG_NUM_VIDEO_TITLE:
                     {
                         const FIT_VIDEO_TITLE_MESG *new = (FIT_VIDEO_TITLE_MESG *) mesg;
@@ -567,11 +687,35 @@ DLLEXPORT int FITImport(
                         break;
                     }
 
+                    case FIT_MESG_NUM_VIDEO_CLIP:
+                    {
+                        const FIT_VIDEO_CLIP_MESG *new = (FIT_VIDEO_CLIP_MESG *) mesg;
+                        idx++;
+                        import_video_clip(libData, data, idx, new);
+                        break;
+                    }
+
                     case FIT_MESG_NUM_SET:
                     {
                         const FIT_SET_MESG *new = (FIT_SET_MESG *) mesg;
                         idx++;
                         import_set(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_JUMP:
+                    {
+                        const FIT_JUMP_MESG *new = (FIT_JUMP_MESG *) mesg;
+                        idx++;
+                        import_jump(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_CLIMB_PRO:
+                    {
+                        const FIT_CLIMB_PRO_MESG *new = (FIT_CLIMB_PRO_MESG *) mesg;
+                        idx++;
+                        import_climb_pro(libData, data, idx, new);
                         break;
                     }
 
@@ -735,6 +879,30 @@ DLLEXPORT int FITImport(
                         break;
                     }
 
+                    case FIT_MESG_NUM_STRESS_LEVEL:
+                    {
+                        const FIT_STRESS_LEVEL_MESG *new = (FIT_STRESS_LEVEL_MESG *) mesg;
+                        idx++;
+                        import_stress_level(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_MEMO_GLOB:
+                    {
+                        const FIT_MEMO_GLOB_MESG *new = (FIT_MEMO_GLOB_MESG *) mesg;
+                        idx++;
+                        import_memo_glob(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_ANT_CHANNEL_ID:
+                    {
+                        const FIT_ANT_CHANNEL_ID_MESG *new = (FIT_ANT_CHANNEL_ID_MESG *) mesg;
+                        idx++;
+                        import_ant_channel_id(libData, data, idx, new);
+                        break;
+                    }
+
                     case FIT_MESG_NUM_ANT_RX:
                     {
                         const FIT_ANT_RX_MESG *new = (FIT_ANT_RX_MESG *) mesg;
@@ -772,6 +940,14 @@ DLLEXPORT int FITImport(
                         const FIT_EXD_DATA_CONCEPT_CONFIGURATION_MESG *new = (FIT_EXD_DATA_CONCEPT_CONFIGURATION_MESG *) mesg;
                         idx++;
                         import_exd_data_concept_configuration(libData, data, idx, new);
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_DIVE_SUMMARY:
+                    {
+                        const FIT_DIVE_SUMMARY_MESG *new = (FIT_DIVE_SUMMARY_MESG *) mesg;
+                        idx++;
+                        import_dive_summary(libData, data, idx, new);
                         break;
                     }
 
@@ -1072,6 +1248,12 @@ static int count_usable_fit_messages(char* input, mint *err)
                         break;
                     }
 
+                    case FIT_MESG_NUM_TIMESTAMP_CORRELATION:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
                     case FIT_MESG_NUM_SOFTWARE:
                     {
                         mesg_count++;
@@ -1144,6 +1326,18 @@ static int count_usable_fit_messages(char* input, mint *err)
                         break;
                     }
 
+                    case FIT_MESG_NUM_WATCHFACE_SETTINGS:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_OHR_SETTINGS:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
                     case FIT_MESG_NUM_ZONES_TARGET:
                     {
                         mesg_count++;
@@ -1187,6 +1381,18 @@ static int count_usable_fit_messages(char* input, mint *err)
                     }
 
                     case FIT_MESG_NUM_DIVE_SETTINGS:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_DIVE_ALARM:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_DIVE_GAS:
                     {
                         mesg_count++;
                         break;
@@ -1264,7 +1470,61 @@ static int count_usable_fit_messages(char* input, mint *err)
                         break;
                     }
 
+                    case FIT_MESG_NUM_GPS_METADATA:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_CAMERA_EVENT:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_GYROSCOPE_DATA:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
                     case FIT_MESG_NUM_ACCELEROMETER_DATA:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_MAGNETOMETER_DATA:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_BAROMETER_DATA:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_THREE_D_SENSOR_CALIBRATION:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_ONE_D_SENSOR_CALIBRATION:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_VIDEO_FRAME:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_OBDII_DATA:
                     {
                         mesg_count++;
                         break;
@@ -1282,6 +1542,12 @@ static int count_usable_fit_messages(char* input, mint *err)
                         break;
                     }
 
+                    case FIT_MESG_NUM_VIDEO:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
                     case FIT_MESG_NUM_VIDEO_TITLE:
                     {
                         mesg_count++;
@@ -1294,7 +1560,25 @@ static int count_usable_fit_messages(char* input, mint *err)
                         break;
                     }
 
+                    case FIT_MESG_NUM_VIDEO_CLIP:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
                     case FIT_MESG_NUM_SET:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_JUMP:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_CLIMB_PRO:
                     {
                         mesg_count++;
                         break;
@@ -1420,6 +1704,24 @@ static int count_usable_fit_messages(char* input, mint *err)
                         break;
                     }
 
+                    case FIT_MESG_NUM_STRESS_LEVEL:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_MEMO_GLOB:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_ANT_CHANNEL_ID:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
                     case FIT_MESG_NUM_ANT_RX:
                     {
                         mesg_count++;
@@ -1445,6 +1747,12 @@ static int count_usable_fit_messages(char* input, mint *err)
                     }
 
                     case FIT_MESG_NUM_EXD_DATA_CONCEPT_CONFIGURATION:
+                    {
+                        mesg_count++;
+                        break;
+                    }
+
+                    case FIT_MESG_NUM_DIVE_SUMMARY:
                     {
                         mesg_count++;
                         break;
@@ -1642,6 +1950,20 @@ static void import_file_creator(WolframLibraryData libData, MTensor data, int id
     ImportFinish(4, libData, data, pos);
 }
 
+static void import_timestamp_correlation(WolframLibraryData libData, MTensor data, int idx, const FIT_TIMESTAMP_CORRELATION_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_TIMESTAMP_CORRELATION);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, WLTimestamp(mesg->system_timestamp));
+    ImportInteger(4, libData, data, pos, WLTimestamp(mesg->local_timestamp));
+    ImportInteger(5, libData, data, pos, mesg->fractional_timestamp);
+    ImportInteger(6, libData, data, pos, mesg->fractional_system_timestamp);
+    ImportInteger(7, libData, data, pos, mesg->timestamp_ms);
+    ImportInteger(8, libData, data, pos, mesg->system_timestamp_ms);
+    ImportFinish(9, libData, data, pos);
+}
+
 static void import_software(WolframLibraryData libData, MTensor data, int idx, const FIT_SOFTWARE_MESG *mesg)
 {
     mint pos[2] = {idx, 0};
@@ -1716,21 +2038,28 @@ static void import_device_settings(WolframLibraryData libData, MTensor data, int
     ImportInteger(2, libData, data, pos, mesg->utc_offset);
     ImportIntegerSequence(3, libData, data, pos, mesg->time_offset, FIT_DEVICE_SETTINGS_MESG_TIME_OFFSET_COUNT);
     ImportInteger(4, libData, data, pos, WLTimestamp(mesg->clock_time));
-    ImportIntegerSequence(5, libData, data, pos, mesg->pages_enabled, FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT);
-    ImportIntegerSequence(6, libData, data, pos, mesg->default_page, FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT);
-    ImportInteger(7, libData, data, pos, mesg->autosync_min_steps);
-    ImportInteger(8, libData, data, pos, mesg->autosync_min_time);
-    ImportInteger(9, libData, data, pos, mesg->active_time_zone);
-    ImportIntegerSequence(10, libData, data, pos, mesg->time_mode, FIT_DEVICE_SETTINGS_MESG_TIME_MODE_COUNT);
-    ImportIntegerSequence(11, libData, data, pos, mesg->time_zone_offset, FIT_DEVICE_SETTINGS_MESG_TIME_ZONE_OFFSET_COUNT);
-    ImportInteger(12, libData, data, pos, mesg->backlight_mode);
-    ImportInteger(13, libData, data, pos, mesg->activity_tracker_enabled);
-    ImportInteger(14, libData, data, pos, mesg->move_alert_enabled);
-    ImportInteger(15, libData, data, pos, mesg->date_mode);
-    ImportInteger(16, libData, data, pos, mesg->display_orientation);
-    ImportInteger(17, libData, data, pos, mesg->mounting_side);
-    ImportInteger(18, libData, data, pos, mesg->tap_sensitivity);
-    ImportFinish(19, libData, data, pos);
+    ImportInteger(5, libData, data, pos, mesg->auto_activity_detect);
+    ImportIntegerSequence(6, libData, data, pos, mesg->pages_enabled, FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT);
+    ImportIntegerSequence(7, libData, data, pos, mesg->default_page, FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT);
+    ImportInteger(8, libData, data, pos, mesg->autosync_min_steps);
+    ImportInteger(9, libData, data, pos, mesg->autosync_min_time);
+    ImportInteger(10, libData, data, pos, mesg->active_time_zone);
+    ImportIntegerSequence(11, libData, data, pos, mesg->time_mode, FIT_DEVICE_SETTINGS_MESG_TIME_MODE_COUNT);
+    ImportIntegerSequence(12, libData, data, pos, mesg->time_zone_offset, FIT_DEVICE_SETTINGS_MESG_TIME_ZONE_OFFSET_COUNT);
+    ImportInteger(13, libData, data, pos, mesg->backlight_mode);
+    ImportInteger(14, libData, data, pos, mesg->activity_tracker_enabled);
+    ImportInteger(15, libData, data, pos, mesg->move_alert_enabled);
+    ImportInteger(16, libData, data, pos, mesg->date_mode);
+    ImportInteger(17, libData, data, pos, mesg->display_orientation);
+    ImportInteger(18, libData, data, pos, mesg->mounting_side);
+    ImportInteger(19, libData, data, pos, mesg->lactate_threshold_autodetect_enabled);
+    ImportInteger(20, libData, data, pos, mesg->ble_auto_upload_enabled);
+    ImportInteger(21, libData, data, pos, mesg->auto_sync_frequency);
+    ImportInteger(22, libData, data, pos, mesg->number_of_screens);
+    ImportInteger(23, libData, data, pos, mesg->smart_notification_display_orientation);
+    ImportInteger(24, libData, data, pos, mesg->tap_interface);
+    ImportInteger(25, libData, data, pos, mesg->tap_sensitivity);
+    ImportFinish(26, libData, data, pos);
 }
 
 static void import_user_profile(WolframLibraryData libData, MTensor data, int idx, const FIT_USER_PROFILE_MESG *mesg)
@@ -1855,6 +2184,25 @@ static void import_connectivity(WolframLibraryData libData, MTensor data, int id
     ImportFinish(38, libData, data, pos);
 }
 
+static void import_watchface_settings(WolframLibraryData libData, MTensor data, int idx, const FIT_WATCHFACE_SETTINGS_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_WATCHFACE_SETTINGS);
+    ImportInteger(2, libData, data, pos, mesg->message_index);
+    ImportInteger(3, libData, data, pos, mesg->mode);
+    ImportInteger(4, libData, data, pos, mesg->layout);
+    ImportFinish(5, libData, data, pos);
+}
+
+static void import_ohr_settings(WolframLibraryData libData, MTensor data, int idx, const FIT_OHR_SETTINGS_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_OHR_SETTINGS);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->enabled);
+    ImportFinish(4, libData, data, pos);
+}
+
 static void import_zones_target(WolframLibraryData libData, MTensor data, int idx, const FIT_ZONES_TARGET_MESG *mesg)
 {
     mint pos[2] = {idx, 0};
@@ -1933,8 +2281,53 @@ static void import_dive_settings(WolframLibraryData libData, MTensor data, int i
     mint pos[2] = {idx, 0};
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_DIVE_SETTINGS);
     ImportString(2, libData, data, pos, mesg->name, FIT_DIVE_SETTINGS_MESG_NAME_COUNT);
-    ImportInteger(18, libData, data, pos, mesg->heart_rate_source);
-    ImportFinish(19, libData, data, pos);
+    ImportFloat(18, libData, data, pos, mesg->water_density);
+    ImportFloat(19, libData, data, pos, mesg->bottom_depth);
+    ImportInteger(20, libData, data, pos, mesg->bottom_time);
+    ImportInteger(21, libData, data, pos, mesg->apnea_countdown_time);
+    ImportInteger(22, libData, data, pos, mesg->message_index);
+    ImportInteger(23, libData, data, pos, mesg->repeat_dive_interval);
+    ImportInteger(24, libData, data, pos, mesg->safety_stop_time);
+    ImportInteger(25, libData, data, pos, mesg->model);
+    ImportInteger(26, libData, data, pos, mesg->gf_low);
+    ImportInteger(27, libData, data, pos, mesg->gf_high);
+    ImportInteger(28, libData, data, pos, mesg->water_type);
+    ImportInteger(29, libData, data, pos, mesg->po2_warn);
+    ImportInteger(30, libData, data, pos, mesg->po2_critical);
+    ImportInteger(31, libData, data, pos, mesg->po2_deco);
+    ImportInteger(32, libData, data, pos, mesg->safety_stop_enabled);
+    ImportInteger(33, libData, data, pos, mesg->apnea_countdown_enabled);
+    ImportInteger(34, libData, data, pos, mesg->backlight_mode);
+    ImportInteger(35, libData, data, pos, mesg->backlight_brightness);
+    ImportInteger(36, libData, data, pos, mesg->backlight_timeout);
+    ImportInteger(37, libData, data, pos, mesg->heart_rate_source_type);
+    ImportInteger(38, libData, data, pos, mesg->heart_rate_source);
+    ImportFinish(39, libData, data, pos);
+}
+
+static void import_dive_alarm(WolframLibraryData libData, MTensor data, int idx, const FIT_DIVE_ALARM_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_DIVE_ALARM);
+    ImportInteger(2, libData, data, pos, mesg->depth);
+    ImportInteger(3, libData, data, pos, mesg->time);
+    ImportInteger(4, libData, data, pos, mesg->message_index);
+    ImportInteger(5, libData, data, pos, mesg->enabled);
+    ImportInteger(6, libData, data, pos, mesg->alarm_type);
+    ImportInteger(7, libData, data, pos, mesg->sound);
+    ImportIntegerSequence(8, libData, data, pos, mesg->dive_types, FIT_DIVE_ALARM_MESG_DIVE_TYPES_COUNT);
+    ImportFinish(9, libData, data, pos);
+}
+
+static void import_dive_gas(WolframLibraryData libData, MTensor data, int idx, const FIT_DIVE_GAS_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_DIVE_GAS);
+    ImportInteger(2, libData, data, pos, mesg->message_index);
+    ImportInteger(3, libData, data, pos, mesg->helium_content);
+    ImportInteger(4, libData, data, pos, mesg->oxygen_content);
+    ImportInteger(5, libData, data, pos, mesg->status);
+    ImportFinish(6, libData, data, pos);
 }
 
 static void import_goal(WolframLibraryData libData, MTensor data, int idx, const FIT_GOAL_MESG *mesg)
@@ -2130,74 +2523,107 @@ static void import_lap(WolframLibraryData libData, MTensor data, int idx, const 
     ImportIntegerSequence(19, libData, data, pos, mesg->time_in_speed_zone, FIT_LAP_MESG_TIME_IN_SPEED_ZONE_COUNT);
     ImportIntegerSequence(20, libData, data, pos, mesg->time_in_cadence_zone, FIT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT);
     ImportIntegerSequence(21, libData, data, pos, mesg->time_in_power_zone, FIT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT);
-    ImportInteger(28, libData, data, pos, mesg->enhanced_avg_speed);
-    ImportInteger(29, libData, data, pos, mesg->enhanced_max_speed);
-    ImportInteger(30, libData, data, pos, mesg->enhanced_avg_altitude);
-    ImportInteger(31, libData, data, pos, mesg->enhanced_min_altitude);
-    ImportInteger(32, libData, data, pos, mesg->enhanced_max_altitude);
-    ImportInteger(33, libData, data, pos, mesg->message_index);
-    ImportInteger(34, libData, data, pos, mesg->total_calories);
-    ImportInteger(35, libData, data, pos, mesg->total_fat_calories);
-    ImportInteger(36, libData, data, pos, mesg->avg_speed);
-    ImportInteger(37, libData, data, pos, mesg->max_speed);
-    ImportInteger(38, libData, data, pos, mesg->avg_power);
-    ImportInteger(39, libData, data, pos, mesg->max_power);
-    ImportInteger(40, libData, data, pos, mesg->total_ascent);
-    ImportInteger(41, libData, data, pos, mesg->total_descent);
-    ImportInteger(42, libData, data, pos, mesg->num_lengths);
-    ImportInteger(43, libData, data, pos, mesg->normalized_power);
-    ImportInteger(44, libData, data, pos, mesg->left_right_balance);
-    ImportInteger(45, libData, data, pos, mesg->first_length_index);
-    ImportInteger(46, libData, data, pos, mesg->avg_stroke_distance);
-    ImportInteger(47, libData, data, pos, mesg->num_active_lengths);
-    ImportInteger(48, libData, data, pos, mesg->avg_altitude);
-    ImportInteger(49, libData, data, pos, mesg->max_altitude);
-    ImportInteger(50, libData, data, pos, mesg->avg_grade);
-    ImportInteger(51, libData, data, pos, mesg->avg_pos_grade);
-    ImportInteger(52, libData, data, pos, mesg->avg_neg_grade);
-    ImportInteger(53, libData, data, pos, mesg->max_pos_grade);
-    ImportInteger(54, libData, data, pos, mesg->max_neg_grade);
-    ImportInteger(55, libData, data, pos, mesg->avg_pos_vertical_speed);
-    ImportInteger(56, libData, data, pos, mesg->avg_neg_vertical_speed);
-    ImportInteger(57, libData, data, pos, mesg->max_pos_vertical_speed);
-    ImportInteger(58, libData, data, pos, mesg->max_neg_vertical_speed);
-    ImportInteger(59, libData, data, pos, mesg->repetition_num);
-    ImportInteger(60, libData, data, pos, mesg->min_altitude);
-    ImportInteger(61, libData, data, pos, mesg->wkt_step_index);
-    ImportInteger(62, libData, data, pos, mesg->opponent_score);
-    ImportIntegerSequence(63, libData, data, pos, mesg->stroke_count, FIT_LAP_MESG_STROKE_COUNT_COUNT);
-    ImportIntegerSequence(64, libData, data, pos, mesg->zone_count, FIT_LAP_MESG_ZONE_COUNT_COUNT);
-    ImportInteger(71, libData, data, pos, mesg->avg_vertical_oscillation);
-    ImportInteger(72, libData, data, pos, mesg->avg_stance_time_percent);
-    ImportInteger(73, libData, data, pos, mesg->avg_stance_time);
-    ImportInteger(74, libData, data, pos, mesg->player_score);
-    ImportIntegerSequence(75, libData, data, pos, mesg->avg_total_hemoglobin_conc, FIT_LAP_MESG_AVG_TOTAL_HEMOGLOBIN_CONC_COUNT);
-    ImportIntegerSequence(76, libData, data, pos, mesg->min_total_hemoglobin_conc, FIT_LAP_MESG_MIN_TOTAL_HEMOGLOBIN_CONC_COUNT);
-    ImportIntegerSequence(77, libData, data, pos, mesg->max_total_hemoglobin_conc, FIT_LAP_MESG_MAX_TOTAL_HEMOGLOBIN_CONC_COUNT);
-    ImportIntegerSequence(78, libData, data, pos, mesg->avg_saturated_hemoglobin_percent, FIT_LAP_MESG_AVG_SATURATED_HEMOGLOBIN_PERCENT_COUNT);
-    ImportIntegerSequence(79, libData, data, pos, mesg->min_saturated_hemoglobin_percent, FIT_LAP_MESG_MIN_SATURATED_HEMOGLOBIN_PERCENT_COUNT);
-    ImportIntegerSequence(80, libData, data, pos, mesg->max_saturated_hemoglobin_percent, FIT_LAP_MESG_MAX_SATURATED_HEMOGLOBIN_PERCENT_COUNT);
-    ImportInteger(81, libData, data, pos, mesg->avg_vam);
-    ImportInteger(82, libData, data, pos, mesg->event);
-    ImportInteger(83, libData, data, pos, mesg->event_type);
-    ImportInteger(84, libData, data, pos, mesg->avg_heart_rate);
-    ImportInteger(85, libData, data, pos, mesg->max_heart_rate);
-    ImportInteger(86, libData, data, pos, mesg->avg_cadence);
-    ImportInteger(87, libData, data, pos, mesg->max_cadence);
-    ImportInteger(88, libData, data, pos, mesg->intensity);
-    ImportInteger(89, libData, data, pos, mesg->lap_trigger);
-    ImportInteger(90, libData, data, pos, mesg->sport);
-    ImportInteger(91, libData, data, pos, mesg->event_group);
-    ImportInteger(92, libData, data, pos, mesg->swim_stroke);
-    ImportInteger(93, libData, data, pos, mesg->sub_sport);
-    ImportInteger(94, libData, data, pos, mesg->gps_accuracy);
-    ImportInteger(95, libData, data, pos, mesg->avg_temperature);
-    ImportInteger(96, libData, data, pos, mesg->max_temperature);
-    ImportInteger(97, libData, data, pos, mesg->min_heart_rate);
-    ImportInteger(98, libData, data, pos, mesg->avg_fractional_cadence);
-    ImportInteger(99, libData, data, pos, mesg->max_fractional_cadence);
-    ImportInteger(100, libData, data, pos, mesg->total_fractional_cycles);
-    ImportFinish(101, libData, data, pos);
+    ImportInteger(28, libData, data, pos, mesg->time_standing);
+    ImportInteger(29, libData, data, pos, mesg->enhanced_avg_speed);
+    ImportInteger(30, libData, data, pos, mesg->enhanced_max_speed);
+    ImportInteger(31, libData, data, pos, mesg->enhanced_avg_altitude);
+    ImportInteger(32, libData, data, pos, mesg->enhanced_min_altitude);
+    ImportInteger(33, libData, data, pos, mesg->enhanced_max_altitude);
+    ImportFloat(34, libData, data, pos, mesg->total_grit);
+    ImportFloat(35, libData, data, pos, mesg->total_flow);
+    ImportFloat(36, libData, data, pos, mesg->avg_grit);
+    ImportFloat(37, libData, data, pos, mesg->avg_flow);
+    ImportInteger(38, libData, data, pos, mesg->message_index);
+    ImportInteger(39, libData, data, pos, mesg->total_calories);
+    ImportInteger(40, libData, data, pos, mesg->total_fat_calories);
+    ImportInteger(41, libData, data, pos, mesg->avg_speed);
+    ImportInteger(42, libData, data, pos, mesg->max_speed);
+    ImportInteger(43, libData, data, pos, mesg->avg_power);
+    ImportInteger(44, libData, data, pos, mesg->max_power);
+    ImportInteger(45, libData, data, pos, mesg->total_ascent);
+    ImportInteger(46, libData, data, pos, mesg->total_descent);
+    ImportInteger(47, libData, data, pos, mesg->num_lengths);
+    ImportInteger(48, libData, data, pos, mesg->normalized_power);
+    ImportInteger(49, libData, data, pos, mesg->left_right_balance);
+    ImportInteger(50, libData, data, pos, mesg->first_length_index);
+    ImportInteger(51, libData, data, pos, mesg->avg_stroke_distance);
+    ImportInteger(52, libData, data, pos, mesg->num_active_lengths);
+    ImportInteger(53, libData, data, pos, mesg->avg_altitude);
+    ImportInteger(54, libData, data, pos, mesg->max_altitude);
+    ImportInteger(55, libData, data, pos, mesg->avg_grade);
+    ImportInteger(56, libData, data, pos, mesg->avg_pos_grade);
+    ImportInteger(57, libData, data, pos, mesg->avg_neg_grade);
+    ImportInteger(58, libData, data, pos, mesg->max_pos_grade);
+    ImportInteger(59, libData, data, pos, mesg->max_neg_grade);
+    ImportInteger(60, libData, data, pos, mesg->avg_pos_vertical_speed);
+    ImportInteger(61, libData, data, pos, mesg->avg_neg_vertical_speed);
+    ImportInteger(62, libData, data, pos, mesg->max_pos_vertical_speed);
+    ImportInteger(63, libData, data, pos, mesg->max_neg_vertical_speed);
+    ImportInteger(64, libData, data, pos, mesg->repetition_num);
+    ImportInteger(65, libData, data, pos, mesg->min_altitude);
+    ImportInteger(66, libData, data, pos, mesg->wkt_step_index);
+    ImportInteger(67, libData, data, pos, mesg->opponent_score);
+    ImportIntegerSequence(68, libData, data, pos, mesg->stroke_count, FIT_LAP_MESG_STROKE_COUNT_COUNT);
+    ImportIntegerSequence(69, libData, data, pos, mesg->zone_count, FIT_LAP_MESG_ZONE_COUNT_COUNT);
+    ImportInteger(76, libData, data, pos, mesg->avg_vertical_oscillation);
+    ImportInteger(77, libData, data, pos, mesg->avg_stance_time_percent);
+    ImportInteger(78, libData, data, pos, mesg->avg_stance_time);
+    ImportInteger(79, libData, data, pos, mesg->player_score);
+    ImportIntegerSequence(80, libData, data, pos, mesg->avg_total_hemoglobin_conc, FIT_LAP_MESG_AVG_TOTAL_HEMOGLOBIN_CONC_COUNT);
+    ImportIntegerSequence(81, libData, data, pos, mesg->min_total_hemoglobin_conc, FIT_LAP_MESG_MIN_TOTAL_HEMOGLOBIN_CONC_COUNT);
+    ImportIntegerSequence(82, libData, data, pos, mesg->max_total_hemoglobin_conc, FIT_LAP_MESG_MAX_TOTAL_HEMOGLOBIN_CONC_COUNT);
+    ImportIntegerSequence(83, libData, data, pos, mesg->avg_saturated_hemoglobin_percent, FIT_LAP_MESG_AVG_SATURATED_HEMOGLOBIN_PERCENT_COUNT);
+    ImportIntegerSequence(84, libData, data, pos, mesg->min_saturated_hemoglobin_percent, FIT_LAP_MESG_MIN_SATURATED_HEMOGLOBIN_PERCENT_COUNT);
+    ImportIntegerSequence(85, libData, data, pos, mesg->max_saturated_hemoglobin_percent, FIT_LAP_MESG_MAX_SATURATED_HEMOGLOBIN_PERCENT_COUNT);
+    ImportInteger(86, libData, data, pos, mesg->stand_count);
+    ImportIntegerSequence(87, libData, data, pos, mesg->avg_power_position, FIT_LAP_MESG_AVG_POWER_POSITION_COUNT);
+    ImportIntegerSequence(88, libData, data, pos, mesg->max_power_position, FIT_LAP_MESG_MAX_POWER_POSITION_COUNT);
+    ImportInteger(89, libData, data, pos, mesg->avg_lev_motor_power);
+    ImportInteger(90, libData, data, pos, mesg->max_lev_motor_power);
+    ImportInteger(91, libData, data, pos, mesg->avg_vertical_ratio);
+    ImportInteger(92, libData, data, pos, mesg->avg_stance_time_balance);
+    ImportInteger(93, libData, data, pos, mesg->avg_step_length);
+    ImportInteger(94, libData, data, pos, mesg->avg_vam);
+    ImportInteger(95, libData, data, pos, mesg->jump_count);
+    ImportInteger(96, libData, data, pos, mesg->avg_core_temperature);
+    ImportInteger(97, libData, data, pos, mesg->min_core_temperature);
+    ImportInteger(98, libData, data, pos, mesg->max_core_temperature);
+    ImportInteger(99, libData, data, pos, mesg->event);
+    ImportInteger(100, libData, data, pos, mesg->event_type);
+    ImportInteger(101, libData, data, pos, mesg->avg_heart_rate);
+    ImportInteger(102, libData, data, pos, mesg->max_heart_rate);
+    ImportInteger(103, libData, data, pos, mesg->avg_cadence);
+    ImportInteger(104, libData, data, pos, mesg->max_cadence);
+    ImportInteger(105, libData, data, pos, mesg->intensity);
+    ImportInteger(106, libData, data, pos, mesg->lap_trigger);
+    ImportInteger(107, libData, data, pos, mesg->sport);
+    ImportInteger(108, libData, data, pos, mesg->event_group);
+    ImportInteger(109, libData, data, pos, mesg->swim_stroke);
+    ImportInteger(110, libData, data, pos, mesg->sub_sport);
+    ImportInteger(111, libData, data, pos, mesg->gps_accuracy);
+    ImportInteger(112, libData, data, pos, mesg->avg_temperature);
+    ImportInteger(113, libData, data, pos, mesg->max_temperature);
+    ImportInteger(114, libData, data, pos, mesg->min_heart_rate);
+    ImportInteger(115, libData, data, pos, mesg->avg_fractional_cadence);
+    ImportInteger(116, libData, data, pos, mesg->max_fractional_cadence);
+    ImportInteger(117, libData, data, pos, mesg->total_fractional_cycles);
+    ImportInteger(118, libData, data, pos, mesg->avg_left_torque_effectiveness);
+    ImportInteger(119, libData, data, pos, mesg->avg_right_torque_effectiveness);
+    ImportInteger(120, libData, data, pos, mesg->avg_left_pedal_smoothness);
+    ImportInteger(121, libData, data, pos, mesg->avg_right_pedal_smoothness);
+    ImportInteger(122, libData, data, pos, mesg->avg_combined_pedal_smoothness);
+    ImportInteger(123, libData, data, pos, mesg->avg_left_pco);
+    ImportInteger(124, libData, data, pos, mesg->avg_right_pco);
+    ImportIntegerSequence(125, libData, data, pos, mesg->avg_left_power_phase, FIT_LAP_MESG_AVG_LEFT_POWER_PHASE_COUNT);
+    ImportIntegerSequence(126, libData, data, pos, mesg->avg_left_power_phase_peak, FIT_LAP_MESG_AVG_LEFT_POWER_PHASE_PEAK_COUNT);
+    ImportIntegerSequence(127, libData, data, pos, mesg->avg_right_power_phase, FIT_LAP_MESG_AVG_RIGHT_POWER_PHASE_COUNT);
+    ImportIntegerSequence(128, libData, data, pos, mesg->avg_right_power_phase_peak, FIT_LAP_MESG_AVG_RIGHT_POWER_PHASE_PEAK_COUNT);
+    ImportIntegerSequence(129, libData, data, pos, mesg->avg_cadence_position, FIT_LAP_MESG_AVG_CADENCE_POSITION_COUNT);
+    ImportIntegerSequence(130, libData, data, pos, mesg->max_cadence_position, FIT_LAP_MESG_MAX_CADENCE_POSITION_COUNT);
+    ImportInteger(131, libData, data, pos, mesg->lev_battery_consumption);
+    ImportInteger(132, libData, data, pos, mesg->total_fractional_ascent);
+    ImportInteger(133, libData, data, pos, mesg->total_fractional_descent);
+    ImportFinish(134, libData, data, pos);
 }
 
 static void import_length(WolframLibraryData libData, MTensor data, int idx, const FIT_LENGTH_MESG *mesg)
@@ -2322,9 +2748,12 @@ static void import_event(WolframLibraryData libData, MTensor data, int idx, cons
     ImportInteger(11, libData, data, pos, mesg->front_gear);
     ImportInteger(12, libData, data, pos, mesg->rear_gear_num);
     ImportInteger(13, libData, data, pos, mesg->rear_gear);
-    ImportInteger(14, libData, data, pos, mesg->radar_threat_level_max);
-    ImportInteger(15, libData, data, pos, mesg->radar_threat_count);
-    ImportFinish(16, libData, data, pos);
+    ImportInteger(14, libData, data, pos, mesg->device_index);
+    ImportInteger(15, libData, data, pos, mesg->radar_threat_level_max);
+    ImportInteger(16, libData, data, pos, mesg->radar_threat_count);
+    ImportInteger(17, libData, data, pos, mesg->radar_threat_avg_approach_speed);
+    ImportInteger(18, libData, data, pos, mesg->radar_threat_max_approach_speed);
+    ImportFinish(19, libData, data, pos);
 }
 
 static void import_device_info(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVICE_INFO_MESG *mesg)
@@ -2414,6 +2843,50 @@ static void import_weather_alert(WolframLibraryData libData, MTensor data, int i
     ImportFinish(19, libData, data, pos);
 }
 
+static void import_gps_metadata(WolframLibraryData libData, MTensor data, int idx, const FIT_GPS_METADATA_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_GPS_METADATA);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->position_lat);
+    ImportInteger(4, libData, data, pos, mesg->position_long);
+    ImportInteger(5, libData, data, pos, mesg->enhanced_altitude);
+    ImportInteger(6, libData, data, pos, mesg->enhanced_speed);
+    ImportInteger(7, libData, data, pos, WLTimestamp(mesg->utc_timestamp));
+    ImportInteger(8, libData, data, pos, mesg->timestamp_ms);
+    ImportInteger(9, libData, data, pos, mesg->heading);
+    ImportIntegerSequence(10, libData, data, pos, mesg->velocity, FIT_GPS_METADATA_MESG_VELOCITY_COUNT);
+    ImportFinish(13, libData, data, pos);
+}
+
+static void import_camera_event(WolframLibraryData libData, MTensor data, int idx, const FIT_CAMERA_EVENT_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_CAMERA_EVENT);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->timestamp_ms);
+    ImportInteger(4, libData, data, pos, mesg->camera_event_type);
+    ImportString(5, libData, data, pos, mesg->camera_file_uuid, FIT_CAMERA_EVENT_MESG_CAMERA_FILE_UUID_COUNT);
+    ImportInteger(6, libData, data, pos, mesg->camera_orientation);
+    ImportFinish(7, libData, data, pos);
+}
+
+static void import_gyroscope_data(WolframLibraryData libData, MTensor data, int idx, const FIT_GYROSCOPE_DATA_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_GYROSCOPE_DATA);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportFloatSequence(3, libData, data, pos, mesg->calibrated_gyro_x, FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_X_COUNT);
+    ImportFloatSequence(4, libData, data, pos, mesg->calibrated_gyro_y, FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_Y_COUNT);
+    ImportFloatSequence(5, libData, data, pos, mesg->calibrated_gyro_z, FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_Z_COUNT);
+    ImportInteger(6, libData, data, pos, mesg->timestamp_ms);
+    ImportIntegerSequence(7, libData, data, pos, mesg->sample_time_offset, FIT_GYROSCOPE_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT);
+    ImportIntegerSequence(8, libData, data, pos, mesg->gyro_x, FIT_GYROSCOPE_DATA_MESG_GYRO_X_COUNT);
+    ImportIntegerSequence(9, libData, data, pos, mesg->gyro_y, FIT_GYROSCOPE_DATA_MESG_GYRO_Y_COUNT);
+    ImportIntegerSequence(10, libData, data, pos, mesg->gyro_z, FIT_GYROSCOPE_DATA_MESG_GYRO_Z_COUNT);
+    ImportFinish(11, libData, data, pos);
+}
+
 static void import_accelerometer_data(WolframLibraryData libData, MTensor data, int idx, const FIT_ACCELEROMETER_DATA_MESG *mesg)
 {
     mint pos[2] = {idx, 0};
@@ -2431,6 +2904,86 @@ static void import_accelerometer_data(WolframLibraryData libData, MTensor data, 
     ImportIntegerSequence(12, libData, data, pos, mesg->compressed_calibrated_accel_y, FIT_ACCELEROMETER_DATA_MESG_COMPRESSED_CALIBRATED_ACCEL_Y_COUNT);
     ImportIntegerSequence(13, libData, data, pos, mesg->compressed_calibrated_accel_z, FIT_ACCELEROMETER_DATA_MESG_COMPRESSED_CALIBRATED_ACCEL_Z_COUNT);
     ImportFinish(14, libData, data, pos);
+}
+
+static void import_magnetometer_data(WolframLibraryData libData, MTensor data, int idx, const FIT_MAGNETOMETER_DATA_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_MAGNETOMETER_DATA);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportFloatSequence(3, libData, data, pos, mesg->calibrated_mag_x, FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_X_COUNT);
+    ImportFloatSequence(4, libData, data, pos, mesg->calibrated_mag_y, FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_Y_COUNT);
+    ImportFloatSequence(5, libData, data, pos, mesg->calibrated_mag_z, FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_Z_COUNT);
+    ImportInteger(6, libData, data, pos, mesg->timestamp_ms);
+    ImportIntegerSequence(7, libData, data, pos, mesg->sample_time_offset, FIT_MAGNETOMETER_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT);
+    ImportIntegerSequence(8, libData, data, pos, mesg->mag_x, FIT_MAGNETOMETER_DATA_MESG_MAG_X_COUNT);
+    ImportIntegerSequence(9, libData, data, pos, mesg->mag_y, FIT_MAGNETOMETER_DATA_MESG_MAG_Y_COUNT);
+    ImportIntegerSequence(10, libData, data, pos, mesg->mag_z, FIT_MAGNETOMETER_DATA_MESG_MAG_Z_COUNT);
+    ImportFinish(11, libData, data, pos);
+}
+
+static void import_barometer_data(WolframLibraryData libData, MTensor data, int idx, const FIT_BAROMETER_DATA_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_BAROMETER_DATA);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportIntegerSequence(3, libData, data, pos, mesg->baro_pres, FIT_BAROMETER_DATA_MESG_BARO_PRES_COUNT);
+    ImportInteger(4, libData, data, pos, mesg->timestamp_ms);
+    ImportIntegerSequence(5, libData, data, pos, mesg->sample_time_offset, FIT_BAROMETER_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT);
+    ImportFinish(6, libData, data, pos);
+}
+
+static void import_three_d_sensor_calibration(WolframLibraryData libData, MTensor data, int idx, const FIT_THREE_D_SENSOR_CALIBRATION_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_THREE_D_SENSOR_CALIBRATION);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->calibration_factor);
+    ImportInteger(4, libData, data, pos, mesg->calibration_divisor);
+    ImportInteger(5, libData, data, pos, mesg->level_shift);
+    ImportIntegerSequence(6, libData, data, pos, mesg->offset_cal, FIT_THREE_D_SENSOR_CALIBRATION_MESG_OFFSET_CAL_COUNT);
+    ImportIntegerSequence(9, libData, data, pos, mesg->orientation_matrix, FIT_THREE_D_SENSOR_CALIBRATION_MESG_ORIENTATION_MATRIX_COUNT);
+    ImportInteger(18, libData, data, pos, mesg->sensor_type);
+    ImportFinish(19, libData, data, pos);
+}
+
+static void import_one_d_sensor_calibration(WolframLibraryData libData, MTensor data, int idx, const FIT_ONE_D_SENSOR_CALIBRATION_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_ONE_D_SENSOR_CALIBRATION);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->calibration_factor);
+    ImportInteger(4, libData, data, pos, mesg->calibration_divisor);
+    ImportInteger(5, libData, data, pos, mesg->level_shift);
+    ImportInteger(6, libData, data, pos, mesg->offset_cal);
+    ImportInteger(7, libData, data, pos, mesg->sensor_type);
+    ImportFinish(8, libData, data, pos);
+}
+
+static void import_video_frame(WolframLibraryData libData, MTensor data, int idx, const FIT_VIDEO_FRAME_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_VIDEO_FRAME);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->frame_number);
+    ImportInteger(4, libData, data, pos, mesg->timestamp_ms);
+    ImportFinish(5, libData, data, pos);
+}
+
+static void import_obdii_data(WolframLibraryData libData, MTensor data, int idx, const FIT_OBDII_DATA_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_OBDII_DATA);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportIntegerSequence(3, libData, data, pos, mesg->system_time, FIT_OBDII_DATA_MESG_SYSTEM_TIME_COUNT);
+    ImportInteger(4, libData, data, pos, WLTimestamp(mesg->start_timestamp));
+    ImportInteger(5, libData, data, pos, mesg->timestamp_ms);
+    ImportIntegerSequence(6, libData, data, pos, mesg->time_offset, FIT_OBDII_DATA_MESG_TIME_OFFSET_COUNT);
+    ImportInteger(7, libData, data, pos, mesg->start_timestamp_ms);
+    ImportInteger(8, libData, data, pos, mesg->pid);
+    ImportIntegerSequence(9, libData, data, pos, mesg->raw_data, FIT_OBDII_DATA_MESG_RAW_DATA_COUNT);
+    ImportIntegerSequence(10, libData, data, pos, mesg->pid_data_size, FIT_OBDII_DATA_MESG_PID_DATA_SIZE_COUNT);
+    ImportFinish(11, libData, data, pos);
 }
 
 static void import_nmea_sentence(WolframLibraryData libData, MTensor data, int idx, const FIT_NMEA_SENTENCE_MESG *mesg)
@@ -2462,6 +3015,16 @@ static void import_aviation_attitude(WolframLibraryData libData, MTensor data, i
     ImportFinish(14, libData, data, pos);
 }
 
+static void import_video(WolframLibraryData libData, MTensor data, int idx, const FIT_VIDEO_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_VIDEO);
+    ImportInteger(2, libData, data, pos, mesg->duration);
+    ImportString(3, libData, data, pos, mesg->url, FIT_VIDEO_MESG_URL_COUNT);
+    ImportString(4, libData, data, pos, mesg->hosting_provider, FIT_VIDEO_MESG_HOSTING_PROVIDER_COUNT);
+    ImportFinish(5, libData, data, pos);
+}
+
 static void import_video_title(WolframLibraryData libData, MTensor data, int idx, const FIT_VIDEO_TITLE_MESG *mesg)
 {
     mint pos[2] = {idx, 0};
@@ -2482,12 +3045,67 @@ static void import_video_description(WolframLibraryData libData, MTensor data, i
     ImportFinish(132, libData, data, pos);
 }
 
+static void import_video_clip(WolframLibraryData libData, MTensor data, int idx, const FIT_VIDEO_CLIP_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_VIDEO_CLIP);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->start_timestamp));
+    ImportInteger(3, libData, data, pos, WLTimestamp(mesg->end_timestamp));
+    ImportInteger(4, libData, data, pos, mesg->clip_start);
+    ImportInteger(5, libData, data, pos, mesg->clip_end);
+    ImportInteger(6, libData, data, pos, mesg->clip_number);
+    ImportInteger(7, libData, data, pos, mesg->start_timestamp_ms);
+    ImportInteger(8, libData, data, pos, mesg->end_timestamp_ms);
+    ImportFinish(9, libData, data, pos);
+}
+
 static void import_set(WolframLibraryData libData, MTensor data, int idx, const FIT_SET_MESG *mesg)
 {
     mint pos[2] = {idx, 0};
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_SET);
-    ImportInteger(2, libData, data, pos, mesg->weight_display_unit);
-    ImportFinish(3, libData, data, pos);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->duration);
+    ImportInteger(4, libData, data, pos, WLTimestamp(mesg->start_time));
+    ImportInteger(5, libData, data, pos, mesg->repetitions);
+    ImportInteger(6, libData, data, pos, mesg->weight);
+    ImportIntegerSequence(7, libData, data, pos, mesg->category, FIT_SET_MESG_CATEGORY_COUNT);
+    ImportIntegerSequence(8, libData, data, pos, mesg->category_subtype, FIT_SET_MESG_CATEGORY_SUBTYPE_COUNT);
+    ImportInteger(9, libData, data, pos, mesg->weight_display_unit);
+    ImportInteger(10, libData, data, pos, mesg->message_index);
+    ImportInteger(11, libData, data, pos, mesg->wkt_step_index);
+    ImportInteger(12, libData, data, pos, mesg->set_type);
+    ImportFinish(13, libData, data, pos);
+}
+
+static void import_jump(WolframLibraryData libData, MTensor data, int idx, const FIT_JUMP_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_JUMP);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportFloat(3, libData, data, pos, mesg->distance);
+    ImportFloat(4, libData, data, pos, mesg->height);
+    ImportFloat(5, libData, data, pos, mesg->hang_time);
+    ImportFloat(6, libData, data, pos, mesg->score);
+    ImportInteger(7, libData, data, pos, mesg->position_lat);
+    ImportInteger(8, libData, data, pos, mesg->position_long);
+    ImportInteger(9, libData, data, pos, mesg->enhanced_speed);
+    ImportInteger(10, libData, data, pos, mesg->speed);
+    ImportInteger(11, libData, data, pos, mesg->rotations);
+    ImportFinish(12, libData, data, pos);
+}
+
+static void import_climb_pro(WolframLibraryData libData, MTensor data, int idx, const FIT_CLIMB_PRO_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_CLIMB_PRO);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->position_lat);
+    ImportInteger(4, libData, data, pos, mesg->position_long);
+    ImportFloat(5, libData, data, pos, mesg->current_dist);
+    ImportInteger(6, libData, data, pos, mesg->climb_number);
+    ImportInteger(7, libData, data, pos, mesg->climb_pro_event);
+    ImportInteger(8, libData, data, pos, mesg->climb_category);
+    ImportFinish(9, libData, data, pos);
 }
 
 static void import_field_description(WolframLibraryData libData, MTensor data, int idx, const FIT_FIELD_DESCRIPTION_MESG *mesg)
@@ -2501,10 +3119,14 @@ static void import_field_description(WolframLibraryData libData, MTensor data, i
     ImportInteger(84, libData, data, pos, mesg->developer_data_index);
     ImportInteger(85, libData, data, pos, mesg->field_definition_number);
     ImportInteger(86, libData, data, pos, mesg->fit_base_type_id);
-    ImportInteger(87, libData, data, pos, mesg->scale);
-    ImportInteger(88, libData, data, pos, mesg->offset);
-    ImportInteger(89, libData, data, pos, mesg->native_field_num);
-    ImportFinish(90, libData, data, pos);
+    ImportInteger(87, libData, data, pos, mesg->array);
+    ImportString(88, libData, data, pos, mesg->components, FIT_FIELD_DESCRIPTION_MESG_COMPONENTS_COUNT);
+    ImportInteger(89, libData, data, pos, mesg->scale);
+    ImportInteger(90, libData, data, pos, mesg->offset);
+    ImportString(91, libData, data, pos, mesg->bits, FIT_FIELD_DESCRIPTION_MESG_BITS_COUNT);
+    ImportString(92, libData, data, pos, mesg->accumulate, FIT_FIELD_DESCRIPTION_MESG_ACCUMULATE_COUNT);
+    ImportInteger(93, libData, data, pos, mesg->native_field_num);
+    ImportFinish(94, libData, data, pos);
 }
 
 static void import_developer_data_id(WolframLibraryData libData, MTensor data, int idx, const FIT_DEVELOPER_DATA_ID_MESG *mesg)
@@ -2571,7 +3193,8 @@ static void import_segment_leaderboard_entry(WolframLibraryData libData, MTensor
     ImportInteger(5, libData, data, pos, mesg->message_index);
     ImportString(6, libData, data, pos, mesg->name, FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_NAME_COUNT);
     ImportInteger(7, libData, data, pos, mesg->type);
-    ImportFinish(8, libData, data, pos);
+    ImportString(8, libData, data, pos, mesg->activity_id_string, FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_ACTIVITY_ID_STRING_COUNT);
+    ImportFinish(9, libData, data, pos);
 }
 
 static void import_segment_point(WolframLibraryData libData, MTensor data, int idx, const FIT_SEGMENT_POINT_MESG *mesg)
@@ -2606,65 +3229,84 @@ static void import_segment_lap(WolframLibraryData libData, MTensor data, int idx
     ImportInteger(14, libData, data, pos, mesg->swc_lat);
     ImportInteger(15, libData, data, pos, mesg->swc_long);
     ImportString(16, libData, data, pos, mesg->name, FIT_SEGMENT_LAP_MESG_NAME_COUNT);
-    ImportInteger(32, libData, data, pos, mesg->total_work);
-    ImportInteger(33, libData, data, pos, mesg->total_moving_time);
-    ImportIntegerSequence(34, libData, data, pos, mesg->time_in_hr_zone, FIT_SEGMENT_LAP_MESG_TIME_IN_HR_ZONE_COUNT);
-    ImportIntegerSequence(39, libData, data, pos, mesg->time_in_speed_zone, FIT_SEGMENT_LAP_MESG_TIME_IN_SPEED_ZONE_COUNT);
-    ImportIntegerSequence(40, libData, data, pos, mesg->time_in_cadence_zone, FIT_SEGMENT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT);
-    ImportIntegerSequence(41, libData, data, pos, mesg->time_in_power_zone, FIT_SEGMENT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT);
-    ImportInteger(48, libData, data, pos, mesg->active_time);
-    ImportInteger(49, libData, data, pos, mesg->message_index);
-    ImportInteger(50, libData, data, pos, mesg->total_calories);
-    ImportInteger(51, libData, data, pos, mesg->total_fat_calories);
-    ImportInteger(52, libData, data, pos, mesg->avg_speed);
-    ImportInteger(53, libData, data, pos, mesg->max_speed);
-    ImportInteger(54, libData, data, pos, mesg->avg_power);
-    ImportInteger(55, libData, data, pos, mesg->max_power);
-    ImportInteger(56, libData, data, pos, mesg->total_ascent);
-    ImportInteger(57, libData, data, pos, mesg->total_descent);
-    ImportInteger(58, libData, data, pos, mesg->normalized_power);
-    ImportInteger(59, libData, data, pos, mesg->left_right_balance);
-    ImportInteger(60, libData, data, pos, mesg->avg_altitude);
-    ImportInteger(61, libData, data, pos, mesg->max_altitude);
-    ImportInteger(62, libData, data, pos, mesg->avg_grade);
-    ImportInteger(63, libData, data, pos, mesg->avg_pos_grade);
-    ImportInteger(64, libData, data, pos, mesg->avg_neg_grade);
-    ImportInteger(65, libData, data, pos, mesg->max_pos_grade);
-    ImportInteger(66, libData, data, pos, mesg->max_neg_grade);
-    ImportInteger(67, libData, data, pos, mesg->avg_pos_vertical_speed);
-    ImportInteger(68, libData, data, pos, mesg->avg_neg_vertical_speed);
-    ImportInteger(69, libData, data, pos, mesg->max_pos_vertical_speed);
-    ImportInteger(70, libData, data, pos, mesg->max_neg_vertical_speed);
-    ImportInteger(71, libData, data, pos, mesg->repetition_num);
-    ImportInteger(72, libData, data, pos, mesg->min_altitude);
-    ImportInteger(73, libData, data, pos, mesg->wkt_step_index);
-    ImportInteger(74, libData, data, pos, mesg->front_gear_shift_count);
-    ImportInteger(75, libData, data, pos, mesg->rear_gear_shift_count);
-    ImportInteger(76, libData, data, pos, mesg->event);
-    ImportInteger(77, libData, data, pos, mesg->event_type);
-    ImportInteger(78, libData, data, pos, mesg->avg_heart_rate);
-    ImportInteger(79, libData, data, pos, mesg->max_heart_rate);
-    ImportInteger(80, libData, data, pos, mesg->avg_cadence);
-    ImportInteger(81, libData, data, pos, mesg->max_cadence);
-    ImportInteger(82, libData, data, pos, mesg->sport);
-    ImportInteger(83, libData, data, pos, mesg->event_group);
-    ImportInteger(84, libData, data, pos, mesg->sub_sport);
-    ImportInteger(85, libData, data, pos, mesg->gps_accuracy);
-    ImportInteger(86, libData, data, pos, mesg->avg_temperature);
-    ImportInteger(87, libData, data, pos, mesg->max_temperature);
-    ImportInteger(88, libData, data, pos, mesg->min_heart_rate);
-    ImportInteger(89, libData, data, pos, mesg->sport_event);
-    ImportInteger(90, libData, data, pos, mesg->avg_left_torque_effectiveness);
-    ImportInteger(91, libData, data, pos, mesg->avg_right_torque_effectiveness);
-    ImportInteger(92, libData, data, pos, mesg->avg_left_pedal_smoothness);
-    ImportInteger(93, libData, data, pos, mesg->avg_right_pedal_smoothness);
-    ImportInteger(94, libData, data, pos, mesg->avg_combined_pedal_smoothness);
-    ImportInteger(95, libData, data, pos, mesg->status);
-    ImportString(96, libData, data, pos, mesg->uuid, FIT_SEGMENT_LAP_MESG_UUID_COUNT);
-    ImportInteger(129, libData, data, pos, mesg->avg_fractional_cadence);
-    ImportInteger(130, libData, data, pos, mesg->max_fractional_cadence);
-    ImportInteger(131, libData, data, pos, mesg->total_fractional_cycles);
-    ImportFinish(132, libData, data, pos);
+    ImportInteger(40, libData, data, pos, mesg->total_work);
+    ImportInteger(41, libData, data, pos, mesg->total_moving_time);
+    ImportIntegerSequence(42, libData, data, pos, mesg->time_in_hr_zone, FIT_SEGMENT_LAP_MESG_TIME_IN_HR_ZONE_COUNT);
+    ImportIntegerSequence(47, libData, data, pos, mesg->time_in_speed_zone, FIT_SEGMENT_LAP_MESG_TIME_IN_SPEED_ZONE_COUNT);
+    ImportIntegerSequence(48, libData, data, pos, mesg->time_in_cadence_zone, FIT_SEGMENT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT);
+    ImportIntegerSequence(49, libData, data, pos, mesg->time_in_power_zone, FIT_SEGMENT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT);
+    ImportInteger(56, libData, data, pos, mesg->active_time);
+    ImportInteger(57, libData, data, pos, mesg->time_standing);
+    ImportIntegerSequence(58, libData, data, pos, mesg->avg_power_position, FIT_SEGMENT_LAP_MESG_AVG_POWER_POSITION_COUNT);
+    ImportIntegerSequence(60, libData, data, pos, mesg->max_power_position, FIT_SEGMENT_LAP_MESG_MAX_POWER_POSITION_COUNT);
+    ImportFloat(62, libData, data, pos, mesg->total_grit);
+    ImportFloat(63, libData, data, pos, mesg->total_flow);
+    ImportFloat(64, libData, data, pos, mesg->avg_grit);
+    ImportFloat(65, libData, data, pos, mesg->avg_flow);
+    ImportInteger(66, libData, data, pos, mesg->message_index);
+    ImportInteger(67, libData, data, pos, mesg->total_calories);
+    ImportInteger(68, libData, data, pos, mesg->total_fat_calories);
+    ImportInteger(69, libData, data, pos, mesg->avg_speed);
+    ImportInteger(70, libData, data, pos, mesg->max_speed);
+    ImportInteger(71, libData, data, pos, mesg->avg_power);
+    ImportInteger(72, libData, data, pos, mesg->max_power);
+    ImportInteger(73, libData, data, pos, mesg->total_ascent);
+    ImportInteger(74, libData, data, pos, mesg->total_descent);
+    ImportInteger(75, libData, data, pos, mesg->normalized_power);
+    ImportInteger(76, libData, data, pos, mesg->left_right_balance);
+    ImportInteger(77, libData, data, pos, mesg->avg_altitude);
+    ImportInteger(78, libData, data, pos, mesg->max_altitude);
+    ImportInteger(79, libData, data, pos, mesg->avg_grade);
+    ImportInteger(80, libData, data, pos, mesg->avg_pos_grade);
+    ImportInteger(81, libData, data, pos, mesg->avg_neg_grade);
+    ImportInteger(82, libData, data, pos, mesg->max_pos_grade);
+    ImportInteger(83, libData, data, pos, mesg->max_neg_grade);
+    ImportInteger(84, libData, data, pos, mesg->avg_pos_vertical_speed);
+    ImportInteger(85, libData, data, pos, mesg->avg_neg_vertical_speed);
+    ImportInteger(86, libData, data, pos, mesg->max_pos_vertical_speed);
+    ImportInteger(87, libData, data, pos, mesg->max_neg_vertical_speed);
+    ImportInteger(88, libData, data, pos, mesg->repetition_num);
+    ImportInteger(89, libData, data, pos, mesg->min_altitude);
+    ImportInteger(90, libData, data, pos, mesg->wkt_step_index);
+    ImportInteger(91, libData, data, pos, mesg->front_gear_shift_count);
+    ImportInteger(92, libData, data, pos, mesg->rear_gear_shift_count);
+    ImportInteger(93, libData, data, pos, mesg->stand_count);
+    ImportInteger(94, libData, data, pos, mesg->manufacturer);
+    ImportInteger(95, libData, data, pos, mesg->event);
+    ImportInteger(96, libData, data, pos, mesg->event_type);
+    ImportInteger(97, libData, data, pos, mesg->avg_heart_rate);
+    ImportInteger(98, libData, data, pos, mesg->max_heart_rate);
+    ImportInteger(99, libData, data, pos, mesg->avg_cadence);
+    ImportInteger(100, libData, data, pos, mesg->max_cadence);
+    ImportInteger(101, libData, data, pos, mesg->sport);
+    ImportInteger(102, libData, data, pos, mesg->event_group);
+    ImportInteger(103, libData, data, pos, mesg->sub_sport);
+    ImportInteger(104, libData, data, pos, mesg->gps_accuracy);
+    ImportInteger(105, libData, data, pos, mesg->avg_temperature);
+    ImportInteger(106, libData, data, pos, mesg->max_temperature);
+    ImportInteger(107, libData, data, pos, mesg->min_heart_rate);
+    ImportInteger(108, libData, data, pos, mesg->sport_event);
+    ImportInteger(109, libData, data, pos, mesg->avg_left_torque_effectiveness);
+    ImportInteger(110, libData, data, pos, mesg->avg_right_torque_effectiveness);
+    ImportInteger(111, libData, data, pos, mesg->avg_left_pedal_smoothness);
+    ImportInteger(112, libData, data, pos, mesg->avg_right_pedal_smoothness);
+    ImportInteger(113, libData, data, pos, mesg->avg_combined_pedal_smoothness);
+    ImportInteger(114, libData, data, pos, mesg->status);
+    ImportString(115, libData, data, pos, mesg->uuid, FIT_SEGMENT_LAP_MESG_UUID_COUNT);
+    ImportInteger(148, libData, data, pos, mesg->avg_fractional_cadence);
+    ImportInteger(149, libData, data, pos, mesg->max_fractional_cadence);
+    ImportInteger(150, libData, data, pos, mesg->total_fractional_cycles);
+    ImportInteger(151, libData, data, pos, mesg->avg_left_pco);
+    ImportInteger(152, libData, data, pos, mesg->avg_right_pco);
+    ImportIntegerSequence(153, libData, data, pos, mesg->avg_left_power_phase, FIT_SEGMENT_LAP_MESG_AVG_LEFT_POWER_PHASE_COUNT);
+    ImportIntegerSequence(155, libData, data, pos, mesg->avg_left_power_phase_peak, FIT_SEGMENT_LAP_MESG_AVG_LEFT_POWER_PHASE_PEAK_COUNT);
+    ImportIntegerSequence(157, libData, data, pos, mesg->avg_right_power_phase, FIT_SEGMENT_LAP_MESG_AVG_RIGHT_POWER_PHASE_COUNT);
+    ImportIntegerSequence(159, libData, data, pos, mesg->avg_right_power_phase_peak, FIT_SEGMENT_LAP_MESG_AVG_RIGHT_POWER_PHASE_PEAK_COUNT);
+    ImportIntegerSequence(161, libData, data, pos, mesg->avg_cadence_position, FIT_SEGMENT_LAP_MESG_AVG_CADENCE_POSITION_COUNT);
+    ImportIntegerSequence(163, libData, data, pos, mesg->max_cadence_position, FIT_SEGMENT_LAP_MESG_MAX_CADENCE_POSITION_COUNT);
+    ImportInteger(165, libData, data, pos, mesg->total_fractional_ascent);
+    ImportInteger(166, libData, data, pos, mesg->total_fractional_descent);
+    ImportFinish(167, libData, data, pos);
 }
 
 static void import_segment_file(WolframLibraryData libData, MTensor data, int idx, const FIT_SEGMENT_FILE_MESG *mesg)
@@ -2678,7 +3320,9 @@ static void import_segment_file(WolframLibraryData libData, MTensor data, int id
     ImportString(6, libData, data, pos, mesg->file_uuid, FIT_SEGMENT_FILE_MESG_FILE_UUID_COUNT);
     ImportInteger(7, libData, data, pos, mesg->enabled);
     ImportIntegerSequence(8, libData, data, pos, mesg->leader_type, FIT_SEGMENT_FILE_MESG_LEADER_TYPE_COUNT);
-    ImportFinish(9, libData, data, pos);
+    ImportString(9, libData, data, pos, mesg->leader_activity_id_string, FIT_SEGMENT_FILE_MESG_LEADER_ACTIVITY_ID_STRING_COUNT);
+    ImportInteger(10, libData, data, pos, mesg->default_race_leader);
+    ImportFinish(11, libData, data, pos);
 }
 
 static void import_workout(WolframLibraryData libData, MTensor data, int idx, const FIT_WORKOUT_MESG *mesg)
@@ -2723,13 +3367,16 @@ static void import_workout_step(WolframLibraryData libData, MTensor data, int id
     ImportInteger(56, libData, data, pos, mesg->secondary_custom_target_value_high);
     ImportInteger(57, libData, data, pos, mesg->message_index);
     ImportInteger(58, libData, data, pos, mesg->exercise_category);
-    ImportInteger(59, libData, data, pos, mesg->duration_type);
-    ImportInteger(60, libData, data, pos, mesg->target_type);
-    ImportInteger(61, libData, data, pos, mesg->intensity);
-    ImportString(62, libData, data, pos, mesg->notes, FIT_WORKOUT_STEP_MESG_NOTES_COUNT);
-    ImportInteger(112, libData, data, pos, mesg->equipment);
-    ImportInteger(113, libData, data, pos, mesg->secondary_target_type);
-    ImportFinish(114, libData, data, pos);
+    ImportInteger(59, libData, data, pos, mesg->exercise_name);
+    ImportInteger(60, libData, data, pos, mesg->exercise_weight);
+    ImportInteger(61, libData, data, pos, mesg->weight_display_unit);
+    ImportInteger(62, libData, data, pos, mesg->duration_type);
+    ImportInteger(63, libData, data, pos, mesg->target_type);
+    ImportInteger(64, libData, data, pos, mesg->intensity);
+    ImportString(65, libData, data, pos, mesg->notes, FIT_WORKOUT_STEP_MESG_NOTES_COUNT);
+    ImportInteger(115, libData, data, pos, mesg->equipment);
+    ImportInteger(116, libData, data, pos, mesg->secondary_target_type);
+    ImportFinish(117, libData, data, pos);
 }
 
 static void import_exercise_title(WolframLibraryData libData, MTensor data, int idx, const FIT_EXERCISE_TITLE_MESG *mesg)
@@ -2770,7 +3417,8 @@ static void import_totals(WolframLibraryData libData, MTensor data, int idx, con
     ImportInteger(8, libData, data, pos, mesg->message_index);
     ImportInteger(9, libData, data, pos, mesg->sessions);
     ImportInteger(10, libData, data, pos, mesg->sport);
-    ImportFinish(11, libData, data, pos);
+    ImportInteger(11, libData, data, pos, mesg->sport_index);
+    ImportFinish(12, libData, data, pos);
 }
 
 static void import_weight_scale(WolframLibraryData libData, MTensor data, int idx, const FIT_WEIGHT_SCALE_MESG *mesg)
@@ -2817,7 +3465,11 @@ static void import_monitoring_info(WolframLibraryData libData, MTensor data, int
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_MONITORING_INFO);
     ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
     ImportInteger(3, libData, data, pos, WLTimestamp(mesg->local_timestamp));
-    ImportFinish(4, libData, data, pos);
+    ImportIntegerSequence(4, libData, data, pos, mesg->cycles_to_distance, FIT_MONITORING_INFO_MESG_CYCLES_TO_DISTANCE_COUNT);
+    ImportIntegerSequence(5, libData, data, pos, mesg->cycles_to_calories, FIT_MONITORING_INFO_MESG_CYCLES_TO_CALORIES_COUNT);
+    ImportInteger(6, libData, data, pos, mesg->resting_metabolic_rate);
+    ImportIntegerSequence(7, libData, data, pos, mesg->activity_type, FIT_MONITORING_INFO_MESG_ACTIVITY_TYPE_COUNT);
+    ImportFinish(8, libData, data, pos);
 }
 
 static void import_monitoring(WolframLibraryData libData, MTensor data, int idx, const FIT_MONITORING_MESG *mesg)
@@ -2829,14 +3481,31 @@ static void import_monitoring(WolframLibraryData libData, MTensor data, int idx,
     ImportInteger(4, libData, data, pos, mesg->cycles);
     ImportInteger(5, libData, data, pos, mesg->active_time);
     ImportInteger(6, libData, data, pos, WLTimestamp(mesg->local_timestamp));
-    ImportInteger(7, libData, data, pos, mesg->calories);
-    ImportInteger(8, libData, data, pos, mesg->distance_16);
-    ImportInteger(9, libData, data, pos, mesg->cycles_16);
-    ImportInteger(10, libData, data, pos, mesg->active_time_16);
-    ImportInteger(11, libData, data, pos, mesg->device_index);
-    ImportInteger(12, libData, data, pos, mesg->activity_type);
-    ImportInteger(13, libData, data, pos, mesg->activity_subtype);
-    ImportFinish(14, libData, data, pos);
+    ImportIntegerSequence(7, libData, data, pos, mesg->activity_time, FIT_MONITORING_MESG_ACTIVITY_TIME_COUNT);
+    ImportInteger(15, libData, data, pos, mesg->duration);
+    ImportInteger(16, libData, data, pos, mesg->ascent);
+    ImportInteger(17, libData, data, pos, mesg->descent);
+    ImportInteger(18, libData, data, pos, mesg->calories);
+    ImportInteger(19, libData, data, pos, mesg->distance_16);
+    ImportInteger(20, libData, data, pos, mesg->cycles_16);
+    ImportInteger(21, libData, data, pos, mesg->active_time_16);
+    ImportInteger(22, libData, data, pos, mesg->temperature);
+    ImportInteger(23, libData, data, pos, mesg->temperature_min);
+    ImportInteger(24, libData, data, pos, mesg->temperature_max);
+    ImportInteger(25, libData, data, pos, mesg->active_calories);
+    ImportInteger(26, libData, data, pos, mesg->timestamp_16);
+    ImportInteger(27, libData, data, pos, mesg->duration_min);
+    ImportInteger(28, libData, data, pos, mesg->moderate_activity_minutes);
+    ImportInteger(29, libData, data, pos, mesg->vigorous_activity_minutes);
+    ImportInteger(30, libData, data, pos, mesg->device_index);
+    ImportInteger(31, libData, data, pos, mesg->activity_type);
+    ImportInteger(32, libData, data, pos, mesg->activity_subtype);
+    ImportInteger(33, libData, data, pos, mesg->activity_level);
+    ImportInteger(34, libData, data, pos, mesg->current_activity_type_intensity);
+    ImportInteger(35, libData, data, pos, mesg->timestamp_min_8);
+    ImportInteger(36, libData, data, pos, mesg->heart_rate);
+    ImportInteger(37, libData, data, pos, mesg->intensity);
+    ImportFinish(38, libData, data, pos);
 }
 
 static void import_hr(WolframLibraryData libData, MTensor data, int idx, const FIT_HR_MESG *mesg)
@@ -2850,6 +3519,40 @@ static void import_hr(WolframLibraryData libData, MTensor data, int idx, const F
     ImportIntegerSequence(6, libData, data, pos, mesg->filtered_bpm, FIT_HR_MESG_FILTERED_BPM_COUNT);
     ImportIntegerSequence(7, libData, data, pos, mesg->event_timestamp_12, FIT_HR_MESG_EVENT_TIMESTAMP_12_COUNT);
     ImportFinish(8, libData, data, pos);
+}
+
+static void import_stress_level(WolframLibraryData libData, MTensor data, int idx, const FIT_STRESS_LEVEL_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_STRESS_LEVEL);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->stress_level_time));
+    ImportInteger(3, libData, data, pos, mesg->stress_level_value);
+    ImportFinish(4, libData, data, pos);
+}
+
+static void import_memo_glob(WolframLibraryData libData, MTensor data, int idx, const FIT_MEMO_GLOB_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_MEMO_GLOB);
+    ImportInteger(2, libData, data, pos, mesg->part_index);
+    ImportInteger(3, libData, data, pos, mesg->mesg_num);
+    ImportInteger(4, libData, data, pos, mesg->parent_index);
+    ImportIntegerSequence(5, libData, data, pos, mesg->memo, FIT_MEMO_GLOB_MESG_MEMO_COUNT);
+    ImportInteger(6, libData, data, pos, mesg->field_num);
+    ImportIntegerSequence(7, libData, data, pos, mesg->data, FIT_MEMO_GLOB_MESG_DATA_COUNT);
+    ImportFinish(8, libData, data, pos);
+}
+
+static void import_ant_channel_id(WolframLibraryData libData, MTensor data, int idx, const FIT_ANT_CHANNEL_ID_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_ANT_CHANNEL_ID);
+    ImportInteger(2, libData, data, pos, mesg->device_number);
+    ImportInteger(3, libData, data, pos, mesg->channel_number);
+    ImportInteger(4, libData, data, pos, mesg->device_type);
+    ImportInteger(5, libData, data, pos, mesg->transmission_type);
+    ImportInteger(6, libData, data, pos, mesg->device_index);
+    ImportFinish(7, libData, data, pos);
 }
 
 static void import_ant_rx(WolframLibraryData libData, MTensor data, int idx, const FIT_ANT_RX_MESG *mesg)
@@ -2918,6 +3621,31 @@ static void import_exd_data_concept_configuration(WolframLibraryData libData, MT
     ImportInteger(11, libData, data, pos, mesg->descriptor);
     ImportInteger(12, libData, data, pos, mesg->is_signed);
     ImportFinish(13, libData, data, pos);
+}
+
+static void import_dive_summary(WolframLibraryData libData, MTensor data, int idx, const FIT_DIVE_SUMMARY_MESG *mesg)
+{
+    mint pos[2] = {idx, 0};
+    ImportInteger(1, libData, data, pos, FIT_MESG_NUM_DIVE_SUMMARY);
+    ImportInteger(2, libData, data, pos, WLTimestamp(mesg->timestamp));
+    ImportInteger(3, libData, data, pos, mesg->avg_depth);
+    ImportInteger(4, libData, data, pos, mesg->max_depth);
+    ImportInteger(5, libData, data, pos, mesg->surface_interval);
+    ImportInteger(6, libData, data, pos, mesg->dive_number);
+    ImportInteger(7, libData, data, pos, mesg->bottom_time);
+    ImportInteger(8, libData, data, pos, mesg->avg_ascent_rate);
+    ImportInteger(9, libData, data, pos, mesg->avg_descent_rate);
+    ImportInteger(10, libData, data, pos, mesg->max_ascent_rate);
+    ImportInteger(11, libData, data, pos, mesg->max_descent_rate);
+    ImportInteger(12, libData, data, pos, mesg->hang_time);
+    ImportInteger(13, libData, data, pos, mesg->reference_mesg);
+    ImportInteger(14, libData, data, pos, mesg->reference_index);
+    ImportInteger(15, libData, data, pos, mesg->start_n2);
+    ImportInteger(16, libData, data, pos, mesg->end_n2);
+    ImportInteger(17, libData, data, pos, mesg->o2_toxicity);
+    ImportInteger(18, libData, data, pos, mesg->start_cns);
+    ImportInteger(19, libData, data, pos, mesg->end_cns);
+    ImportFinish(20, libData, data, pos);
 }
 
 static void import_hrv(WolframLibraryData libData, MTensor data, int idx, const FIT_HRV_MESG *mesg)

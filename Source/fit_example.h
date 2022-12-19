@@ -4204,6 +4204,53 @@ typedef struct
    FIT_UINT8 fields[FIT_FILE_CREATOR_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_FILE_CREATOR_MESG_DEF;
 
+// timestamp_correlation message
+
+#define FIT_TIMESTAMP_CORRELATION_MESG_SIZE                                     20
+#define FIT_TIMESTAMP_CORRELATION_MESG_DEF_SIZE                                 26
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of UTC timestamp at the time the system timestamp was recorded.
+   FIT_DATE_TIME system_timestamp; // 1 * s + 0, Whole second part of the system timestamp
+   FIT_LOCAL_DATE_TIME local_timestamp; // 1 * s + 0, timestamp epoch expressed in local time used to convert timestamps to local time
+   FIT_UINT16 fractional_timestamp; // 32768 * s + 0, Fractional part of the UTC timestamp at the time the system timestamp was recorded.
+   FIT_UINT16 fractional_system_timestamp; // 32768 * s + 0, Fractional part of the system timestamp
+   FIT_UINT16 timestamp_ms; // 1 * ms + 0, Millisecond part of the UTC timestamp at the time the system timestamp was recorded.
+   FIT_UINT16 system_timestamp_ms; // 1 * ms + 0, Millisecond part of the system timestamp
+} FIT_TIMESTAMP_CORRELATION_MESG;
+
+typedef FIT_UINT8 FIT_TIMESTAMP_CORRELATION_FIELD_NUM;
+
+#define FIT_TIMESTAMP_CORRELATION_FIELD_NUM_TIMESTAMP ((FIT_TIMESTAMP_CORRELATION_FIELD_NUM)253)
+#define FIT_TIMESTAMP_CORRELATION_FIELD_NUM_SYSTEM_TIMESTAMP ((FIT_TIMESTAMP_CORRELATION_FIELD_NUM)1)
+#define FIT_TIMESTAMP_CORRELATION_FIELD_NUM_LOCAL_TIMESTAMP ((FIT_TIMESTAMP_CORRELATION_FIELD_NUM)3)
+#define FIT_TIMESTAMP_CORRELATION_FIELD_NUM_FRACTIONAL_TIMESTAMP ((FIT_TIMESTAMP_CORRELATION_FIELD_NUM)0)
+#define FIT_TIMESTAMP_CORRELATION_FIELD_NUM_FRACTIONAL_SYSTEM_TIMESTAMP ((FIT_TIMESTAMP_CORRELATION_FIELD_NUM)2)
+#define FIT_TIMESTAMP_CORRELATION_FIELD_NUM_TIMESTAMP_MS ((FIT_TIMESTAMP_CORRELATION_FIELD_NUM)4)
+#define FIT_TIMESTAMP_CORRELATION_FIELD_NUM_SYSTEM_TIMESTAMP_MS ((FIT_TIMESTAMP_CORRELATION_FIELD_NUM)5)
+
+typedef enum
+{
+   FIT_TIMESTAMP_CORRELATION_MESG_TIMESTAMP,
+   FIT_TIMESTAMP_CORRELATION_MESG_SYSTEM_TIMESTAMP,
+   FIT_TIMESTAMP_CORRELATION_MESG_LOCAL_TIMESTAMP,
+   FIT_TIMESTAMP_CORRELATION_MESG_FRACTIONAL_TIMESTAMP,
+   FIT_TIMESTAMP_CORRELATION_MESG_FRACTIONAL_SYSTEM_TIMESTAMP,
+   FIT_TIMESTAMP_CORRELATION_MESG_TIMESTAMP_MS,
+   FIT_TIMESTAMP_CORRELATION_MESG_SYSTEM_TIMESTAMP_MS,
+   FIT_TIMESTAMP_CORRELATION_MESG_FIELDS
+} FIT_TIMESTAMP_CORRELATION_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_TIMESTAMP_CORRELATION_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_TIMESTAMP_CORRELATION_MESG_DEF;
+
 // software message
 
 #define FIT_SOFTWARE_MESG_SIZE                                                  20
@@ -4441,8 +4488,8 @@ typedef struct
 
 // device_settings message
 
-#define FIT_DEVICE_SETTINGS_MESG_SIZE                                           30
-#define FIT_DEVICE_SETTINGS_MESG_DEF_SIZE                                       56
+#define FIT_DEVICE_SETTINGS_MESG_SIZE                                           40
+#define FIT_DEVICE_SETTINGS_MESG_DEF_SIZE                                       77
 #define FIT_DEVICE_SETTINGS_MESG_TIME_OFFSET_COUNT                              1
 #define FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT                            1
 #define FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT                             1
@@ -4454,6 +4501,7 @@ typedef struct
    FIT_UINT32 utc_offset; // Offset from system time. Required to convert timestamp from system time to UTC.
    FIT_UINT32 time_offset[FIT_DEVICE_SETTINGS_MESG_TIME_OFFSET_COUNT]; // 1 * s + 0, Offset from system time.
    FIT_DATE_TIME clock_time; // UTC timestamp used to set the devices clock and date
+   FIT_AUTO_ACTIVITY_DETECT auto_activity_detect; // Allows setting specific activities auto-activity detect enabled/disabled settings
    FIT_UINT16 pages_enabled[FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED_COUNT]; // Bitfield to configure enabled screens for each supported loop
    FIT_UINT16 default_page[FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE_COUNT]; // Bitfield to indicate one page as default for each supported loop
    FIT_UINT16 autosync_min_steps; // 1 * steps + 0, Minimum steps before an autosync can occur
@@ -4467,6 +4515,12 @@ typedef struct
    FIT_DATE_MODE date_mode; // Display mode for the date
    FIT_DISPLAY_ORIENTATION display_orientation; //
    FIT_SIDE mounting_side; //
+   FIT_BOOL lactate_threshold_autodetect_enabled; // Enable auto-detect setting for the lactate threshold feature.
+   FIT_BOOL ble_auto_upload_enabled; // Automatically upload using BLE
+   FIT_AUTO_SYNC_FREQUENCY auto_sync_frequency; // Helps to conserve battery by changing modes
+   FIT_UINT8 number_of_screens; // Number of screens configured to display
+   FIT_DISPLAY_ORIENTATION smart_notification_display_orientation; // Smart Notification display orientation
+   FIT_SWITCH tap_interface; //
    FIT_TAP_SENSITIVITY tap_sensitivity; // Used to hold the tap threshold setting
 } FIT_DEVICE_SETTINGS_MESG;
 
@@ -4475,6 +4529,7 @@ typedef FIT_UINT8 FIT_DEVICE_SETTINGS_FIELD_NUM;
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_UTC_OFFSET ((FIT_DEVICE_SETTINGS_FIELD_NUM)1)
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_TIME_OFFSET ((FIT_DEVICE_SETTINGS_FIELD_NUM)2)
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_CLOCK_TIME ((FIT_DEVICE_SETTINGS_FIELD_NUM)39)
+#define FIT_DEVICE_SETTINGS_FIELD_NUM_AUTO_ACTIVITY_DETECT ((FIT_DEVICE_SETTINGS_FIELD_NUM)90)
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_PAGES_ENABLED ((FIT_DEVICE_SETTINGS_FIELD_NUM)40)
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_DEFAULT_PAGE ((FIT_DEVICE_SETTINGS_FIELD_NUM)57)
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_AUTOSYNC_MIN_STEPS ((FIT_DEVICE_SETTINGS_FIELD_NUM)58)
@@ -4488,6 +4543,12 @@ typedef FIT_UINT8 FIT_DEVICE_SETTINGS_FIELD_NUM;
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_DATE_MODE ((FIT_DEVICE_SETTINGS_FIELD_NUM)47)
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_DISPLAY_ORIENTATION ((FIT_DEVICE_SETTINGS_FIELD_NUM)55)
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_MOUNTING_SIDE ((FIT_DEVICE_SETTINGS_FIELD_NUM)56)
+#define FIT_DEVICE_SETTINGS_FIELD_NUM_LACTATE_THRESHOLD_AUTODETECT_ENABLED ((FIT_DEVICE_SETTINGS_FIELD_NUM)80)
+#define FIT_DEVICE_SETTINGS_FIELD_NUM_BLE_AUTO_UPLOAD_ENABLED ((FIT_DEVICE_SETTINGS_FIELD_NUM)86)
+#define FIT_DEVICE_SETTINGS_FIELD_NUM_AUTO_SYNC_FREQUENCY ((FIT_DEVICE_SETTINGS_FIELD_NUM)89)
+#define FIT_DEVICE_SETTINGS_FIELD_NUM_NUMBER_OF_SCREENS ((FIT_DEVICE_SETTINGS_FIELD_NUM)94)
+#define FIT_DEVICE_SETTINGS_FIELD_NUM_SMART_NOTIFICATION_DISPLAY_ORIENTATION ((FIT_DEVICE_SETTINGS_FIELD_NUM)95)
+#define FIT_DEVICE_SETTINGS_FIELD_NUM_TAP_INTERFACE ((FIT_DEVICE_SETTINGS_FIELD_NUM)134)
 #define FIT_DEVICE_SETTINGS_FIELD_NUM_TAP_SENSITIVITY ((FIT_DEVICE_SETTINGS_FIELD_NUM)174)
 
 typedef enum
@@ -4495,6 +4556,7 @@ typedef enum
    FIT_DEVICE_SETTINGS_MESG_UTC_OFFSET,
    FIT_DEVICE_SETTINGS_MESG_TIME_OFFSET,
    FIT_DEVICE_SETTINGS_MESG_CLOCK_TIME,
+   FIT_DEVICE_SETTINGS_MESG_AUTO_ACTIVITY_DETECT,
    FIT_DEVICE_SETTINGS_MESG_PAGES_ENABLED,
    FIT_DEVICE_SETTINGS_MESG_DEFAULT_PAGE,
    FIT_DEVICE_SETTINGS_MESG_AUTOSYNC_MIN_STEPS,
@@ -4508,6 +4570,12 @@ typedef enum
    FIT_DEVICE_SETTINGS_MESG_DATE_MODE,
    FIT_DEVICE_SETTINGS_MESG_DISPLAY_ORIENTATION,
    FIT_DEVICE_SETTINGS_MESG_MOUNTING_SIDE,
+   FIT_DEVICE_SETTINGS_MESG_LACTATE_THRESHOLD_AUTODETECT_ENABLED,
+   FIT_DEVICE_SETTINGS_MESG_BLE_AUTO_UPLOAD_ENABLED,
+   FIT_DEVICE_SETTINGS_MESG_AUTO_SYNC_FREQUENCY,
+   FIT_DEVICE_SETTINGS_MESG_NUMBER_OF_SCREENS,
+   FIT_DEVICE_SETTINGS_MESG_SMART_NOTIFICATION_DISPLAY_ORIENTATION,
+   FIT_DEVICE_SETTINGS_MESG_TAP_INTERFACE,
    FIT_DEVICE_SETTINGS_MESG_TAP_SENSITIVITY,
    FIT_DEVICE_SETTINGS_MESG_FIELDS
 } FIT_DEVICE_SETTINGS_MESG_FIELD;
@@ -4918,6 +4986,73 @@ typedef struct
    FIT_UINT8 fields[FIT_CONNECTIVITY_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_CONNECTIVITY_MESG_DEF;
 
+// watchface_settings message
+
+#define FIT_WATCHFACE_SETTINGS_MESG_SIZE                                        4
+#define FIT_WATCHFACE_SETTINGS_MESG_DEF_SIZE                                    14
+
+typedef struct
+{
+   FIT_MESSAGE_INDEX message_index; //
+   FIT_WATCHFACE_MODE mode; //
+   FIT_BYTE layout; //
+} FIT_WATCHFACE_SETTINGS_MESG;
+
+typedef FIT_UINT8 FIT_WATCHFACE_SETTINGS_FIELD_NUM;
+
+#define FIT_WATCHFACE_SETTINGS_FIELD_NUM_MESSAGE_INDEX ((FIT_WATCHFACE_SETTINGS_FIELD_NUM)254)
+#define FIT_WATCHFACE_SETTINGS_FIELD_NUM_MODE ((FIT_WATCHFACE_SETTINGS_FIELD_NUM)0)
+#define FIT_WATCHFACE_SETTINGS_FIELD_NUM_LAYOUT ((FIT_WATCHFACE_SETTINGS_FIELD_NUM)1)
+
+typedef enum
+{
+   FIT_WATCHFACE_SETTINGS_MESG_MESSAGE_INDEX,
+   FIT_WATCHFACE_SETTINGS_MESG_MODE,
+   FIT_WATCHFACE_SETTINGS_MESG_LAYOUT,
+   FIT_WATCHFACE_SETTINGS_MESG_FIELDS
+} FIT_WATCHFACE_SETTINGS_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_WATCHFACE_SETTINGS_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_WATCHFACE_SETTINGS_MESG_DEF;
+
+// ohr_settings message
+
+#define FIT_OHR_SETTINGS_MESG_SIZE                                              5
+#define FIT_OHR_SETTINGS_MESG_DEF_SIZE                                          11
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0,
+   FIT_SWITCH enabled; //
+} FIT_OHR_SETTINGS_MESG;
+
+typedef FIT_UINT8 FIT_OHR_SETTINGS_FIELD_NUM;
+
+#define FIT_OHR_SETTINGS_FIELD_NUM_TIMESTAMP ((FIT_OHR_SETTINGS_FIELD_NUM)253)
+#define FIT_OHR_SETTINGS_FIELD_NUM_ENABLED ((FIT_OHR_SETTINGS_FIELD_NUM)0)
+
+typedef enum
+{
+   FIT_OHR_SETTINGS_MESG_TIMESTAMP,
+   FIT_OHR_SETTINGS_MESG_ENABLED,
+   FIT_OHR_SETTINGS_MESG_FIELDS
+} FIT_OHR_SETTINGS_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_OHR_SETTINGS_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_OHR_SETTINGS_MESG_DEF;
+
 // zones_target message
 
 #define FIT_ZONES_TARGET_MESG_SIZE                                              6
@@ -5179,24 +5314,84 @@ typedef struct
 
 // dive_settings message
 
-#define FIT_DIVE_SETTINGS_MESG_SIZE                                             17
-#define FIT_DIVE_SETTINGS_MESG_DEF_SIZE                                         11
+#define FIT_DIVE_SETTINGS_MESG_SIZE                                             52
+#define FIT_DIVE_SETTINGS_MESG_DEF_SIZE                                         71
 #define FIT_DIVE_SETTINGS_MESG_NAME_COUNT                                       16
 
 typedef struct
 {
    FIT_STRING name[FIT_DIVE_SETTINGS_MESG_NAME_COUNT]; //
+   FIT_FLOAT32 water_density; // 1 * kg/m^3 + 0, Fresh water is usually 1000; salt water is usually 1025
+   FIT_FLOAT32 bottom_depth; //
+   FIT_UINT32 bottom_time; //
+   FIT_UINT32 apnea_countdown_time; //
+   FIT_MESSAGE_INDEX message_index; //
+   FIT_UINT16 repeat_dive_interval; // 1 * s + 0, Time between surfacing and ending the activity
+   FIT_UINT16 safety_stop_time; // 1 * s + 0, Time at safety stop (if enabled)
+   FIT_TISSUE_MODEL_TYPE model; //
+   FIT_UINT8 gf_low; // 1 * percent + 0,
+   FIT_UINT8 gf_high; // 1 * percent + 0,
+   FIT_WATER_TYPE water_type; //
+   FIT_UINT8 po2_warn; // 100 * percent + 0, Typically 1.40
+   FIT_UINT8 po2_critical; // 100 * percent + 0, Typically 1.60
+   FIT_UINT8 po2_deco; // 100 * percent + 0,
+   FIT_BOOL safety_stop_enabled; //
+   FIT_BOOL apnea_countdown_enabled; //
+   FIT_DIVE_BACKLIGHT_MODE backlight_mode; //
+   FIT_UINT8 backlight_brightness; //
+   FIT_BACKLIGHT_TIMEOUT backlight_timeout; //
+   FIT_SOURCE_TYPE heart_rate_source_type; //
    FIT_UINT8 heart_rate_source; //
 } FIT_DIVE_SETTINGS_MESG;
 
 typedef FIT_UINT8 FIT_DIVE_SETTINGS_FIELD_NUM;
 
 #define FIT_DIVE_SETTINGS_FIELD_NUM_NAME ((FIT_DIVE_SETTINGS_FIELD_NUM)0)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_WATER_DENSITY ((FIT_DIVE_SETTINGS_FIELD_NUM)5)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_BOTTOM_DEPTH ((FIT_DIVE_SETTINGS_FIELD_NUM)10)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_BOTTOM_TIME ((FIT_DIVE_SETTINGS_FIELD_NUM)11)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_APNEA_COUNTDOWN_TIME ((FIT_DIVE_SETTINGS_FIELD_NUM)13)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_MESSAGE_INDEX ((FIT_DIVE_SETTINGS_FIELD_NUM)254)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_REPEAT_DIVE_INTERVAL ((FIT_DIVE_SETTINGS_FIELD_NUM)17)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_SAFETY_STOP_TIME ((FIT_DIVE_SETTINGS_FIELD_NUM)18)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_MODEL ((FIT_DIVE_SETTINGS_FIELD_NUM)1)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_GF_LOW ((FIT_DIVE_SETTINGS_FIELD_NUM)2)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_GF_HIGH ((FIT_DIVE_SETTINGS_FIELD_NUM)3)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_WATER_TYPE ((FIT_DIVE_SETTINGS_FIELD_NUM)4)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_PO2_WARN ((FIT_DIVE_SETTINGS_FIELD_NUM)6)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_PO2_CRITICAL ((FIT_DIVE_SETTINGS_FIELD_NUM)7)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_PO2_DECO ((FIT_DIVE_SETTINGS_FIELD_NUM)8)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_SAFETY_STOP_ENABLED ((FIT_DIVE_SETTINGS_FIELD_NUM)9)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_APNEA_COUNTDOWN_ENABLED ((FIT_DIVE_SETTINGS_FIELD_NUM)12)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_BACKLIGHT_MODE ((FIT_DIVE_SETTINGS_FIELD_NUM)14)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_BACKLIGHT_BRIGHTNESS ((FIT_DIVE_SETTINGS_FIELD_NUM)15)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_BACKLIGHT_TIMEOUT ((FIT_DIVE_SETTINGS_FIELD_NUM)16)
+#define FIT_DIVE_SETTINGS_FIELD_NUM_HEART_RATE_SOURCE_TYPE ((FIT_DIVE_SETTINGS_FIELD_NUM)19)
 #define FIT_DIVE_SETTINGS_FIELD_NUM_HEART_RATE_SOURCE ((FIT_DIVE_SETTINGS_FIELD_NUM)20)
 
 typedef enum
 {
    FIT_DIVE_SETTINGS_MESG_NAME,
+   FIT_DIVE_SETTINGS_MESG_WATER_DENSITY,
+   FIT_DIVE_SETTINGS_MESG_BOTTOM_DEPTH,
+   FIT_DIVE_SETTINGS_MESG_BOTTOM_TIME,
+   FIT_DIVE_SETTINGS_MESG_APNEA_COUNTDOWN_TIME,
+   FIT_DIVE_SETTINGS_MESG_MESSAGE_INDEX,
+   FIT_DIVE_SETTINGS_MESG_REPEAT_DIVE_INTERVAL,
+   FIT_DIVE_SETTINGS_MESG_SAFETY_STOP_TIME,
+   FIT_DIVE_SETTINGS_MESG_MODEL,
+   FIT_DIVE_SETTINGS_MESG_GF_LOW,
+   FIT_DIVE_SETTINGS_MESG_GF_HIGH,
+   FIT_DIVE_SETTINGS_MESG_WATER_TYPE,
+   FIT_DIVE_SETTINGS_MESG_PO2_WARN,
+   FIT_DIVE_SETTINGS_MESG_PO2_CRITICAL,
+   FIT_DIVE_SETTINGS_MESG_PO2_DECO,
+   FIT_DIVE_SETTINGS_MESG_SAFETY_STOP_ENABLED,
+   FIT_DIVE_SETTINGS_MESG_APNEA_COUNTDOWN_ENABLED,
+   FIT_DIVE_SETTINGS_MESG_BACKLIGHT_MODE,
+   FIT_DIVE_SETTINGS_MESG_BACKLIGHT_BRIGHTNESS,
+   FIT_DIVE_SETTINGS_MESG_BACKLIGHT_TIMEOUT,
+   FIT_DIVE_SETTINGS_MESG_HEART_RATE_SOURCE_TYPE,
    FIT_DIVE_SETTINGS_MESG_HEART_RATE_SOURCE,
    FIT_DIVE_SETTINGS_MESG_FIELDS
 } FIT_DIVE_SETTINGS_MESG_FIELD;
@@ -5209,6 +5404,92 @@ typedef struct
    FIT_UINT8 num_fields;
    FIT_UINT8 fields[FIT_DIVE_SETTINGS_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_DIVE_SETTINGS_MESG_DEF;
+
+// dive_alarm message
+
+#define FIT_DIVE_ALARM_MESG_SIZE                                                14
+#define FIT_DIVE_ALARM_MESG_DEF_SIZE                                            26
+#define FIT_DIVE_ALARM_MESG_DIVE_TYPES_COUNT                                    1
+
+typedef struct
+{
+   FIT_UINT32 depth; // 1000 * m + 0, Depth setting (m) for depth type alarms
+   FIT_SINT32 time; // 1 * s + 0, Time setting (s) for time type alarms
+   FIT_MESSAGE_INDEX message_index; // Index of the alarm
+   FIT_BOOL enabled; // Enablement flag
+   FIT_DIVE_ALARM_TYPE alarm_type; // Alarm type setting
+   FIT_TONE sound; // Tone and Vibe setting for the alarm
+   FIT_SUB_SPORT dive_types[FIT_DIVE_ALARM_MESG_DIVE_TYPES_COUNT]; // Dive types the alarm will trigger on
+} FIT_DIVE_ALARM_MESG;
+
+typedef FIT_UINT8 FIT_DIVE_ALARM_FIELD_NUM;
+
+#define FIT_DIVE_ALARM_FIELD_NUM_DEPTH ((FIT_DIVE_ALARM_FIELD_NUM)0)
+#define FIT_DIVE_ALARM_FIELD_NUM_TIME ((FIT_DIVE_ALARM_FIELD_NUM)1)
+#define FIT_DIVE_ALARM_FIELD_NUM_MESSAGE_INDEX ((FIT_DIVE_ALARM_FIELD_NUM)254)
+#define FIT_DIVE_ALARM_FIELD_NUM_ENABLED ((FIT_DIVE_ALARM_FIELD_NUM)2)
+#define FIT_DIVE_ALARM_FIELD_NUM_ALARM_TYPE ((FIT_DIVE_ALARM_FIELD_NUM)3)
+#define FIT_DIVE_ALARM_FIELD_NUM_SOUND ((FIT_DIVE_ALARM_FIELD_NUM)4)
+#define FIT_DIVE_ALARM_FIELD_NUM_DIVE_TYPES ((FIT_DIVE_ALARM_FIELD_NUM)5)
+
+typedef enum
+{
+   FIT_DIVE_ALARM_MESG_DEPTH,
+   FIT_DIVE_ALARM_MESG_TIME,
+   FIT_DIVE_ALARM_MESG_MESSAGE_INDEX,
+   FIT_DIVE_ALARM_MESG_ENABLED,
+   FIT_DIVE_ALARM_MESG_ALARM_TYPE,
+   FIT_DIVE_ALARM_MESG_SOUND,
+   FIT_DIVE_ALARM_MESG_DIVE_TYPES,
+   FIT_DIVE_ALARM_MESG_FIELDS
+} FIT_DIVE_ALARM_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_DIVE_ALARM_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_DIVE_ALARM_MESG_DEF;
+
+// dive_gas message
+
+#define FIT_DIVE_GAS_MESG_SIZE                                                  5
+#define FIT_DIVE_GAS_MESG_DEF_SIZE                                              17
+
+typedef struct
+{
+   FIT_MESSAGE_INDEX message_index; //
+   FIT_UINT8 helium_content; // 1 * percent + 0,
+   FIT_UINT8 oxygen_content; // 1 * percent + 0,
+   FIT_DIVE_GAS_STATUS status; //
+} FIT_DIVE_GAS_MESG;
+
+typedef FIT_UINT8 FIT_DIVE_GAS_FIELD_NUM;
+
+#define FIT_DIVE_GAS_FIELD_NUM_MESSAGE_INDEX ((FIT_DIVE_GAS_FIELD_NUM)254)
+#define FIT_DIVE_GAS_FIELD_NUM_HELIUM_CONTENT ((FIT_DIVE_GAS_FIELD_NUM)0)
+#define FIT_DIVE_GAS_FIELD_NUM_OXYGEN_CONTENT ((FIT_DIVE_GAS_FIELD_NUM)1)
+#define FIT_DIVE_GAS_FIELD_NUM_STATUS ((FIT_DIVE_GAS_FIELD_NUM)2)
+
+typedef enum
+{
+   FIT_DIVE_GAS_MESG_MESSAGE_INDEX,
+   FIT_DIVE_GAS_MESG_HELIUM_CONTENT,
+   FIT_DIVE_GAS_MESG_OXYGEN_CONTENT,
+   FIT_DIVE_GAS_MESG_STATUS,
+   FIT_DIVE_GAS_MESG_FIELDS
+} FIT_DIVE_GAS_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_DIVE_GAS_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_DIVE_GAS_MESG_DEF;
 
 // goal message
 
@@ -5767,8 +6048,8 @@ typedef struct
 
 // lap message
 
-#define FIT_LAP_MESG_SIZE                                                       241
-#define FIT_LAP_MESG_DEF_SIZE                                                   254
+#define FIT_LAP_MESG_SIZE                                                       301
+#define FIT_LAP_MESG_DEF_SIZE                                                   353
 #define FIT_LAP_MESG_TIME_IN_HR_ZONE_COUNT                                      5
 #define FIT_LAP_MESG_TIME_IN_SPEED_ZONE_COUNT                                   1
 #define FIT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT                                 1
@@ -5781,6 +6062,14 @@ typedef struct
 #define FIT_LAP_MESG_AVG_SATURATED_HEMOGLOBIN_PERCENT_COUNT                     1
 #define FIT_LAP_MESG_MIN_SATURATED_HEMOGLOBIN_PERCENT_COUNT                     1
 #define FIT_LAP_MESG_MAX_SATURATED_HEMOGLOBIN_PERCENT_COUNT                     1
+#define FIT_LAP_MESG_AVG_POWER_POSITION_COUNT                                   1
+#define FIT_LAP_MESG_MAX_POWER_POSITION_COUNT                                   1
+#define FIT_LAP_MESG_AVG_LEFT_POWER_PHASE_COUNT                                 1
+#define FIT_LAP_MESG_AVG_LEFT_POWER_PHASE_PEAK_COUNT                            1
+#define FIT_LAP_MESG_AVG_RIGHT_POWER_PHASE_COUNT                                1
+#define FIT_LAP_MESG_AVG_RIGHT_POWER_PHASE_PEAK_COUNT                           1
+#define FIT_LAP_MESG_AVG_CADENCE_POSITION_COUNT                                 1
+#define FIT_LAP_MESG_MAX_CADENCE_POSITION_COUNT                                 1
 
 typedef struct
 {
@@ -5800,11 +6089,16 @@ typedef struct
    FIT_UINT32 time_in_speed_zone[FIT_LAP_MESG_TIME_IN_SPEED_ZONE_COUNT]; // 1000 * s + 0,
    FIT_UINT32 time_in_cadence_zone[FIT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT]; // 1000 * s + 0,
    FIT_UINT32 time_in_power_zone[FIT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT]; // 1000 * s + 0,
+   FIT_UINT32 time_standing; // 1000 * s + 0, Total time spent in the standing position
    FIT_UINT32 enhanced_avg_speed; // 1000 * m/s + 0,
    FIT_UINT32 enhanced_max_speed; // 1000 * m/s + 0,
    FIT_UINT32 enhanced_avg_altitude; // 5 * m + 500,
    FIT_UINT32 enhanced_min_altitude; // 5 * m + 500,
    FIT_UINT32 enhanced_max_altitude; // 5 * m + 500,
+   FIT_FLOAT32 total_grit; // 1 * kGrit + 0, The grit score estimates how challenging a route could be for a cyclist in terms of time spent going over sharp turns or large grade slopes.
+   FIT_FLOAT32 total_flow; // 1 * Flow + 0, The flow score estimates how long distance wise a cyclist deaccelerates over intervals where deacceleration is unnecessary such as smooth turns or small grade angle intervals.
+   FIT_FLOAT32 avg_grit; // 1 * kGrit + 0, The grit score estimates how challenging a route could be for a cyclist in terms of time spent going over sharp turns or large grade slopes.
+   FIT_FLOAT32 avg_flow; // 1 * Flow + 0, The flow score estimates how long distance wise a cyclist deaccelerates over intervals where deacceleration is unnecessary such as smooth turns or small grade angle intervals.
    FIT_MESSAGE_INDEX message_index; //
    FIT_UINT16 total_calories; // 1 * kcal + 0,
    FIT_UINT16 total_fat_calories; // 1 * kcal + 0, If New Leaf
@@ -5847,7 +6141,19 @@ typedef struct
    FIT_UINT16 avg_saturated_hemoglobin_percent[FIT_LAP_MESG_AVG_SATURATED_HEMOGLOBIN_PERCENT_COUNT]; // 10 * % + 0, Avg percentage of hemoglobin saturated with oxygen
    FIT_UINT16 min_saturated_hemoglobin_percent[FIT_LAP_MESG_MIN_SATURATED_HEMOGLOBIN_PERCENT_COUNT]; // 10 * % + 0, Min percentage of hemoglobin saturated with oxygen
    FIT_UINT16 max_saturated_hemoglobin_percent[FIT_LAP_MESG_MAX_SATURATED_HEMOGLOBIN_PERCENT_COUNT]; // 10 * % + 0, Max percentage of hemoglobin saturated with oxygen
+   FIT_UINT16 stand_count; // Number of transitions to the standing state
+   FIT_UINT16 avg_power_position[FIT_LAP_MESG_AVG_POWER_POSITION_COUNT]; // 1 * watts + 0, Average power by position. Data value indexes defined by rider_position_type.
+   FIT_UINT16 max_power_position[FIT_LAP_MESG_MAX_POWER_POSITION_COUNT]; // 1 * watts + 0, Maximum power by position. Data value indexes defined by rider_position_type.
+   FIT_UINT16 avg_lev_motor_power; // 1 * watts + 0, lev average motor power during lap
+   FIT_UINT16 max_lev_motor_power; // 1 * watts + 0, lev maximum motor power during lap
+   FIT_UINT16 avg_vertical_ratio; // 100 * percent + 0,
+   FIT_UINT16 avg_stance_time_balance; // 100 * percent + 0,
+   FIT_UINT16 avg_step_length; // 10 * mm + 0,
    FIT_UINT16 avg_vam; // 1000 * m/s + 0,
+   FIT_UINT16 jump_count; //
+   FIT_UINT16 avg_core_temperature; // 100 * C + 0,
+   FIT_UINT16 min_core_temperature; // 100 * C + 0,
+   FIT_UINT16 max_core_temperature; // 100 * C + 0,
    FIT_EVENT event; //
    FIT_EVENT_TYPE event_type; //
    FIT_UINT8 avg_heart_rate; // 1 * bpm + 0,
@@ -5867,6 +6173,22 @@ typedef struct
    FIT_UINT8 avg_fractional_cadence; // 128 * rpm + 0, fractional part of the avg_cadence
    FIT_UINT8 max_fractional_cadence; // 128 * rpm + 0, fractional part of the max_cadence
    FIT_UINT8 total_fractional_cycles; // 128 * cycles + 0, fractional part of the total_cycles
+   FIT_UINT8 avg_left_torque_effectiveness; // 2 * percent + 0,
+   FIT_UINT8 avg_right_torque_effectiveness; // 2 * percent + 0,
+   FIT_UINT8 avg_left_pedal_smoothness; // 2 * percent + 0,
+   FIT_UINT8 avg_right_pedal_smoothness; // 2 * percent + 0,
+   FIT_UINT8 avg_combined_pedal_smoothness; // 2 * percent + 0,
+   FIT_SINT8 avg_left_pco; // 1 * mm + 0, Average left platform center offset
+   FIT_SINT8 avg_right_pco; // 1 * mm + 0, Average right platform center offset
+   FIT_UINT8 avg_left_power_phase[FIT_LAP_MESG_AVG_LEFT_POWER_PHASE_COUNT]; // 0.7111111 * degrees + 0, Average left power phase angles. Data value indexes defined by power_phase_type.
+   FIT_UINT8 avg_left_power_phase_peak[FIT_LAP_MESG_AVG_LEFT_POWER_PHASE_PEAK_COUNT]; // 0.7111111 * degrees + 0, Average left power phase peak angles. Data value indexes defined by power_phase_type.
+   FIT_UINT8 avg_right_power_phase[FIT_LAP_MESG_AVG_RIGHT_POWER_PHASE_COUNT]; // 0.7111111 * degrees + 0, Average right power phase angles. Data value indexes defined by power_phase_type.
+   FIT_UINT8 avg_right_power_phase_peak[FIT_LAP_MESG_AVG_RIGHT_POWER_PHASE_PEAK_COUNT]; // 0.7111111 * degrees + 0, Average right power phase peak angles. Data value indexes defined by power_phase_type.
+   FIT_UINT8 avg_cadence_position[FIT_LAP_MESG_AVG_CADENCE_POSITION_COUNT]; // 1 * rpm + 0, Average cadence by position. Data value indexes defined by rider_position_type.
+   FIT_UINT8 max_cadence_position[FIT_LAP_MESG_MAX_CADENCE_POSITION_COUNT]; // 1 * rpm + 0, Maximum cadence by position. Data value indexes defined by rider_position_type.
+   FIT_UINT8 lev_battery_consumption; // 2 * percent + 0, lev battery consumption during lap
+   FIT_UINT8 total_fractional_ascent; // 100 * m + 0, fractional part of total_ascent
+   FIT_UINT8 total_fractional_descent; // 100 * m + 0, fractional part of total_descent
 } FIT_LAP_MESG;
 
 typedef FIT_UINT8 FIT_LAP_FIELD_NUM;
@@ -5887,11 +6209,16 @@ typedef FIT_UINT8 FIT_LAP_FIELD_NUM;
 #define FIT_LAP_FIELD_NUM_TIME_IN_SPEED_ZONE ((FIT_LAP_FIELD_NUM)58)
 #define FIT_LAP_FIELD_NUM_TIME_IN_CADENCE_ZONE ((FIT_LAP_FIELD_NUM)59)
 #define FIT_LAP_FIELD_NUM_TIME_IN_POWER_ZONE ((FIT_LAP_FIELD_NUM)60)
+#define FIT_LAP_FIELD_NUM_TIME_STANDING ((FIT_LAP_FIELD_NUM)98)
 #define FIT_LAP_FIELD_NUM_ENHANCED_AVG_SPEED ((FIT_LAP_FIELD_NUM)110)
 #define FIT_LAP_FIELD_NUM_ENHANCED_MAX_SPEED ((FIT_LAP_FIELD_NUM)111)
 #define FIT_LAP_FIELD_NUM_ENHANCED_AVG_ALTITUDE ((FIT_LAP_FIELD_NUM)112)
 #define FIT_LAP_FIELD_NUM_ENHANCED_MIN_ALTITUDE ((FIT_LAP_FIELD_NUM)113)
 #define FIT_LAP_FIELD_NUM_ENHANCED_MAX_ALTITUDE ((FIT_LAP_FIELD_NUM)114)
+#define FIT_LAP_FIELD_NUM_TOTAL_GRIT ((FIT_LAP_FIELD_NUM)149)
+#define FIT_LAP_FIELD_NUM_TOTAL_FLOW ((FIT_LAP_FIELD_NUM)150)
+#define FIT_LAP_FIELD_NUM_AVG_GRIT ((FIT_LAP_FIELD_NUM)153)
+#define FIT_LAP_FIELD_NUM_AVG_FLOW ((FIT_LAP_FIELD_NUM)154)
 #define FIT_LAP_FIELD_NUM_MESSAGE_INDEX ((FIT_LAP_FIELD_NUM)254)
 #define FIT_LAP_FIELD_NUM_TOTAL_CALORIES ((FIT_LAP_FIELD_NUM)11)
 #define FIT_LAP_FIELD_NUM_TOTAL_FAT_CALORIES ((FIT_LAP_FIELD_NUM)12)
@@ -5934,7 +6261,19 @@ typedef FIT_UINT8 FIT_LAP_FIELD_NUM;
 #define FIT_LAP_FIELD_NUM_AVG_SATURATED_HEMOGLOBIN_PERCENT ((FIT_LAP_FIELD_NUM)87)
 #define FIT_LAP_FIELD_NUM_MIN_SATURATED_HEMOGLOBIN_PERCENT ((FIT_LAP_FIELD_NUM)88)
 #define FIT_LAP_FIELD_NUM_MAX_SATURATED_HEMOGLOBIN_PERCENT ((FIT_LAP_FIELD_NUM)89)
+#define FIT_LAP_FIELD_NUM_STAND_COUNT ((FIT_LAP_FIELD_NUM)99)
+#define FIT_LAP_FIELD_NUM_AVG_POWER_POSITION ((FIT_LAP_FIELD_NUM)106)
+#define FIT_LAP_FIELD_NUM_MAX_POWER_POSITION ((FIT_LAP_FIELD_NUM)107)
+#define FIT_LAP_FIELD_NUM_AVG_LEV_MOTOR_POWER ((FIT_LAP_FIELD_NUM)115)
+#define FIT_LAP_FIELD_NUM_MAX_LEV_MOTOR_POWER ((FIT_LAP_FIELD_NUM)116)
+#define FIT_LAP_FIELD_NUM_AVG_VERTICAL_RATIO ((FIT_LAP_FIELD_NUM)118)
+#define FIT_LAP_FIELD_NUM_AVG_STANCE_TIME_BALANCE ((FIT_LAP_FIELD_NUM)119)
+#define FIT_LAP_FIELD_NUM_AVG_STEP_LENGTH ((FIT_LAP_FIELD_NUM)120)
 #define FIT_LAP_FIELD_NUM_AVG_VAM ((FIT_LAP_FIELD_NUM)121)
+#define FIT_LAP_FIELD_NUM_JUMP_COUNT ((FIT_LAP_FIELD_NUM)151)
+#define FIT_LAP_FIELD_NUM_AVG_CORE_TEMPERATURE ((FIT_LAP_FIELD_NUM)158)
+#define FIT_LAP_FIELD_NUM_MIN_CORE_TEMPERATURE ((FIT_LAP_FIELD_NUM)159)
+#define FIT_LAP_FIELD_NUM_MAX_CORE_TEMPERATURE ((FIT_LAP_FIELD_NUM)160)
 #define FIT_LAP_FIELD_NUM_EVENT ((FIT_LAP_FIELD_NUM)0)
 #define FIT_LAP_FIELD_NUM_EVENT_TYPE ((FIT_LAP_FIELD_NUM)1)
 #define FIT_LAP_FIELD_NUM_AVG_HEART_RATE ((FIT_LAP_FIELD_NUM)15)
@@ -5954,6 +6293,22 @@ typedef FIT_UINT8 FIT_LAP_FIELD_NUM;
 #define FIT_LAP_FIELD_NUM_AVG_FRACTIONAL_CADENCE ((FIT_LAP_FIELD_NUM)80)
 #define FIT_LAP_FIELD_NUM_MAX_FRACTIONAL_CADENCE ((FIT_LAP_FIELD_NUM)81)
 #define FIT_LAP_FIELD_NUM_TOTAL_FRACTIONAL_CYCLES ((FIT_LAP_FIELD_NUM)82)
+#define FIT_LAP_FIELD_NUM_AVG_LEFT_TORQUE_EFFECTIVENESS ((FIT_LAP_FIELD_NUM)91)
+#define FIT_LAP_FIELD_NUM_AVG_RIGHT_TORQUE_EFFECTIVENESS ((FIT_LAP_FIELD_NUM)92)
+#define FIT_LAP_FIELD_NUM_AVG_LEFT_PEDAL_SMOOTHNESS ((FIT_LAP_FIELD_NUM)93)
+#define FIT_LAP_FIELD_NUM_AVG_RIGHT_PEDAL_SMOOTHNESS ((FIT_LAP_FIELD_NUM)94)
+#define FIT_LAP_FIELD_NUM_AVG_COMBINED_PEDAL_SMOOTHNESS ((FIT_LAP_FIELD_NUM)95)
+#define FIT_LAP_FIELD_NUM_AVG_LEFT_PCO ((FIT_LAP_FIELD_NUM)100)
+#define FIT_LAP_FIELD_NUM_AVG_RIGHT_PCO ((FIT_LAP_FIELD_NUM)101)
+#define FIT_LAP_FIELD_NUM_AVG_LEFT_POWER_PHASE ((FIT_LAP_FIELD_NUM)102)
+#define FIT_LAP_FIELD_NUM_AVG_LEFT_POWER_PHASE_PEAK ((FIT_LAP_FIELD_NUM)103)
+#define FIT_LAP_FIELD_NUM_AVG_RIGHT_POWER_PHASE ((FIT_LAP_FIELD_NUM)104)
+#define FIT_LAP_FIELD_NUM_AVG_RIGHT_POWER_PHASE_PEAK ((FIT_LAP_FIELD_NUM)105)
+#define FIT_LAP_FIELD_NUM_AVG_CADENCE_POSITION ((FIT_LAP_FIELD_NUM)108)
+#define FIT_LAP_FIELD_NUM_MAX_CADENCE_POSITION ((FIT_LAP_FIELD_NUM)109)
+#define FIT_LAP_FIELD_NUM_LEV_BATTERY_CONSUMPTION ((FIT_LAP_FIELD_NUM)117)
+#define FIT_LAP_FIELD_NUM_TOTAL_FRACTIONAL_ASCENT ((FIT_LAP_FIELD_NUM)156)
+#define FIT_LAP_FIELD_NUM_TOTAL_FRACTIONAL_DESCENT ((FIT_LAP_FIELD_NUM)157)
 
 typedef enum
 {
@@ -5973,11 +6328,16 @@ typedef enum
    FIT_LAP_MESG_TIME_IN_SPEED_ZONE,
    FIT_LAP_MESG_TIME_IN_CADENCE_ZONE,
    FIT_LAP_MESG_TIME_IN_POWER_ZONE,
+   FIT_LAP_MESG_TIME_STANDING,
    FIT_LAP_MESG_ENHANCED_AVG_SPEED,
    FIT_LAP_MESG_ENHANCED_MAX_SPEED,
    FIT_LAP_MESG_ENHANCED_AVG_ALTITUDE,
    FIT_LAP_MESG_ENHANCED_MIN_ALTITUDE,
    FIT_LAP_MESG_ENHANCED_MAX_ALTITUDE,
+   FIT_LAP_MESG_TOTAL_GRIT,
+   FIT_LAP_MESG_TOTAL_FLOW,
+   FIT_LAP_MESG_AVG_GRIT,
+   FIT_LAP_MESG_AVG_FLOW,
    FIT_LAP_MESG_MESSAGE_INDEX,
    FIT_LAP_MESG_TOTAL_CALORIES,
    FIT_LAP_MESG_TOTAL_FAT_CALORIES,
@@ -6020,7 +6380,19 @@ typedef enum
    FIT_LAP_MESG_AVG_SATURATED_HEMOGLOBIN_PERCENT,
    FIT_LAP_MESG_MIN_SATURATED_HEMOGLOBIN_PERCENT,
    FIT_LAP_MESG_MAX_SATURATED_HEMOGLOBIN_PERCENT,
+   FIT_LAP_MESG_STAND_COUNT,
+   FIT_LAP_MESG_AVG_POWER_POSITION,
+   FIT_LAP_MESG_MAX_POWER_POSITION,
+   FIT_LAP_MESG_AVG_LEV_MOTOR_POWER,
+   FIT_LAP_MESG_MAX_LEV_MOTOR_POWER,
+   FIT_LAP_MESG_AVG_VERTICAL_RATIO,
+   FIT_LAP_MESG_AVG_STANCE_TIME_BALANCE,
+   FIT_LAP_MESG_AVG_STEP_LENGTH,
    FIT_LAP_MESG_AVG_VAM,
+   FIT_LAP_MESG_JUMP_COUNT,
+   FIT_LAP_MESG_AVG_CORE_TEMPERATURE,
+   FIT_LAP_MESG_MIN_CORE_TEMPERATURE,
+   FIT_LAP_MESG_MAX_CORE_TEMPERATURE,
    FIT_LAP_MESG_EVENT,
    FIT_LAP_MESG_EVENT_TYPE,
    FIT_LAP_MESG_AVG_HEART_RATE,
@@ -6040,6 +6412,22 @@ typedef enum
    FIT_LAP_MESG_AVG_FRACTIONAL_CADENCE,
    FIT_LAP_MESG_MAX_FRACTIONAL_CADENCE,
    FIT_LAP_MESG_TOTAL_FRACTIONAL_CYCLES,
+   FIT_LAP_MESG_AVG_LEFT_TORQUE_EFFECTIVENESS,
+   FIT_LAP_MESG_AVG_RIGHT_TORQUE_EFFECTIVENESS,
+   FIT_LAP_MESG_AVG_LEFT_PEDAL_SMOOTHNESS,
+   FIT_LAP_MESG_AVG_RIGHT_PEDAL_SMOOTHNESS,
+   FIT_LAP_MESG_AVG_COMBINED_PEDAL_SMOOTHNESS,
+   FIT_LAP_MESG_AVG_LEFT_PCO,
+   FIT_LAP_MESG_AVG_RIGHT_PCO,
+   FIT_LAP_MESG_AVG_LEFT_POWER_PHASE,
+   FIT_LAP_MESG_AVG_LEFT_POWER_PHASE_PEAK,
+   FIT_LAP_MESG_AVG_RIGHT_POWER_PHASE,
+   FIT_LAP_MESG_AVG_RIGHT_POWER_PHASE_PEAK,
+   FIT_LAP_MESG_AVG_CADENCE_POSITION,
+   FIT_LAP_MESG_MAX_CADENCE_POSITION,
+   FIT_LAP_MESG_LEV_BATTERY_CONSUMPTION,
+   FIT_LAP_MESG_TOTAL_FRACTIONAL_ASCENT,
+   FIT_LAP_MESG_TOTAL_FRACTIONAL_DESCENT,
    FIT_LAP_MESG_FIELDS
 } FIT_LAP_MESG_FIELD;
 
@@ -6390,8 +6778,8 @@ typedef struct
 
 // event message
 
-#define FIT_EVENT_MESG_SIZE                                                     23
-#define FIT_EVENT_MESG_DEF_SIZE                                                 47
+#define FIT_EVENT_MESG_SIZE                                                     26
+#define FIT_EVENT_MESG_DEF_SIZE                                                 56
 
 typedef struct
 {
@@ -6407,8 +6795,11 @@ typedef struct
    FIT_UINT8Z front_gear; // Do not populate directly. Autogenerated by decoder for gear_change subfield components. Number of front teeth.
    FIT_UINT8Z rear_gear_num; // Do not populate directly. Autogenerated by decoder for gear_change subfield components. Rear gear number. 1 is innermost.
    FIT_UINT8Z rear_gear; // Do not populate directly. Autogenerated by decoder for gear_change subfield components. Number of rear teeth.
+   FIT_DEVICE_INDEX device_index; //
    FIT_RADAR_THREAT_LEVEL_TYPE radar_threat_level_max; // Do not populate directly. Autogenerated by decoder for threat_alert subfield components.
    FIT_UINT8 radar_threat_count; // Do not populate directly. Autogenerated by decoder for threat_alert subfield components.
+   FIT_UINT8 radar_threat_avg_approach_speed; // 10 * m/s + 0, Do not populate directly. Autogenerated by decoder for radar_threat_alert subfield components
+   FIT_UINT8 radar_threat_max_approach_speed; // 10 * m/s + 0, Do not populate directly. Autogenerated by decoder for radar_threat_alert subfield components
 } FIT_EVENT_MESG;
 
 typedef FIT_UINT8 FIT_EVENT_FIELD_NUM;
@@ -6425,8 +6816,11 @@ typedef FIT_UINT8 FIT_EVENT_FIELD_NUM;
 #define FIT_EVENT_FIELD_NUM_FRONT_GEAR ((FIT_EVENT_FIELD_NUM)10)
 #define FIT_EVENT_FIELD_NUM_REAR_GEAR_NUM ((FIT_EVENT_FIELD_NUM)11)
 #define FIT_EVENT_FIELD_NUM_REAR_GEAR ((FIT_EVENT_FIELD_NUM)12)
+#define FIT_EVENT_FIELD_NUM_DEVICE_INDEX ((FIT_EVENT_FIELD_NUM)13)
 #define FIT_EVENT_FIELD_NUM_RADAR_THREAT_LEVEL_MAX ((FIT_EVENT_FIELD_NUM)21)
 #define FIT_EVENT_FIELD_NUM_RADAR_THREAT_COUNT ((FIT_EVENT_FIELD_NUM)22)
+#define FIT_EVENT_FIELD_NUM_RADAR_THREAT_AVG_APPROACH_SPEED ((FIT_EVENT_FIELD_NUM)23)
+#define FIT_EVENT_FIELD_NUM_RADAR_THREAT_MAX_APPROACH_SPEED ((FIT_EVENT_FIELD_NUM)24)
 
 typedef enum
 {
@@ -6442,8 +6836,11 @@ typedef enum
    FIT_EVENT_MESG_FRONT_GEAR,
    FIT_EVENT_MESG_REAR_GEAR_NUM,
    FIT_EVENT_MESG_REAR_GEAR,
+   FIT_EVENT_MESG_DEVICE_INDEX,
    FIT_EVENT_MESG_RADAR_THREAT_LEVEL_MAX,
    FIT_EVENT_MESG_RADAR_THREAT_COUNT,
+   FIT_EVENT_MESG_RADAR_THREAT_AVG_APPROACH_SPEED,
+   FIT_EVENT_MESG_RADAR_THREAT_MAX_APPROACH_SPEED,
    FIT_EVENT_MESG_FIELDS
 } FIT_EVENT_MESG_FIELD;
 
@@ -6746,6 +7143,162 @@ typedef struct
    FIT_UINT8 fields[FIT_WEATHER_ALERT_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_WEATHER_ALERT_MESG_DEF;
 
+// gps_metadata message
+
+#define FIT_GPS_METADATA_MESG_SIZE                                              34
+#define FIT_GPS_METADATA_MESG_DEF_SIZE                                          32
+#define FIT_GPS_METADATA_MESG_VELOCITY_COUNT                                    3
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of the timestamp.
+   FIT_SINT32 position_lat; // 1 * semicircles + 0,
+   FIT_SINT32 position_long; // 1 * semicircles + 0,
+   FIT_UINT32 enhanced_altitude; // 5 * m + 500,
+   FIT_UINT32 enhanced_speed; // 1000 * m/s + 0,
+   FIT_DATE_TIME utc_timestamp; // 1 * s + 0, Used to correlate UTC to system time if the timestamp of the message is in system time. This UTC time is derived from the GPS data.
+   FIT_UINT16 timestamp_ms; // 1 * ms + 0, Millisecond part of the timestamp.
+   FIT_UINT16 heading; // 100 * degrees + 0,
+   FIT_SINT16 velocity[FIT_GPS_METADATA_MESG_VELOCITY_COUNT]; // 100 * m/s + 0, velocity[0] is lon velocity. Velocity[1] is lat velocity. Velocity[2] is altitude velocity.
+} FIT_GPS_METADATA_MESG;
+
+typedef FIT_UINT8 FIT_GPS_METADATA_FIELD_NUM;
+
+#define FIT_GPS_METADATA_FIELD_NUM_TIMESTAMP ((FIT_GPS_METADATA_FIELD_NUM)253)
+#define FIT_GPS_METADATA_FIELD_NUM_POSITION_LAT ((FIT_GPS_METADATA_FIELD_NUM)1)
+#define FIT_GPS_METADATA_FIELD_NUM_POSITION_LONG ((FIT_GPS_METADATA_FIELD_NUM)2)
+#define FIT_GPS_METADATA_FIELD_NUM_ENHANCED_ALTITUDE ((FIT_GPS_METADATA_FIELD_NUM)3)
+#define FIT_GPS_METADATA_FIELD_NUM_ENHANCED_SPEED ((FIT_GPS_METADATA_FIELD_NUM)4)
+#define FIT_GPS_METADATA_FIELD_NUM_UTC_TIMESTAMP ((FIT_GPS_METADATA_FIELD_NUM)6)
+#define FIT_GPS_METADATA_FIELD_NUM_TIMESTAMP_MS ((FIT_GPS_METADATA_FIELD_NUM)0)
+#define FIT_GPS_METADATA_FIELD_NUM_HEADING ((FIT_GPS_METADATA_FIELD_NUM)5)
+#define FIT_GPS_METADATA_FIELD_NUM_VELOCITY ((FIT_GPS_METADATA_FIELD_NUM)7)
+
+typedef enum
+{
+   FIT_GPS_METADATA_MESG_TIMESTAMP,
+   FIT_GPS_METADATA_MESG_POSITION_LAT,
+   FIT_GPS_METADATA_MESG_POSITION_LONG,
+   FIT_GPS_METADATA_MESG_ENHANCED_ALTITUDE,
+   FIT_GPS_METADATA_MESG_ENHANCED_SPEED,
+   FIT_GPS_METADATA_MESG_UTC_TIMESTAMP,
+   FIT_GPS_METADATA_MESG_TIMESTAMP_MS,
+   FIT_GPS_METADATA_MESG_HEADING,
+   FIT_GPS_METADATA_MESG_VELOCITY,
+   FIT_GPS_METADATA_MESG_FIELDS
+} FIT_GPS_METADATA_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_GPS_METADATA_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_GPS_METADATA_MESG_DEF;
+
+// camera_event message
+
+#define FIT_CAMERA_EVENT_MESG_SIZE                                              9
+#define FIT_CAMERA_EVENT_MESG_DEF_SIZE                                          20
+#define FIT_CAMERA_EVENT_MESG_CAMERA_FILE_UUID_COUNT                            1
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of the timestamp.
+   FIT_UINT16 timestamp_ms; // 1 * ms + 0, Millisecond part of the timestamp.
+   FIT_CAMERA_EVENT_TYPE camera_event_type; //
+   FIT_STRING camera_file_uuid[FIT_CAMERA_EVENT_MESG_CAMERA_FILE_UUID_COUNT]; //
+   FIT_CAMERA_ORIENTATION_TYPE camera_orientation; //
+} FIT_CAMERA_EVENT_MESG;
+
+typedef FIT_UINT8 FIT_CAMERA_EVENT_FIELD_NUM;
+
+#define FIT_CAMERA_EVENT_FIELD_NUM_TIMESTAMP ((FIT_CAMERA_EVENT_FIELD_NUM)253)
+#define FIT_CAMERA_EVENT_FIELD_NUM_TIMESTAMP_MS ((FIT_CAMERA_EVENT_FIELD_NUM)0)
+#define FIT_CAMERA_EVENT_FIELD_NUM_CAMERA_EVENT_TYPE ((FIT_CAMERA_EVENT_FIELD_NUM)1)
+#define FIT_CAMERA_EVENT_FIELD_NUM_CAMERA_FILE_UUID ((FIT_CAMERA_EVENT_FIELD_NUM)2)
+#define FIT_CAMERA_EVENT_FIELD_NUM_CAMERA_ORIENTATION ((FIT_CAMERA_EVENT_FIELD_NUM)3)
+
+typedef enum
+{
+   FIT_CAMERA_EVENT_MESG_TIMESTAMP,
+   FIT_CAMERA_EVENT_MESG_TIMESTAMP_MS,
+   FIT_CAMERA_EVENT_MESG_CAMERA_EVENT_TYPE,
+   FIT_CAMERA_EVENT_MESG_CAMERA_FILE_UUID,
+   FIT_CAMERA_EVENT_MESG_CAMERA_ORIENTATION,
+   FIT_CAMERA_EVENT_MESG_FIELDS
+} FIT_CAMERA_EVENT_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_CAMERA_EVENT_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_CAMERA_EVENT_MESG_DEF;
+
+// gyroscope_data message
+
+#define FIT_GYROSCOPE_DATA_MESG_SIZE                                            26
+#define FIT_GYROSCOPE_DATA_MESG_DEF_SIZE                                        32
+#define FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_X_COUNT                         1
+#define FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_Y_COUNT                         1
+#define FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_Z_COUNT                         1
+#define FIT_GYROSCOPE_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT                        1
+#define FIT_GYROSCOPE_DATA_MESG_GYRO_X_COUNT                                    1
+#define FIT_GYROSCOPE_DATA_MESG_GYRO_Y_COUNT                                    1
+#define FIT_GYROSCOPE_DATA_MESG_GYRO_Z_COUNT                                    1
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of the timestamp
+   FIT_FLOAT32 calibrated_gyro_x[FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_X_COUNT]; // 1 * deg/s + 0, Calibrated gyro reading
+   FIT_FLOAT32 calibrated_gyro_y[FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_Y_COUNT]; // 1 * deg/s + 0, Calibrated gyro reading
+   FIT_FLOAT32 calibrated_gyro_z[FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_Z_COUNT]; // 1 * deg/s + 0, Calibrated gyro reading
+   FIT_UINT16 timestamp_ms; // 1 * ms + 0, Millisecond part of the timestamp.
+   FIT_UINT16 sample_time_offset[FIT_GYROSCOPE_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT]; // 1 * ms + 0, Each time in the array describes the time at which the gyro sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in gyro_x and gyro_y and gyro_z
+   FIT_UINT16 gyro_x[FIT_GYROSCOPE_DATA_MESG_GYRO_X_COUNT]; // 1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+   FIT_UINT16 gyro_y[FIT_GYROSCOPE_DATA_MESG_GYRO_Y_COUNT]; // 1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+   FIT_UINT16 gyro_z[FIT_GYROSCOPE_DATA_MESG_GYRO_Z_COUNT]; // 1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+} FIT_GYROSCOPE_DATA_MESG;
+
+typedef FIT_UINT8 FIT_GYROSCOPE_DATA_FIELD_NUM;
+
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_TIMESTAMP ((FIT_GYROSCOPE_DATA_FIELD_NUM)253)
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_CALIBRATED_GYRO_X ((FIT_GYROSCOPE_DATA_FIELD_NUM)5)
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_CALIBRATED_GYRO_Y ((FIT_GYROSCOPE_DATA_FIELD_NUM)6)
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_CALIBRATED_GYRO_Z ((FIT_GYROSCOPE_DATA_FIELD_NUM)7)
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_TIMESTAMP_MS ((FIT_GYROSCOPE_DATA_FIELD_NUM)0)
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_SAMPLE_TIME_OFFSET ((FIT_GYROSCOPE_DATA_FIELD_NUM)1)
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_GYRO_X ((FIT_GYROSCOPE_DATA_FIELD_NUM)2)
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_GYRO_Y ((FIT_GYROSCOPE_DATA_FIELD_NUM)3)
+#define FIT_GYROSCOPE_DATA_FIELD_NUM_GYRO_Z ((FIT_GYROSCOPE_DATA_FIELD_NUM)4)
+
+typedef enum
+{
+   FIT_GYROSCOPE_DATA_MESG_TIMESTAMP,
+   FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_X,
+   FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_Y,
+   FIT_GYROSCOPE_DATA_MESG_CALIBRATED_GYRO_Z,
+   FIT_GYROSCOPE_DATA_MESG_TIMESTAMP_MS,
+   FIT_GYROSCOPE_DATA_MESG_SAMPLE_TIME_OFFSET,
+   FIT_GYROSCOPE_DATA_MESG_GYRO_X,
+   FIT_GYROSCOPE_DATA_MESG_GYRO_Y,
+   FIT_GYROSCOPE_DATA_MESG_GYRO_Z,
+   FIT_GYROSCOPE_DATA_MESG_FIELDS
+} FIT_GYROSCOPE_DATA_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_GYROSCOPE_DATA_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_GYROSCOPE_DATA_MESG_DEF;
+
 // accelerometer_data message
 
 #define FIT_ACCELEROMETER_DATA_MESG_SIZE                                        32
@@ -6817,6 +7370,291 @@ typedef struct
    FIT_UINT8 num_fields;
    FIT_UINT8 fields[FIT_ACCELEROMETER_DATA_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_ACCELEROMETER_DATA_MESG_DEF;
+
+// magnetometer_data message
+
+#define FIT_MAGNETOMETER_DATA_MESG_SIZE                                         26
+#define FIT_MAGNETOMETER_DATA_MESG_DEF_SIZE                                     32
+#define FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_X_COUNT                       1
+#define FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_Y_COUNT                       1
+#define FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_Z_COUNT                       1
+#define FIT_MAGNETOMETER_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT                     1
+#define FIT_MAGNETOMETER_DATA_MESG_MAG_X_COUNT                                  1
+#define FIT_MAGNETOMETER_DATA_MESG_MAG_Y_COUNT                                  1
+#define FIT_MAGNETOMETER_DATA_MESG_MAG_Z_COUNT                                  1
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of the timestamp
+   FIT_FLOAT32 calibrated_mag_x[FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_X_COUNT]; // 1 * G + 0, Calibrated Magnetometer reading
+   FIT_FLOAT32 calibrated_mag_y[FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_Y_COUNT]; // 1 * G + 0, Calibrated Magnetometer reading
+   FIT_FLOAT32 calibrated_mag_z[FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_Z_COUNT]; // 1 * G + 0, Calibrated Magnetometer reading
+   FIT_UINT16 timestamp_ms; // 1 * ms + 0, Millisecond part of the timestamp.
+   FIT_UINT16 sample_time_offset[FIT_MAGNETOMETER_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT]; // 1 * ms + 0, Each time in the array describes the time at which the compass sample with the corrosponding index was taken. Limited to 30 samples in each message. The samples may span across seconds. Array size must match the number of samples in cmps_x and cmps_y and cmps_z
+   FIT_UINT16 mag_x[FIT_MAGNETOMETER_DATA_MESG_MAG_X_COUNT]; // 1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+   FIT_UINT16 mag_y[FIT_MAGNETOMETER_DATA_MESG_MAG_Y_COUNT]; // 1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+   FIT_UINT16 mag_z[FIT_MAGNETOMETER_DATA_MESG_MAG_Z_COUNT]; // 1 * counts + 0, These are the raw ADC reading. Maximum number of samples is 30 in each message. The samples may span across seconds. A conversion will need to be done on this data once read.
+} FIT_MAGNETOMETER_DATA_MESG;
+
+typedef FIT_UINT8 FIT_MAGNETOMETER_DATA_FIELD_NUM;
+
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_TIMESTAMP ((FIT_MAGNETOMETER_DATA_FIELD_NUM)253)
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_CALIBRATED_MAG_X ((FIT_MAGNETOMETER_DATA_FIELD_NUM)5)
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_CALIBRATED_MAG_Y ((FIT_MAGNETOMETER_DATA_FIELD_NUM)6)
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_CALIBRATED_MAG_Z ((FIT_MAGNETOMETER_DATA_FIELD_NUM)7)
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_TIMESTAMP_MS ((FIT_MAGNETOMETER_DATA_FIELD_NUM)0)
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_SAMPLE_TIME_OFFSET ((FIT_MAGNETOMETER_DATA_FIELD_NUM)1)
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_MAG_X ((FIT_MAGNETOMETER_DATA_FIELD_NUM)2)
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_MAG_Y ((FIT_MAGNETOMETER_DATA_FIELD_NUM)3)
+#define FIT_MAGNETOMETER_DATA_FIELD_NUM_MAG_Z ((FIT_MAGNETOMETER_DATA_FIELD_NUM)4)
+
+typedef enum
+{
+   FIT_MAGNETOMETER_DATA_MESG_TIMESTAMP,
+   FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_X,
+   FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_Y,
+   FIT_MAGNETOMETER_DATA_MESG_CALIBRATED_MAG_Z,
+   FIT_MAGNETOMETER_DATA_MESG_TIMESTAMP_MS,
+   FIT_MAGNETOMETER_DATA_MESG_SAMPLE_TIME_OFFSET,
+   FIT_MAGNETOMETER_DATA_MESG_MAG_X,
+   FIT_MAGNETOMETER_DATA_MESG_MAG_Y,
+   FIT_MAGNETOMETER_DATA_MESG_MAG_Z,
+   FIT_MAGNETOMETER_DATA_MESG_FIELDS
+} FIT_MAGNETOMETER_DATA_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_MAGNETOMETER_DATA_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_MAGNETOMETER_DATA_MESG_DEF;
+
+// barometer_data message
+
+#define FIT_BAROMETER_DATA_MESG_SIZE                                            12
+#define FIT_BAROMETER_DATA_MESG_DEF_SIZE                                        17
+#define FIT_BAROMETER_DATA_MESG_BARO_PRES_COUNT                                 1
+#define FIT_BAROMETER_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT                        1
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of the timestamp
+   FIT_UINT32 baro_pres[FIT_BAROMETER_DATA_MESG_BARO_PRES_COUNT]; // 1 * Pa + 0, These are the raw ADC reading. The samples may span across seconds. A conversion will need to be done on this data once read.
+   FIT_UINT16 timestamp_ms; // 1 * ms + 0, Millisecond part of the timestamp.
+   FIT_UINT16 sample_time_offset[FIT_BAROMETER_DATA_MESG_SAMPLE_TIME_OFFSET_COUNT]; // 1 * ms + 0, Each time in the array describes the time at which the barometer sample with the corrosponding index was taken. The samples may span across seconds. Array size must match the number of samples in baro_cal
+} FIT_BAROMETER_DATA_MESG;
+
+typedef FIT_UINT8 FIT_BAROMETER_DATA_FIELD_NUM;
+
+#define FIT_BAROMETER_DATA_FIELD_NUM_TIMESTAMP ((FIT_BAROMETER_DATA_FIELD_NUM)253)
+#define FIT_BAROMETER_DATA_FIELD_NUM_BARO_PRES ((FIT_BAROMETER_DATA_FIELD_NUM)2)
+#define FIT_BAROMETER_DATA_FIELD_NUM_TIMESTAMP_MS ((FIT_BAROMETER_DATA_FIELD_NUM)0)
+#define FIT_BAROMETER_DATA_FIELD_NUM_SAMPLE_TIME_OFFSET ((FIT_BAROMETER_DATA_FIELD_NUM)1)
+
+typedef enum
+{
+   FIT_BAROMETER_DATA_MESG_TIMESTAMP,
+   FIT_BAROMETER_DATA_MESG_BARO_PRES,
+   FIT_BAROMETER_DATA_MESG_TIMESTAMP_MS,
+   FIT_BAROMETER_DATA_MESG_SAMPLE_TIME_OFFSET,
+   FIT_BAROMETER_DATA_MESG_FIELDS
+} FIT_BAROMETER_DATA_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_BAROMETER_DATA_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_BAROMETER_DATA_MESG_DEF;
+
+// three_d_sensor_calibration message
+
+#define FIT_THREE_D_SENSOR_CALIBRATION_MESG_SIZE                                65
+#define FIT_THREE_D_SENSOR_CALIBRATION_MESG_DEF_SIZE                            26
+#define FIT_THREE_D_SENSOR_CALIBRATION_MESG_OFFSET_CAL_COUNT                    3
+#define FIT_THREE_D_SENSOR_CALIBRATION_MESG_ORIENTATION_MATRIX_COUNT            9
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of the timestamp
+   FIT_UINT32 calibration_factor; // Calibration factor used to convert from raw ADC value to degrees, g, etc.
+   FIT_UINT32 calibration_divisor; // 1 * counts + 0, Calibration factor divisor
+   FIT_UINT32 level_shift; // Level shift value used to shift the ADC value back into range
+   FIT_SINT32 offset_cal[FIT_THREE_D_SENSOR_CALIBRATION_MESG_OFFSET_CAL_COUNT]; // Internal calibration factors, one for each: xy, yx, zx
+   FIT_SINT32 orientation_matrix[FIT_THREE_D_SENSOR_CALIBRATION_MESG_ORIENTATION_MATRIX_COUNT]; // 3 x 3 rotation matrix (row major)
+   FIT_SENSOR_TYPE sensor_type; // Indicates which sensor the calibration is for
+} FIT_THREE_D_SENSOR_CALIBRATION_MESG;
+
+typedef FIT_UINT8 FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM;
+
+#define FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM_TIMESTAMP ((FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM)253)
+#define FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM_CALIBRATION_FACTOR ((FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM)1)
+#define FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM_CALIBRATION_DIVISOR ((FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM)2)
+#define FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM_LEVEL_SHIFT ((FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM)3)
+#define FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM_OFFSET_CAL ((FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM)4)
+#define FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM_ORIENTATION_MATRIX ((FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM)5)
+#define FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM_SENSOR_TYPE ((FIT_THREE_D_SENSOR_CALIBRATION_FIELD_NUM)0)
+
+typedef enum
+{
+   FIT_THREE_D_SENSOR_CALIBRATION_MESG_TIMESTAMP,
+   FIT_THREE_D_SENSOR_CALIBRATION_MESG_CALIBRATION_FACTOR,
+   FIT_THREE_D_SENSOR_CALIBRATION_MESG_CALIBRATION_DIVISOR,
+   FIT_THREE_D_SENSOR_CALIBRATION_MESG_LEVEL_SHIFT,
+   FIT_THREE_D_SENSOR_CALIBRATION_MESG_OFFSET_CAL,
+   FIT_THREE_D_SENSOR_CALIBRATION_MESG_ORIENTATION_MATRIX,
+   FIT_THREE_D_SENSOR_CALIBRATION_MESG_SENSOR_TYPE,
+   FIT_THREE_D_SENSOR_CALIBRATION_MESG_FIELDS
+} FIT_THREE_D_SENSOR_CALIBRATION_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_THREE_D_SENSOR_CALIBRATION_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_THREE_D_SENSOR_CALIBRATION_MESG_DEF;
+
+// one_d_sensor_calibration message
+
+#define FIT_ONE_D_SENSOR_CALIBRATION_MESG_SIZE                                  21
+#define FIT_ONE_D_SENSOR_CALIBRATION_MESG_DEF_SIZE                              23
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of the timestamp
+   FIT_UINT32 calibration_factor; // Calibration factor used to convert from raw ADC value to degrees, g, etc.
+   FIT_UINT32 calibration_divisor; // 1 * counts + 0, Calibration factor divisor
+   FIT_UINT32 level_shift; // Level shift value used to shift the ADC value back into range
+   FIT_SINT32 offset_cal; // Internal Calibration factor
+   FIT_SENSOR_TYPE sensor_type; // Indicates which sensor the calibration is for
+} FIT_ONE_D_SENSOR_CALIBRATION_MESG;
+
+typedef FIT_UINT8 FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM;
+
+#define FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM_TIMESTAMP ((FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM)253)
+#define FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM_CALIBRATION_FACTOR ((FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM)1)
+#define FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM_CALIBRATION_DIVISOR ((FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM)2)
+#define FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM_LEVEL_SHIFT ((FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM)3)
+#define FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM_OFFSET_CAL ((FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM)4)
+#define FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM_SENSOR_TYPE ((FIT_ONE_D_SENSOR_CALIBRATION_FIELD_NUM)0)
+
+typedef enum
+{
+   FIT_ONE_D_SENSOR_CALIBRATION_MESG_TIMESTAMP,
+   FIT_ONE_D_SENSOR_CALIBRATION_MESG_CALIBRATION_FACTOR,
+   FIT_ONE_D_SENSOR_CALIBRATION_MESG_CALIBRATION_DIVISOR,
+   FIT_ONE_D_SENSOR_CALIBRATION_MESG_LEVEL_SHIFT,
+   FIT_ONE_D_SENSOR_CALIBRATION_MESG_OFFSET_CAL,
+   FIT_ONE_D_SENSOR_CALIBRATION_MESG_SENSOR_TYPE,
+   FIT_ONE_D_SENSOR_CALIBRATION_MESG_FIELDS
+} FIT_ONE_D_SENSOR_CALIBRATION_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_ONE_D_SENSOR_CALIBRATION_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_ONE_D_SENSOR_CALIBRATION_MESG_DEF;
+
+// video_frame message
+
+#define FIT_VIDEO_FRAME_MESG_SIZE                                               10
+#define FIT_VIDEO_FRAME_MESG_DEF_SIZE                                           14
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Whole second part of the timestamp
+   FIT_UINT32 frame_number; // Number of the frame that the timestamp and timestamp_ms correlate to
+   FIT_UINT16 timestamp_ms; // 1 * ms + 0, Millisecond part of the timestamp.
+} FIT_VIDEO_FRAME_MESG;
+
+typedef FIT_UINT8 FIT_VIDEO_FRAME_FIELD_NUM;
+
+#define FIT_VIDEO_FRAME_FIELD_NUM_TIMESTAMP ((FIT_VIDEO_FRAME_FIELD_NUM)253)
+#define FIT_VIDEO_FRAME_FIELD_NUM_FRAME_NUMBER ((FIT_VIDEO_FRAME_FIELD_NUM)1)
+#define FIT_VIDEO_FRAME_FIELD_NUM_TIMESTAMP_MS ((FIT_VIDEO_FRAME_FIELD_NUM)0)
+
+typedef enum
+{
+   FIT_VIDEO_FRAME_MESG_TIMESTAMP,
+   FIT_VIDEO_FRAME_MESG_FRAME_NUMBER,
+   FIT_VIDEO_FRAME_MESG_TIMESTAMP_MS,
+   FIT_VIDEO_FRAME_MESG_FIELDS
+} FIT_VIDEO_FRAME_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_VIDEO_FRAME_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_VIDEO_FRAME_MESG_DEF;
+
+// obdii_data message
+
+#define FIT_OBDII_DATA_MESG_SIZE                                                21
+#define FIT_OBDII_DATA_MESG_DEF_SIZE                                            32
+#define FIT_OBDII_DATA_MESG_SYSTEM_TIME_COUNT                                   1
+#define FIT_OBDII_DATA_MESG_TIME_OFFSET_COUNT                                   1
+#define FIT_OBDII_DATA_MESG_RAW_DATA_COUNT                                      1
+#define FIT_OBDII_DATA_MESG_PID_DATA_SIZE_COUNT                                 1
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0, Timestamp message was output
+   FIT_UINT32 system_time[FIT_OBDII_DATA_MESG_SYSTEM_TIME_COUNT]; // System time associated with sample expressed in ms, can be used instead of time_offset. There will be a system_time value for each raw_data element. For multibyte pids the system_time is repeated.
+   FIT_DATE_TIME start_timestamp; // Timestamp of first sample recorded in the message. Used with time_offset to generate time of each sample
+   FIT_UINT16 timestamp_ms; // 1 * ms + 0, Fractional part of timestamp, added to timestamp
+   FIT_UINT16 time_offset[FIT_OBDII_DATA_MESG_TIME_OFFSET_COUNT]; // 1 * ms + 0, Offset of PID reading [i] from start_timestamp+start_timestamp_ms. Readings may span accross seconds.
+   FIT_UINT16 start_timestamp_ms; // 1 * ms + 0, Fractional part of start_timestamp
+   FIT_BYTE pid; // Parameter ID
+   FIT_BYTE raw_data[FIT_OBDII_DATA_MESG_RAW_DATA_COUNT]; // Raw parameter data
+   FIT_UINT8 pid_data_size[FIT_OBDII_DATA_MESG_PID_DATA_SIZE_COUNT]; // Optional, data size of PID[i]. If not specified refer to SAE J1979.
+} FIT_OBDII_DATA_MESG;
+
+typedef FIT_UINT8 FIT_OBDII_DATA_FIELD_NUM;
+
+#define FIT_OBDII_DATA_FIELD_NUM_TIMESTAMP ((FIT_OBDII_DATA_FIELD_NUM)253)
+#define FIT_OBDII_DATA_FIELD_NUM_SYSTEM_TIME ((FIT_OBDII_DATA_FIELD_NUM)5)
+#define FIT_OBDII_DATA_FIELD_NUM_START_TIMESTAMP ((FIT_OBDII_DATA_FIELD_NUM)6)
+#define FIT_OBDII_DATA_FIELD_NUM_TIMESTAMP_MS ((FIT_OBDII_DATA_FIELD_NUM)0)
+#define FIT_OBDII_DATA_FIELD_NUM_TIME_OFFSET ((FIT_OBDII_DATA_FIELD_NUM)1)
+#define FIT_OBDII_DATA_FIELD_NUM_START_TIMESTAMP_MS ((FIT_OBDII_DATA_FIELD_NUM)7)
+#define FIT_OBDII_DATA_FIELD_NUM_PID ((FIT_OBDII_DATA_FIELD_NUM)2)
+#define FIT_OBDII_DATA_FIELD_NUM_RAW_DATA ((FIT_OBDII_DATA_FIELD_NUM)3)
+#define FIT_OBDII_DATA_FIELD_NUM_PID_DATA_SIZE ((FIT_OBDII_DATA_FIELD_NUM)4)
+
+typedef enum
+{
+   FIT_OBDII_DATA_MESG_TIMESTAMP,
+   FIT_OBDII_DATA_MESG_SYSTEM_TIME,
+   FIT_OBDII_DATA_MESG_START_TIMESTAMP,
+   FIT_OBDII_DATA_MESG_TIMESTAMP_MS,
+   FIT_OBDII_DATA_MESG_TIME_OFFSET,
+   FIT_OBDII_DATA_MESG_START_TIMESTAMP_MS,
+   FIT_OBDII_DATA_MESG_PID,
+   FIT_OBDII_DATA_MESG_RAW_DATA,
+   FIT_OBDII_DATA_MESG_PID_DATA_SIZE,
+   FIT_OBDII_DATA_MESG_FIELDS
+} FIT_OBDII_DATA_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_OBDII_DATA_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_OBDII_DATA_MESG_DEF;
 
 // nmea_sentence message
 
@@ -6926,6 +7764,43 @@ typedef struct
    FIT_UINT8 fields[FIT_AVIATION_ATTITUDE_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_AVIATION_ATTITUDE_MESG_DEF;
 
+// video message
+
+#define FIT_VIDEO_MESG_SIZE                                                     6
+#define FIT_VIDEO_MESG_DEF_SIZE                                                 14
+#define FIT_VIDEO_MESG_URL_COUNT                                                1
+#define FIT_VIDEO_MESG_HOSTING_PROVIDER_COUNT                                   1
+
+typedef struct
+{
+   FIT_UINT32 duration; // 1 * ms + 0, Playback time of video
+   FIT_STRING url[FIT_VIDEO_MESG_URL_COUNT]; //
+   FIT_STRING hosting_provider[FIT_VIDEO_MESG_HOSTING_PROVIDER_COUNT]; //
+} FIT_VIDEO_MESG;
+
+typedef FIT_UINT8 FIT_VIDEO_FIELD_NUM;
+
+#define FIT_VIDEO_FIELD_NUM_DURATION ((FIT_VIDEO_FIELD_NUM)2)
+#define FIT_VIDEO_FIELD_NUM_URL ((FIT_VIDEO_FIELD_NUM)0)
+#define FIT_VIDEO_FIELD_NUM_HOSTING_PROVIDER ((FIT_VIDEO_FIELD_NUM)1)
+
+typedef enum
+{
+   FIT_VIDEO_MESG_DURATION,
+   FIT_VIDEO_MESG_URL,
+   FIT_VIDEO_MESG_HOSTING_PROVIDER,
+   FIT_VIDEO_MESG_FIELDS
+} FIT_VIDEO_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_VIDEO_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_VIDEO_MESG_DEF;
+
 // video_title message
 
 #define FIT_VIDEO_TITLE_MESG_SIZE                                               84
@@ -6998,23 +7873,102 @@ typedef struct
    FIT_UINT8 fields[FIT_VIDEO_DESCRIPTION_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_VIDEO_DESCRIPTION_MESG_DEF;
 
-// set message
+// video_clip message
 
-#define FIT_SET_MESG_SIZE                                                       2
-#define FIT_SET_MESG_DEF_SIZE                                                   8
+#define FIT_VIDEO_CLIP_MESG_SIZE                                                22
+#define FIT_VIDEO_CLIP_MESG_DEF_SIZE                                            26
 
 typedef struct
 {
+   FIT_DATE_TIME start_timestamp; //
+   FIT_DATE_TIME end_timestamp; //
+   FIT_UINT32 clip_start; // 1 * ms + 0, Start of clip in video time
+   FIT_UINT32 clip_end; // 1 * ms + 0, End of clip in video time
+   FIT_UINT16 clip_number; //
+   FIT_UINT16 start_timestamp_ms; //
+   FIT_UINT16 end_timestamp_ms; //
+} FIT_VIDEO_CLIP_MESG;
+
+typedef FIT_UINT8 FIT_VIDEO_CLIP_FIELD_NUM;
+
+#define FIT_VIDEO_CLIP_FIELD_NUM_START_TIMESTAMP ((FIT_VIDEO_CLIP_FIELD_NUM)1)
+#define FIT_VIDEO_CLIP_FIELD_NUM_END_TIMESTAMP ((FIT_VIDEO_CLIP_FIELD_NUM)3)
+#define FIT_VIDEO_CLIP_FIELD_NUM_CLIP_START ((FIT_VIDEO_CLIP_FIELD_NUM)6)
+#define FIT_VIDEO_CLIP_FIELD_NUM_CLIP_END ((FIT_VIDEO_CLIP_FIELD_NUM)7)
+#define FIT_VIDEO_CLIP_FIELD_NUM_CLIP_NUMBER ((FIT_VIDEO_CLIP_FIELD_NUM)0)
+#define FIT_VIDEO_CLIP_FIELD_NUM_START_TIMESTAMP_MS ((FIT_VIDEO_CLIP_FIELD_NUM)2)
+#define FIT_VIDEO_CLIP_FIELD_NUM_END_TIMESTAMP_MS ((FIT_VIDEO_CLIP_FIELD_NUM)4)
+
+typedef enum
+{
+   FIT_VIDEO_CLIP_MESG_START_TIMESTAMP,
+   FIT_VIDEO_CLIP_MESG_END_TIMESTAMP,
+   FIT_VIDEO_CLIP_MESG_CLIP_START,
+   FIT_VIDEO_CLIP_MESG_CLIP_END,
+   FIT_VIDEO_CLIP_MESG_CLIP_NUMBER,
+   FIT_VIDEO_CLIP_MESG_START_TIMESTAMP_MS,
+   FIT_VIDEO_CLIP_MESG_END_TIMESTAMP_MS,
+   FIT_VIDEO_CLIP_MESG_FIELDS
+} FIT_VIDEO_CLIP_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_VIDEO_CLIP_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_VIDEO_CLIP_MESG_DEF;
+
+// set message
+
+#define FIT_SET_MESG_SIZE                                                       27
+#define FIT_SET_MESG_DEF_SIZE                                                   38
+#define FIT_SET_MESG_CATEGORY_COUNT                                             1
+#define FIT_SET_MESG_CATEGORY_SUBTYPE_COUNT                                     1
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // Timestamp of the set
+   FIT_UINT32 duration; // 1000 * s + 0,
+   FIT_DATE_TIME start_time; // Start time of the set
+   FIT_UINT16 repetitions; // # of repitions of the movement
+   FIT_UINT16 weight; // 16 * kg + 0, Amount of weight applied for the set
+   FIT_EXERCISE_CATEGORY category[FIT_SET_MESG_CATEGORY_COUNT]; //
+   FIT_UINT16 category_subtype[FIT_SET_MESG_CATEGORY_SUBTYPE_COUNT]; // Based on the associated category, see [category]_exercise_names
    FIT_FIT_BASE_UNIT weight_display_unit; //
+   FIT_MESSAGE_INDEX message_index; //
+   FIT_MESSAGE_INDEX wkt_step_index; //
+   FIT_SET_TYPE set_type; //
 } FIT_SET_MESG;
 
 typedef FIT_UINT8 FIT_SET_FIELD_NUM;
 
+#define FIT_SET_FIELD_NUM_TIMESTAMP ((FIT_SET_FIELD_NUM)254)
+#define FIT_SET_FIELD_NUM_DURATION ((FIT_SET_FIELD_NUM)0)
+#define FIT_SET_FIELD_NUM_START_TIME ((FIT_SET_FIELD_NUM)6)
+#define FIT_SET_FIELD_NUM_REPETITIONS ((FIT_SET_FIELD_NUM)3)
+#define FIT_SET_FIELD_NUM_WEIGHT ((FIT_SET_FIELD_NUM)4)
+#define FIT_SET_FIELD_NUM_CATEGORY ((FIT_SET_FIELD_NUM)7)
+#define FIT_SET_FIELD_NUM_CATEGORY_SUBTYPE ((FIT_SET_FIELD_NUM)8)
 #define FIT_SET_FIELD_NUM_WEIGHT_DISPLAY_UNIT ((FIT_SET_FIELD_NUM)9)
+#define FIT_SET_FIELD_NUM_MESSAGE_INDEX ((FIT_SET_FIELD_NUM)10)
+#define FIT_SET_FIELD_NUM_WKT_STEP_INDEX ((FIT_SET_FIELD_NUM)11)
+#define FIT_SET_FIELD_NUM_SET_TYPE ((FIT_SET_FIELD_NUM)5)
 
 typedef enum
 {
+   FIT_SET_MESG_TIMESTAMP,
+   FIT_SET_MESG_DURATION,
+   FIT_SET_MESG_START_TIME,
+   FIT_SET_MESG_REPETITIONS,
+   FIT_SET_MESG_WEIGHT,
+   FIT_SET_MESG_CATEGORY,
+   FIT_SET_MESG_CATEGORY_SUBTYPE,
    FIT_SET_MESG_WEIGHT_DISPLAY_UNIT,
+   FIT_SET_MESG_MESSAGE_INDEX,
+   FIT_SET_MESG_WKT_STEP_INDEX,
+   FIT_SET_MESG_SET_TYPE,
    FIT_SET_MESG_FIELDS
 } FIT_SET_MESG_FIELD;
 
@@ -7027,12 +7981,118 @@ typedef struct
    FIT_UINT8 fields[FIT_SET_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_SET_MESG_DEF;
 
+// jump message
+
+#define FIT_JUMP_MESG_SIZE                                                      35
+#define FIT_JUMP_MESG_DEF_SIZE                                                  35
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0,
+   FIT_FLOAT32 distance; // 1 * m + 0,
+   FIT_FLOAT32 height; // 1 * m + 0,
+   FIT_FLOAT32 hang_time; // 1 * s + 0,
+   FIT_FLOAT32 score; // A score for a jump calculated based on hang time, rotations, and distance.
+   FIT_SINT32 position_lat; // 1 * semicircles + 0,
+   FIT_SINT32 position_long; // 1 * semicircles + 0,
+   FIT_UINT32 enhanced_speed; // 1000 * m/s + 0,
+   FIT_UINT16 speed; // 1000 * m/s + 0,
+   FIT_UINT8 rotations; //
+} FIT_JUMP_MESG;
+
+typedef FIT_UINT8 FIT_JUMP_FIELD_NUM;
+
+#define FIT_JUMP_FIELD_NUM_TIMESTAMP ((FIT_JUMP_FIELD_NUM)253)
+#define FIT_JUMP_FIELD_NUM_DISTANCE ((FIT_JUMP_FIELD_NUM)0)
+#define FIT_JUMP_FIELD_NUM_HEIGHT ((FIT_JUMP_FIELD_NUM)1)
+#define FIT_JUMP_FIELD_NUM_HANG_TIME ((FIT_JUMP_FIELD_NUM)3)
+#define FIT_JUMP_FIELD_NUM_SCORE ((FIT_JUMP_FIELD_NUM)4)
+#define FIT_JUMP_FIELD_NUM_POSITION_LAT ((FIT_JUMP_FIELD_NUM)5)
+#define FIT_JUMP_FIELD_NUM_POSITION_LONG ((FIT_JUMP_FIELD_NUM)6)
+#define FIT_JUMP_FIELD_NUM_ENHANCED_SPEED ((FIT_JUMP_FIELD_NUM)8)
+#define FIT_JUMP_FIELD_NUM_SPEED ((FIT_JUMP_FIELD_NUM)7)
+#define FIT_JUMP_FIELD_NUM_ROTATIONS ((FIT_JUMP_FIELD_NUM)2)
+
+typedef enum
+{
+   FIT_JUMP_MESG_TIMESTAMP,
+   FIT_JUMP_MESG_DISTANCE,
+   FIT_JUMP_MESG_HEIGHT,
+   FIT_JUMP_MESG_HANG_TIME,
+   FIT_JUMP_MESG_SCORE,
+   FIT_JUMP_MESG_POSITION_LAT,
+   FIT_JUMP_MESG_POSITION_LONG,
+   FIT_JUMP_MESG_ENHANCED_SPEED,
+   FIT_JUMP_MESG_SPEED,
+   FIT_JUMP_MESG_ROTATIONS,
+   FIT_JUMP_MESG_FIELDS
+} FIT_JUMP_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_JUMP_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_JUMP_MESG_DEF;
+
+// climb_pro message
+
+#define FIT_CLIMB_PRO_MESG_SIZE                                                 20
+#define FIT_CLIMB_PRO_MESG_DEF_SIZE                                             26
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0,
+   FIT_SINT32 position_lat; // 1 * semicircles + 0,
+   FIT_SINT32 position_long; // 1 * semicircles + 0,
+   FIT_FLOAT32 current_dist; // 1 * m + 0,
+   FIT_UINT16 climb_number; //
+   FIT_CLIMB_PRO_EVENT climb_pro_event; //
+   FIT_UINT8 climb_category; //
+} FIT_CLIMB_PRO_MESG;
+
+typedef FIT_UINT8 FIT_CLIMB_PRO_FIELD_NUM;
+
+#define FIT_CLIMB_PRO_FIELD_NUM_TIMESTAMP ((FIT_CLIMB_PRO_FIELD_NUM)253)
+#define FIT_CLIMB_PRO_FIELD_NUM_POSITION_LAT ((FIT_CLIMB_PRO_FIELD_NUM)0)
+#define FIT_CLIMB_PRO_FIELD_NUM_POSITION_LONG ((FIT_CLIMB_PRO_FIELD_NUM)1)
+#define FIT_CLIMB_PRO_FIELD_NUM_CURRENT_DIST ((FIT_CLIMB_PRO_FIELD_NUM)5)
+#define FIT_CLIMB_PRO_FIELD_NUM_CLIMB_NUMBER ((FIT_CLIMB_PRO_FIELD_NUM)3)
+#define FIT_CLIMB_PRO_FIELD_NUM_CLIMB_PRO_EVENT ((FIT_CLIMB_PRO_FIELD_NUM)2)
+#define FIT_CLIMB_PRO_FIELD_NUM_CLIMB_CATEGORY ((FIT_CLIMB_PRO_FIELD_NUM)4)
+
+typedef enum
+{
+   FIT_CLIMB_PRO_MESG_TIMESTAMP,
+   FIT_CLIMB_PRO_MESG_POSITION_LAT,
+   FIT_CLIMB_PRO_MESG_POSITION_LONG,
+   FIT_CLIMB_PRO_MESG_CURRENT_DIST,
+   FIT_CLIMB_PRO_MESG_CLIMB_NUMBER,
+   FIT_CLIMB_PRO_MESG_CLIMB_PRO_EVENT,
+   FIT_CLIMB_PRO_MESG_CLIMB_CATEGORY,
+   FIT_CLIMB_PRO_MESG_FIELDS
+} FIT_CLIMB_PRO_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_CLIMB_PRO_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_CLIMB_PRO_MESG_DEF;
+
 // field_description message
 
-#define FIT_FIELD_DESCRIPTION_MESG_SIZE                                         90
-#define FIT_FIELD_DESCRIPTION_MESG_DEF_SIZE                                     35
+#define FIT_FIELD_DESCRIPTION_MESG_SIZE                                         94
+#define FIT_FIELD_DESCRIPTION_MESG_DEF_SIZE                                     47
 #define FIT_FIELD_DESCRIPTION_MESG_FIELD_NAME_COUNT                             64
 #define FIT_FIELD_DESCRIPTION_MESG_UNITS_COUNT                                  16
+#define FIT_FIELD_DESCRIPTION_MESG_COMPONENTS_COUNT                             1
+#define FIT_FIELD_DESCRIPTION_MESG_BITS_COUNT                                   1
+#define FIT_FIELD_DESCRIPTION_MESG_ACCUMULATE_COUNT                             1
 
 typedef struct
 {
@@ -7043,8 +8103,12 @@ typedef struct
    FIT_UINT8 developer_data_index; //
    FIT_UINT8 field_definition_number; //
    FIT_FIT_BASE_TYPE fit_base_type_id; //
+   FIT_UINT8 array; //
+   FIT_STRING components[FIT_FIELD_DESCRIPTION_MESG_COMPONENTS_COUNT]; //
    FIT_UINT8 scale; //
    FIT_SINT8 offset; //
+   FIT_STRING bits[FIT_FIELD_DESCRIPTION_MESG_BITS_COUNT]; //
+   FIT_STRING accumulate[FIT_FIELD_DESCRIPTION_MESG_ACCUMULATE_COUNT]; //
    FIT_UINT8 native_field_num; //
 } FIT_FIELD_DESCRIPTION_MESG;
 
@@ -7057,8 +8121,12 @@ typedef FIT_UINT8 FIT_FIELD_DESCRIPTION_FIELD_NUM;
 #define FIT_FIELD_DESCRIPTION_FIELD_NUM_DEVELOPER_DATA_INDEX ((FIT_FIELD_DESCRIPTION_FIELD_NUM)0)
 #define FIT_FIELD_DESCRIPTION_FIELD_NUM_FIELD_DEFINITION_NUMBER ((FIT_FIELD_DESCRIPTION_FIELD_NUM)1)
 #define FIT_FIELD_DESCRIPTION_FIELD_NUM_FIT_BASE_TYPE_ID ((FIT_FIELD_DESCRIPTION_FIELD_NUM)2)
+#define FIT_FIELD_DESCRIPTION_FIELD_NUM_ARRAY ((FIT_FIELD_DESCRIPTION_FIELD_NUM)4)
+#define FIT_FIELD_DESCRIPTION_FIELD_NUM_COMPONENTS ((FIT_FIELD_DESCRIPTION_FIELD_NUM)5)
 #define FIT_FIELD_DESCRIPTION_FIELD_NUM_SCALE ((FIT_FIELD_DESCRIPTION_FIELD_NUM)6)
 #define FIT_FIELD_DESCRIPTION_FIELD_NUM_OFFSET ((FIT_FIELD_DESCRIPTION_FIELD_NUM)7)
+#define FIT_FIELD_DESCRIPTION_FIELD_NUM_BITS ((FIT_FIELD_DESCRIPTION_FIELD_NUM)9)
+#define FIT_FIELD_DESCRIPTION_FIELD_NUM_ACCUMULATE ((FIT_FIELD_DESCRIPTION_FIELD_NUM)10)
 #define FIT_FIELD_DESCRIPTION_FIELD_NUM_NATIVE_FIELD_NUM ((FIT_FIELD_DESCRIPTION_FIELD_NUM)15)
 
 typedef enum
@@ -7070,8 +8138,12 @@ typedef enum
    FIT_FIELD_DESCRIPTION_MESG_DEVELOPER_DATA_INDEX,
    FIT_FIELD_DESCRIPTION_MESG_FIELD_DEFINITION_NUMBER,
    FIT_FIELD_DESCRIPTION_MESG_FIT_BASE_TYPE_ID,
+   FIT_FIELD_DESCRIPTION_MESG_ARRAY,
+   FIT_FIELD_DESCRIPTION_MESG_COMPONENTS,
    FIT_FIELD_DESCRIPTION_MESG_SCALE,
    FIT_FIELD_DESCRIPTION_MESG_OFFSET,
+   FIT_FIELD_DESCRIPTION_MESG_BITS,
+   FIT_FIELD_DESCRIPTION_MESG_ACCUMULATE,
    FIT_FIELD_DESCRIPTION_MESG_NATIVE_FIELD_NUM,
    FIT_FIELD_DESCRIPTION_MESG_FIELDS
 } FIT_FIELD_DESCRIPTION_MESG_FIELD;
@@ -7275,9 +8347,10 @@ typedef struct
 
 // segment_leaderboard_entry message
 
-#define FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_SIZE                                 16
-#define FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_DEF_SIZE                             23
+#define FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_SIZE                                 17
+#define FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_DEF_SIZE                             26
 #define FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_NAME_COUNT                           1
+#define FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_ACTIVITY_ID_STRING_COUNT             1
 
 typedef struct
 {
@@ -7287,6 +8360,7 @@ typedef struct
    FIT_MESSAGE_INDEX message_index; //
    FIT_STRING name[FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_NAME_COUNT]; // Friendly name assigned to leader
    FIT_SEGMENT_LEADERBOARD_TYPE type; // Leader classification
+   FIT_STRING activity_id_string[FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_ACTIVITY_ID_STRING_COUNT]; // String version of the activity_id. 21 characters long, express in decimal
 } FIT_SEGMENT_LEADERBOARD_ENTRY_MESG;
 
 typedef FIT_UINT8 FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM;
@@ -7297,6 +8371,7 @@ typedef FIT_UINT8 FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM;
 #define FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM_MESSAGE_INDEX ((FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM)254)
 #define FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM_NAME ((FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM)0)
 #define FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM_TYPE ((FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM)1)
+#define FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM_ACTIVITY_ID_STRING ((FIT_SEGMENT_LEADERBOARD_ENTRY_FIELD_NUM)5)
 
 typedef enum
 {
@@ -7306,6 +8381,7 @@ typedef enum
    FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_MESSAGE_INDEX,
    FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_NAME,
    FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_TYPE,
+   FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_ACTIVITY_ID_STRING,
    FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_FIELDS
 } FIT_SEGMENT_LEADERBOARD_ENTRY_MESG_FIELD;
 
@@ -7365,14 +8441,22 @@ typedef struct
 
 // segment_lap message
 
-#define FIT_SEGMENT_LAP_MESG_SIZE                                               250
-#define FIT_SEGMENT_LAP_MESG_DEF_SIZE                                           224
-#define FIT_SEGMENT_LAP_MESG_NAME_COUNT                                         16
+#define FIT_SEGMENT_LAP_MESG_SIZE                                               306
+#define FIT_SEGMENT_LAP_MESG_DEF_SIZE                                           281
+#define FIT_SEGMENT_LAP_MESG_NAME_COUNT                                         24
 #define FIT_SEGMENT_LAP_MESG_TIME_IN_HR_ZONE_COUNT                              5
 #define FIT_SEGMENT_LAP_MESG_TIME_IN_SPEED_ZONE_COUNT                           1
 #define FIT_SEGMENT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT                         1
 #define FIT_SEGMENT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT                           7
+#define FIT_SEGMENT_LAP_MESG_AVG_POWER_POSITION_COUNT                           2
+#define FIT_SEGMENT_LAP_MESG_MAX_POWER_POSITION_COUNT                           2
 #define FIT_SEGMENT_LAP_MESG_UUID_COUNT                                         33
+#define FIT_SEGMENT_LAP_MESG_AVG_LEFT_POWER_PHASE_COUNT                         2
+#define FIT_SEGMENT_LAP_MESG_AVG_LEFT_POWER_PHASE_PEAK_COUNT                    2
+#define FIT_SEGMENT_LAP_MESG_AVG_RIGHT_POWER_PHASE_COUNT                        2
+#define FIT_SEGMENT_LAP_MESG_AVG_RIGHT_POWER_PHASE_PEAK_COUNT                   2
+#define FIT_SEGMENT_LAP_MESG_AVG_CADENCE_POSITION_COUNT                         2
+#define FIT_SEGMENT_LAP_MESG_MAX_CADENCE_POSITION_COUNT                         2
 
 typedef struct
 {
@@ -7398,6 +8482,13 @@ typedef struct
    FIT_UINT32 time_in_cadence_zone[FIT_SEGMENT_LAP_MESG_TIME_IN_CADENCE_ZONE_COUNT]; // 1000 * s + 0,
    FIT_UINT32 time_in_power_zone[FIT_SEGMENT_LAP_MESG_TIME_IN_POWER_ZONE_COUNT]; // 1000 * s + 0,
    FIT_UINT32 active_time; // 1000 * s + 0,
+   FIT_UINT32 time_standing; // 1000 * s + 0, Total time spent in the standing position
+   FIT_UINT16 avg_power_position[FIT_SEGMENT_LAP_MESG_AVG_POWER_POSITION_COUNT]; // 1 * watts + 0, Average power by position. Data value indexes defined by rider_position_type.
+   FIT_UINT16 max_power_position[FIT_SEGMENT_LAP_MESG_MAX_POWER_POSITION_COUNT]; // 1 * watts + 0, Maximum power by position. Data value indexes defined by rider_position_type.
+   FIT_FLOAT32 total_grit; // 1 * kGrit + 0, The grit score estimates how challenging a route could be for a cyclist in terms of time spent going over sharp turns or large grade slopes.
+   FIT_FLOAT32 total_flow; // 1 * Flow + 0, The flow score estimates how long distance wise a cyclist deaccelerates over intervals where deacceleration is unnecessary such as smooth turns or small grade angle intervals.
+   FIT_FLOAT32 avg_grit; // 1 * kGrit + 0, The grit score estimates how challenging a route could be for a cyclist in terms of time spent going over sharp turns or large grade slopes.
+   FIT_FLOAT32 avg_flow; // 1 * Flow + 0, The flow score estimates how long distance wise a cyclist deaccelerates over intervals where deacceleration is unnecessary such as smooth turns or small grade angle intervals.
    FIT_MESSAGE_INDEX message_index; //
    FIT_UINT16 total_calories; // 1 * kcal + 0,
    FIT_UINT16 total_fat_calories; // 1 * kcal + 0, If New Leaf
@@ -7425,6 +8516,8 @@ typedef struct
    FIT_MESSAGE_INDEX wkt_step_index; //
    FIT_UINT16 front_gear_shift_count; //
    FIT_UINT16 rear_gear_shift_count; //
+   FIT_UINT16 stand_count; // Number of transitions to the standing state
+   FIT_MANUFACTURER manufacturer; // Manufacturer that produced the segment
    FIT_EVENT event; //
    FIT_EVENT_TYPE event_type; //
    FIT_UINT8 avg_heart_rate; // 1 * bpm + 0,
@@ -7449,6 +8542,16 @@ typedef struct
    FIT_UINT8 avg_fractional_cadence; // 128 * rpm + 0, fractional part of the avg_cadence
    FIT_UINT8 max_fractional_cadence; // 128 * rpm + 0, fractional part of the max_cadence
    FIT_UINT8 total_fractional_cycles; // 128 * cycles + 0, fractional part of the total_cycles
+   FIT_SINT8 avg_left_pco; // 1 * mm + 0, Average left platform center offset
+   FIT_SINT8 avg_right_pco; // 1 * mm + 0, Average right platform center offset
+   FIT_UINT8 avg_left_power_phase[FIT_SEGMENT_LAP_MESG_AVG_LEFT_POWER_PHASE_COUNT]; // 0.7111111 * degrees + 0, Average left power phase angles. Data value indexes defined by power_phase_type.
+   FIT_UINT8 avg_left_power_phase_peak[FIT_SEGMENT_LAP_MESG_AVG_LEFT_POWER_PHASE_PEAK_COUNT]; // 0.7111111 * degrees + 0, Average left power phase peak angles. Data value indexes defined by power_phase_type.
+   FIT_UINT8 avg_right_power_phase[FIT_SEGMENT_LAP_MESG_AVG_RIGHT_POWER_PHASE_COUNT]; // 0.7111111 * degrees + 0, Average right power phase angles. Data value indexes defined by power_phase_type.
+   FIT_UINT8 avg_right_power_phase_peak[FIT_SEGMENT_LAP_MESG_AVG_RIGHT_POWER_PHASE_PEAK_COUNT]; // 0.7111111 * degrees + 0, Average right power phase peak angles. Data value indexes defined by power_phase_type.
+   FIT_UINT8 avg_cadence_position[FIT_SEGMENT_LAP_MESG_AVG_CADENCE_POSITION_COUNT]; // 1 * rpm + 0, Average cadence by position. Data value indexes defined by rider_position_type.
+   FIT_UINT8 max_cadence_position[FIT_SEGMENT_LAP_MESG_MAX_CADENCE_POSITION_COUNT]; // 1 * rpm + 0, Maximum cadence by position. Data value indexes defined by rider_position_type.
+   FIT_UINT8 total_fractional_ascent; // 100 * m + 0, fractional part of total_ascent
+   FIT_UINT8 total_fractional_descent; // 100 * m + 0, fractional part of total_descent
 } FIT_SEGMENT_LAP_MESG;
 
 typedef FIT_UINT8 FIT_SEGMENT_LAP_FIELD_NUM;
@@ -7475,6 +8578,13 @@ typedef FIT_UINT8 FIT_SEGMENT_LAP_FIELD_NUM;
 #define FIT_SEGMENT_LAP_FIELD_NUM_TIME_IN_CADENCE_ZONE ((FIT_SEGMENT_LAP_FIELD_NUM)51)
 #define FIT_SEGMENT_LAP_FIELD_NUM_TIME_IN_POWER_ZONE ((FIT_SEGMENT_LAP_FIELD_NUM)52)
 #define FIT_SEGMENT_LAP_FIELD_NUM_ACTIVE_TIME ((FIT_SEGMENT_LAP_FIELD_NUM)56)
+#define FIT_SEGMENT_LAP_FIELD_NUM_TIME_STANDING ((FIT_SEGMENT_LAP_FIELD_NUM)71)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_POWER_POSITION ((FIT_SEGMENT_LAP_FIELD_NUM)79)
+#define FIT_SEGMENT_LAP_FIELD_NUM_MAX_POWER_POSITION ((FIT_SEGMENT_LAP_FIELD_NUM)80)
+#define FIT_SEGMENT_LAP_FIELD_NUM_TOTAL_GRIT ((FIT_SEGMENT_LAP_FIELD_NUM)84)
+#define FIT_SEGMENT_LAP_FIELD_NUM_TOTAL_FLOW ((FIT_SEGMENT_LAP_FIELD_NUM)85)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_GRIT ((FIT_SEGMENT_LAP_FIELD_NUM)86)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_FLOW ((FIT_SEGMENT_LAP_FIELD_NUM)87)
 #define FIT_SEGMENT_LAP_FIELD_NUM_MESSAGE_INDEX ((FIT_SEGMENT_LAP_FIELD_NUM)254)
 #define FIT_SEGMENT_LAP_FIELD_NUM_TOTAL_CALORIES ((FIT_SEGMENT_LAP_FIELD_NUM)11)
 #define FIT_SEGMENT_LAP_FIELD_NUM_TOTAL_FAT_CALORIES ((FIT_SEGMENT_LAP_FIELD_NUM)12)
@@ -7502,6 +8612,8 @@ typedef FIT_UINT8 FIT_SEGMENT_LAP_FIELD_NUM;
 #define FIT_SEGMENT_LAP_FIELD_NUM_WKT_STEP_INDEX ((FIT_SEGMENT_LAP_FIELD_NUM)57)
 #define FIT_SEGMENT_LAP_FIELD_NUM_FRONT_GEAR_SHIFT_COUNT ((FIT_SEGMENT_LAP_FIELD_NUM)69)
 #define FIT_SEGMENT_LAP_FIELD_NUM_REAR_GEAR_SHIFT_COUNT ((FIT_SEGMENT_LAP_FIELD_NUM)70)
+#define FIT_SEGMENT_LAP_FIELD_NUM_STAND_COUNT ((FIT_SEGMENT_LAP_FIELD_NUM)72)
+#define FIT_SEGMENT_LAP_FIELD_NUM_MANUFACTURER ((FIT_SEGMENT_LAP_FIELD_NUM)83)
 #define FIT_SEGMENT_LAP_FIELD_NUM_EVENT ((FIT_SEGMENT_LAP_FIELD_NUM)0)
 #define FIT_SEGMENT_LAP_FIELD_NUM_EVENT_TYPE ((FIT_SEGMENT_LAP_FIELD_NUM)1)
 #define FIT_SEGMENT_LAP_FIELD_NUM_AVG_HEART_RATE ((FIT_SEGMENT_LAP_FIELD_NUM)15)
@@ -7526,6 +8638,16 @@ typedef FIT_UINT8 FIT_SEGMENT_LAP_FIELD_NUM;
 #define FIT_SEGMENT_LAP_FIELD_NUM_AVG_FRACTIONAL_CADENCE ((FIT_SEGMENT_LAP_FIELD_NUM)66)
 #define FIT_SEGMENT_LAP_FIELD_NUM_MAX_FRACTIONAL_CADENCE ((FIT_SEGMENT_LAP_FIELD_NUM)67)
 #define FIT_SEGMENT_LAP_FIELD_NUM_TOTAL_FRACTIONAL_CYCLES ((FIT_SEGMENT_LAP_FIELD_NUM)68)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_LEFT_PCO ((FIT_SEGMENT_LAP_FIELD_NUM)73)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_RIGHT_PCO ((FIT_SEGMENT_LAP_FIELD_NUM)74)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_LEFT_POWER_PHASE ((FIT_SEGMENT_LAP_FIELD_NUM)75)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_LEFT_POWER_PHASE_PEAK ((FIT_SEGMENT_LAP_FIELD_NUM)76)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_RIGHT_POWER_PHASE ((FIT_SEGMENT_LAP_FIELD_NUM)77)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_RIGHT_POWER_PHASE_PEAK ((FIT_SEGMENT_LAP_FIELD_NUM)78)
+#define FIT_SEGMENT_LAP_FIELD_NUM_AVG_CADENCE_POSITION ((FIT_SEGMENT_LAP_FIELD_NUM)81)
+#define FIT_SEGMENT_LAP_FIELD_NUM_MAX_CADENCE_POSITION ((FIT_SEGMENT_LAP_FIELD_NUM)82)
+#define FIT_SEGMENT_LAP_FIELD_NUM_TOTAL_FRACTIONAL_ASCENT ((FIT_SEGMENT_LAP_FIELD_NUM)89)
+#define FIT_SEGMENT_LAP_FIELD_NUM_TOTAL_FRACTIONAL_DESCENT ((FIT_SEGMENT_LAP_FIELD_NUM)90)
 
 typedef enum
 {
@@ -7551,6 +8673,13 @@ typedef enum
    FIT_SEGMENT_LAP_MESG_TIME_IN_CADENCE_ZONE,
    FIT_SEGMENT_LAP_MESG_TIME_IN_POWER_ZONE,
    FIT_SEGMENT_LAP_MESG_ACTIVE_TIME,
+   FIT_SEGMENT_LAP_MESG_TIME_STANDING,
+   FIT_SEGMENT_LAP_MESG_AVG_POWER_POSITION,
+   FIT_SEGMENT_LAP_MESG_MAX_POWER_POSITION,
+   FIT_SEGMENT_LAP_MESG_TOTAL_GRIT,
+   FIT_SEGMENT_LAP_MESG_TOTAL_FLOW,
+   FIT_SEGMENT_LAP_MESG_AVG_GRIT,
+   FIT_SEGMENT_LAP_MESG_AVG_FLOW,
    FIT_SEGMENT_LAP_MESG_MESSAGE_INDEX,
    FIT_SEGMENT_LAP_MESG_TOTAL_CALORIES,
    FIT_SEGMENT_LAP_MESG_TOTAL_FAT_CALORIES,
@@ -7578,6 +8707,8 @@ typedef enum
    FIT_SEGMENT_LAP_MESG_WKT_STEP_INDEX,
    FIT_SEGMENT_LAP_MESG_FRONT_GEAR_SHIFT_COUNT,
    FIT_SEGMENT_LAP_MESG_REAR_GEAR_SHIFT_COUNT,
+   FIT_SEGMENT_LAP_MESG_STAND_COUNT,
+   FIT_SEGMENT_LAP_MESG_MANUFACTURER,
    FIT_SEGMENT_LAP_MESG_EVENT,
    FIT_SEGMENT_LAP_MESG_EVENT_TYPE,
    FIT_SEGMENT_LAP_MESG_AVG_HEART_RATE,
@@ -7602,6 +8733,16 @@ typedef enum
    FIT_SEGMENT_LAP_MESG_AVG_FRACTIONAL_CADENCE,
    FIT_SEGMENT_LAP_MESG_MAX_FRACTIONAL_CADENCE,
    FIT_SEGMENT_LAP_MESG_TOTAL_FRACTIONAL_CYCLES,
+   FIT_SEGMENT_LAP_MESG_AVG_LEFT_PCO,
+   FIT_SEGMENT_LAP_MESG_AVG_RIGHT_PCO,
+   FIT_SEGMENT_LAP_MESG_AVG_LEFT_POWER_PHASE,
+   FIT_SEGMENT_LAP_MESG_AVG_LEFT_POWER_PHASE_PEAK,
+   FIT_SEGMENT_LAP_MESG_AVG_RIGHT_POWER_PHASE,
+   FIT_SEGMENT_LAP_MESG_AVG_RIGHT_POWER_PHASE_PEAK,
+   FIT_SEGMENT_LAP_MESG_AVG_CADENCE_POSITION,
+   FIT_SEGMENT_LAP_MESG_MAX_CADENCE_POSITION,
+   FIT_SEGMENT_LAP_MESG_TOTAL_FRACTIONAL_ASCENT,
+   FIT_SEGMENT_LAP_MESG_TOTAL_FRACTIONAL_DESCENT,
    FIT_SEGMENT_LAP_MESG_FIELDS
 } FIT_SEGMENT_LAP_MESG_FIELD;
 
@@ -7616,12 +8757,13 @@ typedef struct
 
 // segment_file message
 
-#define FIT_SEGMENT_FILE_MESG_SIZE                                              17
-#define FIT_SEGMENT_FILE_MESG_DEF_SIZE                                          26
+#define FIT_SEGMENT_FILE_MESG_SIZE                                              19
+#define FIT_SEGMENT_FILE_MESG_DEF_SIZE                                          32
 #define FIT_SEGMENT_FILE_MESG_LEADER_GROUP_PRIMARY_KEY_COUNT                    1
 #define FIT_SEGMENT_FILE_MESG_LEADER_ACTIVITY_ID_COUNT                          1
 #define FIT_SEGMENT_FILE_MESG_FILE_UUID_COUNT                                   1
 #define FIT_SEGMENT_FILE_MESG_LEADER_TYPE_COUNT                                 1
+#define FIT_SEGMENT_FILE_MESG_LEADER_ACTIVITY_ID_STRING_COUNT                   1
 
 typedef struct
 {
@@ -7632,6 +8774,8 @@ typedef struct
    FIT_STRING file_uuid[FIT_SEGMENT_FILE_MESG_FILE_UUID_COUNT]; // UUID of the segment file
    FIT_BOOL enabled; // Enabled state of the segment file
    FIT_SEGMENT_LEADERBOARD_TYPE leader_type[FIT_SEGMENT_FILE_MESG_LEADER_TYPE_COUNT]; // Leader type of each leader in the segment file
+   FIT_STRING leader_activity_id_string[FIT_SEGMENT_FILE_MESG_LEADER_ACTIVITY_ID_STRING_COUNT]; // String version of the activity ID of each leader in the segment file. 21 characters long for each ID, express in decimal
+   FIT_UINT8 default_race_leader; // Index for the Leader Board entry selected as the default race participant
 } FIT_SEGMENT_FILE_MESG;
 
 typedef FIT_UINT8 FIT_SEGMENT_FILE_FIELD_NUM;
@@ -7643,6 +8787,8 @@ typedef FIT_UINT8 FIT_SEGMENT_FILE_FIELD_NUM;
 #define FIT_SEGMENT_FILE_FIELD_NUM_FILE_UUID ((FIT_SEGMENT_FILE_FIELD_NUM)1)
 #define FIT_SEGMENT_FILE_FIELD_NUM_ENABLED ((FIT_SEGMENT_FILE_FIELD_NUM)3)
 #define FIT_SEGMENT_FILE_FIELD_NUM_LEADER_TYPE ((FIT_SEGMENT_FILE_FIELD_NUM)7)
+#define FIT_SEGMENT_FILE_FIELD_NUM_LEADER_ACTIVITY_ID_STRING ((FIT_SEGMENT_FILE_FIELD_NUM)10)
+#define FIT_SEGMENT_FILE_FIELD_NUM_DEFAULT_RACE_LEADER ((FIT_SEGMENT_FILE_FIELD_NUM)11)
 
 typedef enum
 {
@@ -7653,6 +8799,8 @@ typedef enum
    FIT_SEGMENT_FILE_MESG_FILE_UUID,
    FIT_SEGMENT_FILE_MESG_ENABLED,
    FIT_SEGMENT_FILE_MESG_LEADER_TYPE,
+   FIT_SEGMENT_FILE_MESG_LEADER_ACTIVITY_ID_STRING,
+   FIT_SEGMENT_FILE_MESG_DEFAULT_RACE_LEADER,
    FIT_SEGMENT_FILE_MESG_FIELDS
 } FIT_SEGMENT_FILE_MESG_FIELD;
 
@@ -7762,8 +8910,8 @@ typedef struct
 
 // workout_step message
 
-#define FIT_WORKOUT_STEP_MESG_SIZE                                              135
-#define FIT_WORKOUT_STEP_MESG_DEF_SIZE                                          53
+#define FIT_WORKOUT_STEP_MESG_SIZE                                              141
+#define FIT_WORKOUT_STEP_MESG_DEF_SIZE                                          62
 #define FIT_WORKOUT_STEP_MESG_WKT_STEP_NAME_COUNT                               48
 #define FIT_WORKOUT_STEP_MESG_NOTES_COUNT                                       50
 
@@ -7779,6 +8927,9 @@ typedef struct
    FIT_UINT32 secondary_custom_target_value_high; //
    FIT_MESSAGE_INDEX message_index; //
    FIT_EXERCISE_CATEGORY exercise_category; //
+   FIT_UINT16 exercise_name; //
+   FIT_UINT16 exercise_weight; // 100 * kg + 0,
+   FIT_FIT_BASE_UNIT weight_display_unit; //
    FIT_WKT_STEP_DURATION duration_type; //
    FIT_WKT_STEP_TARGET target_type; //
    FIT_INTENSITY intensity; //
@@ -7799,6 +8950,9 @@ typedef FIT_UINT8 FIT_WORKOUT_STEP_FIELD_NUM;
 #define FIT_WORKOUT_STEP_FIELD_NUM_SECONDARY_CUSTOM_TARGET_VALUE_HIGH ((FIT_WORKOUT_STEP_FIELD_NUM)22)
 #define FIT_WORKOUT_STEP_FIELD_NUM_MESSAGE_INDEX ((FIT_WORKOUT_STEP_FIELD_NUM)254)
 #define FIT_WORKOUT_STEP_FIELD_NUM_EXERCISE_CATEGORY ((FIT_WORKOUT_STEP_FIELD_NUM)10)
+#define FIT_WORKOUT_STEP_FIELD_NUM_EXERCISE_NAME ((FIT_WORKOUT_STEP_FIELD_NUM)11)
+#define FIT_WORKOUT_STEP_FIELD_NUM_EXERCISE_WEIGHT ((FIT_WORKOUT_STEP_FIELD_NUM)12)
+#define FIT_WORKOUT_STEP_FIELD_NUM_WEIGHT_DISPLAY_UNIT ((FIT_WORKOUT_STEP_FIELD_NUM)13)
 #define FIT_WORKOUT_STEP_FIELD_NUM_DURATION_TYPE ((FIT_WORKOUT_STEP_FIELD_NUM)1)
 #define FIT_WORKOUT_STEP_FIELD_NUM_TARGET_TYPE ((FIT_WORKOUT_STEP_FIELD_NUM)3)
 #define FIT_WORKOUT_STEP_FIELD_NUM_INTENSITY ((FIT_WORKOUT_STEP_FIELD_NUM)7)
@@ -7818,6 +8972,9 @@ typedef enum
    FIT_WORKOUT_STEP_MESG_SECONDARY_CUSTOM_TARGET_VALUE_HIGH,
    FIT_WORKOUT_STEP_MESG_MESSAGE_INDEX,
    FIT_WORKOUT_STEP_MESG_EXERCISE_CATEGORY,
+   FIT_WORKOUT_STEP_MESG_EXERCISE_NAME,
+   FIT_WORKOUT_STEP_MESG_EXERCISE_WEIGHT,
+   FIT_WORKOUT_STEP_MESG_WEIGHT_DISPLAY_UNIT,
    FIT_WORKOUT_STEP_MESG_DURATION_TYPE,
    FIT_WORKOUT_STEP_MESG_TARGET_TYPE,
    FIT_WORKOUT_STEP_MESG_INTENSITY,
@@ -7924,8 +9081,8 @@ typedef struct
 
 // totals message
 
-#define FIT_TOTALS_MESG_SIZE                                                    29
-#define FIT_TOTALS_MESG_DEF_SIZE                                                32
+#define FIT_TOTALS_MESG_SIZE                                                    30
+#define FIT_TOTALS_MESG_DEF_SIZE                                                35
 
 typedef struct
 {
@@ -7938,6 +9095,7 @@ typedef struct
    FIT_MESSAGE_INDEX message_index; //
    FIT_UINT16 sessions; //
    FIT_SPORT sport; //
+   FIT_UINT8 sport_index; //
 } FIT_TOTALS_MESG;
 
 typedef FIT_UINT8 FIT_TOTALS_FIELD_NUM;
@@ -7951,6 +9109,7 @@ typedef FIT_UINT8 FIT_TOTALS_FIELD_NUM;
 #define FIT_TOTALS_FIELD_NUM_MESSAGE_INDEX ((FIT_TOTALS_FIELD_NUM)254)
 #define FIT_TOTALS_FIELD_NUM_SESSIONS ((FIT_TOTALS_FIELD_NUM)5)
 #define FIT_TOTALS_FIELD_NUM_SPORT ((FIT_TOTALS_FIELD_NUM)3)
+#define FIT_TOTALS_FIELD_NUM_SPORT_INDEX ((FIT_TOTALS_FIELD_NUM)9)
 
 typedef enum
 {
@@ -7963,6 +9122,7 @@ typedef enum
    FIT_TOTALS_MESG_MESSAGE_INDEX,
    FIT_TOTALS_MESG_SESSIONS,
    FIT_TOTALS_MESG_SPORT,
+   FIT_TOTALS_MESG_SPORT_INDEX,
    FIT_TOTALS_MESG_FIELDS
 } FIT_TOTALS_MESG_FIELD;
 
@@ -8101,24 +9261,39 @@ typedef struct
 
 // monitoring_info message
 
-#define FIT_MONITORING_INFO_MESG_SIZE                                           8
-#define FIT_MONITORING_INFO_MESG_DEF_SIZE                                       11
+#define FIT_MONITORING_INFO_MESG_SIZE                                           15
+#define FIT_MONITORING_INFO_MESG_DEF_SIZE                                       23
+#define FIT_MONITORING_INFO_MESG_CYCLES_TO_DISTANCE_COUNT                       1
+#define FIT_MONITORING_INFO_MESG_CYCLES_TO_CALORIES_COUNT                       1
+#define FIT_MONITORING_INFO_MESG_ACTIVITY_TYPE_COUNT                            1
 
 typedef struct
 {
    FIT_DATE_TIME timestamp; // 1 * s + 0,
    FIT_LOCAL_DATE_TIME local_timestamp; // 1 * s + 0, Use to convert activity timestamps to local time if device does not support time zone and daylight savings time correction.
+   FIT_UINT16 cycles_to_distance[FIT_MONITORING_INFO_MESG_CYCLES_TO_DISTANCE_COUNT]; // 5000 * m/cycle + 0, Indexed by activity_type
+   FIT_UINT16 cycles_to_calories[FIT_MONITORING_INFO_MESG_CYCLES_TO_CALORIES_COUNT]; // 5000 * kcal/cycle + 0, Indexed by activity_type
+   FIT_UINT16 resting_metabolic_rate; // 1 * kcal / day + 0,
+   FIT_ACTIVITY_TYPE activity_type[FIT_MONITORING_INFO_MESG_ACTIVITY_TYPE_COUNT]; //
 } FIT_MONITORING_INFO_MESG;
 
 typedef FIT_UINT8 FIT_MONITORING_INFO_FIELD_NUM;
 
 #define FIT_MONITORING_INFO_FIELD_NUM_TIMESTAMP ((FIT_MONITORING_INFO_FIELD_NUM)253)
 #define FIT_MONITORING_INFO_FIELD_NUM_LOCAL_TIMESTAMP ((FIT_MONITORING_INFO_FIELD_NUM)0)
+#define FIT_MONITORING_INFO_FIELD_NUM_CYCLES_TO_DISTANCE ((FIT_MONITORING_INFO_FIELD_NUM)3)
+#define FIT_MONITORING_INFO_FIELD_NUM_CYCLES_TO_CALORIES ((FIT_MONITORING_INFO_FIELD_NUM)4)
+#define FIT_MONITORING_INFO_FIELD_NUM_RESTING_METABOLIC_RATE ((FIT_MONITORING_INFO_FIELD_NUM)5)
+#define FIT_MONITORING_INFO_FIELD_NUM_ACTIVITY_TYPE ((FIT_MONITORING_INFO_FIELD_NUM)1)
 
 typedef enum
 {
    FIT_MONITORING_INFO_MESG_TIMESTAMP,
    FIT_MONITORING_INFO_MESG_LOCAL_TIMESTAMP,
+   FIT_MONITORING_INFO_MESG_CYCLES_TO_DISTANCE,
+   FIT_MONITORING_INFO_MESG_CYCLES_TO_CALORIES,
+   FIT_MONITORING_INFO_MESG_RESTING_METABOLIC_RATE,
+   FIT_MONITORING_INFO_MESG_ACTIVITY_TYPE,
    FIT_MONITORING_INFO_MESG_FIELDS
 } FIT_MONITORING_INFO_MESG_FIELD;
 
@@ -8133,8 +9308,9 @@ typedef struct
 
 // monitoring message
 
-#define FIT_MONITORING_MESG_SIZE                                                31
-#define FIT_MONITORING_MESG_DEF_SIZE                                            41
+#define FIT_MONITORING_MESG_SIZE                                                80
+#define FIT_MONITORING_MESG_DEF_SIZE                                            92
+#define FIT_MONITORING_MESG_ACTIVITY_TIME_COUNT                                 8
 
 typedef struct
 {
@@ -8143,13 +9319,30 @@ typedef struct
    FIT_UINT32 cycles; // 2 * cycles + 0, Accumulated cycles. Maintained by MonitoringReader for each activity_type. See SDK documentation.
    FIT_UINT32 active_time; // 1000 * s + 0,
    FIT_LOCAL_DATE_TIME local_timestamp; // Must align to logging interval, for example, time must be 00:00:00 for daily log.
+   FIT_UINT16 activity_time[FIT_MONITORING_MESG_ACTIVITY_TIME_COUNT]; // 1 * minutes + 0, Indexed using minute_activity_level enum
+   FIT_UINT32 duration; // 1 * s + 0,
+   FIT_UINT32 ascent; // 1000 * m + 0,
+   FIT_UINT32 descent; // 1000 * m + 0,
    FIT_UINT16 calories; // 1 * kcal + 0, Accumulated total calories. Maintained by MonitoringReader for each activity_type. See SDK documentation
    FIT_UINT16 distance_16; // 1 * 100 * m + 0,
    FIT_UINT16 cycles_16; // 1 * 2 * cycles (steps) + 0,
    FIT_UINT16 active_time_16; // 1 * s + 0,
+   FIT_SINT16 temperature; // 100 * C + 0, Avg temperature during the logging interval ended at timestamp
+   FIT_SINT16 temperature_min; // 100 * C + 0, Min temperature during the logging interval ended at timestamp
+   FIT_SINT16 temperature_max; // 100 * C + 0, Max temperature during the logging interval ended at timestamp
+   FIT_UINT16 active_calories; // 1 * kcal + 0,
+   FIT_UINT16 timestamp_16; // 1 * s + 0,
+   FIT_UINT16 duration_min; // 1 * min + 0,
+   FIT_UINT16 moderate_activity_minutes; // 1 * minutes + 0,
+   FIT_UINT16 vigorous_activity_minutes; // 1 * minutes + 0,
    FIT_DEVICE_INDEX device_index; // Associates this data to device_info message. Not required for file with single device (sensor).
    FIT_ACTIVITY_TYPE activity_type; //
    FIT_ACTIVITY_SUBTYPE activity_subtype; //
+   FIT_ACTIVITY_LEVEL activity_level; //
+   FIT_BYTE current_activity_type_intensity; // Indicates single type / intensity for duration since last monitoring message.
+   FIT_UINT8 timestamp_min_8; // 1 * min + 0,
+   FIT_UINT8 heart_rate; // 1 * bpm + 0,
+   FIT_UINT8 intensity; //
 } FIT_MONITORING_MESG;
 
 typedef FIT_UINT8 FIT_MONITORING_FIELD_NUM;
@@ -8159,13 +9352,30 @@ typedef FIT_UINT8 FIT_MONITORING_FIELD_NUM;
 #define FIT_MONITORING_FIELD_NUM_CYCLES ((FIT_MONITORING_FIELD_NUM)3)
 #define FIT_MONITORING_FIELD_NUM_ACTIVE_TIME ((FIT_MONITORING_FIELD_NUM)4)
 #define FIT_MONITORING_FIELD_NUM_LOCAL_TIMESTAMP ((FIT_MONITORING_FIELD_NUM)11)
+#define FIT_MONITORING_FIELD_NUM_ACTIVITY_TIME ((FIT_MONITORING_FIELD_NUM)16)
+#define FIT_MONITORING_FIELD_NUM_DURATION ((FIT_MONITORING_FIELD_NUM)30)
+#define FIT_MONITORING_FIELD_NUM_ASCENT ((FIT_MONITORING_FIELD_NUM)31)
+#define FIT_MONITORING_FIELD_NUM_DESCENT ((FIT_MONITORING_FIELD_NUM)32)
 #define FIT_MONITORING_FIELD_NUM_CALORIES ((FIT_MONITORING_FIELD_NUM)1)
 #define FIT_MONITORING_FIELD_NUM_DISTANCE_16 ((FIT_MONITORING_FIELD_NUM)8)
 #define FIT_MONITORING_FIELD_NUM_CYCLES_16 ((FIT_MONITORING_FIELD_NUM)9)
 #define FIT_MONITORING_FIELD_NUM_ACTIVE_TIME_16 ((FIT_MONITORING_FIELD_NUM)10)
+#define FIT_MONITORING_FIELD_NUM_TEMPERATURE ((FIT_MONITORING_FIELD_NUM)12)
+#define FIT_MONITORING_FIELD_NUM_TEMPERATURE_MIN ((FIT_MONITORING_FIELD_NUM)14)
+#define FIT_MONITORING_FIELD_NUM_TEMPERATURE_MAX ((FIT_MONITORING_FIELD_NUM)15)
+#define FIT_MONITORING_FIELD_NUM_ACTIVE_CALORIES ((FIT_MONITORING_FIELD_NUM)19)
+#define FIT_MONITORING_FIELD_NUM_TIMESTAMP_16 ((FIT_MONITORING_FIELD_NUM)26)
+#define FIT_MONITORING_FIELD_NUM_DURATION_MIN ((FIT_MONITORING_FIELD_NUM)29)
+#define FIT_MONITORING_FIELD_NUM_MODERATE_ACTIVITY_MINUTES ((FIT_MONITORING_FIELD_NUM)33)
+#define FIT_MONITORING_FIELD_NUM_VIGOROUS_ACTIVITY_MINUTES ((FIT_MONITORING_FIELD_NUM)34)
 #define FIT_MONITORING_FIELD_NUM_DEVICE_INDEX ((FIT_MONITORING_FIELD_NUM)0)
 #define FIT_MONITORING_FIELD_NUM_ACTIVITY_TYPE ((FIT_MONITORING_FIELD_NUM)5)
 #define FIT_MONITORING_FIELD_NUM_ACTIVITY_SUBTYPE ((FIT_MONITORING_FIELD_NUM)6)
+#define FIT_MONITORING_FIELD_NUM_ACTIVITY_LEVEL ((FIT_MONITORING_FIELD_NUM)7)
+#define FIT_MONITORING_FIELD_NUM_CURRENT_ACTIVITY_TYPE_INTENSITY ((FIT_MONITORING_FIELD_NUM)24)
+#define FIT_MONITORING_FIELD_NUM_TIMESTAMP_MIN_8 ((FIT_MONITORING_FIELD_NUM)25)
+#define FIT_MONITORING_FIELD_NUM_HEART_RATE ((FIT_MONITORING_FIELD_NUM)27)
+#define FIT_MONITORING_FIELD_NUM_INTENSITY ((FIT_MONITORING_FIELD_NUM)28)
 
 typedef enum
 {
@@ -8174,13 +9384,30 @@ typedef enum
    FIT_MONITORING_MESG_CYCLES,
    FIT_MONITORING_MESG_ACTIVE_TIME,
    FIT_MONITORING_MESG_LOCAL_TIMESTAMP,
+   FIT_MONITORING_MESG_ACTIVITY_TIME,
+   FIT_MONITORING_MESG_DURATION,
+   FIT_MONITORING_MESG_ASCENT,
+   FIT_MONITORING_MESG_DESCENT,
    FIT_MONITORING_MESG_CALORIES,
    FIT_MONITORING_MESG_DISTANCE_16,
    FIT_MONITORING_MESG_CYCLES_16,
    FIT_MONITORING_MESG_ACTIVE_TIME_16,
+   FIT_MONITORING_MESG_TEMPERATURE,
+   FIT_MONITORING_MESG_TEMPERATURE_MIN,
+   FIT_MONITORING_MESG_TEMPERATURE_MAX,
+   FIT_MONITORING_MESG_ACTIVE_CALORIES,
+   FIT_MONITORING_MESG_TIMESTAMP_16,
+   FIT_MONITORING_MESG_DURATION_MIN,
+   FIT_MONITORING_MESG_MODERATE_ACTIVITY_MINUTES,
+   FIT_MONITORING_MESG_VIGOROUS_ACTIVITY_MINUTES,
    FIT_MONITORING_MESG_DEVICE_INDEX,
    FIT_MONITORING_MESG_ACTIVITY_TYPE,
    FIT_MONITORING_MESG_ACTIVITY_SUBTYPE,
+   FIT_MONITORING_MESG_ACTIVITY_LEVEL,
+   FIT_MONITORING_MESG_CURRENT_ACTIVITY_TYPE_INTENSITY,
+   FIT_MONITORING_MESG_TIMESTAMP_MIN_8,
+   FIT_MONITORING_MESG_HEART_RATE,
+   FIT_MONITORING_MESG_INTENSITY,
    FIT_MONITORING_MESG_FIELDS
 } FIT_MONITORING_MESG_FIELD;
 
@@ -8239,6 +9466,125 @@ typedef struct
    FIT_UINT8 num_fields;
    FIT_UINT8 fields[FIT_HR_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_HR_MESG_DEF;
+
+// stress_level message
+
+#define FIT_STRESS_LEVEL_MESG_SIZE                                              6
+#define FIT_STRESS_LEVEL_MESG_DEF_SIZE                                          11
+
+typedef struct
+{
+   FIT_DATE_TIME stress_level_time; // 1 * s + 0, Time stress score was calculated
+   FIT_SINT16 stress_level_value; //
+} FIT_STRESS_LEVEL_MESG;
+
+typedef FIT_UINT8 FIT_STRESS_LEVEL_FIELD_NUM;
+
+#define FIT_STRESS_LEVEL_FIELD_NUM_STRESS_LEVEL_TIME ((FIT_STRESS_LEVEL_FIELD_NUM)1)
+#define FIT_STRESS_LEVEL_FIELD_NUM_STRESS_LEVEL_VALUE ((FIT_STRESS_LEVEL_FIELD_NUM)0)
+
+typedef enum
+{
+   FIT_STRESS_LEVEL_MESG_STRESS_LEVEL_TIME,
+   FIT_STRESS_LEVEL_MESG_STRESS_LEVEL_VALUE,
+   FIT_STRESS_LEVEL_MESG_FIELDS
+} FIT_STRESS_LEVEL_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_STRESS_LEVEL_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_STRESS_LEVEL_MESG_DEF;
+
+// memo_glob message
+
+#define FIT_MEMO_GLOB_MESG_SIZE                                                 11
+#define FIT_MEMO_GLOB_MESG_DEF_SIZE                                             23
+#define FIT_MEMO_GLOB_MESG_MEMO_COUNT                                           1
+#define FIT_MEMO_GLOB_MESG_DATA_COUNT                                           1
+
+typedef struct
+{
+   FIT_UINT32 part_index; // Sequence number of memo blocks
+   FIT_MESG_NUM mesg_num; // Message Number of the parent message
+   FIT_MESSAGE_INDEX parent_index; // Index of mesg that this glob is associated with.
+   FIT_BYTE memo[FIT_MEMO_GLOB_MESG_MEMO_COUNT]; // Deprecated. Use data field.
+   FIT_UINT8 field_num; // Field within the parent that this glob is associated with
+   FIT_UINT8Z data[FIT_MEMO_GLOB_MESG_DATA_COUNT]; // Block of utf8 bytes. Note, mutltibyte characters may be split across adjoining memo_glob messages.
+} FIT_MEMO_GLOB_MESG;
+
+typedef FIT_UINT8 FIT_MEMO_GLOB_FIELD_NUM;
+
+#define FIT_MEMO_GLOB_FIELD_NUM_PART_INDEX ((FIT_MEMO_GLOB_FIELD_NUM)250)
+#define FIT_MEMO_GLOB_FIELD_NUM_MESG_NUM ((FIT_MEMO_GLOB_FIELD_NUM)1)
+#define FIT_MEMO_GLOB_FIELD_NUM_PARENT_INDEX ((FIT_MEMO_GLOB_FIELD_NUM)2)
+#define FIT_MEMO_GLOB_FIELD_NUM_MEMO ((FIT_MEMO_GLOB_FIELD_NUM)0)
+#define FIT_MEMO_GLOB_FIELD_NUM_FIELD_NUM ((FIT_MEMO_GLOB_FIELD_NUM)3)
+#define FIT_MEMO_GLOB_FIELD_NUM_DATA ((FIT_MEMO_GLOB_FIELD_NUM)4)
+
+typedef enum
+{
+   FIT_MEMO_GLOB_MESG_PART_INDEX,
+   FIT_MEMO_GLOB_MESG_MESG_NUM,
+   FIT_MEMO_GLOB_MESG_PARENT_INDEX,
+   FIT_MEMO_GLOB_MESG_MEMO,
+   FIT_MEMO_GLOB_MESG_FIELD_NUM,
+   FIT_MEMO_GLOB_MESG_DATA,
+   FIT_MEMO_GLOB_MESG_FIELDS
+} FIT_MEMO_GLOB_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_MEMO_GLOB_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_MEMO_GLOB_MESG_DEF;
+
+// ant_channel_id message
+
+#define FIT_ANT_CHANNEL_ID_MESG_SIZE                                            6
+#define FIT_ANT_CHANNEL_ID_MESG_DEF_SIZE                                        20
+
+typedef struct
+{
+   FIT_UINT16Z device_number; //
+   FIT_UINT8 channel_number; //
+   FIT_UINT8Z device_type; //
+   FIT_UINT8Z transmission_type; //
+   FIT_DEVICE_INDEX device_index; //
+} FIT_ANT_CHANNEL_ID_MESG;
+
+typedef FIT_UINT8 FIT_ANT_CHANNEL_ID_FIELD_NUM;
+
+#define FIT_ANT_CHANNEL_ID_FIELD_NUM_DEVICE_NUMBER ((FIT_ANT_CHANNEL_ID_FIELD_NUM)2)
+#define FIT_ANT_CHANNEL_ID_FIELD_NUM_CHANNEL_NUMBER ((FIT_ANT_CHANNEL_ID_FIELD_NUM)0)
+#define FIT_ANT_CHANNEL_ID_FIELD_NUM_DEVICE_TYPE ((FIT_ANT_CHANNEL_ID_FIELD_NUM)1)
+#define FIT_ANT_CHANNEL_ID_FIELD_NUM_TRANSMISSION_TYPE ((FIT_ANT_CHANNEL_ID_FIELD_NUM)3)
+#define FIT_ANT_CHANNEL_ID_FIELD_NUM_DEVICE_INDEX ((FIT_ANT_CHANNEL_ID_FIELD_NUM)4)
+
+typedef enum
+{
+   FIT_ANT_CHANNEL_ID_MESG_DEVICE_NUMBER,
+   FIT_ANT_CHANNEL_ID_MESG_CHANNEL_NUMBER,
+   FIT_ANT_CHANNEL_ID_MESG_DEVICE_TYPE,
+   FIT_ANT_CHANNEL_ID_MESG_TRANSMISSION_TYPE,
+   FIT_ANT_CHANNEL_ID_MESG_DEVICE_INDEX,
+   FIT_ANT_CHANNEL_ID_MESG_FIELDS
+} FIT_ANT_CHANNEL_ID_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_ANT_CHANNEL_ID_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_ANT_CHANNEL_ID_MESG_DEF;
 
 // ant_rx message
 
@@ -8474,6 +9820,86 @@ typedef struct
    FIT_UINT8 fields[FIT_EXD_DATA_CONCEPT_CONFIGURATION_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
 } FIT_EXD_DATA_CONCEPT_CONFIGURATION_MESG_DEF;
 
+// dive_summary message
+
+#define FIT_DIVE_SUMMARY_MESG_SIZE                                              56
+#define FIT_DIVE_SUMMARY_MESG_DEF_SIZE                                          59
+
+typedef struct
+{
+   FIT_DATE_TIME timestamp; // 1 * s + 0,
+   FIT_UINT32 avg_depth; // 1000 * m + 0, 0 if above water
+   FIT_UINT32 max_depth; // 1000 * m + 0, 0 if above water
+   FIT_UINT32 surface_interval; // 1 * s + 0, Time since end of last dive
+   FIT_UINT32 dive_number; //
+   FIT_UINT32 bottom_time; // 1000 * s + 0,
+   FIT_SINT32 avg_ascent_rate; // 1000 * m/s + 0, Average ascent rate, not including descents or stops
+   FIT_UINT32 avg_descent_rate; // 1000 * m/s + 0, Average descent rate, not including ascents or stops
+   FIT_UINT32 max_ascent_rate; // 1000 * m/s + 0, Maximum ascent rate
+   FIT_UINT32 max_descent_rate; // 1000 * m/s + 0, Maximum descent rate
+   FIT_UINT32 hang_time; // 1000 * s + 0, Time spent neither ascending nor descending
+   FIT_MESG_NUM reference_mesg; //
+   FIT_MESSAGE_INDEX reference_index; //
+   FIT_UINT16 start_n2; // 1 * percent + 0,
+   FIT_UINT16 end_n2; // 1 * percent + 0,
+   FIT_UINT16 o2_toxicity; // 1 * OTUs + 0,
+   FIT_UINT8 start_cns; // 1 * percent + 0,
+   FIT_UINT8 end_cns; // 1 * percent + 0,
+} FIT_DIVE_SUMMARY_MESG;
+
+typedef FIT_UINT8 FIT_DIVE_SUMMARY_FIELD_NUM;
+
+#define FIT_DIVE_SUMMARY_FIELD_NUM_TIMESTAMP ((FIT_DIVE_SUMMARY_FIELD_NUM)253)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_AVG_DEPTH ((FIT_DIVE_SUMMARY_FIELD_NUM)2)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_MAX_DEPTH ((FIT_DIVE_SUMMARY_FIELD_NUM)3)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_SURFACE_INTERVAL ((FIT_DIVE_SUMMARY_FIELD_NUM)4)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_DIVE_NUMBER ((FIT_DIVE_SUMMARY_FIELD_NUM)10)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_BOTTOM_TIME ((FIT_DIVE_SUMMARY_FIELD_NUM)11)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_AVG_ASCENT_RATE ((FIT_DIVE_SUMMARY_FIELD_NUM)17)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_AVG_DESCENT_RATE ((FIT_DIVE_SUMMARY_FIELD_NUM)22)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_MAX_ASCENT_RATE ((FIT_DIVE_SUMMARY_FIELD_NUM)23)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_MAX_DESCENT_RATE ((FIT_DIVE_SUMMARY_FIELD_NUM)24)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_HANG_TIME ((FIT_DIVE_SUMMARY_FIELD_NUM)25)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_REFERENCE_MESG ((FIT_DIVE_SUMMARY_FIELD_NUM)0)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_REFERENCE_INDEX ((FIT_DIVE_SUMMARY_FIELD_NUM)1)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_START_N2 ((FIT_DIVE_SUMMARY_FIELD_NUM)7)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_END_N2 ((FIT_DIVE_SUMMARY_FIELD_NUM)8)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_O2_TOXICITY ((FIT_DIVE_SUMMARY_FIELD_NUM)9)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_START_CNS ((FIT_DIVE_SUMMARY_FIELD_NUM)5)
+#define FIT_DIVE_SUMMARY_FIELD_NUM_END_CNS ((FIT_DIVE_SUMMARY_FIELD_NUM)6)
+
+typedef enum
+{
+   FIT_DIVE_SUMMARY_MESG_TIMESTAMP,
+   FIT_DIVE_SUMMARY_MESG_AVG_DEPTH,
+   FIT_DIVE_SUMMARY_MESG_MAX_DEPTH,
+   FIT_DIVE_SUMMARY_MESG_SURFACE_INTERVAL,
+   FIT_DIVE_SUMMARY_MESG_DIVE_NUMBER,
+   FIT_DIVE_SUMMARY_MESG_BOTTOM_TIME,
+   FIT_DIVE_SUMMARY_MESG_AVG_ASCENT_RATE,
+   FIT_DIVE_SUMMARY_MESG_AVG_DESCENT_RATE,
+   FIT_DIVE_SUMMARY_MESG_MAX_ASCENT_RATE,
+   FIT_DIVE_SUMMARY_MESG_MAX_DESCENT_RATE,
+   FIT_DIVE_SUMMARY_MESG_HANG_TIME,
+   FIT_DIVE_SUMMARY_MESG_REFERENCE_MESG,
+   FIT_DIVE_SUMMARY_MESG_REFERENCE_INDEX,
+   FIT_DIVE_SUMMARY_MESG_START_N2,
+   FIT_DIVE_SUMMARY_MESG_END_N2,
+   FIT_DIVE_SUMMARY_MESG_O2_TOXICITY,
+   FIT_DIVE_SUMMARY_MESG_START_CNS,
+   FIT_DIVE_SUMMARY_MESG_END_CNS,
+   FIT_DIVE_SUMMARY_MESG_FIELDS
+} FIT_DIVE_SUMMARY_MESG_FIELD;
+
+typedef struct
+{
+   FIT_UINT8 reserved_1;
+   FIT_UINT8 arch;
+   FIT_MESG_NUM global_mesg_num;
+   FIT_UINT8 num_fields;
+   FIT_UINT8 fields[FIT_DIVE_SUMMARY_MESG_FIELDS * FIT_FIELD_DEF_SIZE];
+} FIT_DIVE_SUMMARY_MESG_DEF;
+
 // hrv message
 
 #define FIT_HRV_MESG_SIZE                                                       2
@@ -8508,6 +9934,7 @@ typedef enum {
    FIT_MESG_PAD,
    FIT_MESG_FILE_ID,
    FIT_MESG_FILE_CREATOR,
+   FIT_MESG_TIMESTAMP_CORRELATION,
    FIT_MESG_SOFTWARE,
    FIT_MESG_SLAVE_DEVICE,
    FIT_MESG_CAPABILITIES,
@@ -8520,6 +9947,8 @@ typedef enum {
    FIT_MESG_SDM_PROFILE,
    FIT_MESG_BIKE_PROFILE,
    FIT_MESG_CONNECTIVITY,
+   FIT_MESG_WATCHFACE_SETTINGS,
+   FIT_MESG_OHR_SETTINGS,
    FIT_MESG_ZONES_TARGET,
    FIT_MESG_SPORT,
    FIT_MESG_HR_ZONE,
@@ -8528,6 +9957,8 @@ typedef enum {
    FIT_MESG_POWER_ZONE,
    FIT_MESG_MET_ZONE,
    FIT_MESG_DIVE_SETTINGS,
+   FIT_MESG_DIVE_ALARM,
+   FIT_MESG_DIVE_GAS,
    FIT_MESG_GOAL,
    FIT_MESG_ACTIVITY,
    FIT_MESG_SESSION,
@@ -8540,12 +9971,25 @@ typedef enum {
    FIT_MESG_TRAINING_FILE,
    FIT_MESG_WEATHER_CONDITIONS,
    FIT_MESG_WEATHER_ALERT,
+   FIT_MESG_GPS_METADATA,
+   FIT_MESG_CAMERA_EVENT,
+   FIT_MESG_GYROSCOPE_DATA,
    FIT_MESG_ACCELEROMETER_DATA,
+   FIT_MESG_MAGNETOMETER_DATA,
+   FIT_MESG_BAROMETER_DATA,
+   FIT_MESG_THREE_D_SENSOR_CALIBRATION,
+   FIT_MESG_ONE_D_SENSOR_CALIBRATION,
+   FIT_MESG_VIDEO_FRAME,
+   FIT_MESG_OBDII_DATA,
    FIT_MESG_NMEA_SENTENCE,
    FIT_MESG_AVIATION_ATTITUDE,
+   FIT_MESG_VIDEO,
    FIT_MESG_VIDEO_TITLE,
    FIT_MESG_VIDEO_DESCRIPTION,
+   FIT_MESG_VIDEO_CLIP,
    FIT_MESG_SET,
+   FIT_MESG_JUMP,
+   FIT_MESG_CLIMB_PRO,
    FIT_MESG_FIELD_DESCRIPTION,
    FIT_MESG_DEVELOPER_DATA_ID,
    FIT_MESG_COURSE,
@@ -8566,11 +10010,15 @@ typedef enum {
    FIT_MESG_MONITORING_INFO,
    FIT_MESG_MONITORING,
    FIT_MESG_HR,
+   FIT_MESG_STRESS_LEVEL,
+   FIT_MESG_MEMO_GLOB,
+   FIT_MESG_ANT_CHANNEL_ID,
    FIT_MESG_ANT_RX,
    FIT_MESG_ANT_TX,
    FIT_MESG_EXD_SCREEN_CONFIGURATION,
    FIT_MESG_EXD_DATA_FIELD_CONFIGURATION,
    FIT_MESG_EXD_DATA_CONCEPT_CONFIGURATION,
+   FIT_MESG_DIVE_SUMMARY,
    FIT_MESG_HRV,
    FIT_MESGS
 } FIT_MESG;

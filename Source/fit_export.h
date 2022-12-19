@@ -127,6 +127,7 @@ void WriteData(const void *data, FIT_UINT16 data_size, FILE *fp);
 // This section is auto-generated. Do not edit manually.
 static void export_file_id(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_file_creator(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_timestamp_correlation(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_software(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_slave_device(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_capabilities(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
@@ -139,6 +140,8 @@ static void export_hrm_profile(WolframLibraryData libData, MTensor data, int idx
 static void export_sdm_profile(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_bike_profile(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_connectivity(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_watchface_settings(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_ohr_settings(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_zones_target(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_sport(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_hr_zone(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
@@ -147,6 +150,8 @@ static void export_cadence_zone(WolframLibraryData libData, MTensor data, int id
 static void export_power_zone(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_met_zone(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_dive_settings(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_dive_alarm(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_dive_gas(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_goal(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_activity(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_session(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
@@ -159,12 +164,25 @@ static void export_device_aux_battery_info(WolframLibraryData libData, MTensor d
 static void export_training_file(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_weather_conditions(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_weather_alert(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_gps_metadata(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_camera_event(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_gyroscope_data(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_accelerometer_data(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_magnetometer_data(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_barometer_data(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_three_d_sensor_calibration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_one_d_sensor_calibration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_video_frame(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_obdii_data(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_nmea_sentence(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_aviation_attitude(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_video(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_video_title(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_video_description(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_video_clip(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_set(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_jump(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_climb_pro(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_field_description(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_developer_data_id(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_course(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
@@ -185,11 +203,15 @@ static void export_blood_pressure(WolframLibraryData libData, MTensor data, int 
 static void export_monitoring_info(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_monitoring(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_hr(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_stress_level(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_memo_glob(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_ant_channel_id(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_ant_rx(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_ant_tx(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_exd_screen_configuration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_exd_data_field_configuration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_exd_data_concept_configuration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_dive_summary(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_hrv(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 // --- END MESSAGE EXPORT DECLARATIONS ---
 
