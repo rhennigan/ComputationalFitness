@@ -8,12 +8,27 @@ Begin[ "`Private`" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Definitions*)
+$dataDirectory = FileNameJoin @ { DirectoryName[ $InputFileName, 3 ], "Data" };
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*getDataFile*)
+getDataFile // beginDefinition;
+getDataFile[ name_String ] :=
+    With[ { wxf = FileNameJoin @ { $dataDirectory, name <> ".wxf" } },
+        If[ FileExistsQ @ wxf,
+            Developer`ReadWXFFile @ wxf,
+            Get @ FileNameJoin @ { $dataDirectory, name <> ".wl" }
+        ]
+    ];
+
+getDataFile // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*$FITMessageDefinitions*)
-$FITMessageDefinitions = Get @ FileNameJoin @ {
-    DirectoryName[ $InputFileName, 3 ],
-    "Data",
-    "FITMessageDefinitions.wl"
-};
+$FITMessageDefinitions = getDataFile[ "FITMessageDefinitions" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -22,12 +37,7 @@ $FITMessageDefinitions = Get @ FileNameJoin @ {
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*$fitConfig*)
-$fitConfig = Get @ FileNameJoin @ {
-    DirectoryName[ $InputFileName, 3 ],
-    "Data",
-    "FITConfig.wl"
-};
-
+$fitConfig     = getDataFile[ "FITConfig" ];
 $fitInitValues = $fitConfig[ "InitializationValues" ];
 
 (* ::**********************************************************************:: *)
@@ -45,12 +55,7 @@ $fitIndex = SortBy[ fieldPosition ] /@ $FITMessageDefinitions[[ All, "Fields", A
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*$enumTypeData*)
-$enumTypeData = Get @ FileNameJoin @ {
-    DirectoryName[ $InputFileName, 3 ],
-    "Data",
-    "FITEnumData.wl"
-};
-
+$enumTypeData  = getDataFile[ "FITEnumData" ];
 $iEnumTypeData = AssociationMap @ Reverse /@ $enumTypeData;
 
 (* ::**********************************************************************:: *)

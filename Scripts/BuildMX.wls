@@ -23,12 +23,27 @@ cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
 (*Paths*)
 $inputFileName = cFile @ Replace[ $InputFileName, "" :> NotebookFileName[ ] ];
 $pacletDir     = cDir @ DirectoryName[ $inputFileName, 2 ];
+$dataDir       = cDir @ FileNameJoin @ { $pacletDir, "Data" };
 $mxFile        = cStr @ FileNameJoin @ {
                      $pacletDir,
                      "Kernel",
                      ToString @ $SystemWordLength <> "Bit",
                      "ComputationalFitness.mx"
                  };
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Create WXF Data Files*)
+
+buildWXFData[ source_ ] := Module[
+    { target, data },
+    target = StringReplace[ cStr @ source, ".wl"~~EndOfString -> ".wxf" ];
+    data   = cicd`ScriptConfirmBy[ Get @ source, AssociationQ ];
+    cicd`ConsoleLog @ SequenceForm[ "Building WXF file: ", target ];
+    cFile @ Developer`WriteWXFFile[ target, data ]
+];
+
+buildWXFData /@ FileNames[ "*.wl", $dataDir ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -43,8 +58,8 @@ cicd`ScriptConfirmBy[ PacletDirectoryLoad @ $pacletDir, MemberQ @ $pacletDir ];
 cicd`ScriptConfirm @ Needs[ "RH`ComputationalFitness`" ];
 
 $mxDir = cDir @ gu`EnsureDirectory @ DirectoryName @ $mxFile;
-cicd`ConsoleLog[ "MX target directory: ", $mxDir  ];
-cicd`ConsoleLog[ "Building MX file: "   , $mxFile ];
+cicd`ConsoleLog @ SequenceForm[ "MX target directory: ", $mxDir  ];
+cicd`ConsoleLog @ SequenceForm[ "Building MX file: "   , $mxFile ];
 
 
 package`$debug = False;
