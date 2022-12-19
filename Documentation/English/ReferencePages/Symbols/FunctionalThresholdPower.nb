@@ -111,118 +111,35 @@ Notebook[
    ]
   ],
   Cell[
-   CellGroupData[
+   TextData[
     {
+     "See Also",
      Cell[
-      TextData[
-       {
-        "See Also",
-        Cell[
-         BoxData[
-          TemplateBox[
-           {
-            "SeeAlso",
+      BoxData[
+       TemplateBox[
+        {
+         "SeeAlso",
+         Cell[
+          BoxData[
+           FrameBox[
             Cell[
-             BoxData[
-              FrameBox[
-               Cell[
-                "Insert links to any related reference (function) pages.",
-                "MoreInfoText"
-               ],
-               BaseStyle -> "IFrameBox"
-              ]
-             ],
-             "MoreInfoTextOuter"
-            ]
-           },
-           "MoreInfoOpenerButtonTemplate"
-          ]
-         ]
-        ]
-       }
-      ],
-      "SeeAlsoSection",
-      CellID -> 104244170
-     ],
-     Cell[
-      TextData[
-       {
-        Cell[
-         BoxData[
-          TagBox[FrameBox["\"XXXX\""], "FunctionPlaceholder"]
-         ],
-         "InlineSeeAlsoFunction",
-         TaggingRules -> {"PageType" -> "Function"}
-        ],
-        Cell[
-         BoxData[
-          RowBox[
-           {
-            Cell[
-             TextData[
-              StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"]
-             ]
+             "Insert links to any related reference (function) pages.",
+             "MoreInfoText"
             ],
-            DynamicModuleBox[
-             {
-              nbobj$$ = 
-               NotebookObject[
-                "ca1f2b78-4a6d-455a-8893-20d7479b6da5",
-                "c3f0381a-9c5d-418f-9011-280963746f1a"
-               ],
-              cellobj$$ = 
-               CellObject[
-                "eb3aad34-d655-40a3-81aa-42db29674bdb",
-                "bee5977f-13c1-463c-99a4-fcabe9c87c99"
-               ]
-             },
-             TemplateBox[
-              {
-               GraphicsBox[
-                {
-                 {
-                  Thickness[0.06],
-                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
-                  CircleBox[{0, 0}]
-                 },
-                 {
-                  Thickness[0.06],
-                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
-                  LineBox[{{0, 0.62}, {0, -0.62}}]
-                 },
-                 {
-                  Thickness[0.06],
-                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
-                  LineBox[{{-0.62, 0}, {0.62, 0}}]
-                 }
-                },
-                ImagePadding -> {{1., 1.}, {2.4, 1.}},
-                ImageSize -> 16,
-                PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}},
-                BaselinePosition -> Center -> Center
-               ],
-               nbobj$$,
-               cellobj$$
-              },
-              "InlineListingAddButton"
-             ],
-             Initialization :>
-              (nbobj$$ = EvaluationNotebook[];
-              cellobj$$ = EvaluationCell[])
-            ]
-           }
-          ]
-         ],
-         "InlineListingAddButton"
-        ]
-       }
-      ],
-      "SeeAlso",
-      CellID -> 637436412
+            BaseStyle -> "IFrameBox"
+           ]
+          ],
+          "MoreInfoTextOuter"
+         ]
+        },
+        "MoreInfoOpenerButtonTemplate"
+       ]
+      ]
      ]
-    },
-    Open
-   ]
+    }
+   ],
+   "SeeAlsoSection",
+   CellID -> 104244170
   ],
   Cell[
    CellGroupData[

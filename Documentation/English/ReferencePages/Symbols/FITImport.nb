@@ -122,35 +122,82 @@ Notebook[
    ]
   ],
   Cell[
-   TextData[
+   CellGroupData[
     {
-     "See Also",
      Cell[
-      BoxData[
-       TemplateBox[
-        {
-         "SeeAlso",
-         Cell[
-          BoxData[
-           FrameBox[
+      TextData[
+       {
+        "See Also",
+        Cell[
+         BoxData[
+          TemplateBox[
+           {
+            "SeeAlso",
             Cell[
-             "Insert links to any related reference (function) pages.",
-             "MoreInfoText"
-            ],
-            BaseStyle -> "IFrameBox"
-           ]
-          ],
-          "MoreInfoTextOuter"
+             BoxData[
+              FrameBox[
+               Cell[
+                "Insert links to any related reference (function) pages.",
+                "MoreInfoText"
+               ],
+               BaseStyle -> "IFrameBox"
+              ]
+             ],
+             "MoreInfoTextOuter"
+            ]
+           },
+           "MoreInfoOpenerButtonTemplate"
+          ]
          ]
-        },
-        "MoreInfoOpenerButtonTemplate"
-       ]
-      ]
+        ]
+       }
+      ],
+      "SeeAlsoSection",
+      CellID -> 150815760
+     ],
+     Cell[
+      TextData[
+       {
+        Cell[
+         BoxData[
+          ButtonBox[
+           "FITExport",
+           BaseStyle -> "Link",
+           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITExport"
+          ]
+         ],
+         "InlineFormula"
+        ],
+        " \[EmptyVerySmallSquare] ",
+        Cell[
+         BoxData[
+          ButtonBox[
+           "FITFileType",
+           BaseStyle -> "Link",
+           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITFileType"
+          ]
+         ],
+         "InlineFormula"
+        ],
+        " \[EmptyVerySmallSquare] ",
+        Cell[
+         BoxData[
+          ButtonBox[
+           "$FITMessageDefinitions",
+           BaseStyle -> "Link",
+           ButtonData -> "paclet:RH/ComputationalFitness/ref/$FITMessageDefinitions"
+          ]
+         ],
+         "InlineFormula"
+        ]
+       }
+      ],
+      "SeeAlso",
+      CellID -> 192976356
      ]
-    }
-   ],
-   "SeeAlsoSection",
-   CellID -> 150815760
+    },
+    Open
+   ]
   ],
   Cell[
    CellGroupData[

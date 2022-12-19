@@ -17,10 +17,23 @@ Notebook[
        {
         Cell["   ", "ModInfo"],
         Cell[
-         BoxData[RowBox[{"FITFileType", "[", "]"}]],
+         BoxData[
+          RowBox[
+           {
+            ButtonBox[
+             "FITFileType",
+             BaseStyle -> "Link",
+             ButtonData -> "paclet:RH/ComputationalFitness/ref/FITFileType"
+            ],
+            "[",
+            StyleBox["file", "TI"],
+            "]"
+           }
+          ]
+         ],
          "InlineFormula"
         ],
-        " \[LineSeparator]XXXX"
+        " \[LineSeparator]gives the FIT file type for the specified file."
        }
       ],
       "Usage",
@@ -145,76 +158,40 @@ Notebook[
        {
         Cell[
          BoxData[
-          TagBox[FrameBox["\"XXXX\""], "FunctionPlaceholder"]
-         ],
-         "InlineSeeAlsoFunction",
-         TaggingRules -> {"PageType" -> "Function"}
-        ],
-        Cell[
-         BoxData[
-          RowBox[
-           {
-            Cell[
-             TextData[
-              StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"]
-             ]
-            ],
-            DynamicModuleBox[
-             {
-              nbobj$$ = 
-               NotebookObject[
-                "b610a722-5b2d-4e53-8f8f-cc62336db71e",
-                "1030b352-62ff-4609-9a84-4da4bdd0db71"
-               ],
-              cellobj$$ = 
-               CellObject[
-                "ca525167-c3a2-4c1a-a330-80ed985dab92",
-                "60521067-7140-4fbf-9183-db264e2b9b39"
-               ]
-             },
-             TemplateBox[
-              {
-               GraphicsBox[
-                {
-                 {
-                  Thickness[0.06],
-                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
-                  CircleBox[{0, 0}]
-                 },
-                 {
-                  Thickness[0.06],
-                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
-                  LineBox[{{0, 0.62}, {0, -0.62}}]
-                 },
-                 {
-                  Thickness[0.06],
-                  StrokeForm[Hue[0.4167, 0.406, 0.502]],
-                  LineBox[{{-0.62, 0}, {0.62, 0}}]
-                 }
-                },
-                ImagePadding -> {{1., 1.}, {2.4, 1.}},
-                ImageSize -> 16,
-                PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}},
-                BaselinePosition -> Center -> Center
-               ],
-               nbobj$$,
-               cellobj$$
-              },
-              "InlineListingAddButton"
-             ],
-             Initialization :>
-              (nbobj$$ = EvaluationNotebook[];
-              cellobj$$ = EvaluationCell[])
-            ]
-           }
+          ButtonBox[
+           "FITImport",
+           BaseStyle -> "Link",
+           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITImport"
           ]
          ],
-         "InlineListingAddButton"
+         "InlineFormula"
+        ],
+        " \[EmptyVerySmallSquare] ",
+        Cell[
+         BoxData[
+          ButtonBox[
+           "FITExport",
+           BaseStyle -> "Link",
+           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITExport"
+          ]
+         ],
+         "InlineFormula"
+        ],
+        " \[EmptyVerySmallSquare] ",
+        Cell[
+         BoxData[
+          ButtonBox[
+           "$FITMessageDefinitions",
+           BaseStyle -> "Link",
+           ButtonData -> "paclet:RH/ComputationalFitness/ref/$FITMessageDefinitions"
+          ]
+         ],
+         "InlineFormula"
         ]
        }
       ],
       "SeeAlso",
-      CellID -> 119125684
+      CellID -> 8115897
      ]
     },
     Open
@@ -279,34 +256,130 @@ Notebook[
    ]
   ],
   Cell[
-   BoxData[
-    InterpretationBox[
-     GridBox[
-      {
-       {
-        StyleBox[
-         RowBox[{"Basic", " ", "Examples"}],
-         "PrimaryExamplesSection"
-        ],
-        ButtonBox[
-         RowBox[
+   CellGroupData[
+    {
+     Cell[
+      BoxData[
+       InterpretationBox[
+        GridBox[
+         {
           {
-           RowBox[{"More", " ", "Examples"}],
-           " ",
-           "\[RightTriangle]"
+           StyleBox[
+            RowBox[{"Basic", " ", "Examples"}],
+            "PrimaryExamplesSection"
+           ],
+           ButtonBox[
+            RowBox[
+             {
+              RowBox[{"More", " ", "Examples"}],
+              " ",
+              "\[RightTriangle]"
+             }
+            ],
+            BaseStyle -> "ExtendedExamplesLink",
+            ButtonData :> "ExtendedExamples"
+           ]
           }
-         ],
-         BaseStyle -> "ExtendedExamplesLink",
-         ButtonData :> "ExtendedExamples"
-        ]
-       }
-      }
+         }
+        ],
+        $Line = 0;
+       ]
+      ],
+      "PrimaryExamplesSection",
+      CellID -> 325907792
      ],
-     $Line = 0;
-    ]
-   ],
-   "PrimaryExamplesSection",
-   CellID -> 325907792
+     Cell[
+      "Get the type of a FIT file:",
+      "ExampleText",
+      CellID -> 431718474
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell[
+         BoxData[
+          RowBox[
+           {
+            "FITFileType",
+            "[",
+            "\"ComputationalFitness/ExampleData/BikeRide.fit\"",
+            "]"
+           }
+          ]
+         ],
+         "Input",
+         CellLabel -> "In[1]:=",
+         CellID -> 278768092
+        ],
+        Cell[
+         BoxData["\"Activity\""],
+         "Output",
+         CellLabel -> "Out[1]=",
+         CellID -> 261859730
+        ]
+       },
+       Open
+      ]
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell[
+         BoxData[
+          RowBox[
+           {
+            "FITFileType",
+            "[",
+            "\"ComputationalFitness/ExampleData/Settings.fit\"",
+            "]"
+           }
+          ]
+         ],
+         "Input",
+         CellLabel -> "In[2]:=",
+         CellID -> 237904991
+        ],
+        Cell[
+         BoxData["\"Settings\""],
+         "Output",
+         CellLabel -> "Out[2]=",
+         CellID -> 69552431
+        ]
+       },
+       Open
+      ]
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell[
+         BoxData[
+          RowBox[
+           {
+            "FITFileType",
+            "[",
+            "\"ComputationalFitness/ExampleData/WorkoutIndividualSteps.fit\"",
+            "]"
+           }
+          ]
+         ],
+         "Input",
+         CellLabel -> "In[3]:=",
+         CellID -> 767054632
+        ],
+        Cell[
+         BoxData["\"Workout\""],
+         "Output",
+         CellLabel -> "Out[3]=",
+         CellID -> 212343886
+        ]
+       },
+       Open
+      ]
+     ]
+    },
+    Open
+   ]
   ],
   Cell[
    CellGroupData[
