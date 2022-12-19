@@ -4,7 +4,7 @@ PacletObject[ <|
     "Creator"          -> "Richard Hennigan (Wolfram Research)",
     "ActionURL"        -> "$ActionURL$",
     "BuildDate"        -> "$BuildDate$",
-    "Version"          -> "0.2.1",
+    "Version"          -> "0.3.0",
     "WolframVersion"   -> "13.0+",
     "PublisherID"      -> "RH",
     "SourceControlURL" -> "https://github.com/rhennigan/ComputationalFitness",
@@ -15,7 +15,20 @@ PacletObject[ <|
             "Root"     -> "Kernel",
             "Context"  -> "RH`ComputationalFitness`",
             "Symbols"  -> {
-                "RH`ComputationalFitness`FITImport"
+                "RH`ComputationalFitness`$FITMessageDefinitions",
+                "RH`ComputationalFitness`ComputationalFitness",
+                "RH`ComputationalFitness`FITExport",
+                "RH`ComputationalFitness`FITFileType",
+                "RH`ComputationalFitness`FITImport",
+                "RH`ComputationalFitness`FITInterpreter",
+                "RH`ComputationalFitness`FunctionalThresholdPower",
+                "RH`ComputationalFitness`MaximumHeartRate",
+                "RH`ComputationalFitness`PowerZoneColorFunction",
+                "RH`ComputationalFitness`Sport",
+                "RH`ComputationalFitness`TCXImport",
+                "RH`ComputationalFitness`Weight",
+                "RH`ComputationalFitness`ZWOExport",
+                "RH`ComputationalFitness`ZWOImport"
             }
         },
         {

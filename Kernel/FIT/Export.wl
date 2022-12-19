@@ -59,6 +59,18 @@ FITExport[ file_, data_Association? tsDataQ, opts: OptionsPattern[ ] ] :=
         opts
     ];
 
+FITExport[ file_, data_List? recordListQ, opts: OptionsPattern[ ] ] :=
+    fitExportOptionsBlock[
+        FITExport[
+            file,
+            makeRawData[
+                (Association[ "MessageType" -> "Record", #1 ] &) /@ data
+            ],
+            opts
+        ],
+        opts
+    ];
+
 FITExport[ file_, data_List? messageListQ, opts: OptionsPattern[ ] ] :=
     fitExportOptionsBlock[
         FITExport[ file, makeRawData @ data, opts ],
@@ -177,6 +189,21 @@ ensureFileID // endDefinition;
 messageListQ // ClearAll;
 messageListQ[ { __? messageAssociationQ } ] := True;
 messageListQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*recordListQ*)
+recordListQ // ClearAll;
+recordListQ[ { __? recordAssociationQ } ] := True;
+recordListQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*recordAssociationQ*)
+recordAssociationQ // ClearAll;
+recordAssociationQ[ KeyValuePattern[ "MessageType" -> "Record" ] ] := True;
+recordAssociationQ[ KeyValuePattern @ { "Timestamp" -> _DateObject } ] := True;
+recordAssociationQ[ ___ ] := False;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)

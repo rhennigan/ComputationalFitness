@@ -1,0 +1,296 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* Created By: SaveReadableNotebook *)
+(* https://resources.wolframcloud.com/FunctionRepository/resources/SaveReadableNotebook *)
+
+Notebook[
+ {
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      "Computational Fitness",
+      "GuideTitle",
+      CellID -> 171682426
+     ],
+     Cell["XXXX", "GuideAbstract", CellID -> 236295828]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell["", "GuideFunctionsSection", CellID -> 512954396],
+     Cell[
+      TextData[
+       {
+        Cell[
+         BoxData[
+          TagBox[FrameBox["\"XXXX\""], "FunctionPlaceholder"]
+         ],
+         "InlineGuideFunction",
+         TaggingRules -> {"PageType" -> "Function"},
+         CellTags -> "c40ac8e4-27e1-4161-a8df-4d4f38357a23"
+        ],
+        " \[LongDash] ",
+        Cell[
+         BoxData[
+          TagBox[
+           TagBox[FrameBox["description"], "GuideTextPlaceholder"],
+           EventHandlerTag[
+            {
+             "MouseClicked" :>
+              SelectionMove[EvaluationCell[], All, Cell],
+             Method -> "Preemptive",
+             PassEventsDown -> Automatic,
+             PassEventsUp -> True
+            }
+           ]
+          ]
+         ]
+        ]
+       }
+      ],
+      "GuideText",
+      CellID -> 104471426
+     ],
+     Cell[
+      TextData[
+       {
+        Cell[
+         BoxData[
+          TagBox[FrameBox["\"XXXX\""], "FunctionPlaceholder"]
+         ],
+         "InlineGuideFunction",
+         TaggingRules -> {"PageType" -> "Function"},
+         CellTags -> "c5c6736a-1ff4-4e4e-8fcf-2d9846cbae62"
+        ],
+        " \[LongDash] ",
+        Cell[
+         BoxData[
+          TagBox[
+           TagBox[FrameBox["description"], "GuideTextPlaceholder"],
+           EventHandlerTag[
+            {
+             "MouseClicked" :>
+              SelectionMove[EvaluationCell[], All, Cell],
+             Method -> "Preemptive",
+             PassEventsDown -> Automatic,
+             PassEventsUp -> True
+            }
+           ]
+          ]
+         ]
+        ]
+       }
+      ],
+      "GuideText",
+      CellID -> 107444629
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell["\t", "GuideDelimiter", CellID -> 3330574],
+        Cell[
+         TextData[
+          {
+           Cell[
+            BoxData[
+             TagBox[FrameBox["\"XXXX\""], "FunctionPlaceholder"]
+            ],
+            "InlineGuideFunction",
+            TaggingRules -> {"PageType" -> "Function"}
+           ],
+           Cell[
+            BoxData[
+             RowBox[
+              {
+               Cell[
+                TextData[
+                 StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"]
+                ]
+               ],
+               DynamicModuleBox[
+                {
+                 nbobj$$ = 
+                  NotebookObject[
+                   "379086df-2caa-4145-a8be-1c6e077b54de",
+                   "16526dc0-53b7-43f6-9fb8-d2fe2040d240"
+                  ],
+                 cellobj$$ = 
+                  CellObject[
+                   "061db469-8647-4f26-b347-0410d35ea2c3",
+                   "8db9eceb-c6c3-478f-b71a-d44e60af646e"
+                  ]
+                },
+                TemplateBox[
+                 {
+                  GraphicsBox[
+                   {
+                    {
+                     Thickness[0.06],
+                     StrokeForm[Hue[0.4167, 0.406, 0.502]],
+                     CircleBox[{0, 0}]
+                    },
+                    {
+                     Thickness[0.06],
+                     StrokeForm[Hue[0.4167, 0.406, 0.502]],
+                     LineBox[{{0, 0.62}, {0, -0.62}}]
+                    },
+                    {
+                     Thickness[0.06],
+                     StrokeForm[Hue[0.4167, 0.406, 0.502]],
+                     LineBox[{{-0.62, 0}, {0.62, 0}}]
+                    }
+                   },
+                   ImagePadding -> {{1., 1.}, {2.4, 1.}},
+                   ImageSize -> 16,
+                   PlotRange -> {{-1.06, 1.06}, {-1.06, 1.06}},
+                   BaselinePosition -> Center -> Center
+                  ],
+                  nbobj$$,
+                  cellobj$$
+                 },
+                 "InlineListingAddButton"
+                ],
+                Initialization :>
+                 (nbobj$$ = EvaluationNotebook[];
+                 cellobj$$ = EvaluationCell[])
+               ]
+              }
+             ]
+            ],
+            "InlineListingAddButton"
+           ]
+          }
+         ],
+         "InlineGuideFunctionListing",
+         CellID -> 605899151
+        ]
+       },
+       Open
+      ]
+     ]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      "Tech Notes",
+      "GuideTutorialsSection",
+      CellID -> 480277910
+     ],
+     Cell["XXXX", "GuideTutorial", CellID -> 257508751],
+     Cell["XXXX", "GuideTutorial", CellID -> 7109952]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell[
+      "Related Guides",
+      "GuideMoreAboutSection",
+      CellID -> 383669910
+     ],
+     Cell["XXXX", "GuideMoreAbout", CellID -> 112202738],
+     Cell["XXXX", "GuideMoreAbout", CellID -> 155966413]
+    },
+    Open
+   ]
+  ],
+  Cell[
+   "Related Links",
+   "GuideRelatedLinksSection",
+   CellID -> 19046813
+  ],
+  Cell[
+   CellGroupData[
+    {
+     Cell["Metadata", "MetadataSection", CellID -> 288573939],
+     Cell[
+      TextData[
+       {
+        "New in: ",
+        Cell["XX", "HistoryData", CellTags -> "New"],
+        " | Modified in: ",
+        Cell[" ", "HistoryData", CellTags -> "Modified"],
+        " | Obsolete in: ",
+        Cell[" ", "HistoryData", CellTags -> "Obsolete"]
+       }
+      ],
+      "History",
+      CellID -> 179645887
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell[
+         "Categorization",
+         "CategorizationSection",
+         CellID -> 325457496
+        ],
+        Cell[
+         "Guide",
+         "Categorization",
+         CellLabel -> "Entity Type",
+         CellID -> 150134730
+        ],
+        Cell[
+         "RH/ComputationalFitness",
+         "Categorization",
+         CellLabel -> "Paclet Name",
+         CellID -> 666474783
+        ],
+        Cell[
+         "RH`ComputationalFitness`",
+         "Categorization",
+         CellLabel -> "Context",
+         CellID -> 458140634
+        ],
+        Cell[
+         "RH/ComputationalFitness/guide/ComputationalFitness",
+         "Categorization",
+         CellLabel -> "URI",
+         CellID -> 87082947
+        ]
+       },
+       Closed
+      ]
+     ],
+     Cell[
+      CellGroupData[
+       {
+        Cell["Keywords", "KeywordsSection", CellID -> 463013217],
+        Cell["XXXX", "Keywords", CellID -> 216872772]
+       },
+       Closed
+      ]
+     ]
+    },
+    Open
+   ]
+  ]
+ },
+ ScreenStyleEnvironment -> "FutureObject",
+ TaggingRules -> <|
+  "InformationPopupMenuItemAdded" -> True,
+  "Paclet" -> "RH/ComputationalFitness"
+ |>,
+ FrontEndVersion -> "13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
+ StyleDefinitions ->
+  FrontEnd`FileName[
+   {"Wolfram"},
+   "GuidePageStylesExt.nb",
+   CharacterEncoding -> "UTF-8"
+  ],
+ ExpressionUUID -> "379086df-2caa-4145-a8be-1c6e077b54de"
+]
