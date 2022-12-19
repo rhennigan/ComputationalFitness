@@ -1177,7 +1177,6 @@ static void import_unknown(WolframLibraryData libData, MTensor data, int idx, in
         pos[1]++; 
         libData->MTensor_setInteger(data, pos, mesg[i]);
     }
-    SetInteger(libData, data, pos, DONE);
 }
 
 
