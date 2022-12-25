@@ -21,46 +21,31 @@ cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
 (*Paths*)
 $inputFileName = cFile @ Replace[ $InputFileName, "" :> NotebookFileName[ ] ];
 $pacletDir     = cDir @ DirectoryName[ $inputFileName, 2 ];
-$sourceDir     = cStr @ FileNameJoin @ { $pacletDir, "Source" };
-$targetDir     = cStr @ FileNameJoin @ { $pacletDir, "LibraryResources", $SystemID };
+$targetDir     = cStr @ FileNameJoin @ { $pacletDir, "LibraryResources" };
 
-cicd`ConsoleLog[ "Build source directory: " <> $sourceDir ];
 cicd`ConsoleLog[ "Build target directory: " <> $targetDir ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Compile*)
-$sourceFiles = cicd`ScriptConfirmMatch[
-    FileNames[
-        {
-            "fit_import.c",
-            "fit_export.c",
-            "fit.c",
-            "fit_crc.c",
-            "fit_example.c",
-            "fit_convert.c"
-        },
-        $sourceDir
-    ],
-    { _, _, _, _, _, _ }
-];
+cicd`ScriptConfirmMatch[ PacletDirectoryLoad @ $pacletDir, { ___, $pacletDir, ___ } ];
+Get[ "RH`ComputationalFitness`" ];
 
-$built = ccd`CreateLibrary[
-    $sourceFiles,
-    "ComputationalFitness",
-    "TargetDirectory"     -> $targetDir,
-    "CleanIntermediate"   -> True,
-    "ShellOutputFunction" -> Print,
-    "Defines"             -> { (* "FIT_USE_STDINT_H" *) }
-];
+cicd`ConsoleLog[ "Compiling libraries..." ];
+$compiled = RH`ComputationalFitness`Package`recompileLibraries[ True ];
 
-If[ FileExistsQ @ $built
-    ,
-    $built = cStr @ ExpandFileName @ $built;
-    cicd`ConsoleLog[ "Built library: " <> $built ];
-    $built
-    ,
-    cicd`ConsoleError[ "Failed to build the library.", "Fatal" -> True ]
-]
+cicd`ScriptConfirmAssert[ FileExistsQ @ $compiled[ "FITImportExport" ] ];
+cicd`ScriptConfirmAssert[ AssociationQ @ $compiled[ "CodeFunctions" ] ];
+cicd`ScriptConfirmAssert[ Length @ $compiled[ "CodeFunctions" ] > 0 ];
+cicd`ScriptConfirmAssert[ AllTrue[ $compiled[ "CodeFunctions" ], FileExistsQ ] ];
+
+printBuilt // ClearAll;
+printBuilt[ as_Association ] := printBuilt /@ as;
+printBuilt[ file_String? FileExistsQ ] := cicd`ConsoleLog[ "    " <> file ];
+printBuilt[ ___ ] := cicd`ConsoleError[ "Failed to build the library.", "Fatal" -> True ];
+
+cicd`ConsoleLog[ "Built libraries:" ];
+printBuilt @ $compiled;
+$compiled
 
 (* :!CodeAnalysis::EndBlock:: *)

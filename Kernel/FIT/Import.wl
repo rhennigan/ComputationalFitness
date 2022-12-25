@@ -60,12 +60,16 @@ FITImport // Options = {
 (* ::Section:: *)
 (*Main definition*)
 FITImport[ file_, opts: OptionsPattern[ ] ] :=
-    catchTopAs[ FITImport ] @ FITImport[ file, "Dataset", opts ];
+    catchMine @ FITImport[ file, Automatic, opts ];
 
-FITImport[ file_? FileExistsQ, "RawData", opts: OptionsPattern[ ] ] :=
-    fitImportOptionsBlock[ fitImport @ ExpandFileName @ file, opts ];
+FITImport[ file_, Automatic, opts: OptionsPattern[ ] ] :=
+    (* TODO: import based on FITFileType *)
+    catchMine @ FITImport[ file, "FitnessData", opts ];
 
-FITImport[ file_? FileExistsQ, "Data", opts: OptionsPattern[ ] ] :=
+FITImport[ file_, "RawData", opts: OptionsPattern[ ] ] :=
+    fitImportOptionsBlock[ fitImport @ file, opts ];
+
+FITImport[ file_, "Data", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[
         Module[ { data, messages },
             data     = FITImport[ file, "RawData", opts ];
@@ -75,7 +79,7 @@ FITImport[ file_? FileExistsQ, "Data", opts: OptionsPattern[ ] ] :=
         opts
     ];
 
-FITImport[ file_? FileExistsQ, type: $$messageTypes, opts: OptionsPattern[ ] ] :=
+FITImport[ file_, type: $$messageTypes, opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[
         Module[ { data },
             data = FITImport[ file, "RawData", opts ];
@@ -84,8 +88,8 @@ FITImport[ file_? FileExistsQ, type: $$messageTypes, opts: OptionsPattern[ ] ] :
         opts
     ];
 
-FITImport[ file_? FileExistsQ, "Dataset", opts: OptionsPattern[ ] ] :=
-    catchTopAs[ FITImport ] @ Module[ { data },
+FITImport[ file_, "Dataset", opts: OptionsPattern[ ] ] :=
+    catchMine @ Module[ { data },
         data = FITImport[ file, "Data", opts ];
         If[ MatchQ[ data, { __Association } ],\
             Dataset @ KeyDrop[ data, "MessageType" ],
@@ -94,13 +98,12 @@ FITImport[ file_? FileExistsQ, "Dataset", opts: OptionsPattern[ ] ] :=
     ];
 
 FITImport[ file_, type: $$pluralMessage, opts: OptionsPattern[ ] ] :=
-    catchTopAs[ FITImport ] @ FITImport[ file, StringDelete[ type, "s"~~EndOfString, opts ] ];
+    catchMine @ FITImport[ file, StringDelete[ type, "s"~~EndOfString, opts ] ];
 
-FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /;
-    ! FileExistsQ @ file :=
-        With[ { found = findFile @ file },
-            FITImport[ found, prop, opts ] /; FileExistsQ @ found
-        ];
+FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /; ! FileExistsQ @ file :=
+    With[ { found = findFile @ file },
+        FITImport[ found, prop, opts ] /; FileExistsQ @ found
+    ];
 
 FITImport[ file_, "MessageInformation", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[
@@ -136,6 +139,15 @@ FITImport[ file_, "MessageData", opts: OptionsPattern[ ] ] :=
         Dataset @ GroupBy[
             FITImport[ file, "Messages", opts ],
             #MessageType &
+        ],
+        opts
+    ];
+
+FITImport[ file_, "FitnessData", opts: OptionsPattern[ ] ] :=
+    fitImportOptionsBlock[
+        makeFitnessDataObject[
+            FITImport[ file, "RawData", opts ],
+            FITFileType @ file
         ],
         opts
     ];
@@ -615,6 +627,7 @@ setSport // endDefinition;
 (* ::Subsection::Closed:: *)
 (*fitImport*)
 fitImport // beginDefinition;
+fitImport[ data_? rawDataQ  ] := data;
 fitImport[ source: $$source ] := cached @ fitImport0 @ source;
 fitImport // endDefinition;
 
@@ -932,6 +945,243 @@ fitValueTimed[ type_, name_, v_ ] :=
     ];
 
 $fitValueTimings := $fitValueTimings = Internal`Bag[ ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*makeFitnessDataObject*)
+makeFitnessDataObject // beginDefinition;
+
+makeFitnessDataObject[ data_? rawDataQ, type: _String | Missing[ "UnknownType", _Integer ] ] :=
+    Module[ { compact },
+        compact = toCompactRawData @ data;
+        FitnessData @ <|
+            "Format"      -> "FIT",
+            "DataFormat"  -> "FITCompact",
+            "Data"        -> compact,
+            "Type"        -> type,
+            "Count"       -> Length @ data,
+            "SummaryData" -> makeFitnessSummaryData[ type, compact ]
+        |>
+    ];
+
+makeFitnessDataObject // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*makeFitnessSummaryData*)
+makeFitnessSummaryData // beginDefinition;
+makeFitnessSummaryData[ "Activity", as_ ] := makeActivitySummaryData @ as;
+makeFitnessSummaryData[ "Workout", as_ ] := makeWorkoutSummaryData @ as;
+makeFitnessSummaryData[ "Course", as_ ] := makeCourseSummaryData @ as;
+makeFitnessSummaryData[ type_, as_Association ] := <| |>;
+makeFitnessSummaryData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*firstSummaryValue*)
+firstSummaryValue // beginDefinition;
+firstSummaryValue[ type_, field_, KeyValuePattern[ "Data" -> data_ ] ] := firstSummaryValue[ type, field, data ];
+firstSummaryValue[ type_, field_, as_Association ] := firstSummaryValue[ type, field, as[ type ] ];
+firstSummaryValue[ type_, field_, { v_List, ___ } ] := fitValue[ type, field, v ];
+firstSummaryValue[ type_, field_, _Missing ] := Missing[ "NotAvailable" ];
+firstSummaryValue // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*makeActivitySummaryData*)
+makeActivitySummaryData // beginDefinition;
+
+makeActivitySummaryData[ as_Association ] :=
+    makeActivitySummaryData[ as, as[ "Session", "Data" ] ];
+
+makeActivitySummaryData[ as_, v_ ] :=
+    DeleteMissing @ <|
+        "Sport"    -> firstSummaryValue[ "Session", "Sport"              , v ],
+        "SubSport" -> firstSummaryValue[ "Session", "SubSport"           , v ],
+        "Date"     -> firstSummaryValue[ "Session", "StartTime"          , v ],
+        "Duration" -> firstSummaryValue[ "Session", "TotalElapsedTime"   , v ],
+        "Distance" -> firstSummaryValue[ "Session", "TotalDistance"      , v ],
+        "Ascent"   -> firstSummaryValue[ "Session", "TotalAscent"        , v ],
+        "Calories" -> firstSummaryValue[ "Session", "TotalCalories"      , v ],
+        "TSS"      -> firstSummaryValue[ "Session", "TrainingStressScore", v ],
+        "IF"       -> firstSummaryValue[ "Session", "IntensityFactor"    , v ],
+        "NP"       -> firstSummaryValue[ "Session", "NormalizedPower"    , v ]
+    |>;
+
+makeActivitySummaryData[ _Association, _Missing ] := <| |>;
+
+makeActivitySummaryData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*makeWorkoutSummaryData*)
+makeWorkoutSummaryData // beginDefinition;
+
+makeWorkoutSummaryData[ as_Association ] :=
+    DeleteMissing @ <|
+        "Name"         -> firstSummaryValue[ "Workout", "WorkoutName", as ],
+        "Sport"        -> firstSummaryValue[ "Workout", "Sport", as ],
+        "Duration"     -> workoutSummaryDuration @ as[ "WorkoutStep", "Data" ],
+        "WorkoutSteps" -> firstSummaryValue[ "Workout", "NumberOfValidSteps", as ],
+        "DateCreated"  -> firstSummaryValue[ "FileID" , "TimeCreated", as ]
+    |>;
+
+makeWorkoutSummaryData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*workoutSummaryDuration*)
+workoutSummaryDuration // beginDefinition;
+
+workoutSummaryDuration[ _Missing ] := Missing[ "NotAvailable" ];
+
+workoutSummaryDuration[ steps_List? rawDataQ ] :=
+    Module[ { durations },
+        durations = (fitValue[ "WorkoutStep", "Duration", #1 ] &) /@ steps;
+        Which[
+            TrueQ @ AllTrue[ durations, CompatibleUnitQ[ #1, "Seconds" ] & ],
+                secondsToQuantity @ Total @ durations
+            ,
+            TrueQ @ AllTrue[ durations, CompatibleUnitQ[ #1, "Meters" ] & ],
+                Total @ durations
+            ,
+            True,
+                Missing[ "NotAvailable" ]
+        ]
+    ];
+
+workoutSummaryDuration // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*makeCourseSummaryData*)
+makeCourseSummaryData // beginDefinition;
+
+makeCourseSummaryData[ as_Association ] :=
+    DeleteMissing @ <|
+        "Name"          -> firstSummaryValue[ "Course", "Name", as ],
+        "Sport"         -> firstSummaryValue[ "Course", "Sport", as ],
+        "DateCreated"   -> firstSummaryValue[ "FileID" , "TimeCreated", as ],
+        "Distance"      -> firstSummaryValue[ "Lap", "TotalDistance", as ],
+        "StartPosition" -> firstSummaryValue[ "Lap", "StartPosition", as ],
+        "EndPosition"   -> firstSummaryValue[ "Lap", "EndPosition", as ],
+        "Course"        -> courseSummary @ as[ "Record", "Data" ]
+    |>;
+
+makeCourseSummaryData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*courseSummary*)
+courseSummary // beginDefinition;
+
+courseSummary[ _Missing ] := Missing[ "NotAvailable" ];
+
+courseSummary[ records_List? rawDataQ ] :=
+    Module[ { delta, course },
+        delta  = Max[ 1, Floor[ Length @ records / 100 ] ];
+        course = Map[ fitValue[ "Record", "GeoPosition", #1 ] &, records[[ ;; ;; delta ]] ];
+        If[ MatchQ[ course, { __GeoPosition } ],
+            GeoPosition @ course[[ All, 1 ]],
+            Missing[ "NotAvailable" ]
+        ]
+    ];
+
+courseSummary // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*toCompactRawData*)
+toCompactRawData // beginDefinition;
+
+toCompactRawData[ data_? rawDataQ ] :=
+    Module[ { compact },
+        compact = toCompactRawDataValues @ data;
+        Association @ KeyValueMap[
+            Function[ #1 -> compactFieldData[ #1, #2 ] ],
+            compact
+        ]
+    ];
+
+toCompactRawData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*compactFieldData*)
+compactFieldData // beginDefinition;
+compactFieldData[ type_, data_ ] := <|
+    "Fields" -> usableFields[ type, usableFITColumnsLibFunction @ data ],
+    "Data"   -> data
+|>;
+compactFieldData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*usableFields*)
+usableFields // beginDefinition;
+
+usableFields[ type_, data_ ] :=
+    Keys @ Select[
+        Map[ fieldIndexMemberQ @ data,
+             $FITMessageDefinitions[[ type, "Fields", All, "Index" ]]
+        ],
+        TrueQ
+    ];
+
+usableFields // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*toCompactRawDataValues*)
+toCompactRawDataValues // beginDefinition;
+
+toCompactRawDataValues[ data_ ] :=
+    Module[ { types, keys, sizes, cPos, containers, idx, mesg, type, j, k },
+
+        types      = KeyMap[ fitMessageType, Counts @ data[[ All, 1 ]] ];
+        keys       = Keys @ types;
+        sizes      = AssociationMap[ $FITMessageDefinitions[ #1, "Size" ] &, keys ];
+        cPos       = Association @ MapIndexed[ #1 -> First[ #2 ] &, Keys @ types ];
+        containers = KeyValueMap[ ConstantArray[ 0, { #2, sizes[ #1 ] } ] &, types ];
+        idx        = AssociationMap[ 1 &, keys ];
+
+        Do[ mesg = data[[ i ]];
+            type = fitMessageType @ mesg[[ 1 ]];
+            j    = cPos @ type;
+            k    = idx[ type ]++;
+            containers[[ j, k ]] = mesg[[ 1;;sizes[[ type ]] ]],
+            { i, Length @ data }
+        ];
+
+        AssociationThread[ keys -> containers ]
+    ];
+
+toCompactRawDataValues // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fieldIndexMemberQ*)
+fieldIndexMemberQ // ClearAll;
+fieldIndexMemberQ[ p_List, i_Integer ] := MemberQ[ p, i ];
+fieldIndexMemberQ[ p_List, a_Integer;;b_Integer ] := IntegerQ @ SelectFirst[ p, a <= # <= b & ];
+fieldIndexMemberQ[ p_ ][ i_ ] := fieldIndexMemberQ[ p, i ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*fromCompactRawData*)
+fromCompactRawData // beginDefinition;
+
+fromCompactRawData[ compact_Association ] :=
+    With[ { width = $fitConfig[ "MessageTensorRowWidth" ] },
+        SortBy[
+            Developer`ToPackedArray[
+                PadRight[ #1, width ] & /@ Flatten[ Values @ compact, 1 ]
+            ],
+            #[[ 2 ]] &
+        ]
+    ];
+
+fromCompactRawData // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

@@ -76,7 +76,7 @@ fitMessageType // endDefinition;
 (* ::Subsubsection::Closed:: *)
 (*$fitMessageTypes*)
 $fitMessageTypes = Association[
-    $fitMessageNUM,
+    $enumTypeData[ "MessageNumber" ],
     65535      -> "Invalid",
     1768842863 -> "MessageInformation"
 ];

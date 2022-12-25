@@ -290,6 +290,10 @@
         255 -> Missing[ "Invalid" ]
     |>
     ,
+    "ByteArray" -> <|
+        255 -> Missing[ "Invalid" ]
+    |>
+    ,
     "CalfRaiseExerciseName" -> <|
         0     -> "ThreeWayCalfRaise",
         1     -> "ThreeWayWeightedCalfRaise",
@@ -2539,6 +2543,7 @@
         317   -> "ClimbPro",
         375   -> "DeviceAuxiliaryBatteryInformation",
         65280 -> "ManufacturerRangeMinimum",
+        65281 -> "WXFExpression",
         65534 -> "ManufacturerRangeMaximum",
         65535 -> Missing[ "Invalid" ]
     |>
@@ -3766,6 +3771,10 @@
         256   -> "PortableMinimum",
         65534 -> "PortableMaximum",
         65535 -> Missing[ "Invalid" ]
+    |>
+    ,
+    "UUID" -> <|
+        4294967295 -> Missing[ "Invalid" ]
     |>
     ,
     "WarmUpExerciseName" -> <|

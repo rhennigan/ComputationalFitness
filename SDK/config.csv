@@ -1,6 +1,6 @@
 Data Structure Alignment [bytes]:,,,4
 File:,device,,"1 n=device "
-Message Name,Field Name,Products:,EXAMPLE
+Message Name,Field Name,Products:,SDK
 file_id,,,"f=all,1,, "
 ,type,,"1"
 ,manufacturer,,"1"
@@ -1211,11 +1211,11 @@ stress_level,,,""
 
 memo_glob,,,""
 ,part_index,,"1"
-,memo,,"1"
+,memo,,"50"
 ,mesg_num,,"1"
 ,parent_index,,"1"
 ,field_num,,"1"
-,data,,"1"
+,data,,"50"
 
 ant_channel_id,,,""
 ,channel_number,,"1"
@@ -1291,4 +1291,11 @@ hrv,,,""
 ,time,,"1"
 
 pad,,,""
+
+wxf_expression,,,""
+,uuid,,"4"
+,partial,,"1"
+,part_number,,"1"
+,byte_count,,"1"
+,wxf,,"128"
 

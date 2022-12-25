@@ -22,8 +22,10 @@ GeneralUtilities`UnprotectAndClearAll[
     `ComputationalFitness,
     `FITExport,
     `FITFileType,
+    `FITFormatQ,
     `FITImport,
     `FITInterpreter,
+    `FitnessData,
     `FunctionalThresholdPower,
     `MaximumHeartRate,
     `PowerZoneColorFunction,
@@ -48,11 +50,13 @@ HoldComplete[
 
 (* Clear for new definitions: *)
 GeneralUtilities`UnprotectAndClearAll[
+    `$fitIcons,
     `$messageSymbol,
     `$thisPacletLocation,
     `beginDefinition,
     `cacheBlock,
     `cached,
+    `catchFormattingTop,
     `catchMine,
     `catchTop,
     `catchTopAs,
@@ -60,6 +64,7 @@ GeneralUtilities`UnprotectAndClearAll[
     `findFile,
     `messageFailure,
     `messagePrint,
+    `recompileLibraries,
     `setIfUndefined,
     `throwFailure,
     `throwInternalFailure,
@@ -74,6 +79,7 @@ EndPackage[ ];
 <<`Utilities`;
 <<`FIT`;
 <<`TCX`;
+<<`FitnessData`;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

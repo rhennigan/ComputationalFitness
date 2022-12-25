@@ -8,7 +8,7 @@
 
 #define RETURN_PARTIAL_DATA
 
-#define MESSAGE_TENSOR_ROW_WIDTH 172
+#define MESSAGE_TENSOR_ROW_WIDTH 173
 #define FILE_ID_TENSOR_ROW_WIDTH  27
 
 #define FIT_IMPORT_ERROR_CONVERSION            8
@@ -154,6 +154,7 @@ static void import_exd_data_field_configuration(WolframLibraryData libData, MTen
 static void import_exd_data_concept_configuration(WolframLibraryData libData, MTensor data, int idx, const FIT_EXD_DATA_CONCEPT_CONFIGURATION_MESG *mesg);
 static void import_dive_summary(WolframLibraryData libData, MTensor data, int idx, const FIT_DIVE_SUMMARY_MESG *mesg);
 static void import_hrv(WolframLibraryData libData, MTensor data, int idx, const FIT_HRV_MESG *mesg);
+static void import_wxf_expression(WolframLibraryData libData, MTensor data, int idx, const FIT_WXF_EXPRESSION_MESG *mesg);
 // --- END MESSAGE IMPORT DECLARATIONS ---
 
 static void import_unknown( WolframLibraryData libData, MTensor data, int idx, int mesgNum, const FIT_UINT8 *mesg );

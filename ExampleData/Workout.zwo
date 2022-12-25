@@ -1,0 +1,96 @@
+<workout_file>
+    <author>Richard Hennigan</author>
+    <name>San Joaquin -5</name>
+    <description>Converted with RH/ComputationalFitness</description>
+    <sportType>bike</sportType>
+    <tags/>
+    <workout>
+        <Warmup Duration="300" PowerLow="0.5" PowerHigh="0.89916003" pace="510">
+            <textevent timeoffset="0" message="5 minutes warmup."/>
+        </Warmup>
+        <SteadyState Duration="30" Power="0.5" pace="510">
+            <textevent timeoffset="0" message="Lap in 30 seconds!"/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="1.7983201" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="45" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="45 seconds easy."/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="1.89916" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="45" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="45 seconds easy."/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="180" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="3 minutes easy."/>
+        </SteadyState>
+        <SteadyState Duration="30" Power="0.5" pace="510">
+            <textevent timeoffset="0" message="Lap in 30 seconds!"/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="45" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="45 seconds easy."/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="45" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="45 seconds easy."/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="5 minutes easy."/>
+        </SteadyState>
+        <SteadyState Duration="30" Power="0.5" pace="510">
+            <textevent timeoffset="0" message="Lap in 30 seconds!"/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="45" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="45 seconds easy."/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="45" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="45 seconds easy."/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="300" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="5 minutes easy."/>
+        </SteadyState>
+        <SteadyState Duration="30" Power="0.5" pace="510">
+            <textevent timeoffset="0" message="Lap in 30 seconds!"/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="45" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="45 seconds easy."/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <SteadyState Duration="45" Power="0.252101" pace="510">
+            <textevent timeoffset="0" message="45 seconds easy."/>
+        </SteadyState>
+        <SteadyState Duration="15" Power="2" pace="510">
+            <textevent timeoffset="0" message="15 seconds VO2 Max."/>
+        </SteadyState>
+        <Cooldown Duration="480" PowerLow="0.75449997" PowerHigh="0.30449998" pace="510">
+            <textevent timeoffset="0" message="Spin easy for 3 minutes."/>
+        </Cooldown>
+    </workout>
+</workout_file>

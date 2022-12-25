@@ -213,6 +213,7 @@ static void export_exd_data_field_configuration(WolframLibraryData libData, MTen
 static void export_exd_data_concept_configuration(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_dive_summary(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 static void export_hrv(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
+static void export_wxf_expression(WolframLibraryData libData, MTensor data, int idx, FILE *fp );
 // --- END MESSAGE EXPORT DECLARATIONS ---
 
 #endif // !defined(FIT_EXPORT_H)

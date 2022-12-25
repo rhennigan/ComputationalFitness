@@ -674,6 +674,13 @@ DLLEXPORT int FITExport(
                 export_hrv(libData, data, idx, fp);
                 break;
             }
+
+            case FIT_MESG_NUM_WXF_EXPRESSION:
+            {
+                exported++;
+                export_wxf_expression(libData, data, idx, fp);
+                break;
+            }
 // --- END MESSAGE EXPORT CASES ---
 
             default:
@@ -3262,8 +3269,8 @@ static void export_memo_glob(WolframLibraryData libData, MTensor data, int idx, 
     ExportInteger(3, libData, data, pos, mesg.mesg_num);
     ExportInteger(4, libData, data, pos, mesg.parent_index);
     ExportIntegerSequence(5, libData, data, pos, mesg.memo, FIT_MEMO_GLOB_MESG_MEMO_COUNT);
-    ExportInteger(6, libData, data, pos, mesg.field_num);
-    ExportIntegerSequence(7, libData, data, pos, mesg.data, FIT_MEMO_GLOB_MESG_DATA_COUNT);
+    ExportInteger(55, libData, data, pos, mesg.field_num);
+    ExportIntegerSequence(56, libData, data, pos, mesg.data, FIT_MEMO_GLOB_MESG_DATA_COUNT);
 
     WriteMessageDefinition(FIT_MESG_NUM_MEMO_GLOB, local_mesg_number, fit_mesg_defs[FIT_MESG_MEMO_GLOB], FIT_MEMO_GLOB_MESG_DEF_SIZE, fp);
     WriteMessage(local_mesg_number, &mesg, FIT_MEMO_GLOB_MESG_SIZE, fp);
@@ -3452,5 +3459,26 @@ static void export_hrv(WolframLibraryData libData, MTensor data, int idx, FILE *
 
     WriteMessageDefinition(FIT_MESG_NUM_HRV, local_mesg_number, fit_mesg_defs[FIT_MESG_HRV], FIT_HRV_MESG_DEF_SIZE, fp);
     WriteMessage(local_mesg_number, &mesg, FIT_HRV_MESG_SIZE, fp);
+}
+
+
+static void export_wxf_expression(WolframLibraryData libData, MTensor data, int idx, FILE *fp) {
+    mint pos[2];
+    pos[0] = idx;
+    pos[1] = 1;
+    mint x = 0;
+
+    FIT_UINT8 local_mesg_number = 0;
+    FIT_WXF_EXPRESSION_MESG mesg;
+    Fit_InitMesg(fit_mesg_defs[FIT_MESG_WXF_EXPRESSION], &mesg);
+
+    ExportIntegerSequence(2, libData, data, pos, mesg.uuid, FIT_WXF_EXPRESSION_MESG_UUID_COUNT);
+    ExportIntegerSequence(6, libData, data, pos, mesg.wxf, FIT_WXF_EXPRESSION_MESG_WXF_COUNT);
+    ExportInteger(134, libData, data, pos, mesg.part_number);
+    ExportInteger(135, libData, data, pos, mesg.partial);
+    ExportInteger(136, libData, data, pos, mesg.byte_count);
+
+    WriteMessageDefinition(FIT_MESG_NUM_WXF_EXPRESSION, local_mesg_number, fit_mesg_defs[FIT_MESG_WXF_EXPRESSION], FIT_WXF_EXPRESSION_MESG_DEF_SIZE, fp);
+    WriteMessage(local_mesg_number, &mesg, FIT_WXF_EXPRESSION_MESG_SIZE, fp);
 }
 // --- END MESSAGE EXPORT FUNCTIONS ---

@@ -982,6 +982,46 @@ ifitFloat64A[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
+(*fitByteArray*)
+fitByteArray // ClearAll;
+fitByteArray[ { $invalidUINT8... } ] := Missing[ "NotAvailable" ];
+fitByteArray[ bytes: { __Integer } ] := ByteArray @ bytes;
+fitByteArray[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitByteArray // ClearAll;
+ifitByteArray[ bytes_ByteArray, n_ ] := PadRight[ Normal @ bytes, n, $invalidUINT8 ];
+ifitByteArray[ ___ ] := $Failed;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitUUID*)
+fitUUID // ClearAll;
+fitUUID[ { $invalidUINT32.. } ] := Missing[ "NotAvailable" ];
+fitUUID[ uuid: { _Integer, _Integer, _Integer, _Integer } ] := StringInsert[ IntegerString[ FromDigits[ uuid, 2^32 ], 16 ], "-", { 9, 13, 17, 21 } ];
+fitUUID[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitUUID // ClearAll;
+ifitUUID[ uuid_String? uuidStringQ, 4 ] := IntegerDigits[ FromDigits[ StringDelete[ uuid, "-" ], 16 ], 2^32, 4 ];
+ifitUUID[ ___ ] := $Failed;
+
+
+uuidStringQ // ClearAll;
+
+uuidStringQ[ uuid_String? StringQ ] := StringMatchQ[
+    uuid,
+    StringExpression[
+        Repeated[ HexadecimalCharacter, { 8 } ], "-",
+        Repeated[ HexadecimalCharacter, { 4 } ], "-",
+        Repeated[ HexadecimalCharacter, { 4 } ], "-",
+        Repeated[ HexadecimalCharacter, { 4 } ], "-",
+        Repeated[ HexadecimalCharacter, { 12 } ]
+    ]
+];
+
+uuidStringQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
 (*fitString*)
 fitString // ClearAll;
 fitString[ { 0, ___ } ] := Missing[ "NotAvailable" ];
