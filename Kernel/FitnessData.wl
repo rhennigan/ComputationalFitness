@@ -5,6 +5,8 @@ BeginPackage[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
+(* TODO: store import options for delayed interpretations *)
+
 $ContextAliases[ "sp`" ] = "System`Private`";
 
 (* ::**********************************************************************:: *)

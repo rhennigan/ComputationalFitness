@@ -250,9 +250,7 @@ setFieldDefinitions /@ Complement[ Keys @ $FITMessageDefinitions, $supportedMess
 (* ::Subsubsection::Closed:: *)
 (*FileID*)
 setFieldDefinitions[ fitFileIDValue, ifitFileIDValue, "FileID" ];
-
 fitFileIDValue[ "ProductName", v_ ] := fitProductName[ v[[ { "Manufacturer", "Product" } ]], v[[ "ProductName" ]] ];
-
 indexTranslate[ "FileID", fitFileIDValue ];
 
 (* ::**********************************************************************:: *)
@@ -295,30 +293,30 @@ fitLapValue[ "StrokeCount"     , v_ ] := fitStrokeCount @ v[[ "StrokeCount" ]];
 fitLapValue[ "AverageCadence"  , v_ ] := fitCadence[ v[[ "AverageCadence" ]], v[[ "AverageFractionalCadence" ]] ];
 fitLapValue[ "MaximumCadence"  , v_ ] := fitCadence[ v[[ "MaximumCadence" ]], v[[ "MaximumFractionalCadence" ]] ];
 
-(* FIXME: define ifitLapValue *)
+ifitLapValue[ "StartPositionLatitude"   , { }, as_Association ] := ifitPositionLatitude @ as[ "GeoPosition" ];
+ifitLapValue[ "StartPositionLongitude"  , { }, as_Association ] := ifitPositionLongitude @ as[ "GeoPosition" ];
+ifitLapValue[ "EndPositionLatitude"     , { }, as_Association ] := ifitPositionLatitude @ as[ "GeoPosition" ];
+ifitLapValue[ "EndPositionLongitude"    , { }, as_Association ] := ifitPositionLongitude @ as[ "GeoPosition" ];
+ifitLapValue[ "TotalFractionalCycles"   , { }, as_Association ] := ifitFractionalCycles @ as[ "TotalCycles" ];
+ifitLapValue[ "EnhancedAverageSpeed"    , { }, as_Association ] := ifitQuantity[ fitUINT32, "MetersPerSecond", 1000, 0 ] @ as[ "AverageSpeed" ];
+ifitLapValue[ "EnhancedMaximumSpeed"    , { }, as_Association ] := ifitQuantity[ fitUINT32, "MetersPerSecond", 1000, 0 ] @ as[ "MaximumSpeed" ];
+ifitLapValue[ "LeftRightBalance"        , { }, as_Association ] := ifitLeftRightBalance @ as[ "LeftRightBalance" ];
+ifitLapValue[ "EnhancedAverageAltitude" , { }, as_Association ] := ifitQuantity[ fitUINT32, "Meters", 5, 500 ] @ as[ "AverageAltitude" ];
+ifitLapValue[ "EnhancedMaximumAltitude" , { }, as_Association ] := ifitQuantity[ fitUINT32, "Meters", 5, 500 ] @ as[ "MaximumAltitude" ];
+ifitLapValue[ "EnhancedMinimumAltitude" , { }, as_Association ] := ifitQuantity[ fitUINT32, "Meters", 5, 500 ] @ as[ "MinimumAltitude" ];
+ifitLapValue[ "StrokeCount"             , { }, as_Association ] := ifitStrokeCount @ as[ "StrokeCount" ];
+ifitLapValue[ "AverageFractionalCadence", { }, as_Association ] := ifitFractionalCadence @ as[ "AverageCadence" ];
+ifitLapValue[ "MaximumFractionalCadence", { }, as_Association ] := ifitFractionalCadence @ as[ "MaximumCadence" ];
 
 indexTranslate[ "Lap", fitLapValue ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*DeviceSettings*)
-setFieldDefinitions[ fitDeviceSettingsValue, ifitDeviceSettingsValue, "DeviceSettings" ];
-
-fitDeviceSettingsValue[ "TimeOffset"    , v_ ] := fitTimeOffset @ v[[ "TimeOffset" ]];
-(* fitDeviceSettingsValue[ "PagesEnabled"  , v_ ] := fitUINT16BF @ v[[ "PagesEnabled" ]];
-fitDeviceSettingsValue[ "DefaultPage"   , v_ ] := fitUINT16BF @ v[[ "DefaultPage" ]]; *)
-(* fitDeviceSettingsValue[ "TimeMode"      , v_ ] := fitTimeModeArr @ v[[ "TimeMode" ]]; *)
-(* fitDeviceSettingsValue[ "TimeZoneOffset", v_ ] := fitTimeZoneOffset @ v[[ "TimeZoneOffset" ]]; *)
-
-ifitDeviceSettingsValue[ "TimeOffset"    , { n_ }, v_ ] := ifitTimeOffset[ v, n ];
-(* ifitDeviceSettingsValue[ "PagesEnabled"  , { n_ }, v_ ] := ifitUINT16BF[ v, n ];
-ifitDeviceSettingsValue[ "DefaultPage"   , { n_ }, v_ ] := ifitUINT16BF[ v, n ]; *)
-(* ifitDeviceSettingsValue[ "TimeMode"      , { n_ }, v_ ] := ifitTimeModeArr[ v, n ]; *)
-(* ifitDeviceSettingsValue[ "TimeZoneOffset", { n_ }, v_ ] := ifitTimeZoneOffset[ v, n ]; *)
-
-(* FIXME: define ifitTimeZoneOffset *)
-
-indexTranslate[ "DeviceSettings", fitDeviceSettingsValue ];
+setFieldDefinitions[fitDeviceSettingsValue, ifitDeviceSettingsValue, "DeviceSettings"];
+fitDeviceSettingsValue["TimeOffset", v_] := fitTimeOffset[v[["TimeOffset"]]];
+ifitDeviceSettingsValue["TimeOffset", {n_}, v_] := ifitTimeOffset[v, n];
+indexTranslate["DeviceSettings", fitDeviceSettingsValue];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -363,11 +361,10 @@ ifitRecordValue[ "RightPowerPhase"    , { }, as_Association ] := ifitPowerPhase[
 ifitRecordValue[ "RightPowerPhasePeak", { }, as_Association ] := ifitPowerPhase[ as[ "RightPowerPhasePeakStart" ], as[ "RightPowerPhasePeakEnd" ] ];
 
 (* FIXME: define
-    ifitCadence
     ifitLeftRightBalance
     ifitResistance
-    ifitFractionalCadence
     ifitPowerPhase
+    ifitCycles
 *)
 
 indexTranslate[ "Record", fitRecordValue ];
@@ -699,15 +696,15 @@ fitByte[ ___ ] := Missing[ "NotAvailable" ];
 
 fitByteA // ClearAll;
 fitByteA[ { $invalidUINT8... } ] := Missing[ "NotAvailable" ];
-fitByteA[ list_List ] := ByteArray[ fitByte /@ list ];
+fitByteA[ list_List ] := ByteArray @ list;
 fitByteA[ ___ ] := Missing[ "NotAvailable" ];
 
-(* FIXME: Define this! *)
 ifitByte // ClearAll;
+ifitByte[ v_Integer ] := v;
 ifitByte[ ___ ] := $Failed;
 
-(* FIXME: Define this! *)
 ifitByteA // ClearAll;
+ifitByteA[ b_ByteArray, _ ] := Normal @ b;
 ifitByteA[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
@@ -971,13 +968,13 @@ fitFloat64A[ { $invalidFLOAT64... } ] := Missing[ "NotAvailable" ];
 fitFloat64A[ list_List ] := list / 65535.0;
 fitFloat64A[ ___ ] := Missing[ "NotAvailable" ];
 
-
-(* FIXME: Define this! *)
 ifitFloat64 // ClearAll;
+ifitFloat64[ v_Real ] := Floor[ v * 65535.0 ];
 ifitFloat64[ ___ ] := $Failed;
 
-(* FIXME: Define this! *)
 ifitFloat64A // ClearAll;
+ifitFloat64A[ v_Real, { n_Integer } ] := ConstantArray[ Floor[ v * 65535.0 ], n ];
+ifitFloat64A[ list_List, _ ] := ifitFloat64 /@ list;
 ifitFloat64A[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
@@ -1745,6 +1742,14 @@ fitCadence[ c_Integer, f_Integer ] := cadenceQuantity[ c + f / 128.0 ];
 fitCadence[ c_Integer ] := cadenceQuantity @ c;
 fitCadence[ ___ ] := Missing[ "NotAvailable" ];
 
+ifitCadence // ClearAll;
+ifitCadence[ n_Integer ] := n;
+ifitCadence[ n_Real ] := Round @ n;
+ifitCadence[ Quantity[ n_, "Revolutions" / "Minutes" ] ] := Round @ n;
+ifitCadence[ Quantity[ n_, IndependentUnit[ "Cycles" ] / "Minutes" ] ] := Round @ n;
+ifitCadence[ Quantity[ n_, ("Steps"|"Strokes") / "Minutes" ] ] := Round[ n / 2 ];
+ifitCadence[ ___ ] := $Failed;
+
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitFractionalCadence*)
@@ -1752,6 +1757,14 @@ fitFractionalCadence // ClearAll;
 fitFractionalCadence[ $invalidUINT8|0 ] := Missing[ "NotAvailable" ];
 fitFractionalCadence[ n_Integer ] := cadenceQuantity[ n / 128.0 ];
 fitFractionalCadence[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitFractionalCadence // ClearAll;
+ifitFractionalCadence[ n_Integer ] := n * 128;
+ifitFractionalCadence[ n_Real ] := Round[ n * 128 ];
+ifitFractionalCadence[ Quantity[ n_, "Revolutions" / "Minutes" ] ] := Round[ n * 128 ];
+ifitFractionalCadence[ Quantity[ n_, IndependentUnit[ "Cycles" ] / "Minutes" ] ] := Round[ n * 128 ];
+ifitFractionalCadence[ Quantity[ n_, ("Steps"|"Strokes") / "Minutes" ] ] := Round[ n * 64 ];
+ifitFractionalCadence[ ___ ] := $Failed;
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

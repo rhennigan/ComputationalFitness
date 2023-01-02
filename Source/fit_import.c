@@ -33,7 +33,7 @@ DLLEXPORT int FITFileType (
 ) {
     char *path;
     FILE *file;
-    mint res;
+    mint res = -1;
     FIT_UINT8 buf[8];
     FIT_CONVERT_RETURN convert_return = FIT_CONVERT_CONTINUE;
     FIT_UINT32 buf_size;
@@ -112,7 +112,6 @@ DLLEXPORT int FITFileType (
 
     #if defined(RETURN_PARTIAL_DATA)
     fclose(file);
-    // FIXME: this can be undefined:
     MArgument_setInteger(Res, res);
     return LIBRARY_NO_ERROR;
     #endif

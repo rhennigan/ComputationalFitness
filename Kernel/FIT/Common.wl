@@ -87,10 +87,7 @@ $fitMessageTypes = Association[
 unsupportedMessageTypeQ[ type_ ] := MemberQ[ $unsupportedMessageTypes, type ];
 unsupportedMessageTypeQ[ ___ ] := False;
 
-$unsupportedMessageTypes = Complement[
-    Values @ $fitMessageTypes,
-    $supportedMessageTypes
-];
+$unsupportedMessageTypes = Complement[ Values @ $fitMessageTypes, $supportedMessageTypes ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

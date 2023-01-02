@@ -721,7 +721,7 @@ makeImportData[ struct_ ] :=
 
             lastIndex = nextIndex[ ];
 
-            $index = 1;
+            $index = 2;
 
             exportCodeBlock =
                 StringJoin[
