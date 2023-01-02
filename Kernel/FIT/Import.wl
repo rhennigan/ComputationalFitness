@@ -59,9 +59,14 @@ FITImport // Options = {
 (* ::**********************************************************************:: *)
 (* ::Section:: *)
 (*Main definition*)
+
+(* TODO: clean this up a bit more *)
+
+(* Automatic as default second argument: *)
 FITImport[ file_, opts: OptionsPattern[ ] ] :=
     catchMine @ FITImport[ file, Automatic, opts ];
 
+(* Interpret Automatic as "FitnessData": *)
 FITImport[ file_, Automatic, opts: OptionsPattern[ ] ] :=
     (* TODO: import based on FITFileType *)
     catchMine @ FITImport[ file, "FitnessData", opts ];
@@ -147,7 +152,8 @@ FITImport[ file_, "FitnessData", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[
         makeFitnessDataObject[
             FITImport[ file, "RawData", opts ],
-            FITFileType @ file
+            FITFileType @ file,
+            opts
         ],
         opts
     ];
@@ -165,7 +171,7 @@ FITImport[ file_, "FileType", OptionsPattern[ ] ] :=
 (* ::Subsection::Closed:: *)
 (*TimeSeries Data*)
 FITImport[ file_, "TimeSeries", opts: OptionsPattern[ ] ] :=
-    catchTopAs[ FITImport ] @ FITImport[ file, { "TimeSeries", $fitRecordKeys }, opts ];
+    catchTopAs[ FITImport ] @ FITImport[ file, { "TimeSeries", $timeSeriesKeys }, opts ];
 
 FITImport[ file_, key: $$fitRecordKeys, opts: OptionsPattern[ ] ] :=
     catchTopAs[ FITImport ] @ FITImport[ file, { "TimeSeries", key }, opts ];
@@ -190,9 +196,12 @@ FITImport[ file_, { "TimeSeries", All }, opts: OptionsPattern[ ] ] :=
         DeleteMissing @ makeTimeSeriesData[
             "Record",
             records,
-            DeleteCases[ $fitRecordKeys, "MessageType"|"Timestamp" ]
+            $timeSeriesKeys
         ]
     ];
+
+
+$timeSeriesKeys := DeleteCases[ fitKeys[ "Record" ], "MessageType"|"Timestamp" ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -366,7 +375,7 @@ setSportPref[ as_Association, Automatic ] :=
         sport = If[ ListQ @ v, fitValue[ "Sport", "Sport", v ], v ];
         If[ StringQ @ sport,
             $sport = setSport @ sport,
-            $sport = setSport @ PersistentSymbol[ "ComputationalFitness/Sport" ];
+            $sport = setSport @ PersistentSymbol[ "ComputationalFitness/Sport" ]
         ]
     ];
 
@@ -628,6 +637,7 @@ setSport // endDefinition;
 (*fitImport*)
 fitImport // beginDefinition;
 fitImport[ data_? rawDataQ  ] := data;
+fitImport[ compact_? compactFitFitnessDataQ ] := fromCompactRawData @ compact;
 fitImport[ source: $$source ] := cached @ fitImport0 @ source;
 fitImport // endDefinition;
 
@@ -951,16 +961,24 @@ $fitValueTimings := $fitValueTimings = Internal`Bag[ ];
 (*makeFitnessDataObject*)
 makeFitnessDataObject // beginDefinition;
 
-makeFitnessDataObject[ data_? rawDataQ, type: _String | Missing[ "UnknownType", _Integer ] ] :=
-    Module[ { compact },
+makeFitnessDataObject[ data_FitnessData? compactFitFitnessDataQ, ___ ] := data;
+
+makeFitnessDataObject[
+    data_? rawDataQ,
+    type: _String | Missing[ "UnknownType", _Integer ],
+    opts: OptionsPattern @ FITImport
+] :=
+    Module[ { compact, options },
         compact = toCompactRawData @ data;
+        options = optionsAssociation[ FITImport, opts ];
         FitnessData @ <|
             "Format"      -> "FIT",
             "DataFormat"  -> "FITCompact",
             "Data"        -> compact,
             "Type"        -> type,
             "Count"       -> Length @ data,
-            "SummaryData" -> makeFitnessSummaryData[ type, compact ]
+            "SummaryData" -> makeFitnessSummaryData[ type, compact ],
+            "Options"     -> options
         |>
     ];
 
@@ -1171,17 +1189,43 @@ fieldIndexMemberQ[ p_ ][ i_ ] := fieldIndexMemberQ[ p, i ];
 (*fromCompactRawData*)
 fromCompactRawData // beginDefinition;
 
+fromCompactRawData[ HoldPattern @ FitnessData[ as_Association, ___ ] ] :=
+    fromCompactRawData @ as;
+
+fromCompactRawData[ KeyValuePattern @ {
+    "Format"     -> "FIT",
+    "DataFormat" -> "FITCompact",
+    "Data"       -> compact_Association
+} ] := fromCompactRawData @ compact;
+
 fromCompactRawData[ compact_Association ] :=
-    With[ { width = $fitConfig[ "MessageTensorRowWidth" ] },
-        SortBy[
-            Developer`ToPackedArray[
-                PadRight[ #1, width ] & /@ Flatten[ Values @ compact, 1 ]
-            ],
-            #[[ 2 ]] &
-        ]
+    Module[ { width, flat, pad, square, data },
+        width  = $fitConfig[ "MessageTensorRowWidth" ];
+        flat   = Flatten[ Values @ compact[[ All, "Data" ]], 1 ];
+        pad    = Developer`ToPackedArray @ PadRight[ #1, width ] &;
+        square = Developer`ToPackedArray[ pad /@ flat ];
+        data   = SortBy[ square, #[[ 2 ]] & ];
+        setPreferences @ data;
+        data
     ];
 
 fromCompactRawData // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*compactFitFitnessDataQ*)
+compactFitFitnessDataQ // ClearAll;
+
+compactFitFitnessDataQ[ HoldPattern @ FitnessData[ as_Association, ___ ] ] :=
+    compactFitFitnessDataQ @ as;
+
+compactFitFitnessDataQ[ KeyValuePattern @ {
+    "Format"     -> "FIT",
+    "DataFormat" -> "FITCompact",
+    "Data"       -> _Association
+} ] := True;
+
+compactFitFitnessDataQ[ ___ ] := False;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

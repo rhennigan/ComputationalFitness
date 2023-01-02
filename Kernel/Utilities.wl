@@ -349,6 +349,18 @@ findFile[ file_ ] := Quiet @ FindFile @ file;
 findFile // endDefinition;
 
 (* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*optionsAssociation*)
+optionsAssociation // beginDefinition;
+
+optionsAssociation[ f_Symbol, opts: OptionsPattern[ ] ] := Association[
+    KeyMap[ ToString, Association @ Options @ f ],
+    KeyMap[ ToString, Association @ Reverse @ { opts } ]
+];
+
+optionsAssociation // endDefinition;
+
+(* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

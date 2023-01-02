@@ -11,6 +11,19 @@ $ContextAliases[ "sp`" ] = "System`Private`";
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Argument Patterns*)
+$$fitnessDataStaticProperty = Alternatives[
+    "Count",
+    "DataFormat",
+    "Format",
+    "Options", \
+    "SummaryData",
+    "Type",
+    "UUID"
+];
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Main Definition*)
 FitnessData[ data_Association ]? sp`HoldNotValidQ :=
     catchMine @ With[ { valid = validateFitnessData @ data },
@@ -52,6 +65,109 @@ fitCompactQ[ as_Association ] := AllTrue[
 ];
 
 fitCompactQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Properties*)
+(fd_FitnessData? FitnessDataQ)[ prop_ ] := catchTop @ fitnessDataProperty[ fd, prop ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*fitnessDataProperty*)
+fitnessDataProperty // beginDefinition;
+
+fitnessDataProperty[ fd_, prop: $$fitnessDataStaticProperty ] :=
+    fitnessDataStaticProperty[ fd, prop ];
+
+fitnessDataProperty[ fd_? compactFitFitnessDataQ, prop_ ] :=
+    FITImport[ fd, prop, fitnessDataOptions[ FITImport, fd ] ];
+
+fitnessDataProperty // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*fitnessDataOptions*)
+fitnessDataOptions // beginDefinition;
+
+fitnessDataOptions[ head_Symbol, fd_ ] :=
+    fitnessDataOptions[ head, fd, fitnessDataStaticProperty[ fd, "Options" ] ];
+
+fitnessDataOptions[ head_Symbol, fd_, opts_Association ] :=
+    Sequence @@ FilterRules[ Normal[ opts, Association ], Options @ head ];
+
+fitnessDataOptions // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*fitnessDataStaticProperty*)
+fitnessDataStaticProperty // beginDefinition;
+fitnessDataStaticProperty[ FitnessData[ KeyValuePattern[ prop_ -> val_ ] ], prop_ ] := val;
+fitnessDataStaticProperty // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*UpValues*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Normal*)
+FitnessData /: HoldPattern @ Normal[ fd_FitnessData? FitnessDataQ ] :=
+    catchTop @ fd[ "Messages" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Options*)
+FitnessData /: HoldPattern @ Options[ fd_FitnessData? FitnessDataQ ] :=
+    catchTop @ fd[ "Options" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*GeoGraphics*)
+FitnessData /: HoldPattern @ GeoGraphics[
+    fd_FitnessData? FitnessDataQ,
+    opts: OptionsPattern[ ]
+] := catchTop @ fitnessDataGeoGraphics[ fd, opts ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitnessDataGeoGraphics*)
+fitnessDataGeoGraphics // beginDefinition;
+
+fitnessDataGeoGraphics[ fd_, opts: OptionsPattern[ ] ] :=
+    fitnessDataGeoGraphics[ fd, GeoPosition @ fd, opts ];
+
+fitnessDataGeoGraphics[ fd_, _Missing, opts: OptionsPattern[ ] ] :=
+    Missing[ "NotAvailable" ];
+
+fitnessDataGeoGraphics[ fd_, pos_GeoPosition, opts: OptionsPattern[ ] ] :=
+    GeoGraphics[ { Thick, Red, Line @ pos }, opts ];
+
+fitnessDataGeoGraphics // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*GeoPosition*)
+FitnessData /: HoldPattern @ GeoPosition[ fd_FitnessData? FitnessDataQ ] :=
+    catchTop @ fitnessDataGeoPosition @ fd;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*fitnessDataGeoPosition*)
+fitnessDataGeoPosition // beginDefinition;
+
+fitnessDataGeoPosition[ fd_ ] :=
+    fitnessDataGeoPosition[ fd, fd[ "GeoPosition" ] ];
+
+fitnessDataGeoPosition[ fd_, _Missing ] :=
+    Missing[ "NotAvailable" ];
+
+fitnessDataGeoPosition[ fd_, ts: _TemporalData|_TimeSeries ] :=
+    Module[ { values },
+        values = DeleteMissing @ Values @ ts;
+        GeoPosition @ values /; MatchQ[ values, { __GeoPosition } ]
+    ];
+
+fitnessDataGeoPosition // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -305,6 +421,14 @@ makeFitnessDataInputForm // endDefinition;
 (*bytesToQuantity*)
 bytesToQuantity // ClearAll;
 bytesToQuantity := bytesToQuantity = ResourceFunction[ "BytesToQuantity", "Function" ];
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*FitnessDataQ*)
+FitnessDataQ // beginDefinition;
+FitnessDataQ[ _FitnessData? sp`HoldValidQ ] := True;
+FitnessDataQ[ ___ ] := False;
+FitnessDataQ // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

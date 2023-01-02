@@ -63,6 +63,7 @@ fitFormatBytesQ // endDefinition;
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*FITFileType*)
+FITFileType[ FitnessData[ KeyValuePattern[ "Type" -> type_ ] ] ] := type;
 FITFileType[ file: $$source, opts: OptionsPattern[ ] ] := catchMine @ fitFileType @ file;
 FITFileType[ ___ ] := $Failed; (* TODO *)
 

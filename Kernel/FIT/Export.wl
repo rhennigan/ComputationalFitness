@@ -77,6 +77,12 @@ FITExport[ file_, data_List? messageListQ, opts: OptionsPattern[ ] ] :=
         opts
     ];
 
+FITExport[ file_, data_FitnessData? FitnessDataQ, opts: OptionsPattern[ ] ] :=
+    fitExportOptionsBlock[
+        FITExport[ file, data[ "RawData" ], opts ],
+        opts
+    ];
+
 FITExport[ ___ ] := Failure[ "NotImplemented", <| |> ];
 
 (* ::**********************************************************************:: *)
