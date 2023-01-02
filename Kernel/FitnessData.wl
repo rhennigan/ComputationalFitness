@@ -122,6 +122,12 @@ FitnessData /: HoldPattern @ Options[ fd_FitnessData? FitnessDataQ ] :=
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
+(*Dataset*)
+FitnessData /: HoldPattern @ Dataset[ fd_FitnessData? FitnessDataQ ] :=
+    catchTop @ fd[ "Dataset" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*GeoGraphics*)
 FitnessData /: HoldPattern @ GeoGraphics[
     fd_FitnessData? FitnessDataQ,
