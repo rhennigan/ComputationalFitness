@@ -493,6 +493,11 @@ $hrZoneColors = <|
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Icons*)
+$fitIcons = Developer`ReadWXFFile @ FileNameJoin @ { $dataDirectory, "FITIcons.wxf" };
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];
 EndPackage[ ];

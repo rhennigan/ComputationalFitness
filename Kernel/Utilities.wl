@@ -11,6 +11,9 @@ Begin[ "`Private`" ];
 ComputationalFitness::Internal =
 "An unexpected error occurred. `1`";
 
+ComputationalFitness::InternalFormatting =
+"An unexpected error occurred during formatting. `1`";
+
 ComputationalFitness::Unfinished =
 "Definition warning: Starting definition for `1` without ending the current one.";
 
@@ -158,6 +161,35 @@ catchTop // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Subsection::Closed:: *)
+(*catchFormattingTop*)
+catchFormattingTop // beginDefinition;
+catchFormattingTop // Attributes = { HoldFirst };
+
+catchFormattingTop[ eval_, fmt_ ] :=
+    Block[
+        {
+            $catching          = True,
+            $failed            = False,
+            $formatting        = True,
+            catchFormattingTop = #1 &,
+            catchTop           = #1 &
+        },
+        cacheBlock @ Catch[ eval, $top, formatFailure @ fmt ]
+    ];
+
+catchFormattingTop // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*formatFailure*)
+formatFailure // ClearAll;
+formatFailure[ fmt_ ][ failure_, tag_ ] := formatFailure[ failure, fmt ];
+formatFailure[ failure_, InputForm  ] := Format[ failure, InputForm  ];
+formatFailure[ failure_, OutputForm ] := Format[ failure, OutputForm ];
+formatFailure[ failure_, fmt_ ] := MakeBoxes[ failure, fmt ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*catchTopAs*)
 catchTopAs // beginDefinition;
 
@@ -263,10 +295,24 @@ messagePrint // endDefinition;
 throwInternalFailure // beginDefinition;
 throwInternalFailure // Attributes = { HoldFirst };
 
+throwInternalFailure[ eval: h_Symbol[ ___ ], a___ ] /; $formatting :=
+    With[ { msg = h::InternalFormatting },
+        throwFailure[ h::InternalFormatting, $bugReportLink, HoldForm @ eval, a ] /;
+            StringQ @ msg
+    ];
+
 throwInternalFailure[ eval: h_Symbol[ ___ ], a___ ] :=
     With[ { msg = h::Internal },
         throwFailure[ h::Internal, $bugReportLink, HoldForm @ eval, a ] /;
             StringQ @ msg
+    ];
+
+throwInternalFailure[ eval_, a___ ] /; $formatting :=
+    throwFailure[
+        ComputationalFitness::InternalFormatting,
+        $bugReportLink,
+        HoldForm @ eval,
+        a
     ];
 
 throwInternalFailure[ eval_, a___ ] :=
@@ -301,6 +347,18 @@ $bugReportLink := $bugReportLink = Hyperlink[
 findFile // beginDefinition;
 findFile[ file_ ] := Quiet @ FindFile @ file;
 findFile // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*optionsAssociation*)
+optionsAssociation // beginDefinition;
+
+optionsAssociation[ f_Symbol, opts: OptionsPattern[ ] ] := Association[
+    KeyMap[ ToString, Association @ Options @ f ],
+    KeyMap[ ToString, Association @ Reverse @ { opts } ]
+];
+
+optionsAssociation // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

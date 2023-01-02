@@ -1,0 +1,8 @@
+Type Name,Base Type,Value Name,Value,Comment
+mesg_num,uint16,,,
+,,wxf_expression,0xFF01,"Message number for WXF expression message"
+,,,,,,,,
+uuid,uint32,,,"UUID"
+,,,,,,,,
+byte_array,byte,,,"ByteArray"
+,,,,,,,,

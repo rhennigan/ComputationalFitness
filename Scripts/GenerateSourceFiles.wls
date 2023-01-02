@@ -142,15 +142,19 @@ fetchFitGen[ sdkZipFile_, targetFile_ ] :=
 (*fitGen*)
 fitGen // ClearAll;
 fitGen[ ] :=
-    Module[ { tmp, config, string, files },
+    Module[ { tmp, run, config, string, files },
         WithCleanup[
             tmp = CreateDirectory[ ]
             ,
 
-            RunProcess[
-                { $fitGen, "-c", tmp },
+            run = RunProcess[
+                { $fitGen, "-messages", "messages.csv", "-types", "types.csv", "-c", tmp },
                 ProcessDirectory -> DirectoryName @ $fitGen
             ];
+
+            cicd`ConsoleNotice[ "Generating FIT Source Files..." ];
+            cicd`ConsoleLog @ run[ "StandardOutput" ];
+            cicd`ConsoleError @ run[ "StandardError" ];
 
             configureSTDINT @ tmp;
 
@@ -324,7 +328,7 @@ $struct     = $structHead ~~ $structLine .. ~~ $structFoot;
 (* ::Subsection::Closed:: *)
 (*Type Definitions*)
 header = StringReplace[
-    ReadString @ FileNameJoin @ { $sourceDir, "fit_example.h" },
+    ReadString @ FileNameJoin @ { $sourceDir, "fit_sdk.h" },
     "\r\n" -> "\n"
 ];
 
@@ -375,6 +379,7 @@ $enumTypes =
 
 $$enumType = Alternatives @@ $enumTypes;
 
+$importPositionTemplate        = "ImportInteger(`Index`, libData, data, pos, idx);";
 $importTimestampTemplate       = "ImportInteger(`Index`, libData, data, pos, WLTimestamp(mesg->`Name`));";
 $importIntegerTemplate         = "ImportInteger(`Index`, libData, data, pos, mesg->`Name`);";
 $importIntegerSequenceTemplate = "ImportIntegerSequence(`Index`, libData, data, pos, mesg->`Name`, `Count`);";
@@ -697,7 +702,7 @@ makeImportData[ struct_ ] :=
                     { StartOfString ~~ $structHead, $structFoot ~~ EndOfString }
                 ];
 
-            $index = 1;
+            $index = 2;
 
             importCodeBlock =
                 StringJoin[
@@ -716,7 +721,7 @@ makeImportData[ struct_ ] :=
 
             lastIndex = nextIndex[ ];
 
-            $index = 1;
+            $index = 2;
 
             exportCodeBlock =
                 StringJoin[
@@ -793,11 +798,8 @@ makeImportData[ struct_ ] :=
                     "\n",
                     "{\n",
                     "    mint pos[2] = {idx, 0};\n",
-                    StringJoin[
-                        "    ImportInteger(1, libData, data, pos, ",
-                        mesgNum,
-                        ");\n"
-                    ],
+                    StringJoin[ "    ImportInteger(1, libData, data, pos, ", mesgNum, ");\n" ],
+                    StringJoin[ "    ImportInteger(2, libData, data, pos, idx);\n" ],
                     importCodeBlock,
                     "\n    ",
                     TemplateApply[
@@ -1425,6 +1427,8 @@ defaultFunction[ typeFunc_, _ ] := typeFunc;
 (*typeFunction*)
 typeFunction // ClearAll;
 
+typeFunction[ "ByteArray"       , { _ } ] := "fitByteArray";
+typeFunction[ "UUID"            , { 4 } ] := "fitUUID";
 typeFunction[ "Language"        , {   } ] := "fitLanguage";
 typeFunction[ "MessageIndex"    , {   } ] := "fitUINT16";
 typeFunction[ "MessageIndex"    , { _ } ] := "fitUINT16A";
@@ -1555,6 +1559,96 @@ configFile = FileNameJoin @ { $pacletDir, "Data", "FITConfig.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ configFile;
 $exportedConfigData = Export[ configFile, formatWithNotice @ $config, "String" ];
 cicd`ConsoleLog[ "Updated FIT config data: " <> $exportedConfigData ];
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Icons*)
+recolorIcon // ClearAll;
+recolorIcon[ Graphics[ gfx_, opts___ ] ] := Graphics[ { Gray, gfx }, opts ];
+recolorIcon[ other_ ] := other;
+
+
+$iconData = <|
+    "Type" -> <|
+        None                           -> Entity[ "Icon", "Information"             ][ "Image" ],
+        "Device"                       -> Entity[ "Icon", "SmartPhone"              ][ "Image" ],
+        "Settings"                     -> Entity[ "Icon", "HardwareStore"           ][ "Image" ],
+        "Sport"                        -> Entity[ "Icon", "SportsAndRecreation"     ][ "Image" ],
+        "Activity"                     -> Entity[ "Icon", "Athletics"               ][ "Image" ],
+        "Workout"                      -> Entity[ "Icon", "Weightlifting"           ][ "Image" ],
+        "Course"                       -> Entity[ "Icon", "SelfGuidingTrail"        ][ "Image" ],
+        "Schedules"                    -> Entity[ "Icon", "Watches"                 ][ "Image" ],
+        "Weight"                       -> Entity[ "Icon", "WeighStation"            ][ "Image" ],
+        "Totals"                       -> Entity[ "Icon", "ExerciseAndFitness"      ][ "Image" ],
+        "Goals"                        -> Entity[ "Icon", "AstronomicalObservatory" ][ "Image" ],
+        "BloodPressure"                -> Entity[ "Icon", "FirstAid"                ][ "Image" ],
+        "MonitoringA"                  -> Entity[ "Icon", "Earthquake"              ][ "Image" ],
+        "ActivitySummary"              -> Entity[ "Icon", "Athletics"               ][ "Image" ],
+        "MonitoringDaily"              -> Entity[ "Icon", "Earthquake"              ][ "Image" ],
+        "MonitoringB"                  -> Entity[ "Icon", "Earthquake"              ][ "Image" ],
+        "Segment"                      -> Entity[ "Icon", "Highway"                 ][ "Image" ],
+        "SegmentList"                  -> Entity[ "Icon", "Highway"                 ][ "Image" ],
+        "ExtendedDisplayConfiguration" -> Entity[ "Icon", "ComputerMonitor"         ][ "Image" ]
+    |>,
+    "Sport" -> <|
+        "All"                   -> Entity[ "Icon", "Athletics"             ][ "Image" ],
+        "AlpineSkiing"          -> Entity[ "Icon", "DownhillSkiing"        ][ "Image" ],
+        "AmericanFootball"      -> Entity[ "Icon", "AmericanFootballField" ][ "Image" ],
+        "Basketball"            -> Entity[ "Icon", "Basketball"            ][ "Image" ],
+        "Boating"               -> Entity[ "Icon", "Anchor"                ][ "Image" ],
+        "Boxing"                -> Entity[ "Icon", "Boxing"                ][ "Image" ],
+        "CrossCountrySkiing"    -> Entity[ "Icon", "CrossCountrySkiTrail"  ][ "Image" ],
+        "Cycling"               -> Entity[ "Icon", "Cycling"               ][ "Image" ],
+        "Diving"                -> Entity[ "Icon", "Diving"                ][ "Image" ],
+        "Driving"               -> Entity[ "Icon", "FourWheelDriveRoad"    ][ "Image" ],
+        "ElectricBiking"        -> Entity[ "Icon", "MotorBikeTrail"        ][ "Image" ],
+        "Fishing"               -> Entity[ "Icon", "Fishing"               ][ "Image" ],
+        "FitnessEquipment"      -> Entity[ "Icon", "FitnessCenter"         ][ "Image" ],
+        "FloorClimbing"         -> Entity[ "Icon", "HoldHandRail"          ][ "Image" ],
+        "Flying"                -> Entity[ "Icon", "AirShow"               ][ "Image" ],
+        "Generic"               -> Entity[ "Icon", "ExerciseAndFitness"    ][ "Image" ],
+        "Golf"                  -> Entity[ "Icon", "Golfing"               ][ "Image" ],
+        "HangGliding"           -> Entity[ "Icon", "HangGliding"           ][ "Image" ],
+        "Hiking"                -> Entity[ "Icon", "Trailhead"             ][ "Image" ],
+        "HorsebackRiding"       -> Entity[ "Icon", "HorsebackRiding"       ][ "Image" ],
+        "Hunting"               -> Entity[ "Icon", "Shooting"              ][ "Image" ],
+        "IceSkating"            -> Entity[ "Icon", "IceSkating"            ][ "Image" ],
+        "InlineSkating"         -> Entity[ "Icon", "InlineSkating"         ][ "Image" ],
+        "Jumpmaster"            -> Entity[ "Icon", "Flight"                ][ "Image" ],
+        "Kayaking"              -> Entity[ "Icon", "Kayaking"              ][ "Image" ],
+        "Kitesurfing"           -> Entity[ "Icon", "Sailing"               ][ "Image" ],
+        "Motorcycling"          -> Entity[ "Icon", "MotorBikeTrail"        ][ "Image" ],
+        "Mountaineering"        -> Entity[ "Icon", "Climbing"              ][ "Image" ],
+        "MultiSport"            -> Entity[ "Icon", "ExerciseAndFitness"    ][ "Image" ],
+        "Paddling"              -> Entity[ "Icon", "Rowboating"            ][ "Image" ],
+        "Rafting"               -> Entity[ "Icon", "RiverRafting"          ][ "Image" ],
+        "RockClimbing"          -> Entity[ "Icon", "Climbing"              ][ "Image" ],
+        "Rowing"                -> Entity[ "Icon", "Rowing"                ][ "Image" ],
+        "Running"               -> Entity[ "Icon", "Running"               ][ "Image" ],
+        "Sailing"               -> Entity[ "Icon", "Sailing"               ][ "Image" ],
+        "SkyDiving"             -> Entity[ "Icon", "Flight"                ][ "Image" ],
+        "Snowboarding"          -> Entity[ "Icon", "Snowboarding"          ][ "Image" ],
+        "Snowmobiling"          -> Entity[ "Icon", "SnowmobileTrail"       ][ "Image" ],
+        "Snowshoeing"           -> Entity[ "Icon", "SnowShoeing"           ][ "Image" ],
+        "Soccer"                -> Entity[ "Icon", "Soccer"                ][ "Image" ],
+        "StandUpPaddleboarding" -> Entity[ "Icon", "SprintCanoeing"        ][ "Image" ],
+        "Surfing"               -> Entity[ "Icon", "Surfing"               ][ "Image" ],
+        "Swimming"              -> Entity[ "Icon", "Swimming"              ][ "Image" ],
+        "Tactical"              -> Entity[ "Icon", "Geocache"              ][ "Image" ],
+        "Tennis"                -> Entity[ "Icon", "Tennis"                ][ "Image" ],
+        "Training"              -> Entity[ "Icon", "Weightlifting"         ][ "Image" ],
+        "Transition"            -> Entity[ "Icon", "Information"           ][ "Image" ],
+        "Wakeboarding"          -> Entity[ "Icon", "Waterskiing"           ][ "Image" ],
+        "Walking"               -> Entity[ "Icon", "Walking"               ][ "Image" ],
+        "WaterSkiing"           -> Entity[ "Icon", "Waterskiing"           ][ "Image" ],
+        "Windsurfing"           -> Entity[ "Icon", "WindSurfing"           ][ "Image" ]
+    |>
+|> /. gfx_Graphics :> RuleCondition @ recolorIcon @ gfx;
+
+iconFile = FileNameJoin @ { $pacletDir, "Data", "FITIcons.wxf" };
+GeneralUtilities`EnsureDirectory @ DirectoryName @ iconFile;
+$exportedIconData = Export[ iconFile, $iconData, "WXF" ];
+cicd`ConsoleLog[ "Updated FIT icon data: " <> $exportedIconData ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

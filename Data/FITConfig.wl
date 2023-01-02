@@ -1,12 +1,12 @@
 (* This file is auto-generated. Do not edit manually. *)
 <|
     "PacletName"            -> "RH/ComputationalFitness",
-    "PacletVersion"         -> "0.2.1",
-    "SerialNumber"          -> 511,
+    "PacletVersion"         -> "0.3.0",
+    "SerialNumber"          -> 765,
     "ManufacturerID"        -> 31337,
     "ManufacturerString"    -> "https://github.com/rhennigan",
     "ProductID"             -> 0,
-    "MessageTensorRowWidth" -> 172,
+    "MessageTensorRowWidth" -> 173,
     "InitializationValues"  -> <|
         "Activity"                              -> 255,
         "ActivityClass"                         -> 255,
@@ -34,6 +34,7 @@
         "Boolean"                               -> 255,
         "BPStatus"                              -> 255,
         "Byte"                                  -> 255,
+        "ByteArray"                             -> 255,
         "CalfRaiseExerciseName"                 -> 65535,
         "CameraEventType"                       -> 255,
         "CameraOrientationType"                 -> 255,
@@ -179,6 +180,7 @@
         "UnsignedInteger8"                      -> 255,
         "UnsignedInteger8Z"                     -> 0,
         "UserLocalID"                           -> 65535,
+        "UUID"                                  -> 4294967295,
         "WarmUpExerciseName"                    -> 65535,
         "WatchfaceMode"                         -> 255,
         "WaterType"                             -> 255,
