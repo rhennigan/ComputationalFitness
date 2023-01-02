@@ -209,6 +209,7 @@ autoCompileCodeFunction[ id_String, file_String ] :=
 
 autoCompileCodeFunction[ id_String, file_String, function_Function ] := Enclose[
     Module[ { compiled },
+        GeneralUtilities`EnsureDirectory @ DirectoryName @ file;
         compiled = ConfirmBy[ functionCompileExportLibrary[ file, function ], FileExistsQ ];
         Internal`StuffBag[ $compiledCodeFunctionsBag, id -> compiled ];
         ConfirmMatch[ libraryFunctionLoad @ compiled, _CompiledCodeFunction ]
