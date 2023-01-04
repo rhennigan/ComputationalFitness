@@ -64,6 +64,8 @@ GeneralUtilities`UnprotectAndClearAll[
     `compactFitFitnessDataQ,
     `endDefinition,
     `findFile,
+    `getDataFile,
+    `importXML,
     `messageFailure,
     `messagePrint,
     `optionsAssociation,
@@ -80,8 +82,11 @@ EndPackage[ ];
 (* ::Section::Closed:: *)
 (*Load Files*)
 <<`Utilities`;
+<<`Data`;
+<<`Strings`;
 <<`FIT`;
 <<`TCX`;
+<<`ZWO`;
 <<`FitnessData`;
 
 (* ::**********************************************************************:: *)

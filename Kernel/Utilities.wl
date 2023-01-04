@@ -33,6 +33,9 @@ ComputationalFitness::UnsupportedMessageTypes =
 "The following message types are defined in the SDK but not handled at \
 top-level: `1`.";
 
+ComputationalFitness::InvalidXML =
+"Cannot import data as XML format.";
+
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
@@ -359,6 +362,16 @@ optionsAssociation[ f_Symbol, opts: OptionsPattern[ ] ] := Association[
 ];
 
 optionsAssociation // endDefinition;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*importXML*)
+importXML // beginDefinition;
+importXML[ file_ ] := importXML[ file, ReadString @ file ];
+importXML[ file_, xml_String ] := importXML[ file, ImportString[ StringTrim @ xml, "XML" ] ];
+importXML[ file_, xml: XMLObject[ _ ][ ___ ] ] := xml;
+importXML[ file_, bad_ ] := throwFailure[ "InvalidXML", file ];
+importXML // endDefinition;
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

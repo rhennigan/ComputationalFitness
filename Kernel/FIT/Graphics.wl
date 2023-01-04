@@ -494,7 +494,7 @@ $hrZoneColors = <|
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Icons*)
-$fitIcons = Developer`ReadWXFFile @ FileNameJoin @ { $dataDirectory, "FITIcons.wxf" };
+$fitIcons = getDataFile[ "FITIcons" ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)

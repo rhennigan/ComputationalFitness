@@ -9,10 +9,12 @@
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Config*)
-$pacletCICD    = "https://github.com/WolframResearch/PacletCICD/releases/download/v0.34.0/Wolfram__PacletCICD-0.34.0.paclet";
-$sdkURL        = "https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_21.94.00.zip";
-$fitUseSTDINT  = True;
-$forceDownload = False;
+$pacletCICD      = "https://github.com/WolframResearch/PacletCICD/releases/download/v0.34.0/Wolfram__PacletCICD-0.34.0.paclet";
+$sdkURL          = "https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_21.94.00.zip";
+$zwoReferenceURL = "https://raw.githubusercontent.com/h4l/zwift-workout-file-reference/master/tag_attr_usage.json";
+$fitUseSTDINT    = True;
+$forceDownload   = False;
+$debug           = False;
 
 $productNumber      = 0;
 $manufacturerID     = 31337;
@@ -247,7 +249,7 @@ format0[ as_Association ] /; AllTrue[ as, AssociationQ ] :=
 
 format0[ as_Association ] :=
     Module[ { keySize },
-        keySize = Max[ StringLength@*keyToString /@ Keys @ as ];
+        keySize = Max[ stringLength@*keyToString /@ Keys @ as ];
         StringJoin[
             "<|\n",
             StringRiffle[ KeyValueMap[ formatKV @ keySize, as ], ",\n" ],
@@ -260,6 +262,28 @@ format0[ as_Association ] :=
         ]
     ];
 
+format0[ list: { Except[ _Association|_List ]... } ] :=
+    With[ { string = ToString @ ResourceFunction[ "ReadableForm" ][ list, PageWidth -> Infinity ] },
+        string /; stringLength @ string < 100 - StringLength @ $currentIndent
+    ];
+
+format0[ matrix_List? MatrixQ ] /; FreeQ[ list, _Association ] && Length @ matrix > 1 :=
+    With[ { string = formatTable @ matrix },
+        string /; StringQ @ string
+    ];
+
+format0[ list_List ] /; Length @ list > 1 :=
+    StringJoin[
+        "{\n",
+        StringRiffle[ Map[ formatListItem, list ], ",\n" ],
+        "\n",
+        StringDelete[
+            $currentIndent,
+            StartOfString ~~ StringJoin @ ConstantArray[ " ", $indentSize ]
+        ],
+        "}"
+    ];
+
 format0[ expr_ ] := ToString @ ResourceFunction[ "ReadableForm" ][
     expr,
     PageWidth -> Infinity
@@ -269,6 +293,59 @@ format0[ expr_ ] := ToString @ ResourceFunction[ "ReadableForm" ][
 keyToString // ClearAll;
 keyToString[ key_ ] := ToString[ key, InputForm ];
 
+
+stringLength[ string_ ] := StringLength @ ToString[ string, CharacterEncoding -> "ASCII" ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*formatTable*)
+formatTable // ClearAll;
+
+formatTable[ table_ ] :=
+    Module[ { stringMatrix, widths, rows },
+        stringMatrix = Transpose @ Map[ formatTableItem, table, { 2 } ];
+        widths = Max /@ Map[ stringLength, stringMatrix, { 2 } ];
+        rows = Block[ { $indent = $indent + 1 },
+            StringRiffle[
+                Map[
+                    $currentIndent <> "{ " <> StringRiffle[ #1, ", " ] <> " }" &,
+                    Transpose[ StringPadRight @@@ Transpose @ { stringMatrix, widths } ]
+                ],
+                ",\n"
+            ]
+        ];
+        StringJoin[
+            "{\n",
+            rows,
+            "\n",
+            StringDelete[
+                $currentIndent,
+                StartOfString ~~ StringJoin @ ConstantArray[ " ", $indentSize ]
+            ],
+            "}"
+        ]
+    ] ~Catch~ $tableFormat;
+
+
+formatTableItem // ClearAll;
+formatTableItem[ item_ ] :=
+    With[ { string = format[ item, $indent + 1 ] },
+        If[ StringContainsQ[ string, "\n" ],
+            Throw[ $Failed, $tableFormat ],
+            string
+        ]
+    ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*formatListItem*)
+formatListItem // ClearAll;
+
+formatListItem[ item_ ] :=
+    StringJoin[
+        $currentIndent,
+        format[ item, $indent + 1 ]
+    ];
 
 (* ::**********************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -1649,6 +1726,213 @@ iconFile = FileNameJoin @ { $pacletDir, "Data", "FITIcons.wxf" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ iconFile;
 $exportedIconData = Export[ iconFile, $iconData, "WXF" ];
 cicd`ConsoleLog[ "Updated FIT icon data: " <> $exportedIconData ];
+
+(* ::**********************************************************************:: *)
+(* ::Section::Closed:: *)
+(*ZWO Reference*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Overrides*)
+
+(* cSpell:disable *)
+$$zwoCadence = Alternatives[
+    "Cadence",
+    "CadenceHigh",
+    "CadenceLow",
+    "CadenceResting"
+];
+
+$$zwoSeconds = Alternatives[
+    "Duration",
+    "OffDuration",
+    "OnDuration",
+    "TimeOffset",
+    "WorkoutLength"
+];
+
+$$zwoBoolean = Alternatives[
+    "FlatRoad",
+    "ForcedPerformanceTest",
+    "FTPTest",
+    "NeverFails",
+    "OverUnder",
+    "RampTest",
+    "ShowAverage",
+    "Units",
+    "ShowCP20",
+    "Skippable",
+    "VisibleOutsidePlan",
+    "WorkoutPlan"
+];
+
+$$zwoPowerPercent = Alternatives[
+    "OffPower",
+    "OnPower",
+    "Power",
+    "PowerHigh",
+    "PowerLow",
+    "PowerOffHigh",
+    "PowerOffLow",
+    "PowerOnHigh",
+    "PowerOnLow",
+    "Target"
+];
+
+$$zwoInteger = Alternatives[
+    "X",
+    "Y"
+];
+
+$$zwoReal = Alternatives[
+];
+
+$$zwoString = Alternatives[
+    "Description"
+];
+
+$$zwoWatts = Alternatives[
+    "FTPFemaleOverride",
+    "FTPMaleOverride",
+    "FTPOverride"
+];
+
+$$zwoPercent = Alternatives[
+    "SetFTPAtPercentage"
+];
+
+$$zwoTimestamp = Alternatives[
+    "VisibleAfterTime"
+];
+(* cSpell:enable *)
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Definitions*)
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*keyFormat*)
+keyFormat[ as_Association ] := KeySort[ keyFormat /@ KeyMap[ niceKey, as ] ];
+keyFormat[ list_List ] := keyFormat /@ list;
+keyFormat[ other_ ] := other;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*niceKey*)
+niceKey[ key_String ] := cf`toNiceCamelCase @ key;
+niceKey[ other_ ] := other;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*zwoKeySort*)
+zwoKeySort[ as_Association ] := KeySortBy[ as, { ToLowerCase @ #, # } & ];
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*inferValueType*)
+inferValueType // ClearAll;
+
+inferValueType[ path___, "Value", Null ] := <|
+    "Interpreter" -> "zwoXML",
+    If[ TrueQ @ $debug, "DebugPath" -> { path }, <| |> ],
+    "DataType"    -> "XML"
+|>;
+
+inferValueType[
+    path0___,
+    as: KeyValuePattern @ {
+        "DataType"     -> type0_,
+        "ValueSamples" -> KeyValuePattern[ "Values" -> values_ ]
+    }
+] :=
+    With[
+        {
+            type = cf`toNiceCamelCase @ type0,
+            path = cf`toNiceCamelCase /@ { path0 }
+        },
+        Association[
+            "Interpreter" -> inferValueType0[ path, type, values ],
+            If[ TrueQ @ $debug, "DebugPath" -> path, <| |> ],
+            If[ TrueQ @ $debug, as, KeyDrop[ as, "ValueSamples" ] ],
+            "DataType" -> type
+        ]
+    ];
+
+inferValueType[ path___, as_Association ] :=
+    Association @ KeyValueMap[ #1 -> inferValueType[ path, #1, #2 ] &, as ];
+
+inferValueType[ ___, value_ ] := value;
+
+
+inferValueType0 // ClearAll;
+
+inferValueType0[ { path___, "Value" }, type_, value_ ] := inferValueType0[ { path }, type, value ];
+
+inferValueType0[ { __, $$zwoCadence      }, _, _ ] := "zwoCadence";
+inferValueType0[ { __, $$zwoSeconds      }, _, _ ] := "zwoSeconds";
+inferValueType0[ { __, $$zwoBoolean      }, _, _ ] := "zwoBoolean";
+inferValueType0[ { __, $$zwoPowerPercent }, _, _ ] := "zwoPowerPercent";
+inferValueType0[ { __, $$zwoInteger      }, _, _ ] := "zwoInteger";
+inferValueType0[ { __, $$zwoReal         }, _, _ ] := "zwoReal";
+inferValueType0[ { __, $$zwoString       }, _, _ ] := "zwoString";
+inferValueType0[ { __, $$zwoWatts        }, _, _ ] := "zwoWatts";
+inferValueType0[ { __, $$zwoPercent      }, _, _ ] := "zwoPercent";
+inferValueType0[ { __, $$zwoTimestamp    }, _, _ ] := "zwoTimestamp";
+
+inferValueType0[ { __, "SportType" }, _, _ ] := "zwoSportType";
+
+inferValueType0[ path_, "String", values_List? integerSamplesQ ] := "zwoInteger";
+inferValueType0[ path_, "String", values_List? realSamplesQ    ] := "zwoReal";
+inferValueType0[ path_, type_String, values_List ] := "zwo" <> type;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*integerSamplesQ*)
+integerSamplesQ // ClearAll;
+integerSamplesQ[ { } ] := False;
+integerSamplesQ[ samples_List ] := AllTrue[ samples, integerSampleQ ];
+integerSamplesQ[ ___ ] := False;
+
+integerSampleQ // ClearAll;
+integerSampleQ[ { str_String, _ } ] := StringMatchQ[ str, DigitCharacter.. ];
+integerSampleQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*realSamplesQ*)
+realSamplesQ // ClearAll;
+realSamplesQ[ { } ] := False;
+realSamplesQ[ samples_List ] := AllTrue[ samples, realSampleQ ];
+realSamplesQ[ ___ ] := False;
+
+realSampleQ // ClearAll;
+realSampleQ[ _? integerSampleQ ] := True;
+realSampleQ[ { str_String, _ } ] := StringMatchQ[ str, (DigitCharacter...~~"."~~DigitCharacter..)|(DigitCharacter..~~"."~~DigitCharacter...) ];
+realSampleQ[ ___ ] := False;
+
+(* ::**********************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Generate Data*)
+$zwoReferenceData = keyFormat @ URLExecute[ $zwoReferenceURL, "RawJSON" ];
+
+$zwoReferenceData[ "Elements" ] = zwoKeySort @ Association @ Map[
+    #Tag -> Prepend[ KeyDrop[ #1, "Tag" ], "Name" -> niceKey[ #Tag ] ] &,
+    $zwoReferenceData[ "Elements" ]
+];
+
+$zwoReferenceData[ "Attributes" ] = zwoKeySort @ Association @ Map[
+    #Attribute -> Prepend[ KeyDrop[ #1, "Attribute" ], "Name" -> niceKey[ #Attribute ] ] &,
+    $zwoReferenceData[ "Attributes" ]
+];
+
+(* :!CodeAnalysis::Disable::TopLevel:: *)
+$zwoReferenceData //= inferValueType;
+
+zwoReferenceFile = FileNameJoin @ { $pacletDir, "Data", "ZWOReference.wl" };
+GeneralUtilities`EnsureDirectory @ DirectoryName @ zwoReferenceFile;
+$exportedZWOReferenceData = Export[ zwoReferenceFile, formatWithNotice @ $zwoReferenceData, "String" ];
+cicd`ConsoleLog[ "Updated ZWO reference data: " <> $exportedZWOReferenceData ];
 
 (* ::**********************************************************************:: *)
 (* ::Section::Closed:: *)
