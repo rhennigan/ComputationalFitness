@@ -1,4 +1,4 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`TCX`" ];
@@ -6,11 +6,11 @@ Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Config*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Messages*)
 TCXImport::Internal =
@@ -19,25 +19,25 @@ TCXImport::Internal =
 TCXImport::InvalidXML =
 "Cannot import data as TCX format.";
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Options*)
 TCXImport // Options = { UnitSystem :> $UnitSystem };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Main Definition*)
 TCXImport[ file_, opts: OptionsPattern[ ] ] :=
     tcxOptionsBlock[ tcxImport @ file, opts ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*tcxImport*)
 tcxImport // beginDefinition;
 tcxImport[ file_? FileExistsQ ] := parseTCXDataset[ file, importXML @ file ];
 tcxImport // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*parseTCXDataset*)
 parseTCXDataset // beginDefinition;
@@ -53,11 +53,11 @@ parseTCXDataset[ file_, xml: XMLObject[ _ ][ ___ ] ] :=
 
 parseTCXDataset // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Dependencies*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*parseTrackpoints*)
 parseTrackpoints // beginDefinition;
@@ -72,7 +72,7 @@ parseTrackpoints[ xml_ ] :=
 
 parseTrackpoints // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseTPElement*)
 parseTPElement // beginDefinition;
@@ -94,28 +94,28 @@ parseTPElement[ XMLElement[ "Extensions", _, extensions_ ] ] :=
 
 parseTPElement // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseTPExtensions*)
 parseTPExtensions // beginDefinition;
 parseTPExtensions[ ext_List ] := parseTPExtension /@ ext;
 parseTPExtensions // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseTPExtension*)
 parseTPExtension // beginDefinition;
 parseTPExtension[ XMLElement[ "TPX", attr_, tpx_ ] ] := parseTPX @ tpx;
 parseTPExtension // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseTPX*)
 parseTPX // beginDefinition;
 parseTPX[ tpx_List ] := parseTPXElement /@ tpx;
 parseTPX // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseTPXElement*)
 parseTPXElement // beginDefinition;
@@ -135,7 +135,7 @@ parseTPXElement[ xml: XMLElement[ name_String, __ ] ] := name -> xml;
 
 parseTPXElement // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*tpMeters*)
 tpMeters // beginDefinition;
@@ -144,7 +144,7 @@ tpMeters[ m_, "Imperial"    ] := Quantity[ 0.000621371 m, "Miles"  ];
 tpMeters[ m_, _             ] := Quantity[ 1.0 * m      , "Meters" ];
 tpMeters // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*tpMetersPerSeconds*)
 tpMetersPerSeconds // beginDefinition;
@@ -153,7 +153,7 @@ tpMetersPerSeconds[ m_, "Imperial"    ] := Quantity[ 2.23694 m, "Miles"/"Hours" 
 tpMetersPerSeconds[ m_, _             ] := Quantity[ 1.0 * m  , "Meters"/"Seconds" ];
 tpMetersPerSeconds // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*tcxOptionsBlock*)
 tcxOptionsBlock // beginDefinition;
@@ -169,7 +169,7 @@ tcxOptionsBlock[ eval_, opts: OptionsPattern[ TCXImport ] ] :=
 
 tcxOptionsBlock // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

@@ -3,7 +3,7 @@
 (* :!CodeAnalysis::BeginBlock:: *)
 (* :!CodeAnalysis::Disable::SuspiciousSessionSymbol:: *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
 If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
@@ -16,7 +16,7 @@ cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
 cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
 cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paths*)
 $inputFileName = cFile @ Replace[ $InputFileName, "" :> NotebookFileName[ ] ];
@@ -25,7 +25,7 @@ $targetDir     = cStr @ FileNameJoin @ { $pacletDir, "LibraryResources" };
 
 cicd`ConsoleLog[ "Build target directory: " <> $targetDir ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Compile*)
 cicd`ScriptConfirmMatch[ PacletDirectoryLoad @ $pacletDir, { ___, $pacletDir, ___ } ];

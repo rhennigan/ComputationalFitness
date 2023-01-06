@@ -1,4 +1,4 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
@@ -6,7 +6,7 @@ Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paclet Metadata*)
 $thisPacletName     = $fitConfig[ "PacletName"         ];
@@ -17,15 +17,7 @@ $manufacturerName   = $fitConfig[ "ManufacturerString" ];
 $productID          = $fitConfig[ "ProductID"          ];
 $productName        = $thisPacletName <> " " <> $thisPacletVersion;
 
-(* ::**********************************************************************:: *)
-(* ::Section::Closed:: *)
-(*Global Values*)
-setIfUndefined[ $FunctionalThresholdPower, Automatic ];
-setIfUndefined[ $MaximumHeartRate        , Automatic ];
-setIfUndefined[ $Sport                   , Automatic ];
-setIfUndefined[ $Weight                  , Automatic ];
-
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Config*)
 $timeOffset               = 0;
@@ -39,7 +31,7 @@ $fitTerm                  = 1685024357;
 $powerZoneThresholds      = { 0.05, 0.55, 0.75, 0.9, 1.05, 1.2, 1.5 };
 $fitMessageTensorRowWidth = $fitConfig[ "MessageTensorRowWidth" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Invalid Type Values*)
 $invalidSINT16            = $fitInitValues[ "SignedInteger16"    ];
@@ -57,12 +49,12 @@ $invalidBool              = $fitInitValues[ "Boolean"            ];
 $invalidEnum              = $fitInitValues[ "Enumeration"        ];
 $invalidTimestamp         = 2840036399|2840036400|$fitInitValues[ "DateTime" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Option Settings*)
 $ftp := Automatic;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Units*)
 $altitudeUnits    := $UnitSystem;
@@ -74,19 +66,9 @@ $weightUnits      := $UnitSystem;
 $pressureUnits    := $UnitSystem;
 $units            := <| |>;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Argument patterns*)
-$$string        = _String? StringQ;
-$$bytes         = _ByteArray? ByteArrayQ;
-$$assoc         = _Association? AssociationQ;
-$$file          = File[ $$string ];
-$$url           = URL[ $$string ];
-$$co            = HoldPattern[ CloudObject ][ $$string, OptionsPattern[ ] ];
-$$lo            = HoldPattern[ LocalObject ][ $$string, OptionsPattern[ ] ];
-$$resp          = HoldPattern[ HTTPResponse ][ $$bytes, $$assoc, OptionsPattern[ ] ];
-$$source        = $$string | $$file | $$url | $$co | $$lo | $$resp;
-$$target        = $$string | $$file | $$co | $$lo;
 $$fitRecordKeys = _? fitRecordKeyQ  | { ___? fitRecordKeyQ  };
 $$fitEventKeys  = _? fitEventKeyQ | { ___? fitEventKeyQ };
 $$elements      = _? elementQ | { ___? elementQ };
@@ -98,11 +80,11 @@ $$messageTypes  = $$messageType | { $$messageType... };
 $$pluralMessage = "Events"|"Records"|"Laps"|"WorkoutSteps";
 $$powerZone     = 1|2|3|4|5|6|7;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Properties*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Import Elements*)
 $fitElements // ClearAll;
@@ -122,7 +104,7 @@ $fitElements = {
     "CriticalPowerCurvePlot"
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*FIT Message Types*)
 $messageTypes // ClearAll;
@@ -152,7 +134,7 @@ $supportedMessageTypes = {
     Nothing
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*FIT Message Keys*)
 fitKeys // beginDefinition;
@@ -160,13 +142,13 @@ fitKeys[ "MessageInformation" ] := $fitMessageInformationKeys;
 fitKeys[ name_                ] := makeFitKeys @ name;
 fitKeys // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Key Customization*)
 $preferredKeyOrder = <| |>;
 $ignoredKeys       = <| |>;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Lap*)
 $preferredKeyOrder[ "Lap" ] = {
@@ -193,7 +175,7 @@ $ignoredKeys[ "Lap" ] = {
     Nothing
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Record*)
 $preferredKeyOrder[ "Record" ] = {
@@ -249,7 +231,7 @@ $ignoredKeys[ "Record" ] = {
     Nothing
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Session*)
 $preferredKeyOrder[ "Session" ] = {
@@ -300,7 +282,7 @@ $ignoredKeys[ "Session" ] = {
     Nothing
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*TrainingFile*)
 $preferredKeyOrder[ "TrainingFile" ] = {
@@ -318,7 +300,7 @@ $ignoredKeys[ "TrainingFile" ] = {
     Nothing
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*WorkoutStep*)
 $preferredKeyOrder[ "WorkoutStep" ] = {
@@ -342,7 +324,7 @@ $ignoredKeys[ "WorkoutStep" ] = {
     Nothing
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*$fitDefaultKeys*)
 $fitDefaultKeys // ClearAll;
@@ -352,7 +334,7 @@ $fitDefaultKeys = {
     Nothing
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*$fitMessageInformationKeys*)
 $fitMessageInformationKeys // ClearAll;
@@ -368,7 +350,7 @@ $fitMessageInformationKeys = {
     Nothing
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*makeFitKeys*)
 makeFitKeys // beginDefinition;
@@ -399,7 +381,7 @@ makeFitKeys0[ name_String ] :=
 
 makeFitKeys0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*defaultFitKeys*)
 defaultFitKeys // ClearAll;
@@ -411,43 +393,43 @@ defaultFitKeys0[ name_, as_Association ] := Prepend[ Keys @ as, "MessageType" ];
 defaultFitKeys0[ name_, _Missing ] := $fitDefaultKeys;
 defaultFitKeys0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Argument Validation*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitRecordKeyQ*)
 fitRecordKeyQ // ClearAll;
 fitRecordKeyQ[ key_ ] := MemberQ[ fitKeys[ "Record" ], key ];
 fitRecordKeyQ[ ___  ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitEventKeyQ*)
 fitEventKeyQ // ClearAll;
 fitEventKeyQ[ key_ ] := MemberQ[ fitKeys[ "Event" ], key ];
 fitEventKeyQ[ ___  ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*elementQ*)
 elementQ[ elem_String ] := MemberQ[ $fitElements, elem ];
 elementQ[ ___         ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*messageTypeQ*)
 messageTypeQ[ type_String ] := MemberQ[ $messageTypes, type ];
 messageTypeQ[ ___         ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*supportedMessageTypeQ*)
 supportedMessageTypeQ[ type_String ] := MemberQ[ $supportedMessageTypes, type ];
 supportedMessageTypeQ[ ___         ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Debug*)
 If[ $debug,
@@ -463,7 +445,7 @@ If[ $debug,
     ]
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

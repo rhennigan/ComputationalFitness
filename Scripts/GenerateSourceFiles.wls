@@ -6,7 +6,7 @@
 (* :!CodeAnalysis::BeginBlock:: *)
 (* :!CodeAnalysis::Disable::SuspiciousSessionSymbol:: *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Config*)
 $pacletCICD      = "https://github.com/WolframResearch/PacletCICD/releases/download/v0.34.0/Wolfram__PacletCICD-0.34.0.paclet";
@@ -20,7 +20,7 @@ $productNumber      = 0;
 $manufacturerID     = 31337;
 $manufacturerString = "https://github.com/rhennigan";
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
 If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ], PacletInstall @ $pacletCICD ];
@@ -32,7 +32,7 @@ cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
 
 cicd`ScriptConfirmAssert[ $OperatingSystem === "Windows" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paths*)
 $inputFileName = cFile @ Replace[ $InputFileName, "" :> NotebookFileName[ ] ];
@@ -44,14 +44,14 @@ $fitGen        = cStr @ FileNameJoin @ { $sdkDir, "FitGen.exe" };
 cicd`ConsoleLog[ "Source directory: " <> $sourceDir ];
 cicd`ConsoleLog[ "SDK directory: "    <> $sdkDir    ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Load Paclet Definitions*)
 PacletDirectoryLoad @ $pacletDir;
 Needs[ "RH`ComputationalFitness`" -> None ];
 Needs[ "RH`ComputationalFitness`Package`" -> "cf`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paclet Metadata*)
 $thisPaclet         = PacletObject @ File @ $pacletDir;
@@ -59,11 +59,11 @@ $thisPacletName     = $thisPaclet[ "Name" ];
 $thisPacletVersion  = $thisPaclet[ "Version" ];
 $pacletSerialNumber = FromDigits[ ToExpression @ StringSplit[ $thisPacletVersion, "." ], 255 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Definitions*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Enum Entity Processing*)
 
@@ -81,7 +81,7 @@ processEnum[ "Manufacturer", enum_Association ] :=
 
 processEnum[ _, enum_ ] := enum;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*toLanguage*)
 toLanguage // ClearAll;
@@ -95,7 +95,7 @@ toLanguage[ "Malaysian"           ] := Entity[ "Language", "MalayStandard" ];
 toLanguage[ name_String ] := With[ { entity = LanguageData @ name }, standardizeEntityName @ entity /; entityQ @ entity ];
 toLanguage[ other_ ] := other;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*standardizeEntityName*)
 standardizeEntityName // ClearAll;
@@ -110,7 +110,7 @@ standardizeEntityName[ other_ ] := other;
 entityQ[ entity_Entity ] := ListQ @ entity[ "Properties" ];
 entityQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*niceMessageName*)
 niceMessageName // ClearAll;
@@ -120,7 +120,7 @@ niceMessageName[ type_String ] :=
         { StartOfString ~~ "FIT_", "_MESG" ~~ EndOfString }
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fetchFitGen*)
 fetchFitGen // ClearAll;
@@ -139,7 +139,7 @@ fetchFitGen[ sdkZipFile_, targetFile_ ] :=
         ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitGen*)
 fitGen // ClearAll;
@@ -180,7 +180,7 @@ fitGen[ ] :=
         ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*configureSTDINT*)
 configureSTDINT // ClearAll;
@@ -201,7 +201,7 @@ configureSTDINT[ outputDir_ ] /; $fitUseSTDINT :=
 configureSTDINT[ outputDir_ ] :=
     cFile @ FileNameJoin @ { outputDir, "fit_config.h" };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Data Formatting*)
 
@@ -211,7 +211,7 @@ $indentSize = 4;
 $currentIndentSize := $indentSize * $indent;
 $currentIndent     := StringJoin @ ConstantArray[ " ", $currentIndentSize ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*formatWithNotice*)
 formatWithNotice // ClearAll;
@@ -221,7 +221,7 @@ formatWithNotice[ expr_ ] :=
         format @ expr
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*format*)
 format // ClearAll;
@@ -296,7 +296,7 @@ keyToString[ key_ ] := ToString[ key, InputForm ];
 
 stringLength[ string_ ] := StringLength @ ToString[ string, CharacterEncoding -> "ASCII" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*formatTable*)
 formatTable // ClearAll;
@@ -336,7 +336,7 @@ formatTableItem[ item_ ] :=
         ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*formatListItem*)
 formatListItem // ClearAll;
@@ -347,7 +347,7 @@ formatListItem[ item_ ] :=
         format[ item, $indent + 1 ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*formatTopKV*)
 formatTopKV // ClearAll;
@@ -360,7 +360,7 @@ formatTopKV[ key_, value_ ] :=
         format[ value, $indent + 1 ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*formatKV*)
 formatKV // ClearAll;
@@ -373,7 +373,7 @@ formatKV[ (keySize_) ][ key_, value_ ] :=
         format[ value, $indent + 1 ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Generate FIT Source Files*)
 $fitGen = If[ TrueQ[ $forceDownload || ! FileExistsQ @ $fitGen ],
@@ -386,11 +386,11 @@ generated = cicd`ScriptConfirmMatch[ fitGen[ ], { __? FileExistsQ } ];
 cicd`ConsoleLog[ "Generated FIT SDK source files: " ];
 cicd`ConsoleLog[ "    " <> # ] & /@ generated;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Generate Import Functions*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*String Patterns*)
 $space      = " " ..;
@@ -401,7 +401,7 @@ $structHead = "typedef struct\n{\n";
 $structFoot = "} " ~~ $name ~~ ";";
 $struct     = $structHead ~~ $structLine .. ~~ $structFoot;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Type Definitions*)
 header = StringReplace[
@@ -945,7 +945,7 @@ replaceAutoGeneratedSection[ string_String, label_, stuff_ ] :=
 
 $functionData = makeImportData /@ mesgStructs;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Struct Index*)
 makeIndex // ClearAll;
@@ -964,7 +964,7 @@ $exportedIndex = Export[ indexFile, formatWithNotice @ $fitIndex, "String" ];
 cicd`ConsoleLog[ "Updated FIT struct index data: " <> $exportedIndex ]; *)
 
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Enumerable Types*)
 fitH = StringReplace[
@@ -1180,7 +1180,7 @@ GeneralUtilities`EnsureDirectory @ DirectoryName @ enumFile;
 $exportedEnumData = Export[ enumFile, formatWithNotice @ $processedEnumData, "String" ];
 cicd`ConsoleLog[ "Updated FIT enum data: " <> $exportedEnumData ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*SDK Data*)
 Export[
@@ -1189,7 +1189,7 @@ Export[
     "WXF"
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Import Functions*)
 
@@ -1263,7 +1263,7 @@ fitImportHUpdated =
 
 cicd`ConsoleLog[ "Updated import header file:" <> fitImportHFile ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*Export Functions*)
 
@@ -1317,11 +1317,11 @@ fitExportHUpdated =
 
 cicd`ConsoleLog[ "Updated export header file:" <> fitExportHFile ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Type Data*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Definitions*)
 
@@ -1344,7 +1344,7 @@ $invalidValues = KeySort @ Association[
     $customInvalidValues
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseType*)
 parseType // ClearAll;
@@ -1369,7 +1369,7 @@ parseType[ type_String, { _String } ] := Association[
     "Dimensions" -> { }
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*niceType*)
 niceType // ClearAll;
@@ -1405,7 +1405,7 @@ niceType0[ type_String, nice_String, _Missing ] :=
         "Invalid" -> Lookup[ $defines, type <> "_INVALID" ]
     |>;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseName*)
 parseName // ClearAll;
@@ -1415,7 +1415,7 @@ parseName[ { _, name_String, __ } ] := <|
     "NativeFieldName" -> name
 |>;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseComment*)
 parseComment // ClearAll;
@@ -1423,19 +1423,19 @@ parseComment[ line_String ] := parseComment @ StringSplit[ line, "//" ];
 parseComment[ { _, comment_String } ] := <| "Comment" -> StringTrim[ comment, (","|WhitespaceCharacter).. ] |>;
 parseComment[ ___ ] := <| |>;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*parseLine*)
 parseLine // ClearAll;
 parseLine[ line_String ] := addDefaultFunction @ Association[ parseName @ line, parseType @ line, parseComment @ line ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*addDefaultFunction*)
 addDefaultFunction // ClearAll;
 addDefaultFunction[ as_ ] := DeleteMissing @ Append[ as, "Interpreter" -> defaultFunction @ as ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*defaultFunction*)
 defaultFunction // ClearAll;
@@ -1499,7 +1499,7 @@ defaultFunction[ tf_, "1 * years + 0"              ] := { "fitQuantity", tf, "Ye
 (* Defaults *)
 defaultFunction[ typeFunc_, _ ] := typeFunc;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*typeFunction*)
 typeFunction // ClearAll;
@@ -1551,14 +1551,14 @@ typeFunction[ "DateTime"          , {   } ] := "fitDateTime";
 typeFunction[ "String"            , { _ } ] := "fitString";
 typeFunction[ ___                         ] := "fitMissing";
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*commentFormula*)
 commentFormula // ClearAll;
 commentFormula[ c_String ] := First @ StringTrim @ StringSplit[ c, "," ];
 commentFormula[ ___      ] := Missing[ "NotAvailable" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*makeTypeData*)
 makeTypeData // ClearAll;
@@ -1584,7 +1584,7 @@ makeTypeData[ as_ ] :=
         as[ "Name" ] -> res
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Make Type Data*)
 $messageNumbers = AssociationMap[ Reverse, $enumTypeData[ "MessageNumber" ] ];
@@ -1608,7 +1608,7 @@ GeneralUtilities`EnsureDirectory @ DirectoryName @ typeFile;
 $exportedTypeData = Export[ typeFile, formatWithNotice @ $messageDefinitions, "String" ];
 cicd`ConsoleLog[ "Updated FIT message data: " <> $exportedTypeData ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Configuration*)
 $fullInvalidValues = Association[
@@ -1637,7 +1637,7 @@ GeneralUtilities`EnsureDirectory @ DirectoryName @ configFile;
 $exportedConfigData = Export[ configFile, formatWithNotice @ $config, "String" ];
 cicd`ConsoleLog[ "Updated FIT config data: " <> $exportedConfigData ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Icons*)
 recolorIcon // ClearAll;
@@ -1727,11 +1727,11 @@ GeneralUtilities`EnsureDirectory @ DirectoryName @ iconFile;
 $exportedIconData = Export[ iconFile, $iconData, "WXF" ];
 cicd`ConsoleLog[ "Updated FIT icon data: " <> $exportedIconData ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*ZWO Reference*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Overrides*)
 
@@ -1806,29 +1806,29 @@ $$zwoTimestamp = Alternatives[
 ];
 (* cSpell:enable *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Definitions*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*keyFormat*)
 keyFormat[ as_Association ] := KeySort[ keyFormat /@ KeyMap[ niceKey, as ] ];
 keyFormat[ list_List ] := keyFormat /@ list;
 keyFormat[ other_ ] := other;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*niceKey*)
 niceKey[ key_String ] := cf`toNiceCamelCase @ key;
 niceKey[ other_ ] := other;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*zwoKeySort*)
 zwoKeySort[ as_Association ] := KeySortBy[ as, { ToLowerCase @ #, # } & ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*inferValueType*)
 inferValueType // ClearAll;
@@ -1886,7 +1886,7 @@ inferValueType0[ path_, "String", values_List? integerSamplesQ ] := "zwoInteger"
 inferValueType0[ path_, "String", values_List? realSamplesQ    ] := "zwoReal";
 inferValueType0[ path_, type_String, values_List ] := "zwo" <> type;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*integerSamplesQ*)
 integerSamplesQ // ClearAll;
@@ -1898,7 +1898,7 @@ integerSampleQ // ClearAll;
 integerSampleQ[ { str_String, _ } ] := StringMatchQ[ str, DigitCharacter.. ];
 integerSampleQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*realSamplesQ*)
 realSamplesQ // ClearAll;
@@ -1911,7 +1911,7 @@ realSampleQ[ _? integerSampleQ ] := True;
 realSampleQ[ { str_String, _ } ] := StringMatchQ[ str, (DigitCharacter...~~"."~~DigitCharacter..)|(DigitCharacter..~~"."~~DigitCharacter...) ];
 realSampleQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Generate Data*)
 $zwoReferenceData = keyFormat @ URLExecute[ $zwoReferenceURL, "RawJSON" ];
@@ -1934,7 +1934,7 @@ GeneralUtilities`EnsureDirectory @ DirectoryName @ zwoReferenceFile;
 $exportedZWOReferenceData = Export[ zwoReferenceFile, formatWithNotice @ $zwoReferenceData, "String" ];
 cicd`ConsoleLog[ "Updated ZWO reference data: " <> $exportedZWOReferenceData ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Exit*)
 

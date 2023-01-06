@@ -13,7 +13,7 @@
 (* :!CodeAnalysis::Disable::SuspiciousSessionSymbol:: *)
 (* :!CodeAnalysis::Disable::NoSurroundingEnclose:: *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
 If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
@@ -26,24 +26,24 @@ SetOptions[
     "RealAccuracy" -> Infinity
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Defaults*)
 $defaultRoot   = DirectoryName[ $InputFileName, 2 ];
 $defaultIgnore = FileNameJoin @ { $defaultRoot, "build" };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Get arguments*)
 $root   := $root   = makeRootString @ getArg[ "root"  , $defaultRoot   ];
 $ignore := $ignore = makeIgnorePatt @ getArg[ "ignore", $defaultIgnore ];
 $strict := $strict = Interpreter[ "Boolean" ][ getArg[ "strict", "True" ] ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Definitions*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*getArg*)
 getArg[ name_String, default_: None ] :=
@@ -55,7 +55,7 @@ getArg[ name_String, default_: None ] :=
                  default
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*enclose*)
 enclose // Attributes = { HoldAll };
@@ -66,7 +66,7 @@ enclose[ eval_, msg_, n_ ] := Enclose[
     (Print @ ToString @ msg; If[ $strict, Exit @ n ]) &
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeRootString*)
 makeRootString[ str_String ] := enclose[
@@ -74,7 +74,7 @@ makeRootString[ str_String ] := enclose[
     StringForm[ "`1` is not a valid directory", str ]
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeIgnorePatt*)
 makeIgnorePatt[ "None"|"none" ] := None;
@@ -82,7 +82,7 @@ makeIgnorePatt[ "None"|"none" ] := None;
 makeIgnorePatt[ str_String ] :=
     Alternatives @@ (StringTrim[ #1, "\"" ] & /@ StringSplit[ str, "," ]);
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*getFiles*)
 getFiles[             ] := getFiles @ $root;
@@ -107,7 +107,7 @@ getNotebookArgs[ { files___String? FileExistsQ } ] := { files };
 
 getNotebookArgs[ ___ ] := Missing[ "NotFound" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*print*)
 print[ ind_Integer, msg__ ] :=
@@ -119,7 +119,7 @@ print[ ind_Integer, msg__ ] :=
 
 print[ msg__ ] := print[ 0, msg ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeUnreadable*)
 makeUnreadable[ file_ ] := enclose[
@@ -127,13 +127,13 @@ makeUnreadable[ file_ ] := enclose[
     StringForm[ "Failed to unformat notebook: `1`", file ]
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*notebookFileQ*)
 notebookFileQ[ file_String ] := StringEndsQ[ file, ".nb", IgnoreCase -> True ];
 notebookFileQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*testFileQ*)
 testFileQ[ file_String ] := StringEndsQ[ file, ".wlt", IgnoreCase -> True ];
@@ -151,7 +151,7 @@ makeReadable[ file_, Missing[ "Skipped", ___ ] ] :=
 makeReadable[ file_, formatted_File ] :=
     print[ "Formatted: ", StringDelete[ file, StartOfString~~$root ] ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Run*)
 If[ MemberQ[ $ScriptCommandLine, "--unformat" ],

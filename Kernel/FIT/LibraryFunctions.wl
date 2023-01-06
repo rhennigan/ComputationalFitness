@@ -1,4 +1,4 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
@@ -6,7 +6,7 @@ Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Messages*)
 
@@ -51,14 +51,14 @@ ComputationalFitness::CompiledCodeFunctionFileFailure =
 ComputationalFitness::CompiledCodeFunctionFailure =
 "Could not load the compiled code function \"`1`\".";
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Library Functions*)
 $$libraryFunction      = HoldPattern[ _LibraryFunction      ];
 $$compiledCodeFunction = HoldPattern[ _CompiledCodeFunction ];
 $$compiledFunction     = $$libraryFunction|$$compiledCodeFunction|_CompiledFunction;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*libraryFunctionUnload*)
 libraryFunctionUnload // beginDefinition;
@@ -80,7 +80,7 @@ libraryFunctionUnload0[ func: $$compiledCodeFunction|$$libraryFunction ] :=
 
 libraryFunctionUnload0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Unload Existing Functions*)
 If[ MatchQ[ $loadedLibraryFunctions, _Internal`Bag ],
@@ -94,7 +94,7 @@ tagLoadedLibraryFunction // ClearAll;
 tagLoadedLibraryFunction[ f: $$compiledFunction ] := (Internal`StuffBag[ $loadedLibraryFunctions, f ]; f);
 tagLoadedLibraryFunction[ f_ ] := f;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitImportLibFunction*)
 fitImportLibFunction // ClearAll;
@@ -105,7 +105,7 @@ fitImportLibFunction := libraryFunctionLoad[
     { Integer, 2 }
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitExportLibFunction*)
 fitExportLibFunction // ClearAll;
@@ -116,7 +116,7 @@ fitExportLibFunction := libraryFunctionLoad[
     { Integer }
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitMessageTypesLibFunction*)
 fitMessageTypesLibFunction // ClearAll;
@@ -127,7 +127,7 @@ fitMessageTypesLibFunction := libraryFunctionLoad[
     { Integer, 2 }
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitFileTypeLibFunction*)
 fitFileTypeLibFunction // ClearAll;
@@ -138,13 +138,13 @@ fitFileTypeLibFunction := libraryFunctionLoad[
     { Integer }
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*usableFITColumnsLibFunction*)
 usableFITColumnsLibFunction // ClearAll;
 usableFITColumnsLibFunction := loadCompiledCodeFunction[ "FITUsableColumns" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*CompiledCodeFunctions*)
 $compiledCodeFunctions // ClearAll;
@@ -155,7 +155,7 @@ $compiledCodeFunctions = <|
 $compiledCodeFunctionsBag // ClearAll;
 $compiledCodeFunctionsBag := $compiledCodeFunctionsBag = Internal`Bag[ ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*autoCompileCodeFunctions*)
 autoCompileCodeFunctions // beginDefinition;
@@ -173,7 +173,7 @@ autoCompileCodeFunctions[ ] := Enclose[
 
 autoCompileCodeFunctions // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*loadCompiledCodeFunction*)
 loadCompiledCodeFunction // beginDefinition;
@@ -196,7 +196,7 @@ loadCompiledCodeFunction0[ id_, file_? FileExistsQ, _ ] := throwFailure[ "Compil
 loadCompiledCodeFunction0[ id_, file_, _ ] := throwFailure[ "CompiledCodeFunctionFailure", id ];
 loadCompiledCodeFunction0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*autoCompileCodeFunction*)
 autoCompileCodeFunction // beginDefinition;
@@ -219,7 +219,7 @@ autoCompileCodeFunction[ id_String, file_String, function_Function ] := Enclose[
 
 autoCompileCodeFunction // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*functionCompileExportLibrary*)
 functionCompileExportLibrary // beginDefinition;
@@ -260,7 +260,7 @@ functionCompileExportLibrary[
 
 functionCompileExportLibrary // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*compiledCodeFunctionFile*)
 compiledCodeFunctionFile // beginDefinition;
@@ -274,7 +274,7 @@ compiledCodeFunctionFile[ id_String ] := FileNameJoin @ {
 
 compiledCodeFunctionFile // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*compileLegacyCompiledFunction*)
 compileLegacyCompiledFunction // beginDefinition;
@@ -294,7 +294,7 @@ compileLegacyCompiledFunction[ Hold[ args___ ], HoldComplete[ body_ ] ] :=
 
 compileLegacyCompiledFunction // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*$legacyCompilationTarget*)
 $legacyCompilationTarget // ClearAll;
@@ -310,7 +310,7 @@ $cCompilerAvailable := $cCompilerAvailable = Quiet @ MatchQ[
     HoldPattern @ CompiledFunction[ __, _LibraryFunction ]
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*makeCFArgs*)
 makeCFArgs // beginDefinition;
@@ -325,7 +325,7 @@ makeCFArg[ Typed[ arg_, TypeSpecifier[ "PackedArray" ][ "MachineInteger", n_ ] ]
 makeCFArg[ Typed[ arg_, "MachineInteger" ] ] := Hold @ { arg, _Integer };
 makeCFArg // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*usableFITColumnsF*)
 usableFITColumnsF = Function[
@@ -350,11 +350,11 @@ usableFITColumnsF = Function[
     ]
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Utilities*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*libraryFunctionLoad*)
 libraryFunctionLoad // ClearAll;
@@ -379,7 +379,7 @@ libraryFunctionLoad0[ id_Integer, file_, a___ ] :=
 
 libraryFunctionLoad0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*libraryError*)
 libraryError // beginDefinition;
@@ -395,7 +395,7 @@ libraryError[ source_, file_, err_LibraryFunctionError ] :=
 
 libraryError // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*libraryUserError*)
 libraryUserError // beginDefinition;
@@ -422,7 +422,7 @@ $libraryErrorCodes = <|
     13 -> "LibraryErrorOpenFile"
 |>;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*$libraryFile*)
 $libraryFile :=
@@ -438,12 +438,12 @@ $libraryFile0 := $libraryFile0 = FileNameJoin @ {
     "FITImportExport." <> Internal`DynamicLibraryExtension[ ]
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*$sourceDir*)
 $sourceDir := $sourceDir = FileNameJoin @ { $thisPacletLocation, "Source" };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*compileOnDemand*)
 compileOnDemand // beginDefinition;
@@ -480,7 +480,7 @@ compileOnDemand[ id_, file_ ] :=
 
 compileOnDemand // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*recompileLibraries*)
 recompileLibraries[ ] := catchTop @ recompileLibraries @ False;
@@ -500,7 +500,7 @@ recompileLibraries[ strict_, id_, file_ ] :=
         ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

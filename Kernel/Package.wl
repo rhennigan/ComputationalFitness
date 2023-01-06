@@ -1,10 +1,10 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`" ];
 Needs[ "GeneralUtilities`" -> None ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Exported Symbols*)
 
@@ -37,7 +37,7 @@ GeneralUtilities`UnprotectAndClearAll[
     `ZWOImport
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Symbols*)
 
@@ -51,45 +51,59 @@ HoldComplete[
 
 (* Clear for new definitions: *)
 GeneralUtilities`UnprotectAndClearAll[
-    `$fitIcons,
-    `$messageSymbol,
-    `$thisPacletLocation,
-    `beginDefinition,
-    `cacheBlock,
-    `cached,
-    `catchFormattingTop,
-    `catchMine,
-    `catchTop,
-    `catchTopAs,
-    `compactFitFitnessDataQ,
-    `endDefinition,
-    `findFile,
-    `getDataFile,
-    `importXML,
-    `messageFailure,
-    `messagePrint,
-    `optionsAssociation,
-    `recompileLibraries,
-    `setIfUndefined,
-    `throwFailure,
-    `throwInternalFailure,
-    `toNiceCamelCase
+    $$assoc,
+    $$bytes,
+    $$co,
+    $$file,
+    $$lo,
+    $$resp,
+    $$source,
+    $$string,
+    $$target,
+    $$url,
+    $fitIcons,
+    $messageSymbol,
+    $mxExclusions,
+    $thisPacletLocation,
+    $top,
+    beginDefinition,
+    cacheBlock,
+    cached,
+    catchFormattingTop,
+    catchMine,
+    catchTop,
+    catchTopAs,
+    compactFitFitnessDataQ,
+    endDefinition,
+    findFile,
+    getDataFile,
+    importXML,
+    messageFailure,
+    messagePrint,
+    optionsAssociation,
+    rawDataQ,
+    recompileLibraries,
+    setIfUndefined,
+    throwFailure,
+    throwInternalFailure,
+    toNiceCamelCase
 ];
 
 EndPackage[ ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Load Files*)
 <<`Utilities`;
 <<`Data`;
+<<`Config`;
 <<`Strings`;
 <<`FIT`;
 <<`TCX`;
 <<`ZWO`;
 <<`FitnessData`;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*End Package*)
 EndPackage[ ];

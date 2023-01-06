@@ -1,4 +1,4 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
@@ -9,7 +9,7 @@ Begin[ "`Private`" ];
 $ContextAliases[ "dev`" ] = "Developer`";
 $ContextAliases[ "int`" ] = "Internal`";
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Messages*)
 
@@ -25,7 +25,7 @@ FITExport::InvalidMessages =
 FITExport::InvalidTSData =
 "The given time series data is not valid.";
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Options*)
 FITExport // Options = {
@@ -37,7 +37,7 @@ FITExport // Options = {
     Weight                   :> $Weight
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Main definition*)
 
@@ -85,11 +85,11 @@ FITExport[ file_, data_FitnessData? FitnessDataQ, opts: OptionsPattern[ ] ] :=
 
 FITExport[ ___ ] := Failure[ "NotImplemented", <| |> ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Dependencies*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitExportOptionsBlock*)
 fitExportOptionsBlock // beginDefinition;
@@ -113,7 +113,7 @@ fitExportOptionsBlock[ eval_, opts: OptionsPattern[ FITExport ] ] :=
 
 fitExportOptionsBlock // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitExport*)
 fitExport // beginDefinition;
@@ -155,7 +155,7 @@ fitExport0[ target_, file_, data_, exportCount_Integer ] :=
 
 fitExport0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeRawData*)
 makeRawData // beginDefinition;
@@ -173,7 +173,7 @@ makeRawData[ messages_ ] :=
 
 makeRawData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*ensureFileID*)
 ensureFileID // beginDefinition;
@@ -189,21 +189,21 @@ ensureFileID[ messages: { ___Association } ] :=
 
 ensureFileID // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*messageListQ*)
 messageListQ // ClearAll;
 messageListQ[ { __? messageAssociationQ } ] := True;
 messageListQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*recordListQ*)
 recordListQ // ClearAll;
 recordListQ[ { __? recordAssociationQ } ] := True;
 recordListQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*recordAssociationQ*)
 recordAssociationQ // ClearAll;
@@ -211,14 +211,14 @@ recordAssociationQ[ KeyValuePattern[ "MessageType" -> "Record" ] ] := True;
 recordAssociationQ[ KeyValuePattern @ { "Timestamp" -> _DateObject } ] := True;
 recordAssociationQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*packedIntegerArrayQ*)
 packedIntegerArrayQ // ClearAll;
 packedIntegerArrayQ[ array_? dev`PackedArrayQ ] := int`PackedArrayType @ array === Integer;
 packedIntegerArrayQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*$fitInitialMessageVector*)
 $fitInitialMessageVector := Enclose[
@@ -233,7 +233,7 @@ $fitInitialMessageVector := Enclose[
     throwInternalFailure[ HoldForm @ $fitInitialMessageVector, # ] &
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*initializeMessageVector*)
 initializeMessageVector // beginDefinition;
@@ -282,14 +282,14 @@ initializeMessageVector[ mesgNum_Integer ] :=
 
 initializeMessageVector // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*messageAssociationQ*)
 messageAssociationQ // ClearAll;
 messageAssociationQ[ KeyValuePattern[ "MessageType" -> type_ ] ] := messageTypeQ @ type;
 messageAssociationQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*toMessageVector*)
 toMessageVector // beginDefinition;
@@ -314,7 +314,7 @@ toMessageVector[ message_ ] :=
 
 toMessageVector // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*setMessageVector*)
 setMessageVector // beginDefinition;
@@ -331,7 +331,7 @@ setMessageVector[ vector_, type_, fields_, message_ ] :=
 
 setMessageVector // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*setMessageVectorValue*)
 setMessageVectorValue // ClearAll;
@@ -351,7 +351,7 @@ setMessageVectorValueA[ vector_, a_Integer, b_Integer, value: { __Integer } ] :=
 
 setMessageVectorValueA[ ___ ] := $Failed;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*tsDataQ*)
 tsDataQ // ClearAll;
@@ -363,7 +363,7 @@ tsDataQ[ as_Association ] :=
 
 tsDataQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*tsToMessageList*)
 tsToMessageList // beginDefinition;
@@ -396,18 +396,18 @@ makeTSRules // beginDefinition;
 makeTSRules[ { key_, pairs_ } ] := (Apply[ #1 -> <| key -> #2 |> & ]) /@ pairs;
 makeTSRules // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Default Messages*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*guessFitFileType*)
 guessFitFileType // beginDefinition;
 guessFitFileType[ _ ] := "Activity"; (* TODO: make this do stuff *)
 guessFitFileType // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*newFileIDMessage*)
 newFileIDMessage // beginDefinition;
@@ -426,7 +426,7 @@ newFileIDMessage[ type_? fitFileTypeQ ] := <|
 
 newFileIDMessage // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];
