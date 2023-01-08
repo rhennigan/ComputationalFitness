@@ -3,7 +3,7 @@
 (* :!CodeAnalysis::BeginBlock:: *)
 (* :!CodeAnalysis::Disable::SuspiciousSessionSymbol:: *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
 If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
@@ -18,7 +18,7 @@ cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
 cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
 cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paths*)
 $inputFileName = cFile @ Replace[ $InputFileName, "" :> NotebookFileName[ ] ];
@@ -31,7 +31,7 @@ $mxFile        = cStr @ FileNameJoin @ {
                      "ComputationalFitness.mx"
                  };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Create WXF Data Files*)
 
@@ -45,7 +45,7 @@ buildWXFData[ source_ ] := Module[
 
 buildWXFData /@ FileNames[ "*.wl", $dataDir ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Build MX*)
 If[ FileExistsQ @ $mxFile,
@@ -61,7 +61,7 @@ $mxDir = cDir @ gu`EnsureDirectory @ DirectoryName @ $mxFile;
 cicd`ConsoleLog @ SequenceForm[ "MX target directory: ", $mxDir  ];
 cicd`ConsoleLog @ SequenceForm[ "Building MX file: "   , $mxFile ];
 
-
+(* TODO: remove mx exclusions *)
 package`$debug = False;
 package`$thisPacletLocation // ClearAll;
 DumpSave[

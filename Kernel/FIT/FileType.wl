@@ -1,4 +1,4 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
@@ -6,7 +6,7 @@ Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*FITFormatQ*)
 FITFormatQ[ file_String? FileExistsQ ] := fitFormatQ @ file;
@@ -14,7 +14,7 @@ FITFormatQ[ file_String? FileExistsQ, type_ ] := FITFileType @ file === type;
 
 (* TODO: define for $$source *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitFormatQ*)
 fitFormatQ // beginDefinition;
@@ -48,7 +48,7 @@ fitFormatQ0[ file_ ] :=
 
 fitFormatQ0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitFormatBytesQ*)
 fitFormatBytesQ // beginDefinition;
@@ -60,14 +60,14 @@ fitFormatBytesQ[ _ ] := False;
 
 fitFormatBytesQ // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*FITFileType*)
 FITFileType[ FitnessData[ KeyValuePattern[ "Type" -> type_ ] ] ] := type;
 FITFileType[ file: $$source, opts: OptionsPattern[ ] ] := catchMine @ fitFileType @ file;
 FITFileType[ ___ ] := $Failed; (* TODO *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitFileType*)
 fitFileType // beginDefinition;
@@ -95,7 +95,7 @@ fitFileType[ source_, file_, err_LibraryFunctionError ] :=
 
 fitFileType // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

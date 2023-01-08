@@ -1,4 +1,4 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
@@ -6,227 +6,27 @@ Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*FIT Enumerations*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Utilities*)
 
-(* FIXME: move this string stuff to SDK utilities *)
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*toNiceCamelCase*)
-toNiceCamelCase // beginDefinition;
-
-toNiceCamelCase[ s_String ] :=
-    snakeToCamel @ StringDelete[ s, StartOfString~~$deletePrefixes ];
-
-toNiceCamelCase // endDefinition;
-
-$deletePrefixes = Alternatives[
-    "FIT_MESG_NUM_"
-];
-
-(* ::**********************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*snakeToCamel*)
-snakeToCamel // beginDefinition;
-
-snakeToCamel[ s_String ] :=
-    StringReplace[
-        StringJoin @ ReplaceAll[
-            capitalize @ ToLowerCase @ StringSplit[
-                s,
-                { "_", d: DigitCharacter.. :> d }
-            ],
-            $capitalizationRules1
-        ],
-        $capitalizationRules2
-    ];
-
-snakeToCamel // endDefinition;
-
-capitalize // beginDefinition;
-capitalize // Attributes = { Listable };
-
-capitalize[ s_String ] :=
-    If[ TrueQ[ StringLength @ s <= 3 && ! DictionaryWordQ @ s ],
-        ToUpperCase @ s,
-        Capitalize @ s
-    ];
-
-capitalize // endDefinition;
-
-$capitalizationRules1 // ClearAll;
-$capitalizationRules1 = {
-(* cSpell:disable *)
-    "Accel"           -> "Acceleration",
-    "Ant"             -> "ANT",
-    "Auto"            -> "Automatic",
-    "Aux"             -> "Auxiliary",
-    "AUX"             -> "Auxiliary",
-    "Avg"             -> "Average",
-    "Bool"            -> "Boolean",
-    "Bosu"            -> "BOSU",
-    "BPM"             -> "BeatsPerMinute",
-    "Calc"            -> "Calculation",
-    "Cmplt"           -> "Complete",
-    "CNT"             -> "Count",
-    "COMM"            -> "Communication",
-    "Conc"            -> "Concentration",
-    "Connectiq"       -> "ConnectIQ",
-    "Dist"            -> "Distance",
-    "Elev"            -> "Elevation",
-    "Enum"            -> "Enumeration",
-    "ENV"             -> "Environment",
-    "EXD"             -> "ExtendedDisplay",
-    "Ftp"             -> "FTP",
-    "Hr"              -> "HeartRate",
-    "HR"              -> "HeartRate",
-    "Hrm"             -> "HeartRateMonitor",
-    "HRM"             -> "HeartRateMonitor",
-    "HRR"             -> "RestingHeartRate",
-    "Hrv"             -> "HeartRateVariability",
-    "HRV"             -> "HeartRateVariability",
-    "HW"              -> "Hardware",
-    "Ia"              -> "IA",
-    "Ib"              -> "IB",
-    "Id"              -> "ID",
-    "IDX"             -> "Index",
-    "Iia"             -> "IIA",
-    "Iib"             -> "IIB",
-    "Iiia"            -> "IIIA",
-    "Iiib"            -> "IIIB",
-    "Info"            -> "Information",
-    "INV"             -> "Invalid",
-    "Iva"             -> "IVA",
-    "Ivb"             -> "IVB",
-    "LEV"             -> "LightElectricalVehicle",
-    "Max"             -> "Maximum",
-    "Mesg"            -> "Message",
-    "Met"             -> "MET",
-    "Mfg"             -> "Manufacturer",
-    "Mgrs"            -> "MGRS",
-    "Min"             -> "Minimum",
-    "Ms"              -> "Milliseconds",
-    "N2"              -> "Nitrogen",
-    "NDL"             -> "NoDecompressionLimit",
-    "Nmea"            -> "NMEA",
-    "Num"             -> "Number",
-    "NUM"             -> "Number",
-    "Obdii"           -> "OBDII",
-    "Ohr"             -> "OHR",
-    "OHR"             -> "OpticalHeartRate",
-    "Oled"            -> "OLED",
-    "PCO"             -> "PlatformCenterOffset",
-    "PWR"             -> "Power",
-    "Ref"             -> "Reference",
-    "REF"             -> "Reference",
-    "Rpm"             -> "RevolutionsPerMinute",
-    "Rso"             -> "RSO",
-    "RX"              -> "Receive",
-    "SDM"             -> "StrideAndDistanceMonitor",
-    "Sint"            -> "SignedInteger",
-    "Soc"             -> "StateOfCharge",
-    "SPD"             -> "Speed",
-    "Spdcad"          -> "SpeedCadence",
-    "TX"              -> "Transmit",
-    "Uint"            -> "UnsignedInteger",
-    "Ups"             -> "UPS",
-    "Us"              -> "US",
-    "Utm"             -> "UTM",
-    "Uuid"            -> "UUID",
-    "VAM"             -> "AverageAscentSpeed",
-    "VMG"             -> "VelocityMadeGood",
-    "WKT"             -> "Workout",
-    Nothing
-(* cSpell:enable *)
-};
-
-
-$capitalizationRules2 // ClearAll;
-$capitalizationRules2 = {
-(* cSpell:disable *)
-    "24H"~~EndOfString                   -> "24Hour",
-    "3Way"                               -> "ThreeWay",
-    "ActiveMET"                          -> "ActiveMetabolicRate",
-    "Antfs"                              -> "ANTFS",
-    "Antplus"                            -> "ANTPlus",
-    "Autolap"                            -> "AutoLap",
-    "Autoscroll"                         -> "AutoScroll",
-    "Autosync"                           -> "AutoSync",
-    "AverageAverageAscentSpeed"          -> "AverageAscentSpeed",
-    "BasalMET"                           -> "BasalMetabolicRate",
-    "BikeCadANT"                         -> "BikeCadenceANT",
-    "BikeSPD"                            -> "BikeSpeed",
-    "BluetoothLe"                        -> "BluetoothLE",
-    "CadEnabled"                         -> "CadenceEnabled",
-    "CadHigh"                            -> "CadenceHigh",
-    "CadLow"                             -> "CadenceLow",
-    "Cal"~~EndOfString                   -> "Calibration",
-    "CalFactor"                          -> "CalibrationFactor",
-    "CNSLoad"                            -> "CentralNervousSystemLoading",
-    "CumOperatingTime"                   -> "CumulativeOperatingTime",
-    "Ebike"                              -> "ElectricBike",
-    "EBike"                              -> "ElectricBike",
-    "EBiking"                            -> "ElectricBiking",
-    "Float32"                            -> "Real32",
-    "Float64"                            -> "Real64",
-    "Grouptrack"                         -> "GroupTrack",
-    "InchesHG"                           -> "InchesOfMercury",
-    "Localtime"                          -> "LocalTime",
-    "LocationLat"~~EndOfString           -> "Latitude",
-    "LocationLong"~~EndOfString          -> "Longitude",
-    "Mbars"                              -> "Millibars",
-    "METZone"                            -> "MetabolicZone",
-    "MmHG"                               -> "MillimetersOfMercury",
-    "Multisport"                         -> "MultiSport",
-    "Navaid"                             -> "NavigationAid",
-    "NECLat"                             -> "NorthEastCornerLatitude",
-    "NECLong"                            -> "NorthEastCornerLongitude",
-    "NegGrade"                           -> "NegativeGrade",
-    "NegVertical"                        -> "NegativeVertical",
-    "NumberActiveLengths"                -> "NumberOfActiveLengths",
-    "NumberLaps"                         -> "NumberOfLaps",
-    "NumberLengths"                      -> "NumberOfLengths",
-    "NumberSessions"                     -> "NumberOfSessions",
-    "NumberValid"                        -> "NumberOfValid",
-    "OneDSensor"                         -> "OneDimensionalSensor",
-    "PerSec"~~EndOfString                -> "PerSecond",
-    "Plyo"                               -> "Plyometrics",
-    "PosGrade"                           -> "PositiveGrade",
-    "PositionLat"~~EndOfString           -> "PositionLatitude",
-    "PositionLong"~~EndOfString          -> "PositionLongitude",
-    "PosVertical"                        -> "PositiveVertical",
-    "Spdcad"                             -> "SpeedCadence",
-    "SWCLat"                             -> "SouthWestCornerLatitude",
-    "SWCLong"                            -> "SouthWestCornerLongitude",
-    "ThreeDSensor"                       -> "ThreeDimensionalSensor",
-    "TransType"                          -> "TransmissionType",
-    "TwoDSensor"                         -> "TwoDimensionalSensor",
-    "Wheelsize"                          -> "WheelSize",
-    "Wifi"                               -> "WiFi",
-    Nothing
-(* cSpell:enable *)
-};
-
-
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*removePrefix*)
 removePrefix[ a_, p_ ] :=
     AssociationThread[ Keys @ a -> StringDelete[ Values @ a, p ] ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Enumeration Values*)
 
 (* Auto generated from defines in fit_example.h *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitMessageNUM*)
 fitMessageNUM // ClearAll;
@@ -327,7 +127,7 @@ $fitMessageNUM0 = <|
 
 $fitMessageNUM = toNiceCamelCase /@ removePrefix[ $fitMessageNUM0, "FIT_MESG_NUM_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitGender*)
 fitGender // ClearAll;
@@ -341,7 +141,7 @@ $fitGender0 = <|
 
 $fitGender = toNiceCamelCase /@ removePrefix[ $fitGender0, "FIT_GENDER_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitSessionTrigger*)
 fitSessionTrigger // ClearAll;
@@ -357,7 +157,7 @@ $fitSessionTrigger0 = <|
 
 $fitSessionTrigger = toNiceCamelCase /@ removePrefix[ $fitSessionTrigger0, "FIT_SESSION_TRIGGER_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitSwimStroke*)
 fitSwimStroke // ClearAll;
@@ -376,7 +176,7 @@ $fitSwimStroke0 = <|
 
 $fitSwimStroke = toNiceCamelCase /@ removePrefix[ $fitSwimStroke0, "FIT_SWIM_STROKE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitDisplayMeasure*)
 fitDisplayMeasure // ClearAll;
@@ -391,7 +191,7 @@ $fitDisplayMeasure0 = <|
 
 $fitDisplayMeasure = toNiceCamelCase /@ removePrefix[ $fitDisplayMeasure0, "FIT_DISPLAY_MEASURE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitDisplayHeart*)
 fitDisplayHeart // ClearAll;
@@ -406,7 +206,7 @@ $fitDisplayHeart0 = <|
 
 $fitDisplayHeart = toNiceCamelCase /@ removePrefix[ $fitDisplayHeart0, "FIT_DISPLAY_HEART_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitDisplayPower*)
 fitDisplayPower // ClearAll;
@@ -420,7 +220,7 @@ $fitDisplayPower0 = <|
 
 $fitDisplayPower = toNiceCamelCase /@ removePrefix[ $fitDisplayPower0, "FIT_DISPLAY_POWER_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitActivityClass*)
 fitActivityClass // ClearAll;
@@ -434,7 +234,7 @@ $fitActivityClass0 = <|
 
 $fitActivityClass = toNiceCamelCase /@ removePrefix[ $fitActivityClass0, "FIT_ACTIVITY_CLASS_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitDisplayPosition*)
 fitDisplayPosition // ClearAll;
@@ -488,7 +288,7 @@ $fitDisplayPosition0 = <|
 
 $fitDisplayPosition = toNiceCamelCase /@ removePrefix[ $fitDisplayPosition0, "FIT_DISPLAY_POSITION_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitActivity*)
 fitActivity // ClearAll;
@@ -502,7 +302,7 @@ $fitActivity0 = <|
 
 $fitActivity = toNiceCamelCase /@ removePrefix[ $fitActivity0, "FIT_ACTIVITY_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitEvent*)
 fitEvent // ClearAll;
@@ -551,7 +351,7 @@ $fitEvent0 = <|
 
 $fitEvent = toNiceCamelCase /@ removePrefix[ $fitEvent0, "FIT_EVENT_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitEventType*)
 fitEventType // ClearAll;
@@ -573,7 +373,7 @@ $fitEventType0 = <|
 
 $fitEventType = toNiceCamelCase /@ removePrefix[ $fitEventType0, "FIT_EVENT_TYPE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitIntensity*)
 fitIntensity // ClearAll;
@@ -592,7 +392,7 @@ $fitIntensity0 = <|
 
 $fitIntensity = toNiceCamelCase /@ removePrefix[ $fitIntensity0, "FIT_INTENSITY_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitLapTrigger*)
 fitLapTrigger // ClearAll;
@@ -613,7 +413,7 @@ $fitLapTrigger0 = <|
 
 $fitLapTrigger = toNiceCamelCase /@ removePrefix[ $fitLapTrigger0, "FIT_LAP_TRIGGER_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitBacklightMode*)
 fitBacklightMode // ClearAll;
@@ -632,7 +432,7 @@ $fitBacklightMode0 = <|
 
 $fitBacklightMode = toNiceCamelCase /@ removePrefix[ $fitBacklightMode0, "FIT_BACKLIGHT_MODE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitDateMode*)
 fitDateMode // ClearAll;
@@ -646,7 +446,7 @@ $fitDateMode0 = <|
 
 $fitDateMode = toNiceCamelCase /@ removePrefix[ $fitDateMode0, "FIT_DATE_MODE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitDisplayOrientation*)
 fitDisplayOrientation // ClearAll;
@@ -663,7 +463,7 @@ $fitDisplayOrientation0 = <|
 
 $fitDisplayOrientation = toNiceCamelCase /@ removePrefix[ $fitDisplayOrientation0, "FIT_DISPLAY_ORIENTATION_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitSide*)
 fitSide // ClearAll;
@@ -677,7 +477,7 @@ $fitSide0 = <|
 
 $fitSide = toNiceCamelCase /@ removePrefix[ $fitSide0, "FIT_SIDE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitTapSensitivity*)
 fitTapSensitivity // ClearAll;
@@ -692,7 +492,7 @@ $fitTapSensitivity0 = <|
 
 $fitTapSensitivity = toNiceCamelCase /@ removePrefix[ $fitTapSensitivity0, "FIT_TAP_SENSITIVITY_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitTimeMode*)
 fitTimeMode // ClearAll;
@@ -710,7 +510,7 @@ $fitTimeMode0 = <|
 
 $fitTimeMode = toNiceCamelCase /@ removePrefix[ $fitTimeMode0, "FIT_TIME_MODE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitActivityType*)
 fitActivityType // ClearAll;
@@ -731,7 +531,7 @@ $fitActivityType0 = <|
 
 $fitActivityType = toNiceCamelCase /@ removePrefix[ $fitActivityType0, "FIT_ACTIVITY_TYPE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitStrokeType*)
 fitStrokeType // ClearAll;
@@ -749,7 +549,7 @@ $fitStrokeType0 = <|
 
 $fitStrokeType = toNiceCamelCase /@ removePrefix[ $fitStrokeType0, "FIT_STROKE_TYPE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitDeviceIndex*)
 fitDeviceIndex // ClearAll;
@@ -762,7 +562,7 @@ $fitDeviceIndex0 = <|
 
 $fitDeviceIndex = toNiceCamelCase /@ removePrefix[ $fitDeviceIndex0, "FIT_DEVICE_INDEX_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitManufacturer*)
 fitManufacturer // ClearAll;
@@ -983,7 +783,7 @@ $fitManufacturer0 = <|
 
 $fitManufacturer = toNiceCamelCase /@ removePrefix[ $fitManufacturer0, "FIT_MANUFACTURER_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitANTPlusDeviceType*)
 fitANTPlusDeviceType // ClearAll;
@@ -1020,7 +820,7 @@ $fitANTPlusDeviceType0 = <|
 
 $fitANTPlusDeviceType = toNiceCamelCase /@ removePrefix[ $fitANTPlusDeviceType0, "FIT_ANTPLUS_DEVICE_TYPE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitBatteryStatus*)
 fitBatteryStatus // ClearAll;
@@ -1039,7 +839,7 @@ $fitBatteryStatus0 = <|
 
 $fitBatteryStatus = toNiceCamelCase /@ removePrefix[ $fitBatteryStatus0, "FIT_BATTERY_STATUS_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitBodyLocation*)
 fitBodyLocation // ClearAll;
@@ -1091,7 +891,7 @@ $fitBodyLocation0 = <|
 
 $fitBodyLocation = toNiceCamelCase /@ removePrefix[ $fitBodyLocation0, "FIT_BODY_LOCATION_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitANTNetwork*)
 fitANTNetwork // ClearAll;
@@ -1107,7 +907,7 @@ $fitANTNetwork0 = <|
 
 $fitANTNetwork = toNiceCamelCase /@ removePrefix[ $fitANTNetwork0, "FIT_ANT_NETWORK_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitSourceType*)
 fitSourceType // ClearAll;
@@ -1125,7 +925,7 @@ $fitSourceType0 = <|
 
 $fitSourceType = toNiceCamelCase /@ removePrefix[ $fitSourceType0, "FIT_SOURCE_TYPE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitFile*)
 fitFile // ClearAll;
@@ -1155,7 +955,7 @@ $fitFile0 = <|
 
 $fitFile = toNiceCamelCase /@ removePrefix[ $fitFile0, "FIT_FILE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitSport*)
 fitSport // ClearAll;
@@ -1218,7 +1018,7 @@ $fitSport0 = <|
 
 $fitSport = toNiceCamelCase /@ removePrefix[ $fitSport0, "FIT_SPORT_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitSubSport*)
 fitSubSport // ClearAll;
@@ -1296,7 +1096,7 @@ $fitSubSport0 = <|
 
 $fitSubSport = toNiceCamelCase /@ removePrefix[ $fitSubSport0, "FIT_SUB_SPORT_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitGarminProduct*)
 fitGarminProduct // ClearAll;
@@ -1706,7 +1506,7 @@ $fitGarminProduct0 = <|
 
 $fitGarminProduct = toNiceCamelCase /@ removePrefix[ $fitGarminProduct0, "FIT_GARMIN_PRODUCT_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitHeartRateZoneCalc*)
 fitHeartRateZoneCalc // ClearAll;
@@ -1721,7 +1521,7 @@ $fitHeartRateZoneCalc0 = <|
 
 $fitHeartRateZoneCalc = toNiceCamelCase /@ removePrefix[ $fitHeartRateZoneCalc0, "FIT_HR_ZONE_CALC_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitPowerZoneCalc*)
 fitPowerZoneCalc // ClearAll;
@@ -1735,7 +1535,7 @@ $fitPowerZoneCalc0 = <|
 
 $fitPowerZoneCalc = toNiceCamelCase /@ removePrefix[ $fitPowerZoneCalc0, "FIT_PWR_ZONE_CALC_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitRadarThreatLevelType*)
 fitRadarThreatLevelType // ClearAll;
@@ -1751,7 +1551,7 @@ $fitRadarThreatLevelType0 = <|
 
 $fitRadarThreatLevelType = toNiceCamelCase /@ removePrefix[ $fitRadarThreatLevelType0, "FIT_RADAR_THREAT_LEVEL_TYPE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitFitBaseUnit*)
 fitFitBaseUnit // ClearAll;
@@ -1766,7 +1566,7 @@ $fitFitBaseUnit0 = <|
 
 $fitFitBaseUnit = toNiceCamelCase /@ removePrefix[ $fitFitBaseUnit0, "FIT_FIT_BASE_UNIT_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitFitBaseType*)
 fitFitBaseType // ClearAll;
@@ -1795,7 +1595,7 @@ $fitFitBaseType0 = <|
 
 $fitFitBaseType = removePrefix[ $fitFitBaseType0, "FIT_FIT_BASE_TYPE_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitFaveroProduct*)
 fitFaveroProduct // ClearAll;
@@ -1809,7 +1609,7 @@ $fitFaveroProduct0 = <|
 
 $fitFaveroProduct = toNiceCamelCase /@ removePrefix[ $fitFaveroProduct0, "FIT_FAVERO_PRODUCT_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitExerciseCategory*)
 fitExerciseCategory // ClearAll;
@@ -1855,7 +1655,7 @@ $fitExerciseCategory0 = <|
 
 $fitExerciseCategory = toNiceCamelCase /@ removePrefix[ $fitExerciseCategory0, "FIT_EXERCISE_CATEGORY_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitWorkoutStepDuration*)
 fitWorkoutStepDuration // ClearAll;
@@ -1898,7 +1698,7 @@ $fitWorkoutStepDuration0 = <|
 
 $fitWorkoutStepDuration = toNiceCamelCase /@ removePrefix[ $fitWorkoutStepDuration0, "FIT_WKT_STEP_DURATION_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitWorkoutStepTarget*)
 fitWorkoutStepTarget // ClearAll;
@@ -1924,7 +1724,7 @@ $fitWorkoutStepTarget0 = <|
 
 $fitWorkoutStepTarget = toNiceCamelCase /@ removePrefix[ $fitWorkoutStepTarget0, "FIT_WKT_STEP_TARGET_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitWorkoutEquipment*)
 fitWorkoutEquipment // ClearAll;
@@ -1942,7 +1742,7 @@ $fitWorkoutEquipment0 = <|
 
 $fitWorkoutEquipment = toNiceCamelCase /@ removePrefix[ $fitWorkoutEquipment0, "FIT_WORKOUT_EQUIPMENT_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitWorkoutCapabilities*)
 fitWorkoutCapabilities // ClearAll;
@@ -1968,7 +1768,7 @@ $fitWorkoutCapabilities0 = <|
 
 $fitWorkoutCapabilities = toNiceCamelCase /@ removePrefix[ $fitWorkoutCapabilities0, "FIT_WORKOUT_CAPABILITIES_" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

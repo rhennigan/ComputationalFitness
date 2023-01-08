@@ -1,4 +1,4 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
@@ -6,22 +6,22 @@ Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*File Types*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitFileTypeQ*)
 fitFileTypeQ // ClearAll;
 fitFileTypeQ[ type_String ] := MemberQ[ $fileTypes, type ];
 fitFileTypeQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Raw Message Data*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*rawDataQ*)
 rawDataQ // ClearAll;
@@ -29,7 +29,7 @@ rawDataQ[ { { } }  ] := False;
 rawDataQ[ raw_List ] := MatrixQ[ raw, IntegerQ ];
 rawDataQ[ ___      ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*selectMessageType*)
 selectMessageType // beginDefinition;
@@ -47,7 +47,7 @@ selectMessageType[ data_, type_ ] :=
 
 selectMessageType // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*selectFirstMessageType*)
 selectFirstMessageType // beginDefinition;
@@ -60,11 +60,11 @@ selectFirstMessageType[ data_, type_Integer ] :=
 
 selectFirstMessageType // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Message Types*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitMessageType*)
 fitMessageType // beginDefinition;
@@ -72,7 +72,7 @@ fitMessageType[ v_List ] := fitMessageType @ v[[ 1 ]];
 fitMessageType[ n_Integer ] := Lookup[ $fitMessageTypes, n, "UNKNOWN" ];
 fitMessageType // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*$fitMessageTypes*)
 $fitMessageTypes = Association[
@@ -81,7 +81,7 @@ $fitMessageTypes = Association[
     1768842863 -> "MessageInformation"
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*unsupportedMessageTypeQ*)
 unsupportedMessageTypeQ[ type_ ] := MemberQ[ $unsupportedMessageTypes, type ];
@@ -89,7 +89,7 @@ unsupportedMessageTypeQ[ ___ ] := False;
 
 $unsupportedMessageTypes = Complement[ Values @ $fitMessageTypes, $supportedMessageTypes ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitMessageTypeNumber*)
 fitMessageTypeNumber // beginDefinition;
@@ -105,7 +105,7 @@ fitMessageTypeNumber // endDefinition;
 
 $fitMessageTypeNumbers = AssociationMap[ Reverse, $fitMessageTypes ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

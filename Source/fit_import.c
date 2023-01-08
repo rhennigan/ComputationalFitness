@@ -968,6 +968,7 @@ DLLEXPORT int FITImport(
 // --- END MESSAGE IMPORT CASES ---
                     default:
                     {
+                        // TODO: use FitConvert_GetFieldSize in import_unknown to return raw data
                         break;
                     }
                 }

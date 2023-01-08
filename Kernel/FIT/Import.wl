@@ -1,4 +1,4 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
@@ -6,7 +6,7 @@ Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Messages*)
 FITImport::Internal =
@@ -45,7 +45,10 @@ FITImport::InvalidUnitSystem =
 FITImport::NoRecordsAvailable =
 "No records available in the specified FIT file.";
 
-(* ::**********************************************************************:: *)
+FITImport::InvalidMessageInformation =
+"The stored MessageInformation is corrupt and cannot be used.";
+
+(* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Options*)
 FITImport // Options = {
@@ -56,7 +59,7 @@ FITImport // Options = {
     Weight                   :> $Weight
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Main definition*)
 
@@ -103,7 +106,7 @@ FITImport[ file_, "Dataset", opts: OptionsPattern[ ] ] :=
     ];
 
 FITImport[ file_, type: $$pluralMessage, opts: OptionsPattern[ ] ] :=
-    catchMine @ FITImport[ file, StringDelete[ type, "s"~~EndOfString, opts ] ];
+    catchMine @ FITImport[ file, StringDelete[ type, "s"~~EndOfString ], opts ];
 
 FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /; ! FileExistsQ @ file :=
     With[ { found = findFile @ file },
@@ -152,13 +155,14 @@ FITImport[ file_, "FitnessData", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[
         makeFitnessDataObject[
             FITImport[ file, "RawData", opts ],
+            fitMessageTypes @ file,
             FITFileType @ file,
             opts
         ],
         opts
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Special Properties*)
 FITImport[ _, "Elements", OptionsPattern[ ] ] :=
@@ -167,7 +171,7 @@ FITImport[ _, "Elements", OptionsPattern[ ] ] :=
 FITImport[ file_, "FileType", OptionsPattern[ ] ] :=
     catchTopAs[ FITImport ] @ fitFileType @ file;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*TimeSeries Data*)
 FITImport[ file_, "TimeSeries", opts: OptionsPattern[ ] ] :=
@@ -203,7 +207,7 @@ FITImport[ file_, { "TimeSeries", All }, opts: OptionsPattern[ ] ] :=
 
 $timeSeriesKeys := DeleteCases[ fitKeys[ "Record" ], "MessageType"|"Timestamp" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Mixed Elements*)
 FITImport[ file_, props: $$propList, opts: OptionsPattern[ ] ] :=
@@ -221,7 +225,7 @@ FITImport[ file_, props: $$propList, opts: OptionsPattern[ ] ] :=
         ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Graphics*)
 FITImport[ file_, "PowerZonePlot", opts: OptionsPattern[ ] ] :=
@@ -242,7 +246,7 @@ FITImport[ file_, "CriticalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
         opts
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Error cases*)
 FITImport[ $$source, { ___, e: Except[ $$props ], ___ }, OptionsPattern[ ] ] :=
@@ -277,11 +281,11 @@ FITImport[ args___ ] :=
         throwFailure[ FITImport::ArgumentCount, len ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Dependencies*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitImportOptionsBlock*)
 fitImportOptionsBlock // beginDefinition;
@@ -307,7 +311,7 @@ fitImportOptionsBlock[ eval_, opts: OptionsPattern[ FITImport ] ] :=
 
 fitImportOptionsBlock // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*setPreferences*)
 setPreferences // beginDefinition;
@@ -353,7 +357,7 @@ setPreferences0[ config_ ] := (
 );
 setPreferences0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setFileType*)
 setFileType // beginDefinition;
@@ -362,7 +366,7 @@ setFileType[ config_, v_List ] := $fileType = fitValue[ "FileID", "Type", v ];
 setFileType[ config_, _Missing ] := $fileType = None;
 setFileType // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setSportPref*)
 setSportPref // beginDefinition;
@@ -384,7 +388,7 @@ setSportPref[ as_Association, sport_ ] :=
 
 setSportPref // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setUnitPrefs*)
 setUnitPrefs // beginDefinition;
@@ -428,7 +432,7 @@ $autoUnits = <|
     "Pressure"    -> Automatic
 |>;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setProfileUnits*)
 setProfileUnits // beginDefinition;
@@ -439,7 +443,7 @@ setProfileUnits[ s_Symbol, key_String, v_List ] :=
 
 setProfileUnits // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setAltitudePrefs*)
 setAltitudePrefs // beginDefinition;
@@ -452,14 +456,14 @@ setAltitudePrefs[ setting_, _ ] :=
 
 setAltitudePrefs // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setTimeOffset*)
 setTimeOffset // beginDefinition;
 setTimeOffset[ config_Association ] := $timeOffset = getTimeOffset @ config;
 setTimeOffset // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*getTimeOffset*)
 getTimeOffset // ClearAll;
@@ -492,7 +496,7 @@ getTimeOffset[ ___ ] := 0;
 
 (* getTimeOffset // endDefinition; *)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setFTPPref*)
 setFTPPref // beginDefinition;
@@ -518,7 +522,7 @@ setFTPPref[ config_, Automatic, _ ] :=
 
 setFTPPref // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setMaxHRPref*)
 setMaxHRPref // beginDefinition;
@@ -544,7 +548,7 @@ setMaxHRPref[ config_, Automatic, _ ] :=
 
 setMaxHRPref // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setWeightPref*)
 setWeightPref // beginDefinition;
@@ -570,7 +574,7 @@ setWeightPref[ config_, Automatic, _ ] :=
 
 setFTPPref // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setUnitSystem*)
 setUnitSystem // beginDefinition;
@@ -583,7 +587,7 @@ setUnitSystem[ KeyValuePattern[ UnitSystem -> u_ ] ] := setUnitSystem @ u;
 setUnitSystem[ units_ ] := throwFailure[ FITImport::InvalidUnitSystem, units ];
 setUnitSystem // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setFTP*)
 setFTP // beginDefinition;
@@ -596,7 +600,7 @@ setFTP[ ftp_Quantity ] := setFTP @ UnitConvert[ ftp, "Watts" ];
 setFTP[ ftp_ ] := throwFailure[ "InvalidFTP", ftp ];
 setFTP // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setMaxHR*)
 setMaxHR // beginDefinition;
@@ -609,7 +613,7 @@ setMaxHR[ hr_Quantity ] := setMaxHR @ UnitConvert[ hr, "Beats"/"Minutes" ];
 setMaxHR[ hr_ ] := throwFailure[ FITImport::InvalidMaxHR, hr ];
 setMaxHR // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setWeight*)
 setWeight // beginDefinition;
@@ -622,7 +626,7 @@ setWeight[ w_Quantity ] := setWeight @ UnitConvert[ w, "Kilograms" ];
 setWeight[ w_ ] := throwFailure[ FITImport::InvalidWeight, w ];
 setWeight // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*setSport*)
 setSport // beginDefinition;
@@ -632,7 +636,7 @@ setSport[ s_String      ] := s;
 setSport[ s_            ] := throwFailure[ FITImport::InvalidSport, s ];
 setSport // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitImport*)
 fitImport // beginDefinition;
@@ -670,7 +674,7 @@ fitImport0[ source_, file_, err_LibraryFunctionError ] :=
 
 fitImport0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitMessageTypes*)
 fitMessageTypes // beginDefinition;
@@ -682,6 +686,11 @@ fitMessageTypes[ source: $$source ] :=
             DeleteFile /@ Internal`BagPart[ $tempFiles, All ]
         ]
     ];
+
+fitMessageTypes[ FitnessData[ KeyValuePattern[ "MessageInformation" -> info_ ] ] ] := Enclose[
+    ConfirmBy[ Developer`ToPackedArray @ info, rawDataQ ],
+    throwFailure[ "InvalidMessageInformation", info ] &
+];
 
 fitMessageTypes[ source_, file_String ] :=
     fitMessageTypes[
@@ -698,7 +707,7 @@ fitMessageTypes[ source_, file_, err_LibraryFunctionError ] :=
 
 fitMessageTypes // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeMessageTypeData*)
 makeMessageTypeData // beginDefinition;
@@ -726,7 +735,7 @@ makeMessageTypeData0[ data_, type_ ] :=
         ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeTimeSeriesData*)
 makeTimeSeriesData // beginDefinition;
@@ -764,7 +773,7 @@ missingDataMethod[ "GeoPosition" ] := { "Interpolation", InterpolationOrder -> 0
 missingDataMethod[ _ ] := { "Interpolation", InterpolationOrder -> 1 };
 missingDataMethod // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeElementData*)
 makeElementData // beginDefinition;
@@ -777,7 +786,7 @@ makeElementData[ file_, data_, element_, opts: OptionsPattern[ ] ] :=
 
 makeElementData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*toFileString*)
 toFileString // beginDefinition;
@@ -804,7 +813,7 @@ toFileString0[ source: $$lo     ] := createTemporary @ source;
 toFileString0[ source: $$resp   ] := createTemporary @ source;
 toFileString0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*createTemporary*)
 createTemporary // beginDefinition;
@@ -828,7 +837,7 @@ createTemporary[ source: $$resp ] :=
 
 createTemporary // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*addTempFile*)
 addTempFile // beginDefinition;
@@ -845,7 +854,7 @@ addTempFile[ other_ ] := throwFailure[ FITImport::CopyTemporaryFailed, other ];
 
 addTempFile // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*$tempFile*)
 $tempFile // ClearAll;
@@ -854,7 +863,7 @@ $tempFile := FileNameJoin @ {
     CreateUUID[ ] <> ".fit"
 };
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*formatFitData*)
 formatFitData // beginDefinition;
@@ -889,7 +898,7 @@ formatFitData0[ data_ ] :=
 
 formatFitData0 // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*allMissingOrZeroQ*)
 allMissingOrZeroQ // ClearAll;
@@ -897,7 +906,7 @@ allMissingOrZeroQ[ { _ } ] := False;
 allMissingOrZeroQ[ a_List ] := AllTrue[ a, missingOrZeroQ ];
 allMissingOrZeroQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*missingOrZeroQ*)
 missingOrZeroQ // ClearAll;
@@ -908,14 +917,14 @@ missingOrZeroQ[ Quantity[ _? missingOrZeroQ, _ ] ] := True;
 missingOrZeroQ[ Interval[ { _? missingOrZeroQ, _? missingOrZeroQ } ] ] := True;
 missingOrZeroQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*computeGradeQ*)
 computeGradeQ // ClearAll;
 computeGradeQ[ data_ ] := MatchQ[ data[[ All, 13 ]], { $invalidSINT16 .. } ];
 computeGradeQ[ ___   ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeFitAssociation*)
 makeFitAssociation // beginDefinition;
@@ -927,7 +936,7 @@ makeFitAssociation[ values_ ] :=
 
 makeFitAssociation // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*makeFitAssociationTimed*)
 makeFitAssociationTimed // beginDefinition;
@@ -943,7 +952,7 @@ makeFitAssociationTimed[ values_ ] := (
 
 makeFitAssociationTimed // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitValueTimed*)
 fitValueTimed // ClearAll;
@@ -956,7 +965,7 @@ fitValueTimed[ type_, name_, v_ ] :=
 
 $fitValueTimings := $fitValueTimings = Internal`Bag[ ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*makeFitnessDataObject*)
 makeFitnessDataObject // beginDefinition;
@@ -965,6 +974,7 @@ makeFitnessDataObject[ data_FitnessData? compactFitFitnessDataQ, ___ ] := data;
 
 makeFitnessDataObject[
     data_? rawDataQ,
+    messageInformation_? rawDataQ,
     type: _String | Missing[ "UnknownType", _Integer ],
     opts: OptionsPattern @ FITImport
 ] :=
@@ -972,29 +982,30 @@ makeFitnessDataObject[
         compact = toCompactRawData @ data;
         options = optionsAssociation[ FITImport, opts ];
         FitnessData @ <|
-            "Format"      -> "FIT",
-            "DataFormat"  -> "FITCompact",
-            "Data"        -> compact,
-            "Type"        -> type,
-            "Count"       -> Length @ data,
-            "SummaryData" -> makeFitnessSummaryData[ type, compact ],
-            "Options"     -> options
+            "Format"             -> "FIT",
+            "DataFormat"         -> "FITCompact",
+            "Data"               -> compact,
+            "Type"               -> type,
+            "Count"              -> Length @ data,
+            "SummaryData"        -> makeFitnessSummaryData[ type, compact ],
+            "Options"            -> options,
+            "MessageInformation" -> messageInformation
         |>
     ];
 
 makeFitnessDataObject // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*makeFitnessSummaryData*)
 makeFitnessSummaryData // beginDefinition;
 makeFitnessSummaryData[ "Activity", as_ ] := makeActivitySummaryData @ as;
-makeFitnessSummaryData[ "Workout", as_ ] := makeWorkoutSummaryData @ as;
-makeFitnessSummaryData[ "Course", as_ ] := makeCourseSummaryData @ as;
+makeFitnessSummaryData[ "Workout" , as_ ] := makeWorkoutSummaryData @ as;
+makeFitnessSummaryData[ "Course"  , as_ ] := makeCourseSummaryData @ as;
 makeFitnessSummaryData[ type_, as_Association ] := <| |>;
 makeFitnessSummaryData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*firstSummaryValue*)
 firstSummaryValue // beginDefinition;
@@ -1004,7 +1015,7 @@ firstSummaryValue[ type_, field_, { v_List, ___ } ] := fitValue[ type, field, v 
 firstSummaryValue[ type_, field_, _Missing ] := Missing[ "NotAvailable" ];
 firstSummaryValue // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*makeActivitySummaryData*)
 makeActivitySummaryData // beginDefinition;
@@ -1030,7 +1041,7 @@ makeActivitySummaryData[ _Association, _Missing ] := <| |>;
 
 makeActivitySummaryData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*makeWorkoutSummaryData*)
 makeWorkoutSummaryData // beginDefinition;
@@ -1046,7 +1057,7 @@ makeWorkoutSummaryData[ as_Association ] :=
 
 makeWorkoutSummaryData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*workoutSummaryDuration*)
 workoutSummaryDuration // beginDefinition;
@@ -1054,9 +1065,13 @@ workoutSummaryDuration // beginDefinition;
 workoutSummaryDuration[ _Missing ] := Missing[ "NotAvailable" ];
 
 workoutSummaryDuration[ steps_List? rawDataQ ] :=
-    Module[ { durations },
-        durations = (fitValue[ "WorkoutStep", "Duration", #1 ] &) /@ steps;
+    Module[ { durationData, durations },
+        durationData = (fitValue[ "WorkoutStep", "Duration", #1 ] &) /@ steps;
+        durations    = DeleteMissing @ durationData;
         Which[
+            Length @ durations === 0,
+                Missing[ "NotAvailable" ]
+            ,
             TrueQ @ AllTrue[ durations, CompatibleUnitQ[ #1, "Seconds" ] & ],
                 secondsToQuantity @ Total @ durations
             ,
@@ -1070,7 +1085,7 @@ workoutSummaryDuration[ steps_List? rawDataQ ] :=
 
 workoutSummaryDuration // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*makeCourseSummaryData*)
 makeCourseSummaryData // beginDefinition;
@@ -1088,7 +1103,7 @@ makeCourseSummaryData[ as_Association ] :=
 
 makeCourseSummaryData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*courseSummary*)
 courseSummary // beginDefinition;
@@ -1107,7 +1122,7 @@ courseSummary[ records_List? rawDataQ ] :=
 
 courseSummary // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*toCompactRawData*)
 toCompactRawData // beginDefinition;
@@ -1123,7 +1138,7 @@ toCompactRawData[ data_? rawDataQ ] :=
 
 toCompactRawData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*compactFieldData*)
 compactFieldData // beginDefinition;
@@ -1133,7 +1148,7 @@ compactFieldData[ type_, data_ ] := <|
 |>;
 compactFieldData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*usableFields*)
 usableFields // beginDefinition;
@@ -1148,7 +1163,7 @@ usableFields[ type_, data_ ] :=
 
 usableFields // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*toCompactRawDataValues*)
 toCompactRawDataValues // beginDefinition;
@@ -1176,7 +1191,7 @@ toCompactRawDataValues[ data_ ] :=
 
 toCompactRawDataValues // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fieldIndexMemberQ*)
 fieldIndexMemberQ // ClearAll;
@@ -1184,7 +1199,7 @@ fieldIndexMemberQ[ p_List, i_Integer ] := MemberQ[ p, i ];
 fieldIndexMemberQ[ p_List, a_Integer;;b_Integer ] := IntegerQ @ SelectFirst[ p, a <= # <= b & ];
 fieldIndexMemberQ[ p_ ][ i_ ] := fieldIndexMemberQ[ p, i ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fromCompactRawData*)
 fromCompactRawData // beginDefinition;
@@ -1211,7 +1226,7 @@ fromCompactRawData[ compact_Association ] :=
 
 fromCompactRawData // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*compactFitFitnessDataQ*)
 compactFitFitnessDataQ // ClearAll;
@@ -1227,7 +1242,7 @@ compactFitFitnessDataQ[ KeyValuePattern @ {
 
 compactFitFitnessDataQ[ ___ ] := False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];

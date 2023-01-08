@@ -1,11 +1,11 @@
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
 BeginPackage[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*General Messages*)
 ComputationalFitness::Internal =
@@ -33,13 +33,25 @@ ComputationalFitness::UnsupportedMessageTypes =
 "The following message types are defined in the SDK but not handled at \
 top-level: `1`.";
 
-(* ::**********************************************************************:: *)
+ComputationalFitness::InvalidXML =
+"Cannot import data as XML format.";
+
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
-$inDef = False;
-$debug = TrueQ @ $debug;
+$inDef        = False;
+$debug        = TrueQ @ $debug;
+$mxExclusions = Internal`Bag[ ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*excludeFromMX*)
+excludeFromMX // ClearAll;
+excludeFromMX // Attributes = { HoldFirst };
+excludeFromMX[ s_Symbol ] := Internal`StuffBag[ $mxExclusions, Hold @ s ];
+excludeFromMX // excludeFromMX;
+
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*beginDefinition*)
 beginDefinition // ClearAll;
@@ -61,7 +73,9 @@ beginDefinition[ s_Symbol ] /; $debug && $inDef :=
 beginDefinition[ s_Symbol ] :=
     WithCleanup[ Unprotect @ s; ClearAll @ s, $inDef = True ];
 
-(* ::**********************************************************************:: *)
+beginDefinition // excludeFromMX;
+
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*endDefinition*)
 endDefinition // beginDefinition;
@@ -93,8 +107,9 @@ endDefinition[ s_Symbol, list_List ] :=
     endDefinition[ s, # ] & /@ list;
 
 endDefinition // endDefinition;
+endDefinition // excludeFromMX;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*setIfUndefined*)
 setIfUndefined // beginDefinition;
@@ -102,14 +117,15 @@ setIfUndefined // Attributes = { HoldAll };
 setIfUndefined[ sym_Symbol? ValueQ, value_ ] := Null;
 setIfUndefined[ sym_Symbol, value_ ] := sym = value;
 setIfUndefined // endDefinition;
+setIfUndefined // excludeFromMX;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Caching*)
 $blockCache = <| |>;
 $cacheBlock = False;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*cacheBlock*)
 cacheBlock // beginDefinition;
@@ -127,7 +143,7 @@ cacheBlock[ eval_ ] :=
 
 cacheBlock // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*cached*)
 cached // Attributes = { HoldFirst };
@@ -142,44 +158,63 @@ cached[ eval_ ] /; $cacheBlock :=
 
 cached[ eval_ ] := cacheBlock @ eval;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Error handling*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*catchTop*)
 catchTop // beginDefinition;
 catchTop // Attributes = { HoldFirst };
 
 catchTop[ eval_ ] :=
-    Block[ { $catching = True, $failed = False, catchTop = # &, $start },
+    catchTop[ eval, ComputationalFitness ];
+
+catchTop[ eval_, sym_Symbol ] :=
+    Block[
+        {
+            $messageSymbol = sym,
+            $catching      = True,
+            $failed        = False,
+            catchTop       = # &,
+            catchTopAs     = (#1 &) &
+        },
         cacheBlock @ Catch[ eval, $top ]
     ];
 
 catchTop // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*catchTopAs*)
+catchTopAs // beginDefinition;
+catchTopAs[ sym_Symbol ] := Function[ eval, catchTop[ eval, sym ], { HoldAllComplete } ];
+catchTopAs // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*catchFormattingTop*)
 catchFormattingTop // beginDefinition;
 catchFormattingTop // Attributes = { HoldFirst };
 
-catchFormattingTop[ eval_, fmt_ ] :=
+catchFormattingTop[ eval_, fmt_, sym_Symbol ] :=
     Block[
         {
+            $messageSymbol     = sym,
             $catching          = True,
             $failed            = False,
             $formatting        = True,
             catchFormattingTop = #1 &,
-            catchTop           = #1 &
+            catchTop           = #1 &,
+            catchTopAs         = (#1 &) &
         },
         cacheBlock @ Catch[ eval, $top, formatFailure @ fmt ]
     ];
 
 catchFormattingTop // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*formatFailure*)
 formatFailure // ClearAll;
@@ -188,37 +223,20 @@ formatFailure[ failure_, InputForm  ] := Format[ failure, InputForm  ];
 formatFailure[ failure_, OutputForm ] := Format[ failure, OutputForm ];
 formatFailure[ failure_, fmt_ ] := MakeBoxes[ failure, fmt ];
 
-(* ::**********************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*catchTopAs*)
-catchTopAs // beginDefinition;
-
-catchTopAs[ sym_Symbol ] :=
-    Function[
-        eval,
-        Block[ { $messageSymbol = sym, catchTopAs = (#1 &) & },
-            catchTop @ eval
-        ],
-        { HoldAllComplete }
-    ];
-
-catchTopAs // endDefinition;
-
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*catchMine*)
 catchMine // beginDefinition;
-
 catchMine // Attributes = { HoldFirst };
 
 catchMine /: HoldPattern[ f_Symbol[ args___ ] := catchMine[ rhs_ ] ] :=
-    f[ args ] := Block[ { $messageSymbol = f }, catchTop @ rhs ];
+    f[ args ] := catchTop[ rhs, f ];
 
 catchMine[ eval_ ] := catchTop @ eval;
 
 catchMine // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*throwFailure*)
 throwFailure // beginDefinition;
@@ -235,12 +253,12 @@ throwFailure[ msg_, args___ ] :=
 
 throwFailure // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*$messageSymbol*)
 $messageSymbol := ComputationalFitness;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*messageFailure*)
 messageFailure // beginDefinition;
@@ -275,7 +293,7 @@ messageFailure0 := messageFailure0 =
         ResourceFunction[ "MessageFailure", "Function" ]
     ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*messagePrint*)
 messagePrint // beginDefinition;
@@ -289,7 +307,7 @@ messagePrint[ args___ ] := WithCleanup[
 
 messagePrint // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*throwInternalFailure*)
 throwInternalFailure // beginDefinition;
@@ -325,7 +343,7 @@ throwInternalFailure[ eval_, a___ ] :=
 
 throwInternalFailure // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*$bugReportLink*)
 $bugReportLink := $bugReportLink = Hyperlink[
@@ -337,18 +355,18 @@ $bugReportLink := $bugReportLink = Hyperlink[
     |>
 ];
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Misc*)
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*findFile*)
 findFile // beginDefinition;
 findFile[ file_ ] := Quiet @ FindFile @ file;
 findFile // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*optionsAssociation*)
 optionsAssociation // beginDefinition;
@@ -360,7 +378,17 @@ optionsAssociation[ f_Symbol, opts: OptionsPattern[ ] ] := Association[
 
 optionsAssociation // endDefinition;
 
-(* ::**********************************************************************:: *)
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*importXML*)
+importXML // beginDefinition;
+importXML[ file_ ] := importXML[ file, ReadString @ file ];
+importXML[ file_, xml_String ] := importXML[ file, ImportString[ StringTrim @ xml, "XML" ] ];
+importXML[ file_, xml: XMLObject[ _ ][ ___ ] ] := xml;
+importXML[ file_, bad_ ] := throwFailure[ "InvalidXML", file ];
+importXML // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];
