@@ -106,7 +106,7 @@ FITImport[ file_, "Dataset", opts: OptionsPattern[ ] ] :=
     ];
 
 FITImport[ file_, type: $$pluralMessage, opts: OptionsPattern[ ] ] :=
-    catchMine @ FITImport[ file, StringDelete[ type, "s"~~EndOfString, opts ] ];
+    catchMine @ FITImport[ file, StringDelete[ type, "s"~~EndOfString ], opts ];
 
 FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /; ! FileExistsQ @ file :=
     With[ { found = findFile @ file },
@@ -1065,9 +1065,13 @@ workoutSummaryDuration // beginDefinition;
 workoutSummaryDuration[ _Missing ] := Missing[ "NotAvailable" ];
 
 workoutSummaryDuration[ steps_List? rawDataQ ] :=
-    Module[ { durations },
-        durations = (fitValue[ "WorkoutStep", "Duration", #1 ] &) /@ steps;
+    Module[ { durationData, durations },
+        durationData = (fitValue[ "WorkoutStep", "Duration", #1 ] &) /@ steps;
+        durations    = DeleteMissing @ durationData;
         Which[
+            Length @ durations === 0,
+                Missing[ "NotAvailable" ]
+            ,
             TrueQ @ AllTrue[ durations, CompatibleUnitQ[ #1, "Seconds" ] & ],
                 secondsToQuantity @ Total @ durations
             ,
