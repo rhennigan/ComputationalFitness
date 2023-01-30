@@ -51,42 +51,44 @@ HoldComplete[
 
 (* Clear for new definitions: *)
 GeneralUtilities`UnprotectAndClearAll[
-    $$assoc,
-    $$bytes,
-    $$co,
-    $$file,
-    $$lo,
-    $$resp,
-    $$source,
-    $$string,
-    $$target,
-    $$url,
-    $fitIcons,
-    $messageSymbol,
-    $mxExclusions,
-    $thisPacletLocation,
-    $top,
-    beginDefinition,
-    cacheBlock,
-    cached,
-    catchFormattingTop,
-    catchMine,
-    catchTop,
-    catchTopAs,
-    compactFitFitnessDataQ,
-    endDefinition,
-    findFile,
-    getDataFile,
-    importXML,
-    messageFailure,
-    messagePrint,
-    optionsAssociation,
-    rawDataQ,
-    recompileLibraries,
-    setIfUndefined,
-    throwFailure,
-    throwInternalFailure,
-    toNiceCamelCase
+    `$$assoc,
+    `$$bytes,
+    `$$co,
+    `$$file,
+    `$$lo,
+    `$$resp,
+    `$$source,
+    `$$string,
+    `$$target,
+    `$$url,
+    `$fitIcons,
+    `$messageSymbol,
+    `$mxExclusions,
+    `$thisPacletLocation,
+    `$top,
+    `beginDefinition,
+    `cacheBlock,
+    `cached,
+    `catchFormattingTop,
+    `catchMine,
+    `catchTop,
+    `catchTopAs,
+    `compactFitFitnessDataQ,
+    `endDefinition,
+    `findFile,
+    `getDataFile,
+    `importXML,
+    `messageFailure,
+    `messagePrint,
+    `optionsAssociation,
+    `rawDataQ,
+    `recompileLibraries,
+    `registeredFormatQ,
+    `registerFormats,
+    `setIfUndefined,
+    `throwFailure,
+    `throwInternalFailure,
+    `toNiceCamelCase
 ];
 
 EndPackage[ ];
@@ -102,6 +104,7 @@ EndPackage[ ];
 <<`TCX`;
 <<`ZWO`;
 <<`FitnessData`;
+<<`Initialization`;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)

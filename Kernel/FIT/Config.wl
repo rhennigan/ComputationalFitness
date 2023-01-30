@@ -93,6 +93,7 @@ $fitElements = {
     "Dataset",
     "Elements",
     "Events",
+    "FitnessData",
     "RawData",
     "Records",
     "MessageInformation",

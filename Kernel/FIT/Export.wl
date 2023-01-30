@@ -13,16 +13,16 @@ $ContextAliases[ "int`" ] = "Internal`";
 (* ::Section::Closed:: *)
 (*Messages*)
 
-FITExport::InitializeMessageFailure =
+ComputationalFitness::InitializeMessageFailure =
 "Unable to initialize message vector for message type `1`.";
 
-FITExport::InvalidMessage =
+ComputationalFitness::InvalidMessage =
 "Invalid message data: `1`.";
 
-FITExport::InvalidMessages =
+ComputationalFitness::InvalidMessages =
 "The given messages are not valid.";
 
-FITExport::InvalidTSData =
+ComputationalFitness::InvalidTSData =
 "The given time series data is not valid.";
 
 (* ::**************************************************************************************************************:: *)
@@ -167,7 +167,7 @@ makeRawData[ messages_ ] :=
         packed = dev`ToPackedArray @ vectors;
         If[ packedIntegerArrayQ @ packed,
             packed,
-            throwFailure[ FITExport::InvalidMessages, packed ]
+            throwFailure[ ComputationalFitness::InvalidMessages, packed ]
         ]
     ];
 
@@ -271,7 +271,7 @@ initializeMessageVector[ name_String ] := Enclose[
         packed = ConfirmBy[ dev`ToPackedArray @ vector, packedIntegerArrayQ ];
         initializeMessageVector[ name ] = packed
     ],
-    throwFailure[ FITExport::InitializeMessageFailure, name, # ] &
+    throwFailure[ ComputationalFitness::InitializeMessageFailure, name, # ] &
 ];
 
 initializeMessageVector[ KeyValuePattern[ "MessageType" -> mesgType_ ] ] :=
@@ -307,7 +307,7 @@ toMessageVector[ message_ ] :=
 
         If[ packedIntegerArrayQ @ packed,
             packed,
-            messagePrint[ FITExport::InvalidMessage, message, packed ];
+            messagePrint[ ComputationalFitness::InvalidMessage, message, packed ];
             Nothing
         ]
     ];
@@ -386,7 +386,7 @@ tsToMessageList[ as_Association ] :=
 
         If[ TrueQ @ messageListQ @ messages,
             messages,
-            throwFailure[ FITExport::InvalidTSData, as, messages ]
+            throwFailure[ ComputationalFitness::InvalidTSData, as, messages ]
         ]
     ];
 

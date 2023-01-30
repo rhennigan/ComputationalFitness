@@ -18,6 +18,8 @@ cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
 cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
 cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
 
+RH`ComputationalFitnessLoader`$BuildingMX = True;
+
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paths*)
@@ -55,7 +57,7 @@ If[ FileExistsQ @ $mxFile,
 
 cicd`ConsoleLog[ "Loading paclet..." ];
 cicd`ScriptConfirmBy[ PacletDirectoryLoad @ $pacletDir, MemberQ @ $pacletDir ];
-cicd`ScriptConfirm @ Needs[ "RH`ComputationalFitness`" ];
+cicd`ScriptConfirm @ Get[ "RH`ComputationalFitness`" ];
 
 $mxDir = cDir @ gu`EnsureDirectory @ DirectoryName @ $mxFile;
 cicd`ConsoleLog @ SequenceForm[ "MX target directory: ", $mxDir  ];

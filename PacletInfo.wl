@@ -4,11 +4,12 @@ PacletObject[ <|
     "Creator"          -> "Richard Hennigan (Wolfram Research)",
     "ActionURL"        -> "$ActionURL$",
     "BuildDate"        -> "$BuildDate$",
-    "Version"          -> "0.5.0",
+    "Version"          -> "0.6.0",
     "WolframVersion"   -> "13.0+",
     "PublisherID"      -> "RH",
     "SourceControlURL" -> "https://github.com/rhennigan/ComputationalFitness",
     "License"          -> "MIT",
+    "Icon"             -> "Images/PacletIcon.png",
     "Extensions"       -> {
         {
             "Kernel",
@@ -44,10 +45,12 @@ PacletObject[ <|
         {
             "Asset",
             "Assets"   -> {
-                { "License"    , "./LICENSE"     },
-                { "ExampleData", "./ExampleData" },
-                { "Source"     , "./Source"      },
-                { "Data"       , "./Data"        }
+                { "Data"        , "./Data"         },
+                { "ExampleData" , "./ExampleData"  },
+                { "Images"      , "./Images"       },
+                { "ImportExport", "./ImportExport" },
+                { "License"     , "./LICENSE"      },
+                { "Source"      , "./Source"       }
             }
         },
         {

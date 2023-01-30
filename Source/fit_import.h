@@ -17,6 +17,7 @@
 #define FIT_IMPORT_ERROR_UNSUPPORTED_PROTOCOL 11
 #define FIT_IMPORT_ERROR_INTERNAL             12
 #define FIT_IMPORT_ERROR_OPEN_FILE            13
+#define FIT_IMPORT_NO_FILE_ID                 14
 
 #define DONE                             1685024357
 #define FIT_MESG_NUM_MESSAGE_INFORMATION 1768842863
