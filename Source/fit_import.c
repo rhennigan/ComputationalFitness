@@ -110,48 +110,47 @@ DLLEXPORT int FITFileType (
         } while (convert_return == FIT_CONVERT_MESSAGE_AVAILABLE);
     }
 
-    #if defined(RETURN_PARTIAL_DATA)
     fclose(file);
-    MArgument_setInteger(Res, res);
-    return LIBRARY_NO_ERROR;
+
+    #if defined(RETURN_PARTIAL_DATA)
+    if (res >= 0) {
+        MArgument_setInteger(Res, res);
+        return LIBRARY_NO_ERROR;
+    }
+    else {
+        return FIT_IMPORT_NO_FILE_ID;
+    }
     #endif
 
-    if (convert_return == FIT_CONVERT_ERROR)
+    switch (convert_return)
     {
-        // Error decoding file
-        fclose(file);
-        return FIT_IMPORT_ERROR_CONVERSION;
+        case FIT_CONVERT_ERROR:
+            // Error decoding file
+            return FIT_IMPORT_ERROR_CONVERSION;
+
+        case FIT_CONVERT_CONTINUE:
+            // Unexpected end of file
+            return FIT_IMPORT_ERROR_UNEXPECTED_EOF;
+
+        case FIT_CONVERT_DATA_TYPE_NOT_SUPPORTED:
+            // File is not FIT
+            return FIT_IMPORT_ERROR_NOT_FIT_FILE;
+
+        case FIT_CONVERT_PROTOCOL_VERSION_NOT_SUPPORTED:
+            // Protocol version not supported
+            return FIT_IMPORT_ERROR_UNSUPPORTED_PROTOCOL;
+
+        case FIT_CONVERT_END_OF_FILE:
+            if (res >= 0) {
+                MArgument_setInteger(Res, res);
+                return LIBRARY_NO_ERROR;
+            }
+            else {
+                return FIT_IMPORT_NO_FILE_ID;
+            }
     }
 
-    if (convert_return == FIT_CONVERT_CONTINUE)
-    {
-        // Unexpected end of file
-        fclose(file);
-        return FIT_IMPORT_ERROR_UNEXPECTED_EOF;
-    }
-
-    if (convert_return == FIT_CONVERT_DATA_TYPE_NOT_SUPPORTED)
-    {
-        // File is not FIT
-        fclose(file);
-        return FIT_IMPORT_ERROR_NOT_FIT_FILE;
-    }
-
-    if (convert_return == FIT_CONVERT_PROTOCOL_VERSION_NOT_SUPPORTED)
-    {
-        // Protocol version not supported
-        fclose(file);
-        return FIT_IMPORT_ERROR_UNSUPPORTED_PROTOCOL;
-    }
-
-    if (convert_return == FIT_CONVERT_END_OF_FILE)
-        // printf("File converted successfully.\n");
-
-    fclose(file);
-
-    MArgument_setInteger(Res, res);
-
-    return LIBRARY_NO_ERROR;
+    return FIT_IMPORT_ERROR_INTERNAL;
 }
 
 

@@ -6,12 +6,18 @@ RH`ComputationalFitnessLoader`$MXFile = FileNameJoin @ {
     "ComputationalFitness.mx"
 };
 
-If[ FileExistsQ @ RH`ComputationalFitnessLoader`$MXFile,
-    Get[ RH`ComputationalFitnessLoader`$MXFile ],
-    Block[ { $ContextPath },
-        Quiet[ Get[ "RH`ComputationalFitness`Package`" ], General::shdw ]
-    ]
-];
+Quiet[
 
-RH`ComputationalFitness`Package`$thisPacletLocation =
-    DirectoryName[ $InputFileName, 2 ];
+    If[ FileExistsQ @ RH`ComputationalFitnessLoader`$MXFile,
+        Get @ RH`ComputationalFitnessLoader`$MXFile,
+        WithCleanup[
+            Get[ "RH`ComputationalFitness`Package`" ],
+            { $Context, $ContextPath, $ContextAliases } = { ## }
+        ] & [ $Context, $ContextPath, $ContextAliases ]
+    ];
+
+    If[ ! TrueQ @ RH`ComputationalFitnessLoader`$BuildingMX,
+        RH`ComputationalFitness`Package`initialize[ ]
+    ],
+    General::shdw
+];

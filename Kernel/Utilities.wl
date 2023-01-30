@@ -174,7 +174,7 @@ catchTop[ eval_ ] :=
 catchTop[ eval_, sym_Symbol ] :=
     Block[
         {
-            $messageSymbol = sym,
+            $messageSymbol = Replace[ $messageSymbol, ComputationalFitness -> sym ],
             $catching      = True,
             $failed        = False,
             catchTop       = # &,
@@ -201,7 +201,7 @@ catchFormattingTop // Attributes = { HoldFirst };
 catchFormattingTop[ eval_, fmt_, sym_Symbol ] :=
     Block[
         {
-            $messageSymbol     = sym,
+            $messageSymbol     = Replace[ $messageSymbol, ComputationalFitness -> sym ],
             $catching          = True,
             $failed            = False,
             $formatting        = True,
@@ -269,7 +269,7 @@ messageFailure[ t_String, args___ ] :=
         If[ StringQ @ MessageName[ s, t ],
             messageFailure[ MessageName[ s, t ], args ],
             If[ StringQ @ MessageName[ ComputationalFitness, t ],
-                MessageName[ s, t ] = MessageName[ ComputationalFitness, t ];
+                blockProtected[ { s }, MessageName[ s, t ] = MessageName[ ComputationalFitness, t ] ];
                 messageFailure[ MessageName[ s, t ], args ],
                 throwInternalFailure @ messageFailure[ t, args ]
             ]
@@ -306,6 +306,26 @@ messagePrint[ args___ ] := WithCleanup[
 ];
 
 messagePrint // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*blockProtected*)
+blockProtected // beginDefinition;
+blockProtected // Attributes = { HoldAll };
+
+blockProtected[ { symbols___Symbol }, evaluation_ ] :=
+    Module[ { protected },
+        WithCleanup[
+            protected = Unprotect @ symbols,
+            evaluation,
+            Protect @@ protected
+        ]
+    ];
+
+blockProtected[ symbol_Symbol, evaluation_ ] :=
+    blockProtected[ { symbol }, evaluation ];
+
+blockProtected // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)

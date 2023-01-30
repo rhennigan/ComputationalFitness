@@ -9,43 +9,43 @@ Begin[ "`Private`" ];
 (* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Messages*)
-FITImport::Internal =
-"An unexpected error occurred. `1`";
-
-FITImport::InvalidFile =
+ComputationalFitness::InvalidFile =
 "First argument `1` is not a valid file, directory, or URL specification.";
 
-FITImport::InvalidFitFile =
+ComputationalFitness::InvalidFITFile =
 "Cannot import data as FIT format.";
 
-FITImport::InvalidElement =
+ComputationalFitness::EmptyFITFile =
+"No supported FIT messages found.";
+
+ComputationalFitness::InvalidFITElement =
 "The import element \"`1`\" is not present when importing as FIT.";
 
-FITImport::BadElementSpecification =
+ComputationalFitness::BadElementSpecification =
 "The import element specification \"`1`\" is not valid.";
 
-FITImport::FileNotFound =
+ComputationalFitness::FileNotFound =
 "File `1` not found.";
 
-FITImport::CopyTemporaryFailed =
+ComputationalFitness::CopyTemporaryFailed =
 "Failed to copy source to a temporary file.";
 
-FITImport::ArgumentCount =
+ComputationalFitness::FITImportArgumentCount =
 "FITImport called with `1` arguments; between 1 and 2 arguments are expected.";
 
-FITImport::InvalidMaxHR =
+ComputationalFitness::InvalidMaxHR =
 "The value `1` is not a valid value for maximum heart rate.";
 
-FITImport::InvalidWeight =
+ComputationalFitness::InvalidWeight =
 "The value `1` is not a valid value for weight.";
 
-FITImport::InvalidUnitSystem =
+ComputationalFitness::InvalidUnitSystem =
 "The value `1` is not a valid value for UnitSystem.";
 
-FITImport::NoRecordsAvailable =
+ComputationalFitness::FITNoRecordsAvailable =
 "No records available in the specified FIT file.";
 
-FITImport::InvalidMessageInformation =
+ComputationalFitness::InvalidMessageInformation =
 "The stored MessageInformation is corrupt and cannot be used.";
 
 (* ::**************************************************************************************************************:: *)
@@ -101,7 +101,7 @@ FITImport[ file_, "Dataset", opts: OptionsPattern[ ] ] :=
         data = FITImport[ file, "Data", opts ];
         If[ MatchQ[ data, { __Association } ],\
             Dataset @ KeyDrop[ data, "MessageType" ],
-            throwFailure[ FITImport::NoRecordsAvailable ]
+            throwFailure[ ComputationalFitness::FITNoRecordsAvailable ]
         ]
     ];
 
@@ -252,8 +252,8 @@ FITImport[ file_, "CriticalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
 FITImport[ $$source, { ___, e: Except[ $$props ], ___ }, OptionsPattern[ ] ] :=
     catchTopAs[ FITImport ][
         If[ StringQ @ e,
-            throwFailure[ FITImport::InvalidElement         , e ],
-            throwFailure[ FITImport::BadElementSpecification, e ]
+            throwFailure[ ComputationalFitness::InvalidFITElement      , e ],
+            throwFailure[ ComputationalFitness::BadElementSpecification, e ]
         ]
     ];
 
@@ -261,24 +261,24 @@ FITImport[ $$source, { ___, e: Except[ $$props ], ___ }, OptionsPattern[ ] ] :=
 FITImport[ $$source, e: Except[ $$props ], OptionsPattern[ ] ] :=
     catchTopAs[ FITImport ][
         If[ StringQ @ e,
-            throwFailure[ FITImport::InvalidElement         , e ],
-            throwFailure[ FITImport::BadElementSpecification, e ]
+            throwFailure[ ComputationalFitness::InvalidFITElement      , e ],
+            throwFailure[ ComputationalFitness::BadElementSpecification, e ]
         ]
     ];
 
 FITImport[ source: $$source, _, opts: OptionsPattern[ ] ] :=
-    catchTopAs[ FITImport ] @ throwFailure[ FITImport::FileNotFound, source ];
+    catchTopAs[ FITImport ] @ throwFailure[ ComputationalFitness::FileNotFound, source ];
 
 FITImport[ source: Except @ $$source, _, opts: OptionsPattern[ ] ] :=
-    catchTopAs[ FITImport ] @ throwFailure[ FITImport::InvalidFile, source ];
+    catchTopAs[ FITImport ] @ throwFailure[ ComputationalFitness::InvalidFile, source ];
 
 FITImport[ source: $$source, elem_String, opts: OptionsPattern[ ] ] /;
     ! elementQ @ elem :=
-        catchTopAs[ FITImport ] @ throwFailure[ FITImport::InvalidElement, elem ];
+        catchTopAs[ FITImport ] @ throwFailure[ ComputationalFitness::InvalidFITElement, elem ];
 
 FITImport[ args___ ] :=
     catchTopAs[ FITImport ] @ With[ { len = Length @ HoldComplete @ args },
-        throwFailure[ FITImport::ArgumentCount, len ]
+        throwFailure[ ComputationalFitness::FITImportArgumentCount, len ]
     ];
 
 (* ::**************************************************************************************************************:: *)
@@ -584,7 +584,7 @@ setUnitSystem[ "Statute" ] := "Imperial";
 setUnitSystem[ "SI" ] := "Metric";
 setUnitSystem[ KeyValuePattern[ "UnitSystem" -> u_ ] ] := setUnitSystem @ u;
 setUnitSystem[ KeyValuePattern[ UnitSystem -> u_ ] ] := setUnitSystem @ u;
-setUnitSystem[ units_ ] := throwFailure[ FITImport::InvalidUnitSystem, units ];
+setUnitSystem[ units_ ] := throwFailure[ ComputationalFitness::InvalidUnitSystem, units ];
 setUnitSystem // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
@@ -610,7 +610,7 @@ setMaxHR[ hr_Integer    ] := N @ hr;
 setMaxHR[ hr_Real       ] := hr;
 setMaxHR[ Quantity[ hr_, "Beats"/"Minutes" ] ] := setMaxHR @ hr;
 setMaxHR[ hr_Quantity ] := setMaxHR @ UnitConvert[ hr, "Beats"/"Minutes" ];
-setMaxHR[ hr_ ] := throwFailure[ FITImport::InvalidMaxHR, hr ];
+setMaxHR[ hr_ ] := throwFailure[ ComputationalFitness::InvalidMaxHR, hr ];
 setMaxHR // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
@@ -623,7 +623,7 @@ setWeight[ w_Integer     ] := N @ w;
 setWeight[ w_Real        ] := w;
 setWeight[ Quantity[ w_, "Kilograms" ] ] := setWeight @ w;
 setWeight[ w_Quantity ] := setWeight @ UnitConvert[ w, "Kilograms" ];
-setWeight[ w_ ] := throwFailure[ FITImport::InvalidWeight, w ];
+setWeight[ w_ ] := throwFailure[ ComputationalFitness::InvalidWeight, w ];
 setWeight // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
@@ -633,7 +633,7 @@ setSport // beginDefinition;
 setSport[ Automatic     ] := Automatic;
 setSport[ None|_Missing ] := None;
 setSport[ s_String      ] := s;
-setSport[ s_            ] := throwFailure[ FITImport::InvalidSport, s ];
+setSport[ s_            ] := throwFailure[ ComputationalFitness::InvalidSport, s ];
 setSport // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
@@ -668,6 +668,12 @@ fitImport0[ source_, file_, data_List? rawDataQ ] := (
     setPreferences @ data;
     data
 );
+
+fitImport0[ source_, file_, { } ] :=
+    If[ FITFormatQ @ file,
+        throwFailure[ "EmptyFITFile"  , source ],
+        throwFailure[ "InvalidFITFile", source ]
+    ];
 
 fitImport0[ source_, file_, err_LibraryFunctionError ] :=
     libraryError[ source, file, err ];
@@ -798,7 +804,7 @@ toFileString[ file_ ] :=
                 $fileByteCount = Quiet @ FileByteCount @ file
             ];
             str,
-            throwFailure[ FITImport::InvalidFile, file ]
+            throwFailure[ ComputationalFitness::InvalidFile, file ]
         ]
     ];
 
@@ -850,7 +856,7 @@ addTempFile[ file: $$string, files_Internal`Bag ] := (
     file
 );
 
-addTempFile[ other_ ] := throwFailure[ FITImport::CopyTemporaryFailed, other ];
+addTempFile[ other_ ] := throwFailure[ ComputationalFitness::CopyTemporaryFailed, other ];
 
 addTempFile // endDefinition;
 

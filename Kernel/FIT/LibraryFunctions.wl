@@ -41,6 +41,9 @@ ComputationalFitness::LibraryErrorInternal =
 ComputationalFitness::LibraryErrorOpenFile =
 "Cannot read from file `2`. Check permissions and try again.";
 
+ComputationalFitness::LibraryErrorNoFileID =
+"No FileID message found in `1`.";
+
 ComputationalFitness::CompiledCodeFunctionRecompileFile =
 "Could not recompile the library file at `1` due to a privilege violation. \
 Try restarting the kernel and try again.";
@@ -419,7 +422,8 @@ $libraryErrorCodes = <|
     10 -> "LibraryErrorConversion",
     11 -> "LibraryErrorUnsupportedProtocol",
     12 -> "LibraryErrorInternal",
-    13 -> "LibraryErrorOpenFile"
+    13 -> "LibraryErrorOpenFile",
+    14 -> "LibraryErrorNoFileID"
 |>;
 
 (* ::**************************************************************************************************************:: *)
