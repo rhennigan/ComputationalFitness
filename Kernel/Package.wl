@@ -85,7 +85,9 @@ GeneralUtilities`UnprotectAndClearAll[
     `recompileLibraries,
     `registeredFormatQ,
     `registerFormats,
+    `secondsToQuantity, (* TODO: move to a dedicated Units.wl file *)
     `setIfUndefined,
+    `sourceFileApply,
     `throwFailure,
     `throwInternalFailure,
     `toNiceCamelCase

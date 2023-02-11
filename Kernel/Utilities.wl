@@ -33,6 +33,12 @@ ComputationalFitness::UnsupportedMessageTypes =
 "The following message types are defined in the SDK but not handled at \
 top-level: `1`.";
 
+ComputationalFitness::InvalidFile =
+"First argument `1` is not a valid file, directory, or URL specification.";
+
+ComputationalFitness::CopyTemporaryFailed =
+"Failed to copy source to a temporary file.";
+
 ComputationalFitness::InvalidXML =
 "Cannot import data as XML format.";
 
@@ -377,7 +383,100 @@ $bugReportLink := $bugReportLink = Hyperlink[
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
-(*Misc*)
+(*Files*)
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*sourceFileApply*)
+sourceFileApply // beginDefinition;
+
+sourceFileApply[ function_, source_ ] :=
+    Block[ { $tempFiles = Internal`Bag[ ] },
+        WithCleanup[
+            function[ source, toFileString @ source ],
+            DeleteFile /@ Internal`BagPart[ $tempFiles, All ]
+        ]
+    ];
+
+sourceFileApply // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*toFileString*)
+toFileString // beginDefinition;
+
+toFileString[ file_ ] :=
+    With[ { str = toFileString0 @ file },
+        If[ StringQ @ str,
+            str,
+            throwFailure[ ComputationalFitness::InvalidFile, file ]
+        ]
+    ];
+
+toFileString // endDefinition;
+
+
+toFileString0 // beginDefinition;
+
+toFileString0[ source_ ] := Switch[
+    source,
+    $$string, ExpandFileName @ source,
+    $$file,   ExpandFileName @ source,
+    $$url,    createTemporary @ source,
+    $$co,     createTemporary @ source,
+    $$lo,     createTemporary @ source,
+    $$resp,   createTemporary @ source,
+    ___,      throwFailure[ ComputationalFitness::InvalidFile, source ]
+];
+
+toFileString0 // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*createTemporary*)
+createTemporary // beginDefinition;
+
+createTemporary[ source_ ] := Switch[
+    source,
+    $$url,   addTempFile @ URLDownload[ source, $tempFile ],
+    $$co,    addTempFile @ CopyFile[ source, $tempFile ],
+    $$lo,    addTempFile @ CopyFile[ source, $tempFile ],
+    $$resp,  addTempFile @ With[ { file = $tempFile },
+                    WithCleanup[
+                        BinaryWrite[ file, First @ source ],
+                        Close @ file
+                    ]
+                ],
+    ___,     throwFailure[ ComputationalFitness::InvalidFile, source ]
+];
+
+createTemporary // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*addTempFile*)
+addTempFile // beginDefinition;
+
+addTempFile[ file_? FileExistsQ ] :=
+    addTempFile[ ExpandFileName @ file, $tempFiles ];
+
+addTempFile[ file_String, files_Internal`Bag ] := (
+    Internal`StuffBag[ files, file ];
+    file
+);
+
+addTempFile[ other_ ] := throwFailure[ ComputationalFitness::CopyTemporaryFailed, other ];
+
+addTempFile // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*$tempFile*)
+$tempFile // ClearAll;
+$tempFile := FileNameJoin @ {
+    GeneralUtilities`EnsureDirectory @ { $TemporaryDirectory, "RH", "ComputationalFitness" },
+    CreateUUID[ ]
+};
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -402,7 +501,8 @@ optionsAssociation // endDefinition;
 (* ::Subsection::Closed:: *)
 (*importXML*)
 importXML // beginDefinition;
-importXML[ file_ ] := importXML[ file, ReadString @ file ];
+importXML[ bytes_ByteArray ] := importXML[ bytes, ByteArrayToString @ bytes ];
+importXML[ file_? FileExistsQ ] := importXML[ file, ReadString @ file ];
 importXML[ file_, xml_String ] := importXML[ file, ImportString[ StringTrim @ xml, "XML" ] ];
 importXML[ file_, xml: XMLObject[ _ ][ ___ ] ] := xml;
 importXML[ file_, bad_ ] := throwFailure[ "InvalidXML", file ];

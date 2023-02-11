@@ -2028,8 +2028,9 @@ static const FIT_WXF_EXPRESSION_MESG_DEF wxf_expression_mesg_def =
    0, // reserved_1
    FIT_ARCH_ENDIAN, // arch
    FIT_MESG_NUM_WXF_EXPRESSION, // global_mesg_num
-   5, // num_fields
+   6, // num_fields
    { // field_def_num, size, base_type
+      FIT_WXF_EXPRESSION_FIELD_NUM_NAME, (sizeof(FIT_STRING)*32), FIT_BASE_TYPE_STRING,
       FIT_WXF_EXPRESSION_FIELD_NUM_UUID, (sizeof(FIT_UUID)*4), FIT_BASE_TYPE_UINT32,
       FIT_WXF_EXPRESSION_FIELD_NUM_WXF, (sizeof(FIT_BYTE_ARRAY)*128), FIT_BASE_TYPE_BYTE,
       FIT_WXF_EXPRESSION_FIELD_NUM_PART_NUMBER, (sizeof(FIT_UINT16)*1), FIT_BASE_TYPE_UINT16,

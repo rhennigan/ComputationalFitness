@@ -1,6 +1,7 @@
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
+(* cSpell:ignore ifit *)
 BeginPackage[ "RH`ComputationalFitness`FIT`" ];
 Needs[ "RH`ComputationalFitness`" ];
 Needs[ "RH`ComputationalFitness`Package`" ];
@@ -490,6 +491,8 @@ indexTranslate[ "TrainingFile", fitTrainingFileValue ];
 (* ::Subsubsection::Closed:: *)
 (*WorkoutStep*)
 setFieldDefinitions[ fitWorkoutStepValue, ifitWorkoutStepValue, "WorkoutStep" ];
+
+(* TODO: check against spec defined here https://developer.garmin.com/fit/file-types/workout/ *)
 
 fitWorkoutStepValue[ "CustomTargetValueHigh"         , v_ ] := fitWktTargetValue[ v[[ "CustomTargetValueHigh" ]], v[[ "TargetType" ]] ];
 fitWorkoutStepValue[ "CustomTargetValueLow"          , v_ ] := fitWktTargetValue[ v[[ "CustomTargetValueLow" ]], v[[ "TargetType" ]] ];
@@ -2417,7 +2420,7 @@ fitWktTargetPower[ ___ ] := Missing[ "NotAvailable" ];
 fitPZRange // ClearAll;
 fitPZRange[ w_Integer ] := fitPZRange[ w, $ftp ];
 fitPZRange[ w: $$powerZone, ftp_? NumberQ ] := Quantity[ Interval[ $pzBuckets[[ w ]]*ftp ], "Watts" ];
-fitPZRange[ w: $$powerZone, ftp_ ] := Quantity[ Interval[ $pzBuckets[[ w ]]*100 ], "Percent" ] * QuantityVariable[ "FTP", "Power" ];
+fitPZRange[ w: $$powerZone, ftp_ ] := Interval[ $pzBuckets[[ w ]] * QuantityVariable[ "FTP", "Power" ] ];
 fitPZRange[ w_, _ ] := w;
 fitPZRange[ ___ ] := Missing[ "NotAvailable" ];
 

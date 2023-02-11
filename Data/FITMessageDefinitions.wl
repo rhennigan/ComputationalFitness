@@ -13528,13 +13528,13 @@
     "WXFExpression" -> <|
         "MessageName"   -> "WXFExpression",
         "MessageNumber" -> 65281,
-        "Size"          -> 137,
+        "Size"          -> 169,
         "Fields"        -> <|
             "ByteCount" -> <|
                 "Comment"         -> "the byte count of this WXF fragment",
                 "Dimensions"      -> { },
                 "FieldName"       -> "ByteCount",
-                "Index"           -> 137,
+                "Index"           -> 169,
                 "Interpreter"     -> "fitUINT8",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "byte_count",
@@ -13542,11 +13542,23 @@
                 "Type"            -> "UnsignedInteger8"
             |>
             ,
+            "Name" -> <|
+                "Comment"         -> "the name of the full WXF payload",
+                "Dimensions"      -> { 32 },
+                "FieldName"       -> "Name",
+                "Index"           -> 3;;34,
+                "Interpreter"     -> "fitString",
+                "Invalid"         -> 0,
+                "NativeFieldName" -> "name",
+                "NativeType"      -> "FIT_STRING",
+                "Type"            -> "String"
+            |>
+            ,
             "Partial" -> <|
                 "Comment"         -> "whether the WXF payload is split across messages",
                 "Dimensions"      -> { },
                 "FieldName"       -> "Partial",
-                "Index"           -> 136,
+                "Index"           -> 168,
                 "Interpreter"     -> "fitBool",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "partial",
@@ -13558,7 +13570,7 @@
                 "Comment"         -> "the part number of this WXF fragment",
                 "Dimensions"      -> { },
                 "FieldName"       -> "PartNumber",
-                "Index"           -> 135,
+                "Index"           -> 167,
                 "Interpreter"     -> "fitUINT16",
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "part_number",
@@ -13570,7 +13582,7 @@
                 "Comment"         -> "IntegerString[FromDigits[uuid, 2^32], 16]",
                 "Dimensions"      -> { 4 },
                 "FieldName"       -> "UUID",
-                "Index"           -> 3;;6,
+                "Index"           -> 35;;38,
                 "Interpreter"     -> "fitUUID",
                 "Invalid"         -> 4294967295,
                 "NativeFieldName" -> "uuid",
@@ -13582,7 +13594,7 @@
                 "Comment"         -> "the WXF data",
                 "Dimensions"      -> { 128 },
                 "FieldName"       -> "WXF",
-                "Index"           -> 7;;134,
+                "Index"           -> 39;;166,
                 "Interpreter"     -> "fitByteArray",
                 "Invalid"         -> 255,
                 "NativeFieldName" -> "wxf",

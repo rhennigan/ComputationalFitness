@@ -3472,11 +3472,12 @@ static void export_wxf_expression(WolframLibraryData libData, MTensor data, int 
     FIT_WXF_EXPRESSION_MESG mesg;
     Fit_InitMesg(fit_mesg_defs[FIT_MESG_WXF_EXPRESSION], &mesg);
 
-    ExportIntegerSequence(3, libData, data, pos, mesg.uuid, FIT_WXF_EXPRESSION_MESG_UUID_COUNT);
-    ExportIntegerSequence(7, libData, data, pos, mesg.wxf, FIT_WXF_EXPRESSION_MESG_WXF_COUNT);
-    ExportInteger(135, libData, data, pos, mesg.part_number);
-    ExportInteger(136, libData, data, pos, mesg.partial);
-    ExportInteger(137, libData, data, pos, mesg.byte_count);
+    ExportString(3, libData, data, pos, mesg.name, FIT_WXF_EXPRESSION_MESG_NAME_COUNT);
+    ExportIntegerSequence(35, libData, data, pos, mesg.uuid, FIT_WXF_EXPRESSION_MESG_UUID_COUNT);
+    ExportIntegerSequence(39, libData, data, pos, mesg.wxf, FIT_WXF_EXPRESSION_MESG_WXF_COUNT);
+    ExportInteger(167, libData, data, pos, mesg.part_number);
+    ExportInteger(168, libData, data, pos, mesg.partial);
+    ExportInteger(169, libData, data, pos, mesg.byte_count);
 
     WriteMessageDefinition(FIT_MESG_NUM_WXF_EXPRESSION, local_mesg_number, fit_mesg_defs[FIT_MESG_WXF_EXPRESSION], FIT_WXF_EXPRESSION_MESG_DEF_SIZE, fp);
     WriteMessage(local_mesg_number, &mesg, FIT_WXF_EXPRESSION_MESG_SIZE, fp);

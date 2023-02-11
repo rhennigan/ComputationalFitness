@@ -9,9 +9,6 @@ Begin[ "`Private`" ];
 (* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Messages*)
-ComputationalFitness::InvalidFile =
-"First argument `1` is not a valid file, directory, or URL specification.";
-
 ComputationalFitness::InvalidFITFile =
 "Cannot import data as FIT format.";
 
@@ -26,9 +23,6 @@ ComputationalFitness::BadElementSpecification =
 
 ComputationalFitness::FileNotFound =
 "File `1` not found.";
-
-ComputationalFitness::CopyTemporaryFailed =
-"Failed to copy source to a temporary file.";
 
 ComputationalFitness::FITImportArgumentCount =
 "FITImport called with `1` arguments; between 1 and 2 arguments are expected.";
@@ -642,19 +636,11 @@ setSport // endDefinition;
 fitImport // beginDefinition;
 fitImport[ data_? rawDataQ  ] := data;
 fitImport[ compact_? compactFitFitnessDataQ ] := fromCompactRawData @ compact;
-fitImport[ source: $$source ] := cached @ fitImport0 @ source;
+fitImport[ source: $$source ] := cached @ sourceFileApply[ fitImport0, source ];
 fitImport // endDefinition;
 
 
 fitImport0 // beginDefinition;
-
-fitImport0[ source_ ] :=
-    Block[ { $tempFiles = Internal`Bag[ ] },
-        WithCleanup[
-            fitImport0[ source, toFileString @ source ],
-            DeleteFile /@ Internal`BagPart[ $tempFiles, All ]
-        ]
-    ];
 
 fitImport0[ source_, file_String ] :=
     fitImport0[
@@ -685,13 +671,7 @@ fitImport0 // endDefinition;
 (*fitMessageTypes*)
 fitMessageTypes // beginDefinition;
 
-fitMessageTypes[ source: $$source ] :=
-    Block[ { $tempFiles = Internal`Bag[ ] },
-        WithCleanup[
-            fitMessageTypes[ source, toFileString @ source ],
-            DeleteFile /@ Internal`BagPart[ $tempFiles, All ]
-        ]
-    ];
+fitMessageTypes[ source: $$source ] := cached @ sourceFileApply[ fitMessageTypes, source ];
 
 fitMessageTypes[ FitnessData[ KeyValuePattern[ "MessageInformation" -> info_ ] ] ] := Enclose[
     ConfirmBy[ Developer`ToPackedArray @ info, rawDataQ ],
@@ -791,83 +771,6 @@ makeElementData[ file_, data_, element_, opts: OptionsPattern[ ] ] :=
     FITImport[ file, element, opts ];
 
 makeElementData // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*toFileString*)
-toFileString // beginDefinition;
-
-toFileString[ file_ ] :=
-    With[ { str = toFileString0 @ file },
-        If[ StringQ @ str,
-            If[ $setFileByteCount,
-                $fileByteCount = Quiet @ FileByteCount @ file
-            ];
-            str,
-            throwFailure[ ComputationalFitness::InvalidFile, file ]
-        ]
-    ];
-
-toFileString // endDefinition;
-
-toFileString0 // beginDefinition;
-toFileString0[ source: $$string ] := ExpandFileName @ source;
-toFileString0[ source: $$file   ] := ExpandFileName @ source;
-toFileString0[ source: $$url    ] := createTemporary @ source;
-toFileString0[ source: $$co     ] := createTemporary @ source;
-toFileString0[ source: $$lo     ] := createTemporary @ source;
-toFileString0[ source: $$resp   ] := createTemporary @ source;
-toFileString0 // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*createTemporary*)
-createTemporary // beginDefinition;
-
-createTemporary[ source: $$url ] :=
-    addTempFile @ URLDownload[ source, $tempFile ];
-
-createTemporary[ source: $$co ] :=
-    addTempFile @ CopyFile[ source, $tempFile ];
-
-createTemporary[ source: $$lo ] :=
-    addTempFile @ CopyFile[ source, $tempFile ];
-
-createTemporary[ source: $$resp ] :=
-    addTempFile @ With[ { file = $tempFile },
-        WithCleanup[
-            BinaryWrite[ file, First @ source ],
-            Close @ file
-        ]
-    ];
-
-createTemporary // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*addTempFile*)
-addTempFile // beginDefinition;
-
-addTempFile[ file_? FileExistsQ ] :=
-    addTempFile[ ExpandFileName @ file, $tempFiles ];
-
-addTempFile[ file: $$string, files_Internal`Bag ] := (
-    Internal`StuffBag[ files, file ];
-    file
-);
-
-addTempFile[ other_ ] := throwFailure[ ComputationalFitness::CopyTemporaryFailed, other ];
-
-addTempFile // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$tempFile*)
-$tempFile // ClearAll;
-$tempFile := FileNameJoin @ {
-    GeneralUtilities`EnsureDirectory @ { $TemporaryDirectory, "FITImport" },
-    CreateUUID[ ] <> ".fit"
-};
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)

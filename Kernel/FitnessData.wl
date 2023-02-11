@@ -8,6 +8,7 @@ Begin[ "`Private`" ];
 (* TODO:
     * UpValues for Information/InformationData
     * Create FitnessData.wl in FIT directory for FIT-specific definitions
+    * Format with relative time strings (ResourceFunction["RelativeTimeString"])
 *)
 
 $ContextAliases[ "sp`" ] = "System`Private`";
@@ -186,6 +187,19 @@ fitnessDataStaticProperty // endDefinition;
 (* ::Section::Closed:: *)
 (*UpValues*)
 
+(* TODO (maybe):
+    * DateInterval
+    * DateObject
+    * DatePlus
+    * DateSelect
+    * Duration
+    * MaxDate
+    * MinDate
+    * TimeObject
+    * TimeSeries
+    * TimeZoneConvert
+*)
+
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Normal*)
@@ -257,11 +271,7 @@ fitnessDataGeoPosition // endDefinition;
 (* ::Section::Closed:: *)
 (*Formatting*)
 
-Global`bag = Internal`Bag[ ];
-$allowFormatting := (
-    Internal`StuffBag[ Global`bag, Attributes @ OutputForm ];
-    MemberQ[ Attributes @ OutputForm, Protected ]
-);
+$allowFormatting := MemberQ[ Attributes @ OutputForm, Protected ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
