@@ -2019,7 +2019,7 @@ static const FIT_HRV_MESG_DEF hrv_mesg_def =
    FIT_MESG_NUM_HRV, // global_mesg_num
    1, // num_fields
    { // field_def_num, size, base_type
-      FIT_HRV_FIELD_NUM_TIME, (sizeof(FIT_UINT16)*1), FIT_BASE_TYPE_UINT16,
+      FIT_HRV_FIELD_NUM_TIME, (sizeof(FIT_UINT16)*5), FIT_BASE_TYPE_UINT16,
    }
 };
 

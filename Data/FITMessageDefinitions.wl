@@ -4424,13 +4424,13 @@
     "HeartRateVariability" -> <|
         "MessageName"   -> "HeartRateVariability",
         "MessageNumber" -> 78,
-        "Size"          -> 3,
+        "Size"          -> 7,
         "Fields"        -> <|
             "Time" -> <|
                 "Comment"         -> "1000 * s + 0, Time between beats",
-                "Dimensions"      -> { 1 },
+                "Dimensions"      -> { 5 },
                 "FieldName"       -> "Time",
-                "Index"           -> 3;;3,
+                "Index"           -> 3;;7,
                 "Interpreter"     -> { "fitQuantity", "fitUINT16A", "Seconds", 1000, 0 },
                 "Invalid"         -> 65535,
                 "NativeFieldName" -> "time",

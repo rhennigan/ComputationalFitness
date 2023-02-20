@@ -319,10 +319,10 @@ indexTranslate[ "Lap", fitLapValue ];
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*DeviceSettings*)
-setFieldDefinitions[fitDeviceSettingsValue, ifitDeviceSettingsValue, "DeviceSettings"];
-fitDeviceSettingsValue["TimeOffset", v_] := fitTimeOffset[v[["TimeOffset"]]];
-ifitDeviceSettingsValue["TimeOffset", {n_}, v_] := ifitTimeOffset[v, n];
-indexTranslate["DeviceSettings", fitDeviceSettingsValue];
+setFieldDefinitions[ fitDeviceSettingsValue, ifitDeviceSettingsValue, "DeviceSettings" ];
+fitDeviceSettingsValue[ "TimeOffset", v_ ] := fitTimeOffset @ v[[ "TimeOffset" ]];
+ifitDeviceSettingsValue[ "TimeOffset", { n_ }, v_ ] := ifitTimeOffset[ v, n ];
+indexTranslate[ "DeviceSettings", fitDeviceSettingsValue ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -517,10 +517,6 @@ indexTranslate[ "Workout", fitWorkoutValue ];
 (* ::Subsubsection::Closed:: *)
 (*HeartRateVariability*)
 setFieldDefinitions[ fitHeartRateVariabilityValue, ifitHeartRateVariabilityValue, "HeartRateVariability" ];
-fitHeartRateVariabilityValue[ "Time", v_ ] := fitHRV @ v[[ "Time" ]];
-
-(* FIXME: define ifitHeartRateVariabilityValue *)
-
 indexTranslate[ "HeartRateVariability", fitHeartRateVariabilityValue ];
 
 (* ::**************************************************************************************************************:: *)
@@ -598,10 +594,12 @@ fitQuantity[ valFunc_, units_, scale_, offset_ ][ value_ ] := fitQuantity0[ valF
 fitQuantity[ ___ ][ ___ ] := Missing[ "NotAvailable" ];
 
 fitQuantity0 // ClearAll;
-fitQuantity0[ m_Missing, _     , _     , _       ] := m;
-fitQuantity0[ value_   , units_, 1     , 0       ] := fitQuantity1[ value, units ];
-fitQuantity0[ value_   , units_, scale_, offset_ ] := fitQuantity1[ (1.0 * value - offset) / scale, units ];
-fitQuantity0[ ___                                ] := Missing[ "NotAvailable" ];
+fitQuantity0[ m_Missing , _     , _     , _       ] := m;
+fitQuantity0[ value_List, units_, 1     , 0       ] := fitQuantity1[ #, units ] & /@ DeleteMissing @ value;
+fitQuantity0[ value_List, units_, scale_, offset_ ] := fitQuantity1[ #, units ] & /@ ((1.0 * DeleteMissing @ value - offset) / scale);
+fitQuantity0[ value_    , units_, 1     , 0       ] := fitQuantity1[ value, units ];
+fitQuantity0[ value_    , units_, scale_, offset_ ] := fitQuantity1[ (1.0 * value - offset) / scale, units ];
+fitQuantity0[ ___                                 ] := Missing[ "NotAvailable" ];
 
 fitQuantity1 // ClearAll;
 fitQuantity1[ _Missing, _                      ] := Missing[ "NotAvailable" ];
@@ -670,6 +668,23 @@ ifitQuantity0[ iFunc_, q_Quantity, units_, scale_, offset_ ] :=
             MatchQ[ converted, Quantity[ _, units ] ]
     ];
 
+
+
+ifitQuantity1 // ClearAll;
+
+ifitQuantity1[ iFunc_, values_List, units_, scale_, offset_, length_ ] :=
+    iFunc[
+        Replace[
+            Quiet @ UnitConvert[ values, units ],
+            {
+                Quantity[ value_, units ] :> (scale * value + offset),
+                _ :> $Failed
+            },
+            { 1 }
+        ],
+        { length }
+    ];
+
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitBool*)
@@ -690,7 +705,7 @@ ifitBool[ ___   ] := $invalidBool;
 ifitBoolA // ClearAll;
 ifitBoolA[ False, { n_Integer } ] := ConstantArray[ 0, n ];
 ifitBoolA[ True , { n_Integer } ] := ConstantArray[ 1, n ];
-ifitBoolA[ list_List, _ ] := ifitBool /@ list;
+ifitBoolA[ list_List, { n_Integer } ] := PadRight[ ifitBool /@ list, n, $invalidBool ];
 ifitBoolA[ _, { n_Integer } ] := ConstantArray[ $invalidBool, n ];
 ifitBoolA[ ___ ] := $Failed;
 
@@ -712,7 +727,7 @@ ifitByte[ v_Integer ] := v;
 ifitByte[ ___ ] := $Failed;
 
 ifitByteA // ClearAll;
-ifitByteA[ b_ByteArray, _ ] := Normal @ b;
+ifitByteA[ b_ByteArray, { n_Integer } ] := PadRight[ Normal @ b, n, $invalidUINT8 ];
 ifitByteA[ ___ ] := $Failed;
 
 (* ::**************************************************************************************************************:: *)
@@ -736,7 +751,7 @@ ifitSINT8[ ___ ] := $invalidSINT8;
 ifitSINT8A // ClearAll;
 ifitSINT8A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitSINT8A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitSINT8A[ list_List, _ ] := ifitSINT8 /@ list;
+ifitSINT8A[ list_List, { n_Integer } ] := PadRight[ ifitSINT8 /@ list, n, $invalidSINT8 ];
 ifitSINT8A[ _, { n_Integer } ] := ConstantArray[ $invalidSINT8, n ];
 ifitSINT8A[ ___ ] := $Failed;
 
@@ -761,7 +776,7 @@ ifitUINT8[ ___ ] := $invalidUINT8;
 ifitUINT8A // ClearAll;
 ifitUINT8A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT8A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT8A[ list_List, _ ] := ifitUINT8 /@ list;
+ifitUINT8A[ list_List, { n_Integer } ] := PadRight[ ifitUINT8 /@ list, n, $invalidUINT8 ];
 ifitUINT8A[ _, { n_Integer } ] := ConstantArray[ $invalidUINT8, n ];
 ifitUINT8A[ ___ ] := $Failed;
 
@@ -786,7 +801,7 @@ ifitUINT8Z[ ___ ] := $invalidUINT8Z;
 ifitUINT8ZA // ClearAll;
 ifitUINT8ZA[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT8ZA[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT8ZA[ list_List, _ ] := ifitUINT8Z /@ list;
+ifitUINT8ZA[ list_List, { n_Integer } ] := PadRight[ ifitUINT8Z /@ list, n, $invalidUINT8Z ];
 ifitUINT8ZA[ _, { n_Integer } ] := ConstantArray[ $invalidUINT8Z, n ];
 ifitUINT8ZA[ ___ ] := $Failed;
 
@@ -811,7 +826,7 @@ ifitUINT16[ ___ ] := $invalidUINT16;
 ifitUINT16A // ClearAll;
 ifitUINT16A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT16A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT16A[ list_List, _ ] := ifitUINT16 /@ list;
+ifitUINT16A[ list_List, { n_Integer } ] := PadRight[ ifitUINT16 /@ list, n, $invalidUINT16 ];
 ifitUINT16A[ _, { n_Integer } ] := ConstantArray[ $invalidUINT16, n ];
 ifitUINT16A[ ___ ] := $Failed;
 
@@ -836,7 +851,7 @@ ifitUINT16Z[ ___ ] := $invalidUINT16Z;
 ifitUINT16ZA // ClearAll;
 ifitUINT16ZA[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT16ZA[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT16ZA[ list_List, _ ] := ifitUINT16Z /@ list;
+ifitUINT16ZA[ list_List, { n_Integer } ] := PadRight[ ifitUINT16Z /@ list, n, $invalidUINT16Z ];
 ifitUINT16ZA[ _, { n_Integer } ] := ConstantArray[ $invalidUINT16Z, n ];
 ifitUINT16ZA[ ___ ] := $Failed;
 
@@ -861,7 +876,7 @@ ifitSINT16[ ___ ] := $invalidSINT16;
 ifitSINT16A // ClearAll;
 ifitSINT16A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitSINT16A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitSINT16A[ list_List, _ ] := ifitSINT16 /@ list;
+ifitSINT16A[ list_List, { n_Integer } ] := PadRight[ ifitSINT16 /@ list, n, $invalidSINT16 ];
 ifitSINT16A[ _, { n_Integer } ] := ConstantArray[ $invalidSINT16, n ];
 ifitSINT16A[ ___ ] := $Failed;
 
@@ -886,7 +901,7 @@ ifitUINT32[ ___ ] := $invalidUINT32;
 ifitUINT32A // ClearAll;
 ifitUINT32A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT32A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT32A[ list_List, _ ] := ifitUINT32 /@ list;
+ifitUINT32A[ list_List, { n_Integer } ] := PadRight[ ifitUINT32 /@ list, n, $invalidUINT32 ];
 ifitUINT32A[ _, { n_Integer } ] := ConstantArray[ $invalidUINT32, n ];
 ifitUINT32A[ ___ ] := $Failed;
 
@@ -911,7 +926,7 @@ ifitUINT32Z[ ___ ] := $invalidUINT32Z;
 ifitUINT32ZA // ClearAll;
 ifitUINT32ZA[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitUINT32ZA[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitUINT32ZA[ list_List, _ ] := ifitUINT32Z /@ list;
+ifitUINT32ZA[ list_List, { n_Integer } ] := PadRight[ ifitUINT32Z /@ list, n, $invalidUINT32Z ];
 ifitUINT32ZA[ _, { n_Integer } ] := ConstantArray[ $invalidUINT32Z, n ];
 ifitUINT32ZA[ ___ ] := $Failed;
 
@@ -936,7 +951,7 @@ ifitSINT32[ ___ ] := $invalidSINT32;
 ifitSINT32A // ClearAll;
 ifitSINT32A[ v_Integer, { n_Integer } ] := ConstantArray[ v, n ];
 ifitSINT32A[ v_Real, { n_Integer } ] := ConstantArray[ Round @ v, n ];
-ifitSINT32A[ list_List, _ ] := ifitSINT32 /@ list;
+ifitSINT32A[ list_List, { n_Integer } ] := PadRight[ ifitSINT32 /@ list, n, $invalidSINT32 ];
 ifitSINT32A[ _, { n_Integer } ] := ConstantArray[ $invalidSINT32, n ];
 ifitSINT32A[ ___ ] := $Failed;
 
@@ -982,7 +997,7 @@ ifitFloat64[ ___ ] := $Failed;
 
 ifitFloat64A // ClearAll;
 ifitFloat64A[ v_Real, { n_Integer } ] := ConstantArray[ Floor[ v * 65535.0 ], n ];
-ifitFloat64A[ list_List, _ ] := ifitFloat64 /@ list;
+ifitFloat64A[ list_List, { n_Integer } ] := PadRight[ fitFloat64A /@ list, n, $invalidFLOAT64 ];
 ifitFloat64A[ ___ ] := $Failed;
 
 (* ::**************************************************************************************************************:: *)

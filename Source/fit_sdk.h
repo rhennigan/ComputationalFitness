@@ -9911,9 +9911,9 @@ typedef struct
 
 // hrv message
 
-#define FIT_HRV_MESG_SIZE                                                       2
+#define FIT_HRV_MESG_SIZE                                                       10
 #define FIT_HRV_MESG_DEF_SIZE                                                   8
-#define FIT_HRV_MESG_TIME_COUNT                                                 1
+#define FIT_HRV_MESG_TIME_COUNT                                                 5
 
 typedef struct
 {

@@ -163,7 +163,7 @@ DLLEXPORT int FITImport(
     mint err = 0;
     char *path;
     int length;
-    MTensor data;
+    MTensor data; // TODO: try making this a sparse array instead to allow larger message sizes?
     mint dims[2];
     FILE *file;
     FIT_UINT8 buf[8];
@@ -3753,7 +3753,7 @@ static void import_hrv(WolframLibraryData libData, MTensor data, int idx, const 
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_HRV);
     ImportInteger(2, libData, data, pos, idx);
     ImportIntegerSequence(3, libData, data, pos, mesg->time, FIT_HRV_MESG_TIME_COUNT);
-    ImportFinish(4, libData, data, pos);
+    ImportFinish(8, libData, data, pos);
 }
 
 static void import_wxf_expression(WolframLibraryData libData, MTensor data, int idx, const FIT_WXF_EXPRESSION_MESG *mesg)
