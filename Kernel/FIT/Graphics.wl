@@ -12,9 +12,6 @@ Begin[ "`Private`" ];
 ComputationalFitness::NoFTPValue =
 "No functional threshold power specified.";
 
-ComputationalFitness::InvalidFTP =
-"The value `1` is not a valid value for functional threshold power.";
-
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Argument Patterns*)

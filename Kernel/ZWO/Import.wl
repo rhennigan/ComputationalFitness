@@ -42,7 +42,13 @@ ZWOImport::InvalidXML =
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Options*)
-ZWOImport // Options = { UnitSystem :> $UnitSystem };
+ZWOImport // Options = {
+    FunctionalThresholdPower :> $FunctionalThresholdPower,
+    MaximumHeartRate         :> $MaximumHeartRate,
+    Sport                    :> $Sport,
+    UnitSystem               :> $UnitSystem,
+    Weight                   :> $Weight
+};
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -53,11 +59,16 @@ ZWOImport[ file_, opts: OptionsPattern[ ] ] := zwoOptionsBlock[ zwoImport @ file
 (* ::Subsection::Closed:: *)
 (*zwoOptionsBlock*)
 zwoOptionsBlock // beginDefinition;
+zwoOptionsBlock // Attributes = { HoldFirst };
 
 zwoOptionsBlock[ eval_, opts: OptionsPattern[ ZWOImport ] ] :=
     catchTopAs[ ZWOImport ] @ Block[
         {
-            $UnitSystem     = OptionValue @ UnitSystem,
+            $UnitSystem     = setUnitSystem @ OptionValue @ UnitSystem,
+            $ftp            = setFTP @ OptionValue @ FunctionalThresholdPower,
+            $maxHR          = setMaxHR @ OptionValue @ MaximumHeartRate,
+            $weight         = setWeight @ OptionValue @ Weight,
+            $sport          = setSport @ OptionValue @ Sport,
             zwoOptionsBlock = # &
         },
         eval
@@ -256,9 +267,9 @@ zwoPowerPercent // endDefinition;
 zwoPowerPercent0 // ClearAll;
 zwoPowerPercent0[ _Missing ] := Missing[ "NotAvailable" ];
 zwoPowerPercent0[ percent_ ] := zwoPowerPercent0[ percent, $ftp ]; (* TODO: move this to package scope and set in options *)
-zwoPowerPercent0[ Quantity[ percent_, "Percent" ], ftp_? NumberQ ] := Quantity[ percent*ftp, "Watts" ];
+zwoPowerPercent0[ Quantity[ percent_, "Percent" ], ftp_? NumberQ ] := Quantity[ percent/100*ftp, "Watts" ];
 zwoPowerPercent0[ percent_, Quantity[ ftp_, "Watts" ] ] := zwoPowerPercent0[ percent, ftp ];
-zwoPowerPercent0[ Quantity[ percent_, "Percent" ], _ ] := percent/100 * QuantityVariable[ "FTP", "Power" ];
+zwoPowerPercent0[ Quantity[ percent_, "Percent" ], ftp_ ] := percent/100 * QuantityVariable[ "FTP", "Power" ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -322,7 +333,12 @@ zwoWorkout[ ___ ] := Missing[ "NotAvailable" ];
 (* ::Subsubsection::Closed:: *)
 (*zwoWorkoutSteps*)
 zwoWorkoutSteps // beginDefinition;
-zwoWorkoutSteps[ path_List, steps_List ] := Block[ { $stepIndex = 0 }, zwoWorkoutStep[ path, # ] & /@ steps ];
+
+zwoWorkoutSteps[ path_List, steps_List ] :=
+    Block[ { $stepIndex = 0 },
+        DeleteMissing[ zwoWorkoutStep[ path, # ] & /@ steps ]
+    ];
+
 zwoWorkoutSteps // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
@@ -353,23 +369,181 @@ zwoWorkoutStep // endDefinition;
 zwoWorkoutStep0 // beginDefinition;
 
 zwoWorkoutStep0[ tag_, as_, { } ] := zwoWorkoutStep0[ tag, as, Missing[ ] ];
-zwoWorkoutStep0[ "IntervalsT", as_, data_ ] := repeatedWorkoutSteps[ "IntervalsT", as[ "Repeat" ], as, data ];
 
 zwoWorkoutStep0[ tag_, as_Association? AssociationQ, data_ ] :=
-    DeleteMissing @ Association[
-        "Tag" -> tag,
-        "MessageIndex" -> ++$stepIndex,
-        as,
-        "XMLData" -> data
+    zwoWorkoutStep1[
+        tag,
+        DeleteMissing @ Association[
+            "MessageIndex" -> $stepIndex++,
+            as,
+            "XMLData" -> data
+        ]
     ];
 
 zwoWorkoutStep0 // endDefinition;
+
+(* cSpell:ignore Freeride *)
+zwoWorkoutStep1 // ClearAll;
+zwoWorkoutStep1[ "Cooldown"   , as_Association ] := cooldownStep @ as;
+zwoWorkoutStep1[ "Freeride"   , as_Association ] := freeRideStep @ as;
+zwoWorkoutStep1[ "FreeRide"   , as_Association ] := freeRideStep @ as;
+zwoWorkoutStep1[ "IntervalsT" , as_Association ] := intervalsTStep @ as;
+zwoWorkoutStep1[ "MaxEffort"  , as_Association ] := maxEffortStep @ as;
+zwoWorkoutStep1[ "Ramp"       , as_Association ] := rampStep @ as;
+zwoWorkoutStep1[ "RestDay"    , as_Association ] := restDayStep @ as;
+zwoWorkoutStep1[ "SolidState" , as_Association ] := solidStateStep @ as;
+zwoWorkoutStep1[ "SteadyState", as_Association ] := steadyStateStep @ as;
+zwoWorkoutStep1[ "Warmup"     , as_Association ] := warmupStep @ as;
+zwoWorkoutStep1[ ___                           ] := Missing[ "NotAvailable" ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*cooldownStep*)
+cooldownStep // ClearAll;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*freeRideStep*)
+freeRideStep // ClearAll;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*intervalsTStep*)
+intervalsTStep // ClearAll;
+intervalsTStep[ as_Association ] := repeatedWorkoutSteps[ "IntervalsT", as[ "Repeat" ], as ];
+intervalsTStep[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*maxEffortStep*)
+maxEffortStep // ClearAll;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*rampStep*)
+rampStep // ClearAll;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*restDayStep*)
+restDayStep // ClearAll;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*solidStateStep*)
+solidStateStep // ClearAll;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*steadyStateStep*)
+steadyStateStep // beginDefinition;
+steadyStateStep[ as_Association ] := generalWorkoutStep[ as, "Intensity" -> "Active" ];
+steadyStateStep // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*warmupStep*)
+warmupStep // beginDefinition;
+warmupStep[ as_Association ] := generalWorkoutStep[ as, "Intensity" -> "Warmup" ];
+warmupStep // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*generalWorkoutStep*)
+generalWorkoutStep // beginDefinition;
+
+generalWorkoutStep[ as_Association ] := generalWorkoutStep[ as, <| |> ];
+
+generalWorkoutStep[ as_Association, extra0__ ] :=
+    Module[ { extra, name, target, targetLow, targetHigh, durationType, targetType, res },
+
+        extra        = Association @ extra0;
+        name         = workoutStepName @ as;
+        target       = workoutStepTarget @ as;
+        durationType = workoutStepDurationType @ as;
+        targetType   = workoutStepTargetType[ target, as ];
+        targetLow    = workoutStepTargetLow[ target, as ];
+        targetHigh   = workoutStepTargetHigh[ target, as ];
+
+        res = DeleteMissing @ <|
+            as,
+            "MessageType"           -> "WorkoutStep",
+            "WorkoutStepName"       -> name,
+            "Target"                -> target,
+            "DurationType"          -> durationType,
+            "TargetType"            -> targetType,
+            "CustomTargetValueLow"  -> targetLow,
+            "CustomTargetValueHigh" -> targetHigh,
+            extra
+        |>;
+
+        KeyDrop[ res, { "Path", "Tag", "XMLData" } ] /; AssociationQ @ res
+    ];
+
+generalWorkoutStep // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*workoutStepName*)
+workoutStepName // ClearAll;
+(* cSpell:ignore textevent *)
+workoutStepName[ KeyValuePattern[
+    "XMLData" -> { XMLElement[ "textevent", KeyValuePattern[ "message" -> message_String ], _ ], ___ }
+] ] := message;
+
+workoutStepName[ KeyValuePattern[ "Tag" -> "Warmup"      ] ] := "Warm up";
+workoutStepName[ KeyValuePattern[ "Tag" -> "Cooldown"    ] ] := "Cool down";
+workoutStepName[ KeyValuePattern[ "Tag" -> "RestDay"     ] ] := "Rest day";
+workoutStepName[ KeyValuePattern[ "Tag" -> "Freeride"    ] ] := "Free ride";
+workoutStepName[ KeyValuePattern[ "Tag" -> "FreeRide"    ] ] := "Free ride";
+workoutStepName[ KeyValuePattern[ "Tag" -> "MaxEffort"   ] ] := "Max effort";
+workoutStepName[ KeyValuePattern[ "Tag" -> "Ramp"        ] ] := "Ramp";
+workoutStepName[ KeyValuePattern[ "Tag" -> "SolidState"  ] ] := "Solid state";
+workoutStepName[ KeyValuePattern[ "Tag" -> "SteadyState" ] ] := "Steady state";
+workoutStepName[ ___ ] := Missing[ "NotAvailable" ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*workoutStepTarget*)
+workoutStepTarget // ClearAll;
+workoutStepTarget[ KeyValuePattern @ { "PowerLow" -> low_, "PowerHigh" -> high_ } ] := Interval @ { low, high };
+workoutStepTarget[ KeyValuePattern[ "Power" -> power_ ] ] := power;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*workoutStepDurationType*)
+workoutStepDurationType // ClearAll;
+workoutStepDurationType[ KeyValuePattern[ "Duration" -> duration_Quantity ] ] :=
+    Which[
+        CompatibleUnitQ[ duration, "Seconds" ], "Time",
+        True                                  , Missing[ "NotAvailable" ]
+    ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*workoutStepTargetType*)
+workoutStepTargetType // ClearAll;
+workoutStepTargetType[ target_Quantity, _ ] /; CompatibleUnitQ[ target, "Watts" ] := "Power";
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*workoutStepTargetLow*)
+workoutStepTargetLow // ClearAll;
+workoutStepTargetLow[ _, KeyValuePattern[ "PowerLow" -> power_ ] ] := power;
+workoutStepTargetLow[ _, KeyValuePattern[ "Power"    -> power_ ] ] := power;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*workoutStepTargetHigh*)
+workoutStepTargetHigh // ClearAll;
+workoutStepTargetHigh[ _, KeyValuePattern[ "PowerHigh" -> power_ ] ] := power;
+workoutStepTargetHigh[ _, KeyValuePattern[ "Power"     -> power_ ] ] := power;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*repeatedWorkoutSteps*)
 repeatedWorkoutSteps // beginDefinition;
-repeatedWorkoutSteps[ "IntervalsT", n_, as_, data_ ] := intervalsT[ n, as, data ];
+repeatedWorkoutSteps[ "IntervalsT", n_, as_ ] := Block[ { $stepIndex = $stepIndex - 1 }, intervalsT[ n, as ] ];
 repeatedWorkoutSteps // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
@@ -377,16 +551,36 @@ repeatedWorkoutSteps // endDefinition;
 (*intervalsT*)
 intervalsT // beginDefinition;
 
-intervalsT[
-    n_,
-    KeyValuePattern @ { "OnDuration" -> onDuration_, "OffDuration" -> offDuration_ },
-    data_
-]
-
-intervalsT[ repeat_Integer, as_Association, data_ ] :=
-    Flatten @ Table[ { intervalsTOn[ as, data ], intervalsTOff[ as, data ] }, { repeat } ];
+intervalsT[ repeat_Integer, as_Association ] :=
+    Flatten @ Table[ { intervalsTOn @ as, intervalsTOff @ as }, { repeat } ];
 
 intervalsT // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*intervalsTOn*)
+intervalsTOn // ClearAll;
+intervalsTOn[ as: KeyValuePattern @ { "OnDuration" -> duration_, "OnPower" -> power_ } ] :=
+    steadyStateStep @ Association[
+        KeyDrop[ as, { "OnDuration", "OnPower", "OffDuration", "OffPower" } ],
+        "Tag"          -> "SteadyState",
+        "MessageIndex" -> $stepIndex++,
+        "Duration"     -> duration,
+        "Power"        -> power
+    ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*intervalsTOff*)
+intervalsTOff // ClearAll;
+intervalsTOff[ as: KeyValuePattern @ { "OffDuration" -> duration_, "OffPower" -> power_ } ] :=
+    steadyStateStep @ Association[
+        KeyDrop[ as, { "OnDuration", "OnPower", "OffDuration", "OffPower", "Repeat" } ],
+        "Tag"          -> "SteadyState",
+        "MessageIndex" -> $stepIndex++,
+        "Duration"     -> duration,
+        "Power"        -> power
+    ];\
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)

@@ -21,10 +21,6 @@ $productName        = $thisPacletName <> " " <> $thisPacletVersion;
 (* ::Section::Closed:: *)
 (*Config*)
 $timeOffset               = 0;
-$ftp                      = Automatic;
-$maxHR                    = Automatic;
-$weight                   = Automatic;
-$sport                    = Automatic;
 $fileByteCount            = 0;
 $pzPlotWidth              = 650;
 $fitTerm                  = 1685024357;
@@ -52,7 +48,6 @@ $invalidTimestamp         = 2840036399|2840036400|$fitInitValues[ "DateTime" ];
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Option Settings*)
-$ftp := Automatic;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
