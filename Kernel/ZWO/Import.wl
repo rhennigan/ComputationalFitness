@@ -421,7 +421,7 @@ maxEffortStep // ClearAll;
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*rampStep*)
-rampStep // ClearAll;
+rampStep // ClearAll; (* break into discrete steps? *)
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -512,6 +512,7 @@ workoutStepTarget[ KeyValuePattern[ "Power" -> power_ ] ] := power;
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*workoutStepDurationType*)
+(* https://developer.garmin.com/fit/file-types/workout#durationtype *)
 workoutStepDurationType // ClearAll;
 workoutStepDurationType[ KeyValuePattern[ "Duration" -> duration_Quantity ] ] :=
     Which[
@@ -522,6 +523,7 @@ workoutStepDurationType[ KeyValuePattern[ "Duration" -> duration_Quantity ] ] :=
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*workoutStepTargetType*)
+(* https://developer.garmin.com/fit/file-types/workout#targettype *)
 workoutStepTargetType // ClearAll;
 workoutStepTargetType[ target_Quantity, _ ] /; CompatibleUnitQ[ target, "Watts" ] := "Power";
 

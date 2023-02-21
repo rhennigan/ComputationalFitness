@@ -1459,6 +1459,13 @@ fitFractionalCycles[ $invalidUINT8|0 ] := Missing[ "NotAvailable" ];
 fitFractionalCycles[ n_Integer ] := cycleQuantity[ n/128.0 ];
 fitFractionalCycles[ ___ ] := Missing[ "NotAvailable" ];
 
+ifitFractionalCycles // ClearAll;
+ifitFractionalCycles[ Quantity[ n_, "Revolutions"|IndependentUnit[ "Cycles" ] ] ] := ifitFractionalCycles @ n;
+ifitFractionalCycles[ Quantity[ n_, "Steps"|"Strokes" ] ] := ifitFractionalCycles[ n/2 ];
+ifitFractionalCycles[ n_Integer   ] := 128 * n;
+ifitFractionalCycles[ n_? NumberQ ] := Round[ 128.0 * n ];
+ifitFractionalCycles[ ___ ] := $Failed;
+
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitTimeInZone*)
@@ -1797,6 +1804,12 @@ fitResistance[ $invalidUINT8 ] := Missing[ "NotAvailable" ];
 fitResistance[ n_Integer ] := Quantity[ n / 254.0, "Percent" ];
 fitResistance[ ___ ] := Missing[ "NotAvailable" ];
 
+ifitResistance // ClearAll;
+ifitResistance[ n_Integer ] := 254 * n;
+ifitResistance[ n_Real ] := Round[ 254 * n ];
+ifitResistance[ Quantity[ n_, "Percent" ] ] := ifitResistance[ n / 100.0 ];
+ifitResistance[ ___ ] := $Failed;
+
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitCycleLength*)
@@ -1907,6 +1920,11 @@ fitLeftRightBalance100[ n_Integer ] /; n >= 32768 :=
     ];
 
 fitLeftRightBalance100[ ___ ] := Missing[ "NotAvailable" ];
+
+
+ifitLeftRightBalance // ClearAll;
+ifitLeftRightBalance[ { Quantity[ l_, "Percent" ], Quantity[ r_, "Percent" ] } ] := 32768 + Round[ 100 * r ];
+ifitLeftRightBalance[ ___ ] := $Failed;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -2205,6 +2223,12 @@ fitStrokeCount[ { n_ } ] := fitStrokeCount @ n;
 fitStrokeCount[ { $invalidUINT16... } ] := Missing[ "NotAvailable" ];
 fitStrokeCount[ list_List ] := fitStrokeCount /@ list;
 fitStrokeCount[ ___ ] := Missing[ "NotAvailable" ];
+
+ifitStrokeCount // ClearAll;
+ifitStrokeCount[ Quantity[ n_, "Strokes" ] ] := ifitStrokeCount @ n;
+ifitStrokeCount[ n_Integer ] := n;
+ifitStrokeCount[ n_? NumberQ ] := ifitStrokeCount @ Round @ n;
+ifitStrokeCount[ ___ ] := $Failed;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
