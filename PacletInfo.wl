@@ -5,7 +5,7 @@ PacletObject[ <|
     "ActionURL"        -> "$ActionURL$",
     "BuildDate"        -> "$BuildDate$",
     "Version"          -> "0.7.0",
-    "WolframVersion"   -> "13.1+",
+    "WolframVersion"   -> "13.0+",
     "PublisherID"      -> "RH",
     "SourceControlURL" -> "https://github.com/rhennigan/ComputationalFitness",
     "License"          -> "MIT",
