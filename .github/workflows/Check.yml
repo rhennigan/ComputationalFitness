@@ -20,8 +20,8 @@ jobs:
       WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
       WOLFRAM_SYSTEM_ID: Windows-x86-64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A
-      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.0.0.0/WolframEngine_13.0.0_WIN.msi
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.1.0.0/WolframEngine_13.1.0_WIN.msi
     steps: 
     - name: Checkout
       id: checkout-code-step
@@ -84,9 +84,9 @@ jobs:
       WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
       WOLFRAM_SYSTEM_ID: MacOSX-x86-64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
       WOLFRAMENGINE_DOWNLOAD_PATH: /tmp/downloads
-      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/13.0.0.0/WolframEngine_13.0.0_MAC.dmg
+      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/13.1.0.0/WolframEngine_13.1.0_MAC.dmg
       WOLFRAMENGINE_INSTALLATION_DIRECTORY: "/Applications/Wolfram Engine.app"
     steps: 
     - name: Checkout
@@ -132,7 +132,7 @@ jobs:
     name: Compile-Linux-x86-64
     runs-on: ubuntu-latest
     container: 
-      image: wolframresearch/wolframengine:13.0.1
+      image: wolframresearch/wolframengine:13.2.0
       options: --user root
     env: 
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
@@ -164,7 +164,7 @@ jobs:
     needs:  [Compile-Windows-x86-64, Compile-MacOSX-x86-64, Compile-Linux-x86-64]
     runs-on: ubuntu-latest
     container: 
-      image: wolframresearch/wolframengine:13.0.1
+      image: wolframresearch/wolframengine:13.2.0
       options: --user root
     env: 
       WOLFRAM_SYSTEM_ID: Linux-x86-64

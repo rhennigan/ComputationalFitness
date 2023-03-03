@@ -64,21 +64,13 @@ fitFormatBytesQ // endDefinition;
 (* ::Section::Closed:: *)
 (*FITFileType*)
 FITFileType[ FitnessData[ KeyValuePattern[ "Type" -> type_ ] ] ] := type;
-FITFileType[ file: $$source, opts: OptionsPattern[ ] ] := catchMine @ fitFileType @ file;
+FITFileType[ file: $$source, opts: OptionsPattern[ ] ] := catchMine @ sourceFileApply[ fitFileType, file ];
 FITFileType[ ___ ] := $Failed; (* TODO *)
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitFileType*)
 fitFileType // beginDefinition;
-
-fitFileType[ source: $$source ] :=
-    Block[ { $tempFiles = Internal`Bag[ ] },
-        WithCleanup[
-            fitFileType[ source, toFileString @ source ],
-            DeleteFile /@ Internal`BagPart[ $tempFiles, All ]
-        ]
-    ];
 
 fitFileType[ source_, file_String ] :=
     fitFileType[

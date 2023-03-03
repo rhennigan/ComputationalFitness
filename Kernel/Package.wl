@@ -62,10 +62,14 @@ GeneralUtilities`UnprotectAndClearAll[
     `$$target,
     `$$url,
     `$fitIcons,
+    `$ftp,
+    `$maxHR,
     `$messageSymbol,
     `$mxExclusions,
+    `$sport,
     `$thisPacletLocation,
     `$top,
+    `$weight,
     `beginDefinition,
     `cacheBlock,
     `cached,
@@ -85,7 +89,14 @@ GeneralUtilities`UnprotectAndClearAll[
     `recompileLibraries,
     `registeredFormatQ,
     `registerFormats,
+    `secondsToQuantity, (* TODO: move to a dedicated Units.wl file *)
+    `setFTP,
     `setIfUndefined,
+    `setMaxHR,
+    `setSport,
+    `setUnitSystem,
+    `setWeight,
+    `sourceFileApply,
     `throwFailure,
     `throwInternalFailure,
     `toNiceCamelCase
@@ -100,6 +111,7 @@ EndPackage[ ];
 <<`Data`;
 <<`Config`;
 <<`Strings`;
+<<`ImportExport`;
 <<`FIT`;
 <<`TCX`;
 <<`ZWO`;

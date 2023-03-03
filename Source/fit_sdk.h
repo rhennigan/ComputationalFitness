@@ -9911,9 +9911,9 @@ typedef struct
 
 // hrv message
 
-#define FIT_HRV_MESG_SIZE                                                       2
+#define FIT_HRV_MESG_SIZE                                                       10
 #define FIT_HRV_MESG_DEF_SIZE                                                   8
-#define FIT_HRV_MESG_TIME_COUNT                                                 1
+#define FIT_HRV_MESG_TIME_COUNT                                                 5
 
 typedef struct
 {
@@ -9941,13 +9941,15 @@ typedef struct
 
 // wxf_expression message
 
-#define FIT_WXF_EXPRESSION_MESG_SIZE                                            148
-#define FIT_WXF_EXPRESSION_MESG_DEF_SIZE                                        20
+#define FIT_WXF_EXPRESSION_MESG_SIZE                                            180
+#define FIT_WXF_EXPRESSION_MESG_DEF_SIZE                                        23
+#define FIT_WXF_EXPRESSION_MESG_NAME_COUNT                                      32
 #define FIT_WXF_EXPRESSION_MESG_UUID_COUNT                                      4
 #define FIT_WXF_EXPRESSION_MESG_WXF_COUNT                                       128
 
 typedef struct
 {
+   FIT_STRING name[FIT_WXF_EXPRESSION_MESG_NAME_COUNT]; // the name of the full WXF payload
    FIT_UUID uuid[FIT_WXF_EXPRESSION_MESG_UUID_COUNT]; // IntegerString[FromDigits[uuid, 2^32], 16]
    FIT_BYTE_ARRAY wxf[FIT_WXF_EXPRESSION_MESG_WXF_COUNT]; // the WXF data
    FIT_UINT16 part_number; // the part number of this WXF fragment
@@ -9957,14 +9959,16 @@ typedef struct
 
 typedef FIT_UINT8 FIT_WXF_EXPRESSION_FIELD_NUM;
 
-#define FIT_WXF_EXPRESSION_FIELD_NUM_UUID ((FIT_WXF_EXPRESSION_FIELD_NUM)0)
-#define FIT_WXF_EXPRESSION_FIELD_NUM_WXF ((FIT_WXF_EXPRESSION_FIELD_NUM)4)
-#define FIT_WXF_EXPRESSION_FIELD_NUM_PART_NUMBER ((FIT_WXF_EXPRESSION_FIELD_NUM)2)
-#define FIT_WXF_EXPRESSION_FIELD_NUM_PARTIAL ((FIT_WXF_EXPRESSION_FIELD_NUM)1)
-#define FIT_WXF_EXPRESSION_FIELD_NUM_BYTE_COUNT ((FIT_WXF_EXPRESSION_FIELD_NUM)3)
+#define FIT_WXF_EXPRESSION_FIELD_NUM_NAME ((FIT_WXF_EXPRESSION_FIELD_NUM)0)
+#define FIT_WXF_EXPRESSION_FIELD_NUM_UUID ((FIT_WXF_EXPRESSION_FIELD_NUM)1)
+#define FIT_WXF_EXPRESSION_FIELD_NUM_WXF ((FIT_WXF_EXPRESSION_FIELD_NUM)5)
+#define FIT_WXF_EXPRESSION_FIELD_NUM_PART_NUMBER ((FIT_WXF_EXPRESSION_FIELD_NUM)3)
+#define FIT_WXF_EXPRESSION_FIELD_NUM_PARTIAL ((FIT_WXF_EXPRESSION_FIELD_NUM)2)
+#define FIT_WXF_EXPRESSION_FIELD_NUM_BYTE_COUNT ((FIT_WXF_EXPRESSION_FIELD_NUM)4)
 
 typedef enum
 {
+   FIT_WXF_EXPRESSION_MESG_NAME,
    FIT_WXF_EXPRESSION_MESG_UUID,
    FIT_WXF_EXPRESSION_MESG_WXF,
    FIT_WXF_EXPRESSION_MESG_PART_NUMBER,

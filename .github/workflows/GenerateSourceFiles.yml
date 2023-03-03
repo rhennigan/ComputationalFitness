@@ -20,8 +20,8 @@ jobs:
       WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
       WOLFRAM_SYSTEM_ID: Windows-x86-64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A
-      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.0.0.0/WolframEngine_13.0.0_WIN.msi
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.1.0.0/WolframEngine_13.1.0_WIN.msi
 
     steps: 
 

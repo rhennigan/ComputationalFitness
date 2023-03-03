@@ -1,7 +1,8 @@
 Message Name,Field Def #,Field Name,Field Type,Array,Components,Scale,Offset,Units,Bits,Accumulate,Ref Field Name,Ref Field Value,Comment,Products:,SDK
 wxf_expression,,,,,,,,,,,,,,,
-,0,uuid,uuid,[N],,,,,,,,,"IntegerString[FromDigits[uuid, 2^32], 16]",,
-,1,partial,bool,,,,,,,,,,"whether the WXF payload is split across messages",,
-,2,part_number,uint16,,,,,,,,,,"the part number of this WXF fragment",,
-,3,byte_count,uint8,,,,,,,,,,"the byte count of this WXF fragment",,
-,4,wxf,byte_array,[N],,,,,,,,,"the WXF data",,
+,0,name,string,[N],,,,,,,,,"the name of the full WXF payload",,
+,1,uuid,uuid,[N],,,,,,,,,"IntegerString[FromDigits[uuid, 2^32], 16]",,
+,2,partial,bool,,,,,,,,,,"whether the WXF payload is split across messages",,
+,3,part_number,uint16,,,,,,,,,,"the part number of this WXF fragment",,
+,4,byte_count,uint8,,,,,,,,,,"the byte count of this WXF fragment",,
+,5,wxf,byte_array,[N],,,,,,,,,"the WXF data",,

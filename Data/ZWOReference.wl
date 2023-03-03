@@ -1,4 +1,5 @@
 (* This file is auto-generated. Do not edit manually. *)
+(* cSpell:ignore Bloktraining, Cadanstraining, distoffset, duurtraining, Duurtraining, entid, Explosiviteitstraining, Fartlek, fondo, Fondo, Freeride, ftptest, Gaffney, gameplayevent, KNWU, Krachttraining, mssage, Mssage, paceid, Pinotti, Poulton, ramptest, Shayne, Skippable, Sprinttraining, textevent, textscale, timeoffset, weekftp, Wintertraining, ZATRI *)
 <|
     "Attributes" -> <|
         "Cadence" -> <|

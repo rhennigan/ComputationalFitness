@@ -163,7 +163,7 @@ DLLEXPORT int FITImport(
     mint err = 0;
     char *path;
     int length;
-    MTensor data;
+    MTensor data; // TODO: try making this a sparse array instead to allow larger message sizes?
     mint dims[2];
     FILE *file;
     FIT_UINT8 buf[8];
@@ -3753,7 +3753,7 @@ static void import_hrv(WolframLibraryData libData, MTensor data, int idx, const 
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_HRV);
     ImportInteger(2, libData, data, pos, idx);
     ImportIntegerSequence(3, libData, data, pos, mesg->time, FIT_HRV_MESG_TIME_COUNT);
-    ImportFinish(4, libData, data, pos);
+    ImportFinish(8, libData, data, pos);
 }
 
 static void import_wxf_expression(WolframLibraryData libData, MTensor data, int idx, const FIT_WXF_EXPRESSION_MESG *mesg)
@@ -3761,11 +3761,12 @@ static void import_wxf_expression(WolframLibraryData libData, MTensor data, int 
     mint pos[2] = {idx, 0};
     ImportInteger(1, libData, data, pos, FIT_MESG_NUM_WXF_EXPRESSION);
     ImportInteger(2, libData, data, pos, idx);
-    ImportIntegerSequence(3, libData, data, pos, mesg->uuid, FIT_WXF_EXPRESSION_MESG_UUID_COUNT);
-    ImportIntegerSequence(7, libData, data, pos, mesg->wxf, FIT_WXF_EXPRESSION_MESG_WXF_COUNT);
-    ImportInteger(135, libData, data, pos, mesg->part_number);
-    ImportInteger(136, libData, data, pos, mesg->partial);
-    ImportInteger(137, libData, data, pos, mesg->byte_count);
-    ImportFinish(138, libData, data, pos);
+    ImportString(3, libData, data, pos, mesg->name, FIT_WXF_EXPRESSION_MESG_NAME_COUNT);
+    ImportIntegerSequence(35, libData, data, pos, mesg->uuid, FIT_WXF_EXPRESSION_MESG_UUID_COUNT);
+    ImportIntegerSequence(39, libData, data, pos, mesg->wxf, FIT_WXF_EXPRESSION_MESG_WXF_COUNT);
+    ImportInteger(167, libData, data, pos, mesg->part_number);
+    ImportInteger(168, libData, data, pos, mesg->partial);
+    ImportInteger(169, libData, data, pos, mesg->byte_count);
+    ImportFinish(170, libData, data, pos);
 }
 // --- END MESSAGE IMPORT FUNCTIONS ---

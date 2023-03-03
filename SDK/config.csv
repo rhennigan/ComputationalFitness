@@ -1288,11 +1288,12 @@ dive_summary,,,""
 ,hang_time,,"1"
 
 hrv,,,""
-,time,,"1"
+,time,,"5"
 
 pad,,,""
 
 wxf_expression,,,""
+,name,,"32"
 ,uuid,,"4"
 ,partial,,"1"
 ,part_number,,"1"

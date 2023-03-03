@@ -9,9 +9,6 @@ Begin[ "`Private`" ];
 (* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Messages*)
-ComputationalFitness::InvalidFile =
-"First argument `1` is not a valid file, directory, or URL specification.";
-
 ComputationalFitness::InvalidFITFile =
 "Cannot import data as FIT format.";
 
@@ -27,20 +24,8 @@ ComputationalFitness::BadElementSpecification =
 ComputationalFitness::FileNotFound =
 "File `1` not found.";
 
-ComputationalFitness::CopyTemporaryFailed =
-"Failed to copy source to a temporary file.";
-
 ComputationalFitness::FITImportArgumentCount =
 "FITImport called with `1` arguments; between 1 and 2 arguments are expected.";
-
-ComputationalFitness::InvalidMaxHR =
-"The value `1` is not a valid value for maximum heart rate.";
-
-ComputationalFitness::InvalidWeight =
-"The value `1` is not a valid value for weight.";
-
-ComputationalFitness::InvalidUnitSystem =
-"The value `1` is not a valid value for UnitSystem.";
 
 ComputationalFitness::FITNoRecordsAvailable =
 "No records available in the specified FIT file.";
@@ -575,86 +560,16 @@ setWeightPref[ config_, Automatic, _ ] :=
 setFTPPref // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*setUnitSystem*)
-setUnitSystem // beginDefinition;
-setUnitSystem[ Automatic|None|_Missing ] := $UnitSystem;
-setUnitSystem[ units: "Imperial"|"Metric" ] := units;
-setUnitSystem[ "Statute" ] := "Imperial";
-setUnitSystem[ "SI" ] := "Metric";
-setUnitSystem[ KeyValuePattern[ "UnitSystem" -> u_ ] ] := setUnitSystem @ u;
-setUnitSystem[ KeyValuePattern[ UnitSystem -> u_ ] ] := setUnitSystem @ u;
-setUnitSystem[ units_ ] := throwFailure[ ComputationalFitness::InvalidUnitSystem, units ];
-setUnitSystem // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*setFTP*)
-setFTP // beginDefinition;
-setFTP[ Automatic     ] := Automatic;
-setFTP[ None|_Missing ] := None;
-setFTP[ ftp_Integer   ] := N @ ftp;
-setFTP[ ftp_Real      ] := ftp;
-setFTP[ Quantity[ ftp_, "Watts" ] ] := setFTP @ ftp;
-setFTP[ ftp_Quantity ] := setFTP @ UnitConvert[ ftp, "Watts" ];
-setFTP[ ftp_ ] := throwFailure[ "InvalidFTP", ftp ];
-setFTP // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*setMaxHR*)
-setMaxHR // beginDefinition;
-setMaxHR[ Automatic     ] := Automatic;
-setMaxHR[ None|_Missing ] := None;
-setMaxHR[ hr_Integer    ] := N @ hr;
-setMaxHR[ hr_Real       ] := hr;
-setMaxHR[ Quantity[ hr_, "Beats"/"Minutes" ] ] := setMaxHR @ hr;
-setMaxHR[ hr_Quantity ] := setMaxHR @ UnitConvert[ hr, "Beats"/"Minutes" ];
-setMaxHR[ hr_ ] := throwFailure[ ComputationalFitness::InvalidMaxHR, hr ];
-setMaxHR // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*setWeight*)
-setWeight // beginDefinition;
-setWeight[ Automatic     ] := Automatic;
-setWeight[ None|_Missing ] := None;
-setWeight[ w_Integer     ] := N @ w;
-setWeight[ w_Real        ] := w;
-setWeight[ Quantity[ w_, "Kilograms" ] ] := setWeight @ w;
-setWeight[ w_Quantity ] := setWeight @ UnitConvert[ w, "Kilograms" ];
-setWeight[ w_ ] := throwFailure[ ComputationalFitness::InvalidWeight, w ];
-setWeight // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*setSport*)
-setSport // beginDefinition;
-setSport[ Automatic     ] := Automatic;
-setSport[ None|_Missing ] := None;
-setSport[ s_String      ] := s;
-setSport[ s_            ] := throwFailure[ ComputationalFitness::InvalidSport, s ];
-setSport // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitImport*)
 fitImport // beginDefinition;
 fitImport[ data_? rawDataQ  ] := data;
 fitImport[ compact_? compactFitFitnessDataQ ] := fromCompactRawData @ compact;
-fitImport[ source: $$source ] := cached @ fitImport0 @ source;
+fitImport[ source: $$source ] := cached @ sourceFileApply[ fitImport0, source ];
 fitImport // endDefinition;
 
 
 fitImport0 // beginDefinition;
-
-fitImport0[ source_ ] :=
-    Block[ { $tempFiles = Internal`Bag[ ] },
-        WithCleanup[
-            fitImport0[ source, toFileString @ source ],
-            DeleteFile /@ Internal`BagPart[ $tempFiles, All ]
-        ]
-    ];
 
 fitImport0[ source_, file_String ] :=
     fitImport0[
@@ -685,13 +600,7 @@ fitImport0 // endDefinition;
 (*fitMessageTypes*)
 fitMessageTypes // beginDefinition;
 
-fitMessageTypes[ source: $$source ] :=
-    Block[ { $tempFiles = Internal`Bag[ ] },
-        WithCleanup[
-            fitMessageTypes[ source, toFileString @ source ],
-            DeleteFile /@ Internal`BagPart[ $tempFiles, All ]
-        ]
-    ];
+fitMessageTypes[ source: $$source ] := cached @ sourceFileApply[ fitMessageTypes, source ];
 
 fitMessageTypes[ FitnessData[ KeyValuePattern[ "MessageInformation" -> info_ ] ] ] := Enclose[
     ConfirmBy[ Developer`ToPackedArray @ info, rawDataQ ],
@@ -791,83 +700,6 @@ makeElementData[ file_, data_, element_, opts: OptionsPattern[ ] ] :=
     FITImport[ file, element, opts ];
 
 makeElementData // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsection::Closed:: *)
-(*toFileString*)
-toFileString // beginDefinition;
-
-toFileString[ file_ ] :=
-    With[ { str = toFileString0 @ file },
-        If[ StringQ @ str,
-            If[ $setFileByteCount,
-                $fileByteCount = Quiet @ FileByteCount @ file
-            ];
-            str,
-            throwFailure[ ComputationalFitness::InvalidFile, file ]
-        ]
-    ];
-
-toFileString // endDefinition;
-
-toFileString0 // beginDefinition;
-toFileString0[ source: $$string ] := ExpandFileName @ source;
-toFileString0[ source: $$file   ] := ExpandFileName @ source;
-toFileString0[ source: $$url    ] := createTemporary @ source;
-toFileString0[ source: $$co     ] := createTemporary @ source;
-toFileString0[ source: $$lo     ] := createTemporary @ source;
-toFileString0[ source: $$resp   ] := createTemporary @ source;
-toFileString0 // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*createTemporary*)
-createTemporary // beginDefinition;
-
-createTemporary[ source: $$url ] :=
-    addTempFile @ URLDownload[ source, $tempFile ];
-
-createTemporary[ source: $$co ] :=
-    addTempFile @ CopyFile[ source, $tempFile ];
-
-createTemporary[ source: $$lo ] :=
-    addTempFile @ CopyFile[ source, $tempFile ];
-
-createTemporary[ source: $$resp ] :=
-    addTempFile @ With[ { file = $tempFile },
-        WithCleanup[
-            BinaryWrite[ file, First @ source ],
-            Close @ file
-        ]
-    ];
-
-createTemporary // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*addTempFile*)
-addTempFile // beginDefinition;
-
-addTempFile[ file_? FileExistsQ ] :=
-    addTempFile[ ExpandFileName @ file, $tempFiles ];
-
-addTempFile[ file: $$string, files_Internal`Bag ] := (
-    Internal`StuffBag[ files, file ];
-    file
-);
-
-addTempFile[ other_ ] := throwFailure[ ComputationalFitness::CopyTemporaryFailed, other ];
-
-addTempFile // endDefinition;
-
-(* ::**************************************************************************************************************:: *)
-(* ::Subsubsection::Closed:: *)
-(*$tempFile*)
-$tempFile // ClearAll;
-$tempFile := FileNameJoin @ {
-    GeneralUtilities`EnsureDirectory @ { $TemporaryDirectory, "FITImport" },
-    CreateUUID[ ] <> ".fit"
-};
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)

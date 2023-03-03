@@ -49,7 +49,7 @@ ComputationalFitness::CompiledCodeFunctionRecompileFile =
 Try restarting the kernel and try again.";
 
 ComputationalFitness::CompiledCodeFunctionFileFailure =
-"Could not load the compiled code function \"`1`\" from `2`.";
+"Could not load the compiled code function \"`1`\" from `2`. Attempting to recompile...";
 
 ComputationalFitness::CompiledCodeFunctionFailure =
 "Could not load the compiled code function \"`1`\".";
@@ -195,7 +195,17 @@ loadCompiledCodeFunction // endDefinition;
 
 loadCompiledCodeFunction0 // beginDefinition;
 loadCompiledCodeFunction0[ id_, file_, cf: _CompiledCodeFunction|_CompiledFunction ] := cf;
-loadCompiledCodeFunction0[ id_, file_? FileExistsQ, _ ] := throwFailure[ "CompiledCodeFunctionFileFailure", id, file ];
+
+loadCompiledCodeFunction0[ id_, file_? FileExistsQ, _ ] :=
+    Module[ { loaded },
+        messageFailure[ "CompiledCodeFunctionFileFailure", id, file ];
+        loaded = autoCompileCodeFunction[ id, file ];
+        If[ MatchQ[ loaded, _CompiledCodeFunction|_CompiledFunction ],
+            loaded,
+            throwFailure[ "CompiledCodeFunctionFailure", id ]
+        ]
+    ];
+
 loadCompiledCodeFunction0[ id_, file_, _ ] := throwFailure[ "CompiledCodeFunctionFailure", id ];
 loadCompiledCodeFunction0 // endDefinition;
 

@@ -215,7 +215,19 @@ $currentIndent     := StringJoin @ ConstantArray[ " ", $currentIndentSize ];
 (* ::Subsubsection::Closed:: *)
 (*formatWithNotice*)
 formatWithNotice // ClearAll;
-formatWithNotice[ expr_ ] :=
+formatWithNotice // Options = { "SpellCheckIgnored" -> None };
+
+formatWithNotice[ expr_, opts: OptionsPattern[ ] ] :=
+    formatWithNotice0[ expr, OptionValue[ "SpellCheckIgnored" ] ];
+
+formatWithNotice0[ expr_, ignore: { __String } ] :=
+    StringJoin[
+        "(* This file is auto-generated. Do not edit manually. *)\n",
+        "(* cSpell:ignore " <> StringRiffle[ ignore, ", " ] <> " *)\n",
+        format @ expr
+    ];
+
+formatWithNotice0[ expr_, _ ] :=
     StringJoin[
         "(* This file is auto-generated. Do not edit manually. *)\n",
         format @ expr
@@ -1929,9 +1941,19 @@ $zwoReferenceData[ "Attributes" ] = zwoKeySort @ Association @ Map[
 (* :!CodeAnalysis::Disable::TopLevel:: *)
 $zwoReferenceData //= inferValueType;
 
+(* cSpell:disable *)
+$zwoIgnoredSpelling = {
+    "Bloktraining", "Cadanstraining", "distoffset", "duurtraining", "Duurtraining", "entid", "Explosiviteitstraining",
+    "Fartlek", "fondo", "Fondo", "Freeride", "ftptest", "Gaffney", "gameplayevent", "KNWU", "Krachttraining", "mssage",
+    "Mssage", "paceid", "Pinotti", "Poulton", "ramptest", "Shayne", "Skippable", "Sprinttraining", "textevent",
+    "textscale", "timeoffset", "weekftp", "Wintertraining", "ZATRI"
+};
+(* cSpell:enable *)
+
 zwoReferenceFile = FileNameJoin @ { $pacletDir, "Data", "ZWOReference.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ zwoReferenceFile;
-$exportedZWOReferenceData = Export[ zwoReferenceFile, formatWithNotice @ $zwoReferenceData, "String" ];
+formatted = formatWithNotice[ $zwoReferenceData, "SpellCheckIgnored" -> $zwoIgnoredSpelling ];
+$exportedZWOReferenceData = Export[ zwoReferenceFile, formatted, "String" ];
 cicd`ConsoleLog[ "Updated ZWO reference data: " <> $exportedZWOReferenceData ];
 
 (* ::**************************************************************************************************************:: *)
