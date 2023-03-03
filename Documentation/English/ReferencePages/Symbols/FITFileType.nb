@@ -302,7 +302,7 @@ Notebook[
            {
             "FITFileType",
             "[",
-            "\"ComputationalFitness/ExampleData/BikeRide.fit\"",
+            "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
             "]"
            }
           ]
@@ -330,7 +330,7 @@ Notebook[
            {
             "FITFileType",
             "[",
-            "\"ComputationalFitness/ExampleData/Settings.fit\"",
+            "\"RH/ComputationalFitness/ExampleData/Settings.fit\"",
             "]"
            }
           ]
@@ -358,7 +358,7 @@ Notebook[
            {
             "FITFileType",
             "[",
-            "\"ComputationalFitness/ExampleData/WorkoutIndividualSteps.fit\"",
+            "\"RH/ComputationalFitness/ExampleData/WorkoutIndividualSteps.fit\"",
             "]"
            }
           ]

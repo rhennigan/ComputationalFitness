@@ -365,7 +365,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"ComputationalFitness/ExampleData/BikeRide.fit\"",
+            "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
             "]"
            }
           ]
@@ -825,7 +825,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"ComputationalFitness/ExampleData/Walk.fit\"",
+            "\"RH/ComputationalFitness/ExampleData/Walk.fit\"",
             "]"
            }
           ]
@@ -1239,7 +1239,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"ComputationalFitness/ExampleData/Activity.fit\"",
+            "\"RH/ComputationalFitness/ExampleData/Activity.fit\"",
             "]"
            }
           ]
@@ -2036,7 +2036,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"ComputationalFitness/ExampleData/MonitoringFile.fit\"",
+            "\"RH/ComputationalFitness/ExampleData/MonitoringFile.fit\"",
             "]"
            }
           ]
@@ -2390,7 +2390,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"ComputationalFitness/ExampleData/Settings.fit\"",
+            "\"RH/ComputationalFitness/ExampleData/Settings.fit\"",
             "]"
            }
           ]
@@ -2819,7 +2819,7 @@ Notebook[
                 {
                  "FITImport",
                  "[",
-                 "\"ComputationalFitness/ExampleData/BikeRide.fit\"",
+                 "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
                  "]"
                 }
                ]
