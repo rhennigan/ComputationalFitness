@@ -402,7 +402,7 @@ Notebook[
                  "[",
                  RowBox[
                   {
-                   "\"ComputationalFitness/ExampleData/BikeRide.fit\"",
+                   "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
                    ",",
                    "\"RawData\""
                   }
@@ -9398,7 +9398,7 @@ Notebook[
                    "[",
                    RowBox[
                     {
-                     "\"ComputationalFitness/ExampleData/Activity.fit\"",
+                     "\"RH/ComputationalFitness/ExampleData/Activity.fit\"",
                      ",",
                      "\"RawData\""
                     }
@@ -9446,7 +9446,7 @@ Notebook[
                    "[",
                    RowBox[
                     {
-                     "\"ComputationalFitness/ExampleData/Activity.fit\"",
+                     "\"RH/ComputationalFitness/ExampleData/Activity.fit\"",
                      ",",
                      "\"Messages\""
                     }
@@ -9738,7 +9738,7 @@ Notebook[
                   {
                    "importAltitude",
                    "[",
-                   "\"ComputationalFitness/ExampleData/BikeRide.fit\"",
+                   "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
                    "]"
                   }
                  ]
@@ -10888,7 +10888,7 @@ Notebook[
                    "[",
                    RowBox[
                     {
-                     "\"ComputationalFitness/ExampleData/BikeRide.fit\"",
+                     "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
                      ",",
                      "\"Altitude\""
                     }
