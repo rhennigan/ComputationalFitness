@@ -6,22 +6,13 @@
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
-If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
-    PacletInstall[ "https://github.com/WolframResearch/PacletCICD/releases/download/v0.34.0/Wolfram__PacletCICD-0.34.0.paclet" ]
-];
-Needs[ "Wolfram`PacletCICD`" -> "cicd`" ];
-Needs[ "CCompilerDriver`"    -> "ccd`"  ];
-
-cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
-cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
-cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
+If[ ! TrueQ @ $loadedDefinitions, Get @ FileNameJoin @ { DirectoryName @ $InputFileName, "Common.wl" } ];
+Needs[ "CCompilerDriver`" -> "ccd`"  ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paths*)
-$inputFileName = cFile @ Replace[ $InputFileName, "" :> NotebookFileName[ ] ];
-$pacletDir     = cDir @ DirectoryName[ $inputFileName, 2 ];
-$targetDir     = cStr @ FileNameJoin @ { $pacletDir, "LibraryResources" };
+$targetDir = cStr @ FileNameJoin @ { $pacletDir, "LibraryResources" };
 
 cicd`ConsoleLog[ "Build target directory: " <> $targetDir ];
 
