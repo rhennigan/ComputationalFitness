@@ -83,6 +83,15 @@ jobs:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
 
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: check-paclet-stacks
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
   Compile-MacOSX-x86-64: 
     name: Compile-MacOSX-x86-64
     runs-on: macos-12
@@ -135,6 +144,15 @@ jobs:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
 
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: check-paclet-stacks
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
   Compile-Linux-x86-64: 
     name: Compile-Linux-x86-64
     runs-on: ubuntu-latest
@@ -167,6 +185,15 @@ jobs:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
 
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: check-paclet-stacks
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
   BuildPaclet: 
     name: BuildPaclet
     needs:  [Compile-Windows-x86-64, Compile-MacOSX-x86-64, Compile-Linux-x86-64]
@@ -196,3 +223,12 @@ jobs:
       with:
         path: ${{ env.PACLET_BUILD_DIR }}
         if-no-files-found: ignore
+
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: check-paclet-stacks
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
