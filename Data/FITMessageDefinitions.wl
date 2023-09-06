@@ -1,4 +1,6 @@
 (* This file is auto-generated. Do not edit manually. *)
+(* :!CodeAnalysis::BeginBlock:: *)
+(* :!CodeAnalysis::Disable::TimesString:: *)
 <|
     "AccelerometerData" -> <|
         "MessageName"   -> "AccelerometerData",
@@ -13666,3 +13668,4 @@
         |>
     |>
 |>
+(* :!CodeAnalysis::EndBlock:: *)
