@@ -22,7 +22,9 @@ Needs[ "PacletTools`" -> None ];
 
 If[ ListQ @ PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot,
     PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot =
-        DeleteDuplicates @ Append[ PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot, "Path" ]
+        DeleteDuplicates @ Append[ PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot, "Path" ];
+    PacletTools`$PacletExtensionHandlers[ "Path", "Files" ] = { } &;
+    PacletTools`$PacletExtensionHandlers[ "Path", "Build" ] = { } &;
 ];
 
 cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
