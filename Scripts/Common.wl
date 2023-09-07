@@ -17,6 +17,9 @@ If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
 
 Needs[ "Wolfram`PacletCICD`" -> "cicd`" ];
 
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*PacletTools Overrides*)
 PacletInstall[ "PacletTools" ];
 Needs[ "PacletTools`" -> None ];
 
@@ -27,6 +30,21 @@ If[ ListQ @ PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot,
     PacletTools`$PacletExtensionHandlers[ "Path", "Build" ] = { } &;
 ];
 
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*DefinitionNotebookClient Overrides*)
+
+(* Increase code inspector timeout: *)
+DefinitionNotebookClient`LoadDefinitionNotebook[ "Paclet" ];
+DefinitionNotebookClient`PackageScope`$InspectionFunctions[ "Paclet", "PacletManifest", "CodeInspectionIssues" ] =
+    ReplaceAll[
+        DefinitionNotebookClient`PackageScope`$InspectionFunctions[ "Paclet", "PacletManifest", "CodeInspectionIssues" ],
+        HoldPattern[ "TimeConstraint" -> 60 ] -> "TimeConstraint" -> 300
+    ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Common Definitions*)
 cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
 cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
 cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
