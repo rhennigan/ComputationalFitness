@@ -5,7 +5,7 @@ Get @ cFile @ FileNameJoin @ { DirectoryName @ $InputFileName, "BuildMX.wls" };
 
 checkResult @ cicd`BuildPaclet[
     $defNB,
-    "Check"      -> False,
+    "Check"      -> True,
     "ExitOnFail" -> True,
     "Target"     -> "Submit"
 ]
