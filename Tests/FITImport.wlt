@@ -3,11 +3,11 @@
 (*Initialization*)
 VerificationTest[
     $pacletDir =
-        Module[ { root, mx },
+        Module[ { root, build },
             root = DirectoryName[ $TestFileName, 2 ];
-            mx = FileNameJoin @ { root, "MXBuild", "RH__ComputationalFitness" };
-            If[ DirectoryQ @ mx,
-                PacletDirectoryUnload @ root; mx,
+            build = FileNameJoin @ { root, "build", "RH__ComputationalFitness" };
+            If[ DirectoryQ @ build,
+                PacletDirectoryUnload @ root; build,
                 root
             ]
         ],
