@@ -2,6 +2,7 @@
 
 (* :!CodeAnalysis::BeginBlock:: *)
 (* :!CodeAnalysis::Disable::SuspiciousSessionSymbol:: *)
+(* :!CodeAnalysis::Disable::BadInternalDefinition:: *)
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
