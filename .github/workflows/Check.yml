@@ -384,6 +384,8 @@ jobs:
     container: 
       image: wolframresearch/wolframengine:13.2.0
       options: --user root
+    env:
+      WOLFRAM_SYSTEM_ID: Linux-x86-64
     timeout-minutes: 10
 
     steps: 
