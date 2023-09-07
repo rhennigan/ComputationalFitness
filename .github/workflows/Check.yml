@@ -236,6 +236,7 @@ jobs:
 
   Test-Windows-x86-64:
     name: Test-Windows-x86-64
+    needs: [BuildPaclet]
     runs-on: windows-latest
     env:
       WOLFRAM_SYSTEM_ID: Windows-x86-64
@@ -302,6 +303,7 @@ jobs:
 
   Test-MacOSX-x86-64: 
     name: Test-MacOSX-x86-64
+    needs: [BuildPaclet]
     runs-on: macos-12
     env:
       WOLFRAM_SYSTEM_ID: MacOSX-x86-64
