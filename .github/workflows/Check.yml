@@ -82,6 +82,7 @@ jobs:
       with:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
+        retention-days: 1
 
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
@@ -143,6 +144,7 @@ jobs:
       with:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
+        retention-days: 1
 
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
@@ -184,6 +186,7 @@ jobs:
       with:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
+        retention-days: 1
 
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
@@ -290,7 +293,16 @@ jobs:
         path: MXBuild
 
     - name: Test paclet
-      run: wolframscript -f TestPaclet.wls
+      env:
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+        WOLFRAMINIT: "-pwfile !cloudlm.wolfram.com -entitlement ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}"
+      run: |
+        $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
+        if ("${{ env.WLPR_PACLET_SITE }}") {
+            echo 'Updating paclet sites...'
+            wolfram -noprompt -run 'PacletInstall[\"PacletManager\"];PacletSiteRegister[\"${{ env.WLPR_PACLET_SITE }}\"];PacletSiteUpdate[PacletSites[]];Quit[]'
+        }
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/TestPaclet.wls
     
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
@@ -344,7 +356,16 @@ jobs:
         path: MXBuild
 
     - name: Test paclet
-      run: wolframscript -f TestPaclet.wls
+      env:
+        WOLFRAMENGINE_EXECUTABLES_DIRECTORY: "${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}/Contents/Resources/Wolfram Player.app/Contents/MacOS"
+        WOLFRAMSCRIPT_KERNELPATH: "${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}/Contents/MacOS/WolframKernel"
+      run: |
+        export PATH="${{ env.WOLFRAMENGINE_EXECUTABLES_DIRECTORY }}:$PATH"
+        if test "${{ env.WLPR_PACLET_SITE }}" != ""; then
+            echo 'Updating paclet sites...';
+            wolframscript -code 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]' > /dev/null;
+        fi
+        wolframscript -runfirst 'CompoundExpression[Unprotect[\$EvaluationEnvironment],Set[\$EvaluationEnvironment,SymbolName[Script]],Protect[\$EvaluationEnvironment]]' -script Scripts/TestPaclet.wls
     
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
@@ -377,7 +398,7 @@ jobs:
           path: MXBuild
 
       - name: Test paclet
-        run: wolframscript -f TestPaclet.wls
+        run: wolframscript -f Scripts/TestPaclet.wls
       
       - name: Upload stack data
         if: always() && env.PACLET_STACK_HISTORY
