@@ -459,3 +459,30 @@ jobs:
             --repo="${{ env.GITHUB_REPOSITORY }}" \
             --title="Release ${{ env.PACLET_RELEASE_TAG }}" \
             --generate-notes
+
+  Submit:
+    name: Submit
+    needs: [BuildPaclet, Test-Windows-x86-64, Test-MacOSX-x86-64, Test-Linux-x86-64]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    container:
+      image: wolframresearch/wolframengine:13.2
+      options: --user root
+
+    env:
+      WOLFRAM_SYSTEM_ID: Linux-x86-64
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Download MX build
+      id: download-mx-artifacts-step
+      uses: actions/download-artifact@v3
+      with:
+        name: PacletBuildArtifact
+        path: build
+
+    - name: Submit
+      run: wolframscript -f Scripts/SubmitPaclet.wls
