@@ -6,32 +6,22 @@
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
-If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ],
-    PacletInstall[ "https://github.com/WolframResearch/PacletCICD/releases/download/v0.34.0/Wolfram__PacletCICD-0.34.0.paclet" ]
-];
-
-Needs[ "Wolfram`PacletCICD`" -> "cicd`" ];
-Needs[ "GeneralUtilities`"   -> "gu`"   ];
+If[ ! TrueQ @ $loadedDefinitions, Get @ FileNameJoin @ { DirectoryName @ $InputFileName, "Common.wl" } ];
+Needs[ "GeneralUtilities`"   -> "gu`" ];
 $ContextAliases[ "package`" ] = "RH`ComputationalFitness`Package`";
-
-cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
-cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
-cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
 
 RH`ComputationalFitnessLoader`$BuildingMX = True;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Paths*)
-$inputFileName = cFile @ Replace[ $InputFileName, "" :> NotebookFileName[ ] ];
-$pacletDir     = cDir @ DirectoryName[ $inputFileName, 2 ];
-$dataDir       = cDir @ FileNameJoin @ { $pacletDir, "Data" };
-$mxFile        = cStr @ FileNameJoin @ {
-                     $pacletDir,
-                     "Kernel",
-                     ToString @ $SystemWordLength <> "Bit",
-                     "ComputationalFitness.mx"
-                 };
+$dataDir = cDir @ FileNameJoin @ { $pacletDir, "Data" };
+$mxFile  = cStr @ FileNameJoin @ {
+               $pacletDir,
+               "Kernel",
+               ToString @ $SystemWordLength <> "Bit",
+               "ComputationalFitness.mx"
+           };
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)

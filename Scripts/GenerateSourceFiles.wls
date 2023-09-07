@@ -1,16 +1,17 @@
 #!/usr/bin/env wolframscript
 
-
+(* cSpell: ignore STDINT Dari *)
 (* FIXME: this whole thing needs to be cleaned up *)
 
 (* :!CodeAnalysis::BeginBlock:: *)
 (* :!CodeAnalysis::Disable::SuspiciousSessionSymbol:: *)
 
+If[ ! TrueQ @ $loadedDefinitions, Get @ FileNameJoin @ { DirectoryName @ $InputFileName, "Common.wl" } ];
+
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Config*)
-$pacletCICD      = "https://github.com/WolframResearch/PacletCICD/releases/download/v0.34.0/Wolfram__PacletCICD-0.34.0.paclet";
-$sdkURL          = "https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_21.94.00.zip";
+$sdkURL          = "https://developer.garmin.com/downloads/fit/sdk/FitSDKRelease_21.115.00.zip";
 $zwoReferenceURL = "https://raw.githubusercontent.com/h4l/zwift-workout-file-reference/master/tag_attr_usage.json";
 $fitUseSTDINT    = True;
 $forceDownload   = False;
@@ -23,13 +24,6 @@ $manufacturerString = "https://github.com/rhennigan";
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
-If[ ! PacletObjectQ @ PacletObject[ "Wolfram/PacletCICD" ], PacletInstall @ $pacletCICD ];
-Needs[ "Wolfram`PacletCICD`" -> "cicd`" ];
-
-cFile = cicd`ScriptConfirmBy[ #, FileExistsQ ] &;
-cDir  = cicd`ScriptConfirmBy[ #, DirectoryQ  ] &;
-cStr  = cicd`ScriptConfirmBy[ #, StringQ     ] &;
-
 cicd`ScriptConfirmAssert[ $OperatingSystem === "Windows" ];
 
 (* ::**************************************************************************************************************:: *)
@@ -215,19 +209,34 @@ $currentIndent     := StringJoin @ ConstantArray[ " ", $currentIndentSize ];
 (* ::Subsubsection::Closed:: *)
 (*formatWithNotice*)
 formatWithNotice // ClearAll;
-formatWithNotice // Options = { "SpellCheckIgnored" -> None };
+formatWithNotice // Options = { "SpellCheckIgnored" -> None, "CodeInspectorIgnored" -> None };
 
 formatWithNotice[ expr_, opts: OptionsPattern[ ] ] :=
-    formatWithNotice0[ expr, OptionValue[ "SpellCheckIgnored" ] ];
+    formatWithNotice0[ expr, OptionValue[ "SpellCheckIgnored" ], OptionValue[ "CodeInspectorIgnored" ] ];
 
-formatWithNotice0[ expr_, ignore: { __String } ] :=
+formatWithNotice0[ expr_, None, inspections_ ] := formatWithNotice0[ expr, { }, inspections ];
+formatWithNotice0[ expr_, spelling_, None ] := formatWithNotice0[ expr, spelling, { } ];
+
+
+formatWithNotice0[ expr_, spelling: { ___String }, inspections: { ___String } ] :=
     StringJoin[
         "(* This file is auto-generated. Do not edit manually. *)\n",
-        "(* cSpell:ignore " <> StringRiffle[ ignore, ", " ] <> " *)\n",
-        format @ expr
+        If[ Length @ spelling > 0, "(* cSpell:ignore " <> StringRiffle[ spelling, ", " ] <> " *)\n", "" ],
+        If[ Length @ inspections > 0,
+            {
+                "(* :!CodeAnalysis::BeginBlock:: *)\n",
+                "(* :!CodeAnalysis::Disable::"<>#<>":: *)\n" & /@ inspections
+            },
+            ""
+        ],
+        format @ expr,
+        If[ Length @ inspections > 0,
+            "\n(* :!CodeAnalysis::EndBlock:: *)",
+            ""
+        ]
     ];
 
-formatWithNotice0[ expr_, _ ] :=
+formatWithNotice0[ expr_, _, _ ] :=
     StringJoin[
         "(* This file is auto-generated. Do not edit manually. *)\n",
         format @ expr
@@ -1617,7 +1626,11 @@ $messageDefinitions = Association @ KeyValueMap[
 
 typeFile = FileNameJoin @ { $pacletDir, "Data", "FITMessageDefinitions.wl" };
 GeneralUtilities`EnsureDirectory @ DirectoryName @ typeFile;
-$exportedTypeData = Export[ typeFile, formatWithNotice @ $messageDefinitions, "String" ];
+$exportedTypeData = Export[
+    typeFile,
+    formatWithNotice[ $messageDefinitions, "CodeInspectorIgnored" -> { "TimesString" } ],
+    "String"
+];
 cicd`ConsoleLog[ "Updated FIT message data: " <> $exportedTypeData ];
 
 (* ::**************************************************************************************************************:: *)

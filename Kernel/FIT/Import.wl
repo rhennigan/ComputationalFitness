@@ -59,6 +59,11 @@ FITImport[ file_, Automatic, opts: OptionsPattern[ ] ] :=
     (* TODO: import based on FITFileType *)
     catchMine @ FITImport[ file, "FitnessData", opts ];
 
+FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /; ! FileExistsQ @ file :=
+    With[ { found = findFile @ file },
+        FITImport[ found, prop, opts ] /; FileExistsQ @ found
+    ];
+
 FITImport[ file_, "RawData", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[ fitImport @ file, opts ];
 
@@ -92,11 +97,6 @@ FITImport[ file_, "Dataset", opts: OptionsPattern[ ] ] :=
 
 FITImport[ file_, type: $$pluralMessage, opts: OptionsPattern[ ] ] :=
     catchMine @ FITImport[ file, StringDelete[ type, "s"~~EndOfString ], opts ];
-
-FITImport[ file: $$file|$$string, prop_, opts: OptionsPattern[ ] ] /; ! FileExistsQ @ file :=
-    With[ { found = findFile @ file },
-        FITImport[ found, prop, opts ] /; FileExistsQ @ found
-    ];
 
 FITImport[ file_, "MessageInformation", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[

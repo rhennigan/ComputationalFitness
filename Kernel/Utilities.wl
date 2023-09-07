@@ -250,7 +250,7 @@ throwFailure // Attributes = { HoldFirst };
 
 throwFailure[ msg_, args___ ] :=
     Module[ { failure },
-        failure = messageFailure[ msg, Sequence @@ HoldForm /@ { args } ];
+        failure = messageFailure[ msg, Sequence @@ Flatten[ HoldForm /@ { args } ] ];
         If[ TrueQ @ $catching,
             Throw[ failure, $top ],
             failure

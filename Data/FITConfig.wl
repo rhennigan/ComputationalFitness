@@ -1,8 +1,8 @@
 (* This file is auto-generated. Do not edit manually. *)
 <|
     "PacletName"            -> "RH/ComputationalFitness",
-    "PacletVersion"         -> "0.6.0",
-    "SerialNumber"          -> 1530,
+    "PacletVersion"         -> "0.7.0",
+    "SerialNumber"          -> 1785,
     "ManufacturerID"        -> 31337,
     "ManufacturerString"    -> "https://github.com/rhennigan",
     "ProductID"             -> 0,
