@@ -221,6 +221,7 @@ jobs:
     - name: UploadArtifact
       uses: actions/upload-artifact@v3
       with:
+        name: PacletBuildArtifact
         path: ${{ env.PACLET_BUILD_DIR }}
         if-no-files-found: ignore
 
@@ -232,3 +233,35 @@ jobs:
         path: ${{ env.PACLET_STACK_HISTORY }}
         retention-days: 1
         if-no-files-found: error
+
+  Test-Linux: 
+    name: Test-Linux
+    needs: [BuildPaclet]
+    runs-on: ubuntu-latest
+    container: 
+      image: wolframresearch/wolframengine:13.2.0
+      options: --user root
+    timeout-minutes: 10
+
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download MX build
+        id: download-mx-artifacts-step
+        uses: actions/download-artifact@v3
+        with: 
+          name: PacletBuildArtifact
+          path: MXBuild
+
+      - name: Test paclet
+        run: wolframscript -f TestPaclet.wls
+      
+      - name: Upload stack data
+        if: always() && env.PACLET_STACK_HISTORY
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-paclet-stacks-${{ env.WOLFRAM_SYSTEM_ID }}
+          path: ${{ env.PACLET_STACK_HISTORY }}
+          retention-days: 1
+          if-no-files-found: error
