@@ -221,7 +221,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: PacletBuildArtifact
-        path: ${{ env.PACLET_BUILD_DIR }}
+        path: ./*
         if-no-files-found: ignore
 
     - name: Upload stack data
@@ -286,7 +286,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: PacletBuildArtifact
-        path: build
 
     - name: Test paclet
       env:
@@ -349,7 +348,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: PacletBuildArtifact
-        path: build
 
     - name: Test paclet
       env:
@@ -392,7 +390,6 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: PacletBuildArtifact
-          path: build
 
       - name: Test paclet
         run: wolframscript -f Scripts/TestPaclet.wls
@@ -437,7 +434,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: PacletBuildArtifact
-        path: build
 
     - name: SetReleaseParameters
       run: wolframscript -f Scripts/SetReleaseParameters.wls
@@ -482,7 +478,6 @@ jobs:
       uses: actions/download-artifact@v3
       with:
         name: PacletBuildArtifact
-        path: build
 
     - name: Submit
       run: wolframscript -f Scripts/SubmitPaclet.wls
