@@ -26,10 +26,11 @@ Needs[ "PacletTools`" -> None ];
 
 If[ ListQ @ PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot,
     PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot =
-        DeleteDuplicates @ Append[ PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot, "Path" ];
-    PacletTools`$PacletExtensionHandlers[ "Path", "Files" ] = { } &;
-    PacletTools`$PacletExtensionHandlers[ "Path", "Build" ] = { } &;
+        DeleteDuplicates @ Append[ PacletTools`Utils`Private`$extensionsAllowedAtPacletRoot, "Path" ]
 ];
+
+PacletTools`$PacletExtensionHandlers[ "Path", "Files" ] = { } &;
+PacletTools`$PacletExtensionHandlers[ "Path", "Build" ] = { } &;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -116,6 +117,12 @@ messageString[ HoldPattern @ MessageName[ f_, tag_ ], args___ ] :=
     ];
 
 messageString[ ___ ] := "-- Message text not found --";
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*Publisher ID*)
+Needs[ "ResourceSystemClient`" -> None ];
+$PublisherID = PacletObject[ File @ $pacletDir ][ "PublisherID" ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -321,20 +328,7 @@ checkResult[ eval: (sym_Symbol)[ args___ ] ] :=
         name   = SymbolName @ Unevaluated @ sym;
         full   = ctx <> name;
 
-        If[ $messageNumber > 0
-            ,
-            stackName = name <> "StackHistory";
-            stacks = ExpandFileName[ stackName <> ".wxf" ];
-            Print[ "::notice::Exporting stack data: ", stacks ];
-            Export[
-                stacks,
-                $stackHistory,
-                "WXF",
-                PerformanceGoal -> "Size"
-            ];
-            setOutput[ "PACLET_STACK_HISTORY", stacks     ];
-            setOutput[ "PACLET_STACK_NAME"   , stackName  ];
-        ];
+        checkMessages @ name;
 
         If[ MatchQ[ Head @ result, HoldPattern @ sym ]
             ,
@@ -350,6 +344,21 @@ checkResult[ eval: (sym_Symbol)[ args___ ] ] :=
 
 noExit    := Wolfram`PacletCICD`Private`noExit;
 setOutput := Wolfram`PacletCICD`Private`setOutput;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*checkMessages*)
+checkMessages[ name_String ] :=
+    Module[ { stackName, stacks },
+        If[ $messageNumber > 0,
+            stackName = name<>"StackHistory";
+            stacks = ExpandFileName[ stackName<>".wxf" ];
+            Print[ "::notice::Exporting stack data: ", stacks ];
+            Export[ stacks, $stackHistory, "WXF", PerformanceGoal -> "Size" ];
+            setOutput[ "PACLET_STACK_HISTORY", stacks ];
+            setOutput[ "PACLET_STACK_NAME", stackName ];
+        ]
+    ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)

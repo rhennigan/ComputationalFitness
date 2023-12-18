@@ -2,9 +2,9 @@
 (* ::Section::Closed:: *)
 (*Package Header*)
 (* cSpell:ignore ifit *)
-BeginPackage[ "RH`ComputationalFitness`FIT`" ];
-Needs[ "RH`ComputationalFitness`" ];
-Needs[ "RH`ComputationalFitness`Package`" ];
+BeginPackage[ "RickHennigan`ComputationalFitness`FIT`" ];
+Needs[ "RickHennigan`ComputationalFitness`" ];
+Needs[ "RickHennigan`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
 $ContextAliases[ "dev`" ] = "Developer`";
@@ -2206,10 +2206,12 @@ fitANTTransmissionType[ ___ ] := Missing[ "NotAvailable" ];
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
 (*fitProductName*)
+(* cSpell: ignore Tacx *)
 fitProductName // ClearAll;
 fitProductName[ mp_, { 0, ___ } ] := fitProductName @ mp;
 fitProductName[ _, bytes: { __Integer } ] := FromCharacterCode[ TakeWhile[ bytes, Positive ], "UTF-8" ];
 fitProductName[ { 1  , id_Integer } ] := fitGarminProduct @ id;
+fitProductName[ { 89 , id_Integer } ] := fitTacxProduct @ id;
 fitProductName[ { 263, id_Integer } ] := fitFaveroProduct @ id;
 fitProductName[ ___ ] := Missing[ "NotAvailable" ];
 

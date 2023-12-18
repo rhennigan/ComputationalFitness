@@ -8,9 +8,9 @@
 (*Initialization*)
 If[ ! TrueQ @ $loadedDefinitions, Get @ FileNameJoin @ { DirectoryName @ $InputFileName, "Common.wl" } ];
 Needs[ "GeneralUtilities`"   -> "gu`" ];
-$ContextAliases[ "package`" ] = "RH`ComputationalFitness`Package`";
+$ContextAliases[ "package`" ] = "RickHennigan`ComputationalFitness`Package`";
 
-RH`ComputationalFitnessLoader`$BuildingMX = True;
+RickHennigan`ComputationalFitnessLoader`$BuildingMX = True;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -47,7 +47,7 @@ If[ FileExistsQ @ $mxFile,
 
 cicd`ConsoleLog[ "Loading paclet..." ];
 cicd`ScriptConfirmBy[ PacletDirectoryLoad @ $pacletDir, MemberQ @ $pacletDir ];
-cicd`ScriptConfirm @ Get[ "RH`ComputationalFitness`" ];
+cicd`ScriptConfirm @ Get[ "RickHennigan`ComputationalFitness`" ];
 
 $mxDir = cDir @ gu`EnsureDirectory @ DirectoryName @ $mxFile;
 cicd`ConsoleLog @ SequenceForm[ "MX target directory: ", $mxDir  ];
@@ -59,8 +59,8 @@ package`$thisPacletLocation // ClearAll;
 DumpSave[
     $mxFile,
     {
-        "RH`ComputationalFitness`",
-        "RH`ComputationalFitness`Private`"
+        "RickHennigan`ComputationalFitness`",
+        "RickHennigan`ComputationalFitness`Private`"
     },
     "SymbolAttributes" -> False
 ];

@@ -1,4 +1,4 @@
-BeginPackage[ "RH`ComputationalFitness`FIT`" ];
+BeginPackage[ "RickHennigan`ComputationalFitness`FIT`" ];
 
 <<`Data`;
 <<`Config`;

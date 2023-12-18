@@ -248,7 +248,14 @@ Notebook[
      ],
      Cell[
       BoxData[
-       RowBox[{"Needs", "[", "\"RH`ComputationalFitness`\"", "]"}]
+       RowBox[
+        {
+         "Needs",
+         "[",
+         "\"RickHennigan`ComputationalFitness`\"",
+         "]"
+        }
+       ]
       ],
       "ExampleInitialization",
       CellID -> 18320699
@@ -431,7 +438,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
             "]"
            }
           ]
@@ -889,7 +896,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/Walk.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/Walk.fit\"",
             "]"
            }
           ]
@@ -1330,7 +1337,7 @@ Notebook[
                "[",
                RowBox[
                 {
-                 "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                  ",",
                  "\"Dataset\""
                 }
@@ -1427,7 +1434,7 @@ Notebook[
                "[",
                RowBox[
                 {
-                 "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                  ",",
                  "\"Session\""
                 }
@@ -1517,7 +1524,7 @@ Notebook[
                "[",
                RowBox[
                 {
-                 "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                  ",",
                  "\"GeoPosition\""
                 }
@@ -1671,7 +1678,7 @@ Notebook[
                  "[",
                  RowBox[
                   {
-                   "\"RH/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
+                   "\"RickHennigan/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
                    ",",
                    "\"Altitude\""
                   }
@@ -1755,7 +1762,7 @@ Notebook[
                "[",
                RowBox[
                 {
-                 "\"RH/ComputationalFitness/ExampleData/IndoorIntervals.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/IndoorIntervals.fit\"",
                  ",",
                  "\"PowerZonePlot\""
                 }
@@ -1836,7 +1843,7 @@ Notebook[
                "[",
                RowBox[
                 {
-                 "\"RH/ComputationalFitness/ExampleData/BikeLaps.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/BikeLaps.fit\"",
                  ",",
                  "\"AveragePowerPhasePlot\""
                 }
@@ -1917,7 +1924,7 @@ Notebook[
                "[",
                RowBox[
                 {
-                 "\"RH/ComputationalFitness/ExampleData/BikeLaps.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/BikeLaps.fit\"",
                  ",",
                  "\"CriticalPowerCurvePlot\""
                 }
@@ -2046,7 +2053,7 @@ Notebook[
                "[",
                RowBox[
                 {
-                 "\"RH/ComputationalFitness/ExampleData/Walk.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/Walk.fit\"",
                  ",",
                  RowBox[
                   {"{", RowBox[{"\"Distance\"", ",", "\"Speed\""}], "}"}
@@ -2125,7 +2132,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
                     ",",
                     "\"DeviceInformation\""
                    }
@@ -2206,7 +2213,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/Walk.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/Walk.fit\"",
                     ",",
                     "\"Session\""
                    }
@@ -2330,7 +2337,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                     ",",
                     "\"PowerZone\""
                    }
@@ -2369,7 +2376,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                     ",",
                     "\"PowerZone\"",
                     ",",
@@ -3358,7 +3365,7 @@ Notebook[
                           "[",
                           RowBox[
                            {
-                            "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                            "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                             ",",
                             "\"PowerZone\"",
                             ",",
@@ -3514,7 +3521,7 @@ Notebook[
                      "[",
                      RowBox[
                       {
-                       "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                       "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                        ",",
                        "\"PowerZone\""
                       }
@@ -4446,7 +4453,7 @@ Notebook[
                      "[",
                      RowBox[
                       {
-                       "\"RH/ComputationalFitness/ExampleData/IndoorIntervals.fit\"",
+                       "\"RickHennigan/ComputationalFitness/ExampleData/IndoorIntervals.fit\"",
                        ",",
                        "\"PowerZonePlot\""
                       }
@@ -4510,7 +4517,7 @@ Notebook[
                      "[",
                      RowBox[
                       {
-                       "\"RH/ComputationalFitness/ExampleData/IndoorIntervals.fit\"",
+                       "\"RickHennigan/ComputationalFitness/ExampleData/IndoorIntervals.fit\"",
                        ",",
                        "\"PowerZonePlot\"",
                        ",",
@@ -4584,7 +4591,7 @@ Notebook[
                      "[",
                      RowBox[
                       {
-                       "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                       "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                        ",",
                        "\"PowerZonePlot\""
                       }
@@ -4609,7 +4616,7 @@ Notebook[
                      243,
                      34161966168405134796,
                      "Local",
-                     "RH`ComputationalFitness`FITImport"
+                     "RickHennigan`ComputationalFitness`FITImport"
                     },
                     "MessageTemplate2"
                    ]
@@ -4670,7 +4677,7 @@ Notebook[
                      "[",
                      RowBox[
                       {
-                       "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                       "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                        ",",
                        "\"PowerZonePlot\"",
                        ",",
@@ -4765,7 +4772,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                     ",",
                     "\"HeartRateZone\""
                    }
@@ -4804,7 +4811,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                     ",",
                     "\"HeartRateZone\"",
                     ",",
@@ -5824,7 +5831,7 @@ Notebook[
                      "[",
                      RowBox[
                       {
-                       "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                       "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                        ",",
                        "\"HeartRateZone\""
                       }
@@ -6788,7 +6795,7 @@ Notebook[
                     "[",
                     RowBox[
                      {
-                      "\"RH/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
+                      "\"RickHennigan/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
                       ",",
                       "\"Altitude\""
                      }
@@ -6839,7 +6846,7 @@ Notebook[
                     "[",
                     RowBox[
                      {
-                      "\"RH/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
+                      "\"RickHennigan/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
                       ",",
                       "\"Altitude\"",
                       ",",
@@ -7058,7 +7065,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                     ",",
                     "\"MessageInformation\""
                    }
@@ -7208,7 +7215,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                     ",",
                     "\"MessageCounts\""
                    }
@@ -7304,7 +7311,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                     ",",
                     RowBox[{"{", RowBox[{"\"FileID\"", ",", "\"Lap\""}], "}"}]
                    }
@@ -7385,7 +7392,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                     ",",
                     "\"RawData\""
                    }
@@ -8167,7 +8174,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                     ",",
                     "\"MessageCounts\""
                    }
@@ -8267,7 +8274,7 @@ Notebook[
                     "[",
                     RowBox[
                      {
-                      "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                      "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                       ",",
                       "\"Power\""
                      }
@@ -9128,7 +9135,7 @@ Notebook[
                            {
                             "FITImport",
                             "[",
-                            "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                            "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                             "]"
                            }
                           ],
@@ -10026,7 +10033,7 @@ Notebook[
                     "[",
                     RowBox[
                      {
-                      "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                      "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                       ",",
                       "\"MessageCounts\""
                      }
@@ -10119,7 +10126,7 @@ Notebook[
                     "[",
                     RowBox[
                      {
-                      "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                      "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                       ",",
                       "\"Sport\""
                      }
@@ -10196,7 +10203,7 @@ Notebook[
                         "[",
                         RowBox[
                          {
-                          "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                          "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                           ",",
                           "\"Messages\""
                          }
@@ -10318,7 +10325,7 @@ Notebook[
                 {
                  "FITImport",
                  "[",
-                 "\"RH/ComputationalFitness/ExampleData/Walk.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/Walk.fit\"",
                  "]"
                 }
                ],
@@ -10378,7 +10385,7 @@ Notebook[
                 {
                  "FITImport",
                  "[",
-                 "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                  "]"
                 }
                ],
@@ -10438,7 +10445,7 @@ Notebook[
                 {
                  "FITImport",
                  "[",
-                 "\"RH/ComputationalFitness/ExampleData/Debugging.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/Debugging.fit\"",
                  "]"
                 }
                ],
@@ -10514,7 +10521,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/Walk.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/Walk.fit\"",
                     ",",
                     "\"AveragePowerPhasePlot\""
                    }
@@ -10553,7 +10560,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                     ",",
                     "\"AveragePowerPhasePlot\""
                    }
@@ -10587,7 +10594,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                     ",",
                     "\"DeviceInformation\""
                    }
@@ -10657,7 +10664,7 @@ Notebook[
                       "[",
                       RowBox[
                        {
-                        "\"RH/ComputationalFitness/ExampleData/BikeLaps.fit\"",
+                        "\"RickHennigan/ComputationalFitness/ExampleData/BikeLaps.fit\"",
                         ",",
                         "\"DeviceInformation\""
                        }
@@ -10725,7 +10732,7 @@ Notebook[
                   "[",
                   RowBox[
                    {
-                    "\"RH/ComputationalFitness/ExampleData/BikeLaps.fit\"",
+                    "\"RickHennigan/ComputationalFitness/ExampleData/BikeLaps.fit\"",
                     ",",
                     "\"AveragePowerPhasePlot\""
                    }
@@ -11801,7 +11808,7 @@ Notebook[
                          "[",
                          RowBox[
                           {
-                           "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                           "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                            ",",
                            "\"MessageData\""
                           }
@@ -11907,7 +11914,7 @@ Notebook[
                            "[",
                            RowBox[
                             {
-                             "\"RH/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
+                             "\"RickHennigan/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
                              ",",
                              "\"Altitude\""
                             }
@@ -11947,7 +11954,7 @@ Notebook[
                            "[",
                            RowBox[
                             {
-                             "\"RH/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
+                             "\"RickHennigan/ComputationalFitness/ExampleData/BikeHillClimb.fit\"",
                              ",",
                              "\"GeoPosition\""
                             }
@@ -12177,7 +12184,7 @@ Notebook[
                           "[",
                           RowBox[
                            {
-                            "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                            "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                             ",",
                             "All"
                            }
@@ -19169,7 +19176,7 @@ Notebook[
                              "[",
                              RowBox[
                               {
-                               "\"RH/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
+                               "\"RickHennigan/ComputationalFitness/ExampleData/ZwiftRide.fit\"",
                                ",",
                                "\"GeoPosition\""
                               }
@@ -19514,19 +19521,19 @@ Notebook[
          CellID -> 168354758
         ],
         Cell[
-         "RH/ComputationalFitness",
+         "RickHennigan/ComputationalFitness",
          "Categorization",
          CellLabel -> "Paclet Name",
          CellID -> 647659540
         ],
         Cell[
-         "RH`ComputationalFitness`",
+         "RickHennigan`ComputationalFitness`",
          "Categorization",
          CellLabel -> "Context",
          CellID -> 478700745
         ],
         Cell[
-         "RH/ComputationalFitness/ref/FITImport",
+         "RickHennigan/ComputationalFitness/ref/FITImport",
          "Categorization",
          CellLabel -> "URI",
          CellID -> 366795943
@@ -19588,7 +19595,7 @@ Notebook[
  WindowStatusArea -> Automatic,
  TaggingRules -> <|
   "InformationPopupMenuItemAdded" -> True,
-  "Paclet" -> "RH/ComputationalFitness",
+  "Paclet" -> "RickHennigan/ComputationalFitness",
   "NotebookIndexQ" -> True,
   "NotebookLastIndexed" ->
    DateObject[

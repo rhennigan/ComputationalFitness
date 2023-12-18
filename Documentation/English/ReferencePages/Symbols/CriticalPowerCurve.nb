@@ -190,7 +190,14 @@ Notebook[
      ],
      Cell[
       BoxData[
-       RowBox[{"Needs", "[", "\"RH`ComputationalFitness`\"", "]"}]
+       RowBox[
+        {
+         "Needs",
+         "[",
+         "\"RickHennigan`ComputationalFitness`\"",
+         "]"
+        }
+       ]
       ],
       "ExampleInitialization",
       CellID -> 449340269
@@ -434,19 +441,19 @@ Notebook[
          CellID -> 274435216
         ],
         Cell[
-         "RH/ComputationalFitness",
+         "RickHennigan/ComputationalFitness",
          "Categorization",
          CellLabel -> "Paclet Name",
          CellID -> 82375797
         ],
         Cell[
-         "RH`ComputationalFitness`",
+         "RickHennigan`ComputationalFitness`",
          "Categorization",
          CellLabel -> "Context",
          CellID -> 121210657
         ],
         Cell[
-         "RH/ComputationalFitness/ref/CriticalPowerCurve",
+         "RickHennigan/ComputationalFitness/ref/CriticalPowerCurve",
          "Categorization",
          CellLabel -> "URI",
          CellID -> 247831969
@@ -508,7 +515,7 @@ Notebook[
  WindowStatusArea -> Automatic,
  TaggingRules -> <|
   "InformationPopupMenuItemAdded" -> True,
-  "Paclet" -> "RH/ComputationalFitness",
+  "Paclet" -> "RickHennigan/ComputationalFitness",
   "NotebookIndexQ" -> True,
   "NotebookLastIndexed" ->
    DateObject[

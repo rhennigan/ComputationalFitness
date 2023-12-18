@@ -245,19 +245,19 @@ Notebook[
          CellID -> 150134730
         ],
         Cell[
-         "RH/ComputationalFitness",
+         "RickHennigan/ComputationalFitness",
          "Categorization",
          CellLabel -> "Paclet Name",
          CellID -> 666474783
         ],
         Cell[
-         "RH`ComputationalFitness`",
+         "RickHennigan`ComputationalFitness`",
          "Categorization",
          CellLabel -> "Context",
          CellID -> 458140634
         ],
         Cell[
-         "RH/ComputationalFitness/guide/ComputationalFitness",
+         "RickHennigan/ComputationalFitness/guide/ComputationalFitness",
          "Categorization",
          CellLabel -> "URI",
          CellID -> 87082947
@@ -283,7 +283,7 @@ Notebook[
  ScreenStyleEnvironment -> "FutureObject",
  TaggingRules -> <|
   "InformationPopupMenuItemAdded" -> True,
-  "Paclet" -> "RH/ComputationalFitness"
+  "Paclet" -> "RickHennigan/ComputationalFitness"
  |>,
  FrontEndVersion -> "13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
  StyleDefinitions ->

@@ -42,8 +42,8 @@ cicd`ConsoleLog[ "SDK directory: "    <> $sdkDir    ];
 (* ::Section::Closed:: *)
 (*Load Paclet Definitions*)
 PacletDirectoryLoad @ $pacletDir;
-Needs[ "RH`ComputationalFitness`" -> None ];
-Needs[ "RH`ComputationalFitness`Package`" -> "cf`" ];
+Needs[ "RickHennigan`ComputationalFitness`" -> None ];
+Needs[ "RickHennigan`ComputationalFitness`Package`" -> "cf`" ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -1972,6 +1972,7 @@ cicd`ConsoleLog[ "Updated ZWO reference data: " <> $exportedZWOReferenceData ];
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Exit*)
+checkMessages[ "GenerateSourceFiles" ];
 
 Exit[ 0 ];
 

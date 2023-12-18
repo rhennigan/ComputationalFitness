@@ -1,6 +1,6 @@
-PreemptProtect[ BeginPackage[ "RH`ComputationalFitness`" ]; EndPackage[ ] ];
+PreemptProtect[ BeginPackage[ "RickHennigan`ComputationalFitness`" ]; EndPackage[ ] ];
 
-RH`ComputationalFitnessLoader`$MXFile = FileNameJoin @ {
+RickHennigan`ComputationalFitnessLoader`$MXFile = FileNameJoin @ {
     DirectoryName @ $InputFileName,
     ToString @ $SystemWordLength <> "Bit",
     "ComputationalFitness.mx"
@@ -8,16 +8,16 @@ RH`ComputationalFitnessLoader`$MXFile = FileNameJoin @ {
 
 Quiet[
 
-    If[ FileExistsQ @ RH`ComputationalFitnessLoader`$MXFile,
-        Get @ RH`ComputationalFitnessLoader`$MXFile,
+    If[ FileExistsQ @ RickHennigan`ComputationalFitnessLoader`$MXFile,
+        Get @ RickHennigan`ComputationalFitnessLoader`$MXFile,
         WithCleanup[
-            Get[ "RH`ComputationalFitness`Package`" ],
+            Get[ "RickHennigan`ComputationalFitness`Package`" ],
             { $Context, $ContextPath, $ContextAliases } = { ## }
         ] & [ $Context, $ContextPath, $ContextAliases ]
     ];
 
-    If[ ! TrueQ @ RH`ComputationalFitnessLoader`$BuildingMX,
-        RH`ComputationalFitness`Package`initialize[ ]
+    If[ ! TrueQ @ RickHennigan`ComputationalFitnessLoader`$BuildingMX,
+        RickHennigan`ComputationalFitness`Package`initialize[ ]
     ],
     General::shdw
 ];

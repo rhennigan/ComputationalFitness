@@ -93,7 +93,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
 
-  Compile-MacOSX-x86-64: 
+  Compile-MacOSX-x86-64:
     name: Compile-MacOSX-x86-64
     runs-on: macos-12
     env:
@@ -155,10 +155,10 @@ jobs:
         retention-days: 1
         if-no-files-found: error
 
-  Compile-Linux-x86-64: 
+  Compile-Linux-x86-64:
     name: Compile-Linux-x86-64
     runs-on: ubuntu-latest
-    container: 
+    container:
       image: wolframresearch/wolframengine:13.2.0
       options: --user root
     env:
@@ -197,7 +197,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
 
-  BuildPaclet: 
+  BuildPaclet:
     name: BuildPaclet
     needs:  [Compile-Windows-x86-64, Compile-MacOSX-x86-64, Compile-Linux-x86-64]
     runs-on: ubuntu-latest
@@ -288,9 +288,9 @@ jobs:
     - name: Download MX build
       id: download-mx-artifacts-step
       uses: actions/download-artifact@v3
-      with: 
+      with:
         name: PacletBuildArtifact
-        path: MXBuild
+        path: build
 
     - name: Test paclet
       env:
@@ -313,7 +313,7 @@ jobs:
         retention-days: 1
         if-no-files-found: error
 
-  Test-MacOSX-x86-64: 
+  Test-MacOSX-x86-64:
     name: Test-MacOSX-x86-64
     needs: [BuildPaclet]
     runs-on: macos-12
@@ -351,9 +351,9 @@ jobs:
     - name: Download MX build
       id: download-mx-artifacts-step
       uses: actions/download-artifact@v3
-      with: 
+      with:
         name: PacletBuildArtifact
-        path: MXBuild
+        path: build
 
     - name: Test paclet
       env:
@@ -377,27 +377,27 @@ jobs:
         if-no-files-found: error
 
 
-  Test-Linux-x86-64: 
+  Test-Linux-x86-64:
     name: Test-Linux-x86-64
     needs: [BuildPaclet]
     runs-on: ubuntu-latest
-    container: 
+    container:
       image: wolframresearch/wolframengine:13.2.0
       options: --user root
     env:
       WOLFRAM_SYSTEM_ID: Linux-x86-64
     timeout-minutes: 10
 
-    steps: 
+    steps:
       - name: Checkout
         uses: actions/checkout@v3
 
       - name: Download MX build
         id: download-mx-artifacts-step
         uses: actions/download-artifact@v3
-        with: 
+        with:
           name: PacletBuildArtifact
-          path: MXBuild
+          path: build
 
       - name: Test paclet
         run: wolframscript -f Scripts/TestPaclet.wls

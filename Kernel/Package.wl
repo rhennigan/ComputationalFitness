@@ -1,7 +1,7 @@
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
-BeginPackage[ "RH`ComputationalFitness`" ];
+BeginPackage[ "RickHennigan`ComputationalFitness`" ];
 Needs[ "GeneralUtilities`" -> None ];
 
 (* ::**************************************************************************************************************:: *)

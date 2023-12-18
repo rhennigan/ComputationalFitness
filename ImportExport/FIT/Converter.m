@@ -1,6 +1,6 @@
 (* FIXME: this should remove itself if the paclet has been uninstalled *)
-PacletInstall[ "RH/ComputationalFitness", AllowVersionUpdate -> False ];
-Needs[ "RH`ComputationalFitness`" -> None ];
+PacletInstall[ "RickHennigan/ComputationalFitness", AllowVersionUpdate -> False ];
+Needs[ "RickHennigan`ComputationalFitness`" -> None ];
 
 (* FIXME:
     Import[ "file.fit" ] at the start of a session fails.

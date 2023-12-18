@@ -1,8 +1,8 @@
-Begin[ "RH`ComputationalFitness`FormatDump`FIT`" ];
+Begin[ "RickHennigan`ComputationalFitness`FormatDump`FIT`" ];
 
 fitExporter[ args___ ] := Function[
-    Block[ { RH`ComputationalFitness`Package`$messageSymbol = Export },
-        RH`ComputationalFitness`FITExport[ #1, args ]
+    Block[ { RickHennigan`ComputationalFitness`Package`$messageSymbol = Export },
+        RickHennigan`ComputationalFitness`FITExport[ #1, args ]
     ]
 ];
 

@@ -246,7 +246,14 @@ Notebook[
      ],
      Cell[
       BoxData[
-       RowBox[{"Needs", "[", "\"RH`ComputationalFitness`\"", "]"}]
+       RowBox[
+        {
+         "Needs",
+         "[",
+         "\"RickHennigan`ComputationalFitness`\"",
+         "]"
+        }
+       ]
       ],
       "ExampleInitialization",
       CellID -> 14251210
@@ -365,7 +372,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
             "]"
            }
           ]
@@ -825,7 +832,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/Walk.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/Walk.fit\"",
             "]"
            }
           ]
@@ -1239,7 +1246,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/Activity.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/Activity.fit\"",
             "]"
            }
           ]
@@ -2036,7 +2043,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/MonitoringFile.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/MonitoringFile.fit\"",
             "]"
            }
           ]
@@ -2390,7 +2397,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/Settings.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/Settings.fit\"",
             "]"
            }
           ]
@@ -2819,7 +2826,7 @@ Notebook[
                 {
                  "FITImport",
                  "[",
-                 "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                 "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                  "]"
                 }
                ]
@@ -4694,19 +4701,19 @@ Notebook[
          CellID -> 634586907
         ],
         Cell[
-         "RH/ComputationalFitness",
+         "RickHennigan/ComputationalFitness",
          "Categorization",
          CellLabel -> "Paclet Name",
          CellID -> 138288789
         ],
         Cell[
-         "RH`ComputationalFitness`",
+         "RickHennigan`ComputationalFitness`",
          "Categorization",
          CellLabel -> "Context",
          CellID -> 118338804
         ],
         Cell[
-         "RH/ComputationalFitness/ref/FitnessData",
+         "RickHennigan/ComputationalFitness/ref/FitnessData",
          "Categorization",
          CellLabel -> "URI",
          CellID -> 49085988
@@ -4768,7 +4775,7 @@ Notebook[
  WindowStatusArea -> Automatic,
  TaggingRules -> <|
   "InformationPopupMenuItemAdded" -> True,
-  "Paclet" -> "RH/ComputationalFitness",
+  "Paclet" -> "RickHennigan/ComputationalFitness",
   "NotebookIndexQ" -> True,
   "NotebookLastIndexed" ->
    DateObject[

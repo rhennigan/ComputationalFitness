@@ -1,4 +1,4 @@
-BeginPackage[ "RH`ComputationalFitness`TCX`" ];
+BeginPackage[ "RickHennigan`ComputationalFitness`TCX`" ];
 
 <<`Import`;
 

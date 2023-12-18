@@ -1,0 +1,488 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  RESOURCE_PUBLISHER_TOKEN: ${{ secrets.RESOURCE_PUBLISHER_TOKEN }}
+  WOLFRAMSCRIPT_ENTITLEMENTID: ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}
+  WLPR_PACLET_SITE: https://resources.wolframcloud.com/PacletRepository/pacletsite
+
+jobs:
+
+  Compile-Windows-x86-64:
+    name: Compile-Windows-x86-64
+    runs-on: windows-latest
+    env:
+      WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
+      WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
+      WOLFRAM_SYSTEM_ID: Windows-x86-64
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.1.0.0/WolframEngine_13.1.0_WIN.msi
+    steps:
+    - name: Checkout
+      id: checkout-code-step
+      uses: actions/checkout@v3
+    - name: RestoreCachedWolframEngine
+      id: cache-restore-step
+      uses: actions/cache@v3
+      env:
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+      with:
+        path: ${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}
+        key: wolframengine-${{ env.WOLFRAM_SYSTEM_ID }}-${{ env.WOLFRAMENGINE_CACHE_KEY }}
+    - name: InstallWolframEngine
+      if: steps.cache-restore-step.outputs.cache-hit != 'true'
+      env:
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+        WOLFRAMENGINE_INSTALL_MSI_PATH: '${{ runner.temp }}\WolframEngine-Install.msi'
+        WOLFRAMENGINE_INSTALL_LOG_PATH: '${{ runner.temp }}\WolframEngine-Install.log'
+      run: |
+        echo 'Downloading Wolfram Engine installer...'
+        $msiFile = '${{ env.WOLFRAMENGINE_INSTALL_MSI_PATH }}'
+        $logFile = '${{ env.WOLFRAMENGINE_INSTALL_LOG_PATH }}'
+        Import-Module BitsTransfer
+        Start-BitsTransfer '${{ env.WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL }}' $msiFile
+        echo 'Downloaded Wolfram Engine installer.'
+        $DataStamp = get-date -Format yyyyMMddTHHmmss
+        $MSIArguments = @(
+            "/i"
+            ('"{0}"' -f $msiFile)
+            'INSTALLLOCATION="${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}"'
+            "/qn"
+            "/norestart"
+            "/L*v"
+            $logFile
+        )
+        echo 'Installing Wolfram Engine...'
+        Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+        echo 'Installed Wolfram Engine.'
+        Set-Alias -Name wolframscript -Value wolfram
+    - name: Compile libraries
+      env:
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+        WOLFRAMINIT: "-pwfile !cloudlm.wolfram.com -entitlement ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}"
+      run: |
+        $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
+        if ("${{ env.WLPR_PACLET_SITE }}") {
+            echo 'Updating paclet sites...'
+            wolfram -noprompt -run 'PacletInstall[\"PacletManager\"];PacletSiteRegister[\"${{ env.WLPR_PACLET_SITE }}\"];PacletSiteUpdate[PacletSites[]];Quit[]'
+        }
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
+    - name: Archive compiled libraries
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.WOLFRAM_SYSTEM_ID }}
+        path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
+        retention-days: 1
+
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: check-paclet-stacks
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
+  Compile-MacOSX-x86-64:
+    name: Compile-MacOSX-x86-64
+    runs-on: macos-12
+    env:
+      WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
+      WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
+      WOLFRAM_SYSTEM_ID: MacOSX-x86-64
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_DOWNLOAD_PATH: /tmp/downloads
+      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/13.1.0.0/WolframEngine_13.1.0_MAC.dmg
+      WOLFRAMENGINE_INSTALLATION_DIRECTORY: "/Applications/Wolfram Engine.app"
+    steps:
+    - name: Checkout
+      id: checkout-code-step
+      uses: actions/checkout@v3
+    - name: RestoreCachedWolframEngine
+      id: cache-restore-step
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}
+        key: wolframengine-${{ env.WOLFRAM_SYSTEM_ID }}-${{ env.WOLFRAMENGINE_CACHE_KEY }}
+    - name: InstallWolframEngine
+      if: steps.cache-restore-step.outputs.cache-hit != 'true'
+      run: |
+        echo 'Installing Wolfram Engine...'
+        DOWNLOAD_FILE="${{ env.WOLFRAMENGINE_DOWNLOAD_PATH }}/WolframEngine.dmg"
+        mkdir -p "${{ env.WOLFRAMENGINE_DOWNLOAD_PATH }}"
+        curl ${{ env.WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL }} -o $DOWNLOAD_FILE -s
+        hdiutil attach $DOWNLOAD_FILE -nobrowse
+        DMG_MOUNT_POINT="$(hdiutil info | grep "Wolfram Engine" | awk '{ print $1 }')"
+        DMG_VOLUME="$(hdiutil info | grep "Wolfram Engine" | awk '{$1=$2=""; print $0}' | xargs)"
+        APP_PATH="$DMG_VOLUME/$(ls "$DMG_VOLUME" | grep .app)"
+        cp -R "$APP_PATH" "${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}"
+        hdiutil detach $DMG_MOUNT_POINT
+        echo 'Installed Wolfram Engine.'
+    - name: Compile libraries
+      env:
+        WOLFRAMENGINE_EXECUTABLES_DIRECTORY: "${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}/Contents/Resources/Wolfram Player.app/Contents/MacOS"
+        WOLFRAMSCRIPT_KERNELPATH: "${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}/Contents/MacOS/WolframKernel"
+      run: |
+        export PATH="${{ env.WOLFRAMENGINE_EXECUTABLES_DIRECTORY }}:$PATH"
+        if test "${{ env.WLPR_PACLET_SITE }}" != ""; then
+            echo 'Updating paclet sites...';
+            wolframscript -code 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]' > /dev/null;
+        fi
+        wolframscript -runfirst 'CompoundExpression[Unprotect[\$EvaluationEnvironment],Set[\$EvaluationEnvironment,SymbolName[Script]],Protect[\$EvaluationEnvironment]]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
+    - name: Archive compiled libraries
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.WOLFRAM_SYSTEM_ID }}
+        path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
+        retention-days: 1
+
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: check-paclet-stacks
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
+  Compile-Linux-x86-64:
+    name: Compile-Linux-x86-64
+    runs-on: ubuntu-latest
+    container:
+      image: wolframresearch/wolframengine:13.2.0
+      options: --user root
+    env:
+      WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
+      WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
+      WOLFRAM_SYSTEM_ID: Linux-x86-64
+    steps:
+    - name: Checkout
+      id: checkout-code-step
+      uses: actions/checkout@v3
+    - name: Install build tools
+      run: |
+        apt-get -y update
+        apt-get -y install build-essential
+    - name: Compile libraries
+      run: |
+        if [ "${{ env.WLPR_PACLET_SITE }}" != "" ]
+        then
+            echo 'Updating paclet sites...'
+            wolframscript -code 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]' > /dev/null
+        fi
+        wolframscript -f ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
+    - name: Archive compiled libraries
+      uses: actions/upload-artifact@v3
+      with:
+        name: ${{ env.WOLFRAM_SYSTEM_ID }}
+        path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
+        retention-days: 1
+
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: check-paclet-stacks
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
+  BuildPaclet:
+    name: BuildPaclet
+    needs:  [Compile-Windows-x86-64, Compile-MacOSX-x86-64, Compile-Linux-x86-64]
+    runs-on: ubuntu-latest
+
+    container:
+      image: wolframresearch/wolframengine:13.2.0
+      options: --user root
+
+    env:
+      WOLFRAM_SYSTEM_ID: Linux-x86-64
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: DownloadCompilationArtifacts
+      uses: actions/download-artifact@v3
+      with:
+        path: LibraryResources
+
+    - name: Build
+      run: wolframscript -f Scripts/BuildPaclet.wls
+
+    - name: UploadArtifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: PacletBuildArtifact
+        path: ${{ env.PACLET_BUILD_DIR }}
+        if-no-files-found: ignore
+
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: check-paclet-stacks
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
+  Test-Windows-x86-64:
+    name: Test-Windows-x86-64
+    needs: [BuildPaclet]
+    runs-on: windows-latest
+    env:
+      WOLFRAM_SYSTEM_ID: Windows-x86-64
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.1.0.0/WolframEngine_13.1.0_WIN.msi
+    steps:
+    - name: Checkout
+      id: checkout-code-step
+      uses: actions/checkout@v3
+    - name: RestoreCachedWolframEngine
+      id: cache-restore-step
+      uses: actions/cache@v3
+      env:
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+      with:
+        path: ${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}
+        key: wolframengine-${{ env.WOLFRAM_SYSTEM_ID }}-${{ env.WOLFRAMENGINE_CACHE_KEY }}
+    - name: InstallWolframEngine
+      if: steps.cache-restore-step.outputs.cache-hit != 'true'
+      env:
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+        WOLFRAMENGINE_INSTALL_MSI_PATH: '${{ runner.temp }}\WolframEngine-Install.msi'
+        WOLFRAMENGINE_INSTALL_LOG_PATH: '${{ runner.temp }}\WolframEngine-Install.log'
+      run: |
+        echo 'Downloading Wolfram Engine installer...'
+        $msiFile = '${{ env.WOLFRAMENGINE_INSTALL_MSI_PATH }}'
+        $logFile = '${{ env.WOLFRAMENGINE_INSTALL_LOG_PATH }}'
+        Import-Module BitsTransfer
+        Start-BitsTransfer '${{ env.WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL }}' $msiFile
+        echo 'Downloaded Wolfram Engine installer.'
+        $DataStamp = get-date -Format yyyyMMddTHHmmss
+        $MSIArguments = @(
+            "/i"
+            ('"{0}"' -f $msiFile)
+            'INSTALLLOCATION="${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}"'
+            "/qn"
+            "/norestart"
+            "/L*v"
+            $logFile
+        )
+        echo 'Installing Wolfram Engine...'
+        Start-Process "msiexec.exe" -ArgumentList $MSIArguments -Wait -NoNewWindow
+        echo 'Installed Wolfram Engine.'
+        Set-Alias -Name wolframscript -Value wolfram
+
+    - name: Download MX build
+      id: download-mx-artifacts-step
+      uses: actions/download-artifact@v3
+      with:
+        name: PacletBuildArtifact
+        path: build
+
+    - name: Test paclet
+      env:
+        WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
+        WOLFRAMINIT: "-pwfile !cloudlm.wolfram.com -entitlement ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}"
+      run: |
+        $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
+        if ("${{ env.WLPR_PACLET_SITE }}") {
+            echo 'Updating paclet sites...'
+            wolfram -noprompt -run 'PacletInstall[\"PacletManager\"];PacletSiteRegister[\"${{ env.WLPR_PACLET_SITE }}\"];PacletSiteUpdate[PacletSites[]];Quit[]'
+        }
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/TestPaclet.wls
+    
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-paclet-stacks-${{ env.WOLFRAM_SYSTEM_ID }}
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
+  Test-MacOSX-x86-64:
+    name: Test-MacOSX-x86-64
+    needs: [BuildPaclet]
+    runs-on: macos-12
+    env:
+      WOLFRAM_SYSTEM_ID: MacOSX-x86-64
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_DOWNLOAD_PATH: /tmp/downloads
+      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/13.1.0.0/WolframEngine_13.1.0_MAC.dmg
+      WOLFRAMENGINE_INSTALLATION_DIRECTORY: "/Applications/Wolfram Engine.app"
+    steps:
+    - name: Checkout
+      id: checkout-code-step
+      uses: actions/checkout@v3
+    - name: RestoreCachedWolframEngine
+      id: cache-restore-step
+      uses: actions/cache@v3
+      with:
+        path: ${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}
+        key: wolframengine-${{ env.WOLFRAM_SYSTEM_ID }}-${{ env.WOLFRAMENGINE_CACHE_KEY }}
+    - name: InstallWolframEngine
+      if: steps.cache-restore-step.outputs.cache-hit != 'true'
+      run: |
+        echo 'Installing Wolfram Engine...'
+        DOWNLOAD_FILE="${{ env.WOLFRAMENGINE_DOWNLOAD_PATH }}/WolframEngine.dmg"
+        mkdir -p "${{ env.WOLFRAMENGINE_DOWNLOAD_PATH }}"
+        curl ${{ env.WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL }} -o $DOWNLOAD_FILE -s
+        hdiutil attach $DOWNLOAD_FILE -nobrowse
+        DMG_MOUNT_POINT="$(hdiutil info | grep "Wolfram Engine" | awk '{ print $1 }')"
+        DMG_VOLUME="$(hdiutil info | grep "Wolfram Engine" | awk '{$1=$2=""; print $0}' | xargs)"
+        APP_PATH="$DMG_VOLUME/$(ls "$DMG_VOLUME" | grep .app)"
+        cp -R "$APP_PATH" "${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}"
+        hdiutil detach $DMG_MOUNT_POINT
+        echo 'Installed Wolfram Engine.'
+
+    - name: Download MX build
+      id: download-mx-artifacts-step
+      uses: actions/download-artifact@v3
+      with:
+        name: PacletBuildArtifact
+        path: build
+
+    - name: Test paclet
+      env:
+        WOLFRAMENGINE_EXECUTABLES_DIRECTORY: "${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}/Contents/Resources/Wolfram Player.app/Contents/MacOS"
+        WOLFRAMSCRIPT_KERNELPATH: "${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}/Contents/MacOS/WolframKernel"
+      run: |
+        export PATH="${{ env.WOLFRAMENGINE_EXECUTABLES_DIRECTORY }}:$PATH"
+        if test "${{ env.WLPR_PACLET_SITE }}" != ""; then
+            echo 'Updating paclet sites...';
+            wolframscript -code 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]' > /dev/null;
+        fi
+        wolframscript -runfirst 'CompoundExpression[Unprotect[\$EvaluationEnvironment],Set[\$EvaluationEnvironment,SymbolName[Script]],Protect[\$EvaluationEnvironment]]' -script Scripts/TestPaclet.wls
+    
+    - name: Upload stack data
+      if: always() && env.PACLET_STACK_HISTORY
+      uses: actions/upload-artifact@v3
+      with:
+        name: test-paclet-stacks-${{ env.WOLFRAM_SYSTEM_ID }}
+        path: ${{ env.PACLET_STACK_HISTORY }}
+        retention-days: 1
+        if-no-files-found: error
+
+  Test-Linux-x86-64:
+    name: Test-Linux-x86-64
+    needs: [BuildPaclet]
+    runs-on: ubuntu-latest
+    container:
+      image: wolframresearch/wolframengine:13.2.0
+      options: --user root
+    env:
+      WOLFRAM_SYSTEM_ID: Linux-x86-64
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Download MX build
+        id: download-mx-artifacts-step
+        uses: actions/download-artifact@v3
+        with:
+          name: PacletBuildArtifact
+          path: build
+
+      - name: Test paclet
+        run: wolframscript -f Scripts/TestPaclet.wls
+      
+      - name: Upload stack data
+        if: always() && env.PACLET_STACK_HISTORY
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-paclet-stacks-${{ env.WOLFRAM_SYSTEM_ID }}
+          path: ${{ env.PACLET_STACK_HISTORY }}
+          retention-days: 1
+          if-no-files-found: error
+
+  Release:
+    name: Release
+    needs: [BuildPaclet, Test-Windows-x86-64, Test-MacOSX-x86-64, Test-Linux-x86-64]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    container:
+      image: wolframresearch/wolframengine:13.2
+      options: --user root
+
+    env:
+      WOLFRAM_SYSTEM_ID: Linux-x86-64
+      GH_INSTALL_URL: https://github.com/cli/cli/releases/download/v2.33.0/gh_2.33.0_linux_amd64.deb
+
+    steps:
+    - name: Update Git
+      run: |
+        apt-get update && apt-get install software-properties-common -y
+        add-apt-repository ppa:git-core/ppa -y
+        apt-get update && apt-get install git -y
+        wget ${{ env.GH_INSTALL_URL }} -O gh.deb
+        dpkg -i gh.deb
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Download MX build
+      id: download-mx-artifacts-step
+      uses: actions/download-artifact@v3
+      with:
+        name: PacletBuildArtifact
+        path: build
+
+    - name: SetReleaseParameters
+      run: wolframscript -f Scripts/SetReleaseParameters.wls
+
+    - name: TestParameters
+      run: |
+        echo "PACLET_BUILD_DIR:   ${{ env.PACLET_BUILD_DIR }}"
+        echo "PACLET_PATH:        ${{ env.PACLET_PATH }}"
+        echo "PACLET_FILE:        ${{ env.PACLET_FILE }}"
+        echo "PACLET_RELEASE_TAG: ${{ env.PACLET_RELEASE_TAG }}"
+
+    - name: CreateRelease
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git config --global --add safe.directory $(pwd)
+        gh release create "${{ env.PACLET_RELEASE_TAG }}" "${{ env.PACLET_PATH }}#${{ env.PACLET_FILE }}" \
+            --target="${{ github.ref }}" \
+            --repo="${{ env.GITHUB_REPOSITORY }}" \
+            --title="Release ${{ env.PACLET_RELEASE_TAG }}" \
+            --generate-notes
+
+  Submit:
+    name: Submit
+    needs: [BuildPaclet, Test-Windows-x86-64, Test-MacOSX-x86-64, Test-Linux-x86-64]
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    container:
+      image: wolframresearch/wolframengine:13.2
+      options: --user root
+
+    env:
+      WOLFRAM_SYSTEM_ID: Linux-x86-64
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Download MX build
+      id: download-mx-artifacts-step
+      uses: actions/download-artifact@v3
+      with:
+        name: PacletBuildArtifact
+        path: build
+
+    - name: Submit
+      run: wolframscript -f Scripts/SubmitPaclet.wls
