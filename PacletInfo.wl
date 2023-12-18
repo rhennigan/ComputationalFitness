@@ -1,6 +1,6 @@
 PacletObject[ <|
     "Name"             -> "RickHennigan/ComputationalFitness",
-    "Version"          -> "0.7.1",
+    "Version"          -> "0.8.0",
     "Description"      -> "Utilities for importing and analyzing fitness data from smartwatches, cycling computers, and other sources",
     "Creator"          -> "Richard Hennigan (Wolfram Research)",
     "WolframVersion"   -> "13.0+",

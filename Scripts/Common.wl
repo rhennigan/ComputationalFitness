@@ -321,20 +321,7 @@ checkResult[ eval: (sym_Symbol)[ args___ ] ] :=
         name   = SymbolName @ Unevaluated @ sym;
         full   = ctx <> name;
 
-        If[ $messageNumber > 0
-            ,
-            stackName = name <> "StackHistory";
-            stacks = ExpandFileName[ stackName <> ".wxf" ];
-            Print[ "::notice::Exporting stack data: ", stacks ];
-            Export[
-                stacks,
-                $stackHistory,
-                "WXF",
-                PerformanceGoal -> "Size"
-            ];
-            setOutput[ "PACLET_STACK_HISTORY", stacks     ];
-            setOutput[ "PACLET_STACK_NAME"   , stackName  ];
-        ];
+        checkMessages @ name;
 
         If[ MatchQ[ Head @ result, HoldPattern @ sym ]
             ,
@@ -350,6 +337,21 @@ checkResult[ eval: (sym_Symbol)[ args___ ] ] :=
 
 noExit    := Wolfram`PacletCICD`Private`noExit;
 setOutput := Wolfram`PacletCICD`Private`setOutput;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*checkMessages*)
+checkMessages[ name_String ] :=
+    Module[ { stackName, stacks },
+        If[ $messageNumber > 0,
+            stackName = name<>"StackHistory";
+            stacks = ExpandFileName[ stackName<>".wxf" ];
+            Print[ "::notice::Exporting stack data: ", stacks ];
+            Export[ stacks, $stackHistory, "WXF", PerformanceGoal -> "Size" ];
+            setOutput[ "PACLET_STACK_HISTORY", stacks ];
+            setOutput[ "PACLET_STACK_NAME", stackName ];
+        ]
+    ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)

@@ -58,17 +58,17 @@ registerFormat[ fmt_String, sourceDirectory_, targetDirectory_, metaFile_? curre
 
 registerFormat[ fmt_, sourceDirectory_, targetDirectory_, metaFile_ ] := Enclose[
     Module[ { targetFile, copyFile, sourceFiles, copied, version, metadata },
-        ConfirmBy[ GeneralUtilities`EnsureDirectory @ targetDirectory, DirectoryQ ];
+        ConfirmBy[ GeneralUtilities`EnsureDirectory @ targetDirectory, DirectoryQ, "TargetDirectory" ];
         targetFile  = FileNameJoin @ { targetDirectory, FileNameTake @ # } &;
-        copyFile    = ConfirmBy[ CopyFile[ #, targetFile @ #, OverwriteTarget -> True ], FileExistsQ ] &;
-        sourceFiles = ConfirmMatch[ formatFiles @ sourceDirectory, { __? FileExistsQ } ];
+        copyFile    = ConfirmBy[ CopyFile[ #, targetFile @ #, OverwriteTarget -> True ], FileExistsQ, "Copy" ] &;
+        sourceFiles = ConfirmMatch[ formatFiles @ sourceDirectory, { __? FileExistsQ }, "SourceFiles" ];
         copied      = copyFile /@ sourceFiles;
-        version     = ConfirmBy[ $thisPacletInfo[ "Version" ], StringQ ];
+        version     = ConfirmBy[ $thisPacletInfo[ "Version" ], StringQ, "Version" ];
         metadata    = <| "Version" -> version, "Format" -> fmt |>;
-        ConfirmBy[ Developer`WriteWXFFile[ metaFile, metadata ], FileExistsQ ];
-        ConfirmMatch[ getFormatFiles[ fmt, targetDirectory ], KeyValuePattern[ "Name" -> fmt ] ]
+        ConfirmBy[ Developer`WriteWXFFile[ metaFile, metadata ], FileExistsQ, "Write" ];
+        ConfirmMatch[ getFormatFiles[ fmt, targetDirectory ], KeyValuePattern[ "Name" -> fmt ], "Files" ]
     ],
-    throwInternalFailure @ HoldForm @ registerFormat[ fmt, sourceDirectory, targetDirectory, metaFile ] &
+    throwInternalFailure[ registerFormat[ fmt, sourceDirectory, targetDirectory, metaFile ], ## ] &
 ];
 
 registerFormat // endDefinition;

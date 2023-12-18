@@ -1,8 +1,8 @@
 (* This file is auto-generated. Do not edit manually. *)
 <|
     "PacletName"            -> "RickHennigan/ComputationalFitness",
-    "PacletVersion"         -> "0.7.0",
-    "SerialNumber"          -> 1785,
+    "PacletVersion"         -> "0.8.0",
+    "SerialNumber"          -> 2040,
     "ManufacturerID"        -> 31337,
     "ManufacturerString"    -> "https://github.com/rhennigan",
     "ProductID"             -> 0,

@@ -1972,6 +1972,7 @@ cicd`ConsoleLog[ "Updated ZWO reference data: " <> $exportedZWOReferenceData ];
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Exit*)
+checkMessages[ "GenerateSourceFiles" ];
 
 Exit[ 0 ];
 
