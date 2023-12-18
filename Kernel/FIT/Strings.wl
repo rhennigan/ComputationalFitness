@@ -1611,6 +1611,25 @@ $fitFaveroProduct = toNiceCamelCase /@ removePrefix[ $fitFaveroProduct0, "FIT_FA
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
+(*fitTacxProduct*)
+fitTacxProduct // ClearAll;
+fitTacxProduct[ n_Integer ] := Lookup[ $fitTacxProduct, n, Missing[ "NotAvailable" ] ];
+fitTacxProduct[ ___ ] := Missing[ "NotAvailable" ];
+
+$fitTacxProduct0 = <|
+    2875  -> "FIT_TACX_PRODUCT_NEO2_T_SMART_TRAINER",
+    20533 -> "FIT_TACX_PRODUCT_TRAINING_APP_WINDOWS",
+    20534 -> "FIT_TACX_PRODUCT_TRAINING_APP_MAC",
+    20565 -> "FIT_TACX_PRODUCT_TRAINING_APP_MAC_CATALYST",
+    30045 -> "FIT_TACX_PRODUCT_TRAINING_APP_ANDROID",
+    30046 -> "FIT_TACX_PRODUCT_TRAINING_APP_IOS",
+    30047 -> "FIT_TACX_PRODUCT_TRAINING_APP_LEGACY"
+|>;
+
+$fitTacxProduct = toNiceCamelCase /@ removePrefix[ $fitTacxProduct0, "FIT_TACX_PRODUCT_" ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
 (*fitExerciseCategory*)
 fitExerciseCategory // ClearAll;
 fitExerciseCategory[ n_Integer ] := Lookup[ $fitExerciseCategory, n, Missing[ "NotAvailable" ] ];
