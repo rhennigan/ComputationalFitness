@@ -5,6 +5,7 @@ PacletObject[ <|
     "Creator"          -> "Richard Hennigan (Wolfram Research)",
     "WolframVersion"   -> "13.0+",
     "PublisherID"      -> "RickHennigan",
+    "PrimaryContext"   -> "RickHennigan`ComputationalFitness`",
     "SourceControlURL" -> "https://github.com/rhennigan/ComputationalFitness",
     "License"          -> "MIT",
     "Icon"             -> "Images/PacletIcon.png",
