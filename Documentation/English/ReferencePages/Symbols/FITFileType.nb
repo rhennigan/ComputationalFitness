@@ -246,7 +246,14 @@ Notebook[
      ],
      Cell[
       BoxData[
-       RowBox[{"Needs", "[", "\"RH`ComputationalFitness`\"", "]"}]
+       RowBox[
+        {
+         "Needs",
+         "[",
+         "\"RickHennigan`ComputationalFitness`\"",
+         "]"
+        }
+       ]
       ],
       "ExampleInitialization",
       CellID -> 600312985
@@ -302,7 +309,7 @@ Notebook[
            {
             "FITFileType",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
             "]"
            }
           ]
@@ -330,7 +337,7 @@ Notebook[
            {
             "FITFileType",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/Settings.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/Settings.fit\"",
             "]"
            }
           ]
@@ -358,7 +365,7 @@ Notebook[
            {
             "FITFileType",
             "[",
-            "\"RH/ComputationalFitness/ExampleData/WorkoutIndividualSteps.fit\"",
+            "\"RickHennigan/ComputationalFitness/ExampleData/WorkoutIndividualSteps.fit\"",
             "]"
            }
           ]
@@ -586,19 +593,19 @@ Notebook[
          CellID -> 298469396
         ],
         Cell[
-         "RH/ComputationalFitness",
+         "RickHennigan/ComputationalFitness",
          "Categorization",
          CellLabel -> "Paclet Name",
          CellID -> 3687874
         ],
         Cell[
-         "RH`ComputationalFitness`",
+         "RickHennigan`ComputationalFitness`",
          "Categorization",
          CellLabel -> "Context",
          CellID -> 57537543
         ],
         Cell[
-         "RH/ComputationalFitness/ref/FITFileType",
+         "RickHennigan/ComputationalFitness/ref/FITFileType",
          "Categorization",
          CellLabel -> "URI",
          CellID -> 380390498
@@ -659,7 +666,7 @@ Notebook[
  },
  TaggingRules -> <|
   "InformationPopupMenuItemAdded" -> True,
-  "Paclet" -> "RH/ComputationalFitness"
+  "Paclet" -> "RickHennigan/ComputationalFitness"
  |>,
  FrontEndVersion -> "13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
  StyleDefinitions ->

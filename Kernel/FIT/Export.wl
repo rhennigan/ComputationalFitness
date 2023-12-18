@@ -1,9 +1,9 @@
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
-BeginPackage[ "RH`ComputationalFitness`FIT`" ];
-Needs[ "RH`ComputationalFitness`" ];
-Needs[ "RH`ComputationalFitness`Package`" ];
+BeginPackage[ "RickHennigan`ComputationalFitness`FIT`" ];
+Needs[ "RickHennigan`ComputationalFitness`" ];
+Needs[ "RickHennigan`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
 $ContextAliases[ "dev`" ] = "Developer`";

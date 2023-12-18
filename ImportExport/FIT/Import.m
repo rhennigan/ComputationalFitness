@@ -1,4 +1,4 @@
-Begin[ "RH`ComputationalFitness`FormatDump`FIT`" ];
+Begin[ "RickHennigan`ComputationalFitness`FormatDump`FIT`" ];
 
 $fitImportElements = {
     "Data",
@@ -18,8 +18,8 @@ $fitImportElements = {
 };
 
 fitImporter[ elem_, args___ ] := Function[
-    Block[ { RH`ComputationalFitness`Package`$messageSymbol = Import },
-        { elem -> RH`ComputationalFitness`FITImport[ #1, elem, args ] }
+    Block[ { RickHennigan`ComputationalFitness`Package`$messageSymbol = Import },
+        { elem -> RickHennigan`ComputationalFitness`FITImport[ #1, elem, args ] }
     ]
 ];
 

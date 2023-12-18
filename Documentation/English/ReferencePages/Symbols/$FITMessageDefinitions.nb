@@ -196,7 +196,14 @@ Notebook[
      ],
      Cell[
       BoxData[
-       RowBox[{"Needs", "[", "\"RH`ComputationalFitness`\"", "]"}]
+       RowBox[
+        {
+         "Needs",
+         "[",
+         "\"RickHennigan`ComputationalFitness`\"",
+         "]"
+        }
+       ]
       ],
       "ExampleInitialization",
       CellID -> 278212573
@@ -402,7 +409,7 @@ Notebook[
                  "[",
                  RowBox[
                   {
-                   "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                   "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                    ",",
                    "\"RawData\""
                   }
@@ -9398,7 +9405,7 @@ Notebook[
                    "[",
                    RowBox[
                     {
-                     "\"RH/ComputationalFitness/ExampleData/Activity.fit\"",
+                     "\"RickHennigan/ComputationalFitness/ExampleData/Activity.fit\"",
                      ",",
                      "\"RawData\""
                     }
@@ -9446,7 +9453,7 @@ Notebook[
                    "[",
                    RowBox[
                     {
-                     "\"RH/ComputationalFitness/ExampleData/Activity.fit\"",
+                     "\"RickHennigan/ComputationalFitness/ExampleData/Activity.fit\"",
                      ",",
                      "\"Messages\""
                     }
@@ -9738,7 +9745,7 @@ Notebook[
                   {
                    "importAltitude",
                    "[",
-                   "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                   "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                    "]"
                   }
                  ]
@@ -10888,7 +10895,7 @@ Notebook[
                    "[",
                    RowBox[
                     {
-                     "\"RH/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                     "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
                      ",",
                      "\"Altitude\""
                     }
@@ -12441,19 +12448,19 @@ Notebook[
          CellID -> 46105042
         ],
         Cell[
-         "RH/ComputationalFitness",
+         "RickHennigan/ComputationalFitness",
          "Categorization",
          CellLabel -> "Paclet Name",
          CellID -> 293643651
         ],
         Cell[
-         "RH`ComputationalFitness`",
+         "RickHennigan`ComputationalFitness`",
          "Categorization",
          CellLabel -> "Context",
          CellID -> 396291743
         ],
         Cell[
-         "RH/ComputationalFitness/ref/$FITMessageDefinitions",
+         "RickHennigan/ComputationalFitness/ref/$FITMessageDefinitions",
          "Categorization",
          CellLabel -> "URI",
          CellID -> 111195688
@@ -12515,7 +12522,7 @@ Notebook[
  WindowStatusArea -> Automatic,
  TaggingRules -> <|
   "InformationPopupMenuItemAdded" -> True,
-  "Paclet" -> "RH/ComputationalFitness",
+  "Paclet" -> "RickHennigan/ComputationalFitness",
   "NotebookIndexQ" -> True,
   "NotebookLastIndexed" ->
    DateObject[

@@ -1,9 +1,9 @@
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
-BeginPackage[ "RH`ComputationalFitness`TCX`" ];
-Needs[ "RH`ComputationalFitness`" ];
-Needs[ "RH`ComputationalFitness`Package`" ];
+BeginPackage[ "RickHennigan`ComputationalFitness`TCX`" ];
+Needs[ "RickHennigan`ComputationalFitness`" ];
+Needs[ "RickHennigan`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
 (* ::**************************************************************************************************************:: *)

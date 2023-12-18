@@ -1,6 +1,6 @@
 (* This file is auto-generated. Do not edit manually. *)
 <|
-    "PacletName"            -> "RH/ComputationalFitness",
+    "PacletName"            -> "RickHennigan/ComputationalFitness",
     "PacletVersion"         -> "0.7.0",
     "SerialNumber"          -> 1785,
     "ManufacturerID"        -> 31337,

@@ -1,8 +1,8 @@
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
-BeginPackage[ "RH`ComputationalFitness`" ];
-Needs[ "RH`ComputationalFitness`Package`" ];
+BeginPackage[ "RickHennigan`ComputationalFitness`" ];
+Needs[ "RickHennigan`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
 (* ::**************************************************************************************************************:: *)
@@ -474,7 +474,7 @@ addTempFile // endDefinition;
 (*$tempFile*)
 $tempFile // ClearAll;
 $tempFile := FileNameJoin @ {
-    GeneralUtilities`EnsureDirectory @ { $TemporaryDirectory, "RH", "ComputationalFitness" },
+    GeneralUtilities`EnsureDirectory @ { $TemporaryDirectory, "RickHennigan", "ComputationalFitness" },
     CreateUUID[ ]
 };
 

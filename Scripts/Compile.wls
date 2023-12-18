@@ -20,10 +20,10 @@ cicd`ConsoleLog[ "Build target directory: " <> $targetDir ];
 (* ::Section::Closed:: *)
 (*Compile*)
 cicd`ScriptConfirmMatch[ PacletDirectoryLoad @ $pacletDir, { ___, $pacletDir, ___ } ];
-Get[ "RH`ComputationalFitness`" ];
+Get[ "RickHennigan`ComputationalFitness`" ];
 
 cicd`ConsoleLog[ "Compiling libraries..." ];
-$compiled = RH`ComputationalFitness`Package`recompileLibraries[ True ];
+$compiled = RickHennigan`ComputationalFitness`Package`recompileLibraries[ True ];
 
 cicd`ScriptConfirmAssert[ FileExistsQ @ $compiled[ "FITImportExport" ] ];
 cicd`ScriptConfirmAssert[ AssociationQ @ $compiled[ "CodeFunctions" ] ];
