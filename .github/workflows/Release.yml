@@ -450,7 +450,6 @@ jobs:
         echo "PACLET_RELEASE_TAG: ${{ env.PACLET_RELEASE_TAG }}"
 
     - name: CreateRelease
-      if: ${{ false }} # Temporarily disabled while testing
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
