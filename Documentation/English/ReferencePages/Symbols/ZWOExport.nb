@@ -508,11 +508,12 @@ Notebook[
    ]
   ]
  },
+ ScreenStyleEnvironment -> "FutureObject",
  TaggingRules -> <|
   "InformationPopupMenuItemAdded" -> True,
   "Paclet" -> "RickHennigan/ComputationalFitness"
  |>,
- FrontEndVersion -> "13.2 for Microsoft Windows (64-bit) (November 18, 2022)",
+ FrontEndVersion -> "14.0 for Microsoft Windows (64-bit) (December 12, 2023)",
  StyleDefinitions ->
   FrontEnd`FileName[
    {"Wolfram"},
