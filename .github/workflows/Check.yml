@@ -263,6 +263,7 @@ jobs:
     name: BuildPaclet
     needs:  [Compile-Windows-x86-64, Compile-MacOSX-x86-64, Compile-MacOSX-ARM64, Compile-Linux-x86-64]
     runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     container:
       image: wolframresearch/wolframengine:13.2.0
