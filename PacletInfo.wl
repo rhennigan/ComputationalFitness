@@ -1,6 +1,6 @@
 PacletObject[ <|
     "Name"             -> "RickHennigan/ComputationalFitness",
-    "Version"          -> "1.0.1",
+    "Version"          -> "1.1.0",
     "Description"      -> "Utilities for importing and analyzing fitness data from smartwatches, cycling computers, and other sources",
     "Creator"          -> "Richard Hennigan (Wolfram Research)",
     "WolframVersion"   -> "13.0+",
@@ -43,11 +43,11 @@ PacletObject[ <|
         },
         {
             "LibraryLink",
-            "Root"     -> "LibraryResources"
+            "Root" -> "LibraryResources"
         },
         {
             "Asset",
-            "Assets"   -> {
+            "Assets" -> {
                 { "Data"        , "./Data"         },
                 { "ExampleData" , "./ExampleData"  },
                 { "Images"      , "./Images"       },
@@ -57,7 +57,9 @@ PacletObject[ <|
             }
         },
         {
-            "Path"
+            "Path",
+            "Base" -> "ExampleData",
+            "Root" -> "ExampleData"
         }
     }
 |> ]
