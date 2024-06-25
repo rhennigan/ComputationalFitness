@@ -442,7 +442,7 @@ VerificationTest[
 VerificationTest[
     Map[
         Function @ FITImport[
-            FileNameJoin @ { "RickHennigan", "ComputationalFitness", "ExampleData", FileNameTake @ # },
+            FileNameJoin @ { "ExampleData", FileNameTake @ # },
             "MessageCounts"
         ],
         $exampleFiles
