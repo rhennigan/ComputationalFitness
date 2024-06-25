@@ -306,12 +306,7 @@ Notebook[
         Cell[
          BoxData[
           RowBox[
-           {
-            "FITFileType",
-            "[",
-            "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
-            "]"
-           }
+           {"FITFileType", "[", "\"ExampleData/BikeRide.fit\"", "]"}
           ]
          ],
          "Input",
@@ -334,12 +329,7 @@ Notebook[
         Cell[
          BoxData[
           RowBox[
-           {
-            "FITFileType",
-            "[",
-            "\"RickHennigan/ComputationalFitness/ExampleData/Settings.fit\"",
-            "]"
-           }
+           {"FITFileType", "[", "\"ExampleData/Settings.fit\"", "]"}
           ]
          ],
          "Input",
@@ -365,7 +355,7 @@ Notebook[
            {
             "FITFileType",
             "[",
-            "\"RickHennigan/ComputationalFitness/ExampleData/WorkoutIndividualSteps.fit\"",
+            "\"ExampleData/WorkoutIndividualSteps.fit\"",
             "]"
            }
           ]
