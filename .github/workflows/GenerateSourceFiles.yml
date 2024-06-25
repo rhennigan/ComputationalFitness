@@ -27,11 +27,11 @@ jobs:
 
     - name: Checkout
       id: checkout-code-step
-      uses: actions/checkout@v4
+      uses: actions/checkout@v3
 
     - name: RestoreCachedWolframEngine
       id: cache-restore-step
-      uses: actions/cache@v4
+      uses: actions/cache@v3
       env: 
         WOLFRAMENGINE_INSTALLATION_DIRECTORY: '${{ runner.temp }}\WolframEngine'
       with: 
@@ -75,7 +75,7 @@ jobs:
         wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/GenerateSourceFiles.wls
 
     - name: Upload generated files
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v3
       with: 
         retention-days: 1
         path: |
