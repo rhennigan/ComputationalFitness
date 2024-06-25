@@ -159,7 +159,7 @@ jobs:
     name: Compile-Linux-x86-64
     runs-on: ubuntu-latest
     container:
-      image: wolframresearch/wolframengine:13.2.0
+      image: wolframresearch/wolframengine:13.3
       options: --user root
     env:
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
@@ -203,7 +203,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: wolframresearch/wolframengine:13.2.0
+      image: wolframresearch/wolframengine:13.3
       options: --user root
 
     env:
@@ -382,7 +382,7 @@ jobs:
     needs: [BuildPaclet]
     runs-on: ubuntu-latest
     container:
-      image: wolframresearch/wolframengine:13.2.0
+      image: wolframresearch/wolframengine:13.3
       options: --user root
     env:
       WOLFRAM_SYSTEM_ID: Linux-x86-64
