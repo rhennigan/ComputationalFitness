@@ -334,7 +334,7 @@ makeFitnessDataBoxes[ info_, fmt_ ] :=
             smooshed = smooshDataForBoxes @ info,
             type     = info[ "Type" ]
         },
-        BoxForm`ArrangeSummaryBox[
+        replaceFitnessDataHeadBoxes @ BoxForm`ArrangeSummaryBox[
             FitnessData,
             Unevaluated @ FitnessData @ smooshed,
             makeFitnessIcon[ type, info ],
@@ -345,6 +345,26 @@ makeFitnessDataBoxes[ info_, fmt_ ] :=
     ];
 
 makeFitnessDataBoxes // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*replaceFitnessDataHeadBoxes*)
+replaceFitnessDataHeadBoxes // beginDefinition;
+
+replaceFitnessDataHeadBoxes[ boxes_ ] :=
+    replaceFitnessDataHeadBoxes[ boxes, Context @ FitnessData <> SymbolName @ FitnessData ];
+
+replaceFitnessDataHeadBoxes[ boxes_, fullName_String ] := ReplaceAll[
+    boxes,
+    fullName -> InterpretationBox[
+        TooltipBox[ StyleBox[ "FitnessData", FontOpacity -> 0.575 ], fullName ],
+        FitnessData,
+        Selectable         -> False,
+        SelectWithContents -> True
+    ]
+];
+
+replaceFitnessDataHeadBoxes // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
