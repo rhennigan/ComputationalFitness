@@ -29,7 +29,7 @@ setPacletInformation // endDefinition;
 (* ::Subsection::Closed:: *)
 (*registerFormats*)
 registerFormats // beginDefinition;
-registerFormats[ ] := AssociationMap[ registerFormat, { "FIT"(*, "TCX", "ZWO"*) } ];
+registerFormats[ ] := (FileFormat; AssociationMap[ registerFormat, { "FIT"(*, "TCX", "ZWO"*) } ]);
 registerFormats // endDefinition;
 
 (* ::**************************************************************************************************************:: *)

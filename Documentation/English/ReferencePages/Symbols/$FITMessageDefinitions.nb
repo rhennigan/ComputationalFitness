@@ -25,7 +25,7 @@ Notebook[
           ButtonBox[
            "$FITMessageDefinitions",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/$FITMessageDefinitions"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/$FITMessageDefinitions"
           ]
          ],
          "InlineFormula"
@@ -9479,7 +9479,7 @@ Notebook[
              ButtonBox[
               "$FITMessageDefinitions",
               BaseStyle -> "Link",
-              ButtonData -> "paclet:RH/ComputationalFitness/ref/$FITMessageDefinitions"
+              ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/$FITMessageDefinitions"
              ]
             ],
             "InlineFormula"
