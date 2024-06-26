@@ -357,7 +357,7 @@ replaceFitnessDataHeadBoxes[ boxes_ ] :=
 replaceFitnessDataHeadBoxes[ boxes_, fullName_String ] := ReplaceAll[
     boxes,
     fullName -> InterpretationBox[
-        TooltipBox[ StyleBox[ "FitnessData", FontOpacity -> 0.575 ], fullName ],
+        TooltipBox[ StyleBox[ "FitnessData", FontOpacity -> 0.575, ShowAutoStyles -> False ], fullName ],
         FitnessData,
         Selectable         -> False,
         SelectWithContents -> True
