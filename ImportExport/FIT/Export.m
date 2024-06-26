@@ -1,16 +1,14 @@
 Begin[ "RickHennigan`ComputationalFitness`FormatDump`FIT`" ];
 
-fitExporter[ args___ ] := Function[
+fitExporter[ args___ ] :=
     Block[ { RickHennigan`ComputationalFitness`Package`$messageSymbol = Export },
-        RickHennigan`ComputationalFitness`FITExport[ #1, args ]
-    ]
-];
+        RickHennigan`ComputationalFitness`FITExport @ args
+    ];
 
 ImportExport`RegisterExport[
     "FIT",
     fitExporter,
-    "BinaryFormat"     -> True,
-    "FunctionChannels" -> { "FileNames" }
+    "BinaryFormat" -> True
 ];
 
 If[ MatchQ[ FileFormatDump`FormatProperties[ "FIT" ][ "Name" ], Except[ _String ] | "" ],

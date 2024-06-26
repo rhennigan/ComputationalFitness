@@ -19,7 +19,7 @@ $fitImportElements = {
 
 fitImporter[ elem_, args___ ] := Function[
     Block[ { RickHennigan`ComputationalFitness`Package`$messageSymbol = Import },
-        { elem -> RickHennigan`ComputationalFitness`FITImport[ #1, elem, args ] }
+        { elem -> RickHennigan`ComputationalFitness`FITImport[ #1, elem, args, ##2 ] }
     ]
 ];
 
@@ -33,7 +33,8 @@ ImportExport`RegisterImport[
     "AvailableElements" -> $fitImportElements,
     "HiddenElements"    -> { },
     "FunctionChannels"  -> { "FileNames" },
-    "DefaultElement"    -> "FitnessData"
+    "DefaultElement"    -> "FitnessData",
+    "Options"           -> { "FunctionalThresholdPower", "MaximumHeartRate", "Sport", "UnitSystem", "Weight" }
 ];
 
 If[ MatchQ[ FileFormatDump`FormatProperties[ "FIT" ][ "Name" ], Except[ _String ] | "" ],

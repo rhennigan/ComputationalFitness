@@ -23,7 +23,7 @@ Notebook[
             ButtonBox[
              "FitnessData",
              BaseStyle -> "Link",
-             ButtonData -> "paclet:RH/ComputationalFitness/ref/FitnessData"
+             ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FitnessData"
             ],
             "[",
             StyleBox["\[Ellipsis]", "TR"],
@@ -161,7 +161,7 @@ Notebook[
           ButtonBox[
            "FITImport",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITImport"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FITImport"
           ]
          ],
          "InlineFormula"
@@ -172,7 +172,7 @@ Notebook[
           ButtonBox[
            "FITExport",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITExport"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FITExport"
           ]
          ],
          "InlineFormula"
@@ -183,7 +183,7 @@ Notebook[
           ButtonBox[
            "FITFileType",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITFileType"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FITFileType"
           ]
          ],
          "InlineFormula"
@@ -352,7 +352,7 @@ Notebook[
           ButtonBox[
            "FitnessData",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/FitnessData"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FitnessData"
           ]
          ],
          "InlineFormula"
@@ -369,12 +369,7 @@ Notebook[
         Cell[
          BoxData[
           RowBox[
-           {
-            "FITImport",
-            "[",
-            "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
-            "]"
-           }
+           {"FITImport", "[", "\"ExampleData/BikeRide.fit\"", "]"}
           ]
          ],
          "Input",
@@ -828,14 +823,7 @@ Notebook[
        {
         Cell[
          BoxData[
-          RowBox[
-           {
-            "FITImport",
-            "[",
-            "\"RickHennigan/ComputationalFitness/ExampleData/Walk.fit\"",
-            "]"
-           }
-          ]
+          RowBox[{"FITImport", "[", "\"ExampleData/Walk.fit\"", "]"}]
          ],
          "Input",
          CellLabel -> "In[2]:=",
@@ -1243,12 +1231,7 @@ Notebook[
         Cell[
          BoxData[
           RowBox[
-           {
-            "FITImport",
-            "[",
-            "\"RickHennigan/ComputationalFitness/ExampleData/Activity.fit\"",
-            "]"
-           }
+           {"FITImport", "[", "\"ExampleData/Activity.fit\"", "]"}
           ]
          ],
          "Input",
@@ -2043,7 +2026,7 @@ Notebook[
            {
             "FITImport",
             "[",
-            "\"RickHennigan/ComputationalFitness/ExampleData/MonitoringFile.fit\"",
+            "\"ExampleData/MonitoringFile.fit\"",
             "]"
            }
           ]
@@ -2394,12 +2377,7 @@ Notebook[
         Cell[
          BoxData[
           RowBox[
-           {
-            "FITImport",
-            "[",
-            "\"RickHennigan/ComputationalFitness/ExampleData/Settings.fit\"",
-            "]"
-           }
+           {"FITImport", "[", "\"ExampleData/Settings.fit\"", "]"}
           ]
          ],
          "Input",
@@ -2823,12 +2801,7 @@ Notebook[
                "data",
                "=",
                RowBox[
-                {
-                 "FITImport",
-                 "[",
-                 "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
-                 "]"
-                }
+                {"FITImport", "[", "\"ExampleData/BikeRide.fit\"", "]"}
                ]
               }
              ]

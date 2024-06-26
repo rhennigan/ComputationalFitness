@@ -25,7 +25,7 @@ Notebook[
           ButtonBox[
            "$FITMessageDefinitions",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/$FITMessageDefinitions"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/$FITMessageDefinitions"
           ]
          ],
          "InlineFormula"
@@ -408,11 +408,7 @@ Notebook[
                  "FITImport",
                  "[",
                  RowBox[
-                  {
-                   "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
-                   ",",
-                   "\"RawData\""
-                  }
+                  {"\"ExampleData/BikeRide.fit\"", ",", "\"RawData\""}
                  ],
                  "]"
                 }
@@ -9404,11 +9400,7 @@ Notebook[
                    "FITImport",
                    "[",
                    RowBox[
-                    {
-                     "\"RickHennigan/ComputationalFitness/ExampleData/Activity.fit\"",
-                     ",",
-                     "\"RawData\""
-                    }
+                    {"\"ExampleData/Activity.fit\"", ",", "\"RawData\""}
                    ],
                    "]"
                   }
@@ -9452,11 +9444,7 @@ Notebook[
                    "FITImport",
                    "[",
                    RowBox[
-                    {
-                     "\"RickHennigan/ComputationalFitness/ExampleData/Activity.fit\"",
-                     ",",
-                     "\"Messages\""
-                    }
+                    {"\"ExampleData/Activity.fit\"", ",", "\"Messages\""}
                    ],
                    "]"
                   }
@@ -9491,7 +9479,7 @@ Notebook[
              ButtonBox[
               "$FITMessageDefinitions",
               BaseStyle -> "Link",
-              ButtonData -> "paclet:RH/ComputationalFitness/ref/$FITMessageDefinitions"
+              ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/$FITMessageDefinitions"
              ]
             ],
             "InlineFormula"
@@ -9745,7 +9733,7 @@ Notebook[
                   {
                    "importAltitude",
                    "[",
-                   "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
+                   "\"ExampleData/BikeRide.fit\"",
                    "]"
                   }
                  ]
@@ -10894,11 +10882,7 @@ Notebook[
                    "FITImport",
                    "[",
                    RowBox[
-                    {
-                     "\"RickHennigan/ComputationalFitness/ExampleData/BikeRide.fit\"",
-                     ",",
-                     "\"Altitude\""
-                    }
+                    {"\"ExampleData/BikeRide.fit\"", ",", "\"Altitude\""}
                    ],
                    "]"
                   }
