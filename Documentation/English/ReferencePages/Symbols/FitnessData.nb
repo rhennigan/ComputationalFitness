@@ -23,7 +23,7 @@ Notebook[
             ButtonBox[
              "FitnessData",
              BaseStyle -> "Link",
-             ButtonData -> "paclet:RH/ComputationalFitness/ref/FitnessData"
+             ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FitnessData"
             ],
             "[",
             StyleBox["\[Ellipsis]", "TR"],
@@ -161,7 +161,7 @@ Notebook[
           ButtonBox[
            "FITImport",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITImport"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FITImport"
           ]
          ],
          "InlineFormula"
@@ -172,7 +172,7 @@ Notebook[
           ButtonBox[
            "FITExport",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITExport"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FITExport"
           ]
          ],
          "InlineFormula"
@@ -183,7 +183,7 @@ Notebook[
           ButtonBox[
            "FITFileType",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/FITFileType"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FITFileType"
           ]
          ],
          "InlineFormula"
@@ -352,7 +352,7 @@ Notebook[
           ButtonBox[
            "FitnessData",
            BaseStyle -> "Link",
-           ButtonData -> "paclet:RH/ComputationalFitness/ref/FitnessData"
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FitnessData"
           ]
          ],
          "InlineFormula"
