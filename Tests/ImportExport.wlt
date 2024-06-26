@@ -129,7 +129,7 @@ VerificationTest[
 (*Cleanup*)
 
 VerificationTest[
-    DeleteDirectory @ DirectoryName @ tmp,
+    DeleteDirectory[ DirectoryName @ tmp, DeleteContents -> True ],
     Null,
     SameTest -> MatchQ,
     TestID   -> "Cleanup-1@@Tests/ImportExport.wlt:131,1-136,2"
