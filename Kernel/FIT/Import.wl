@@ -575,7 +575,7 @@ fitImport0[ source_, file_String ] :=
     fitImport0[
         source,
         file,
-        Quiet[ fitImportLibFunction @ file, LibraryFunction::rterr ]
+        Quiet[ compiledFunction[ "FITImport" ][ file ], LibraryFunction::rterr ]
     ];
 
 fitImport0[ source_, file_, data_List? rawDataQ ] := (
@@ -611,7 +611,7 @@ fitMessageTypes[ source_, file_String ] :=
     fitMessageTypes[
         source,
         file,
-        Quiet[ fitMessageTypesLibFunction @ file, LibraryFunction::rterr ]
+        Quiet[ compiledFunction[ "FITMessageTypes" ][ file ], LibraryFunction::rterr ]
     ];
 
 fitMessageTypes[ source_, file_, data_List? rawDataQ ] :=
@@ -981,7 +981,7 @@ toCompactRawData // endDefinition;
 (*compactFieldData*)
 compactFieldData // beginDefinition;
 compactFieldData[ type_, data_ ] := <|
-    "Fields" -> usableFields[ type, usableFITColumnsLibFunction @ data ],
+    "Fields" -> usableFields[ type, compiledFunction[ "FITUsableColumns" ][ data ] ],
     "Data"   -> data
 |>;
 compactFieldData // endDefinition;

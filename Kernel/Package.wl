@@ -78,10 +78,12 @@ GeneralUtilities`UnprotectAndClearAll[
     `catchTop,
     `catchTopAs,
     `compactFitFitnessDataQ,
+    `compiledFunction,
     `endDefinition,
     `findFile,
     `getDataFile,
     `importXML,
+    `libraryError,
     `messageFailure,
     `messagePrint,
     `optionsAssociation,
@@ -112,6 +114,7 @@ EndPackage[ ];
 <<`Config`;
 <<`Strings`;
 <<`ImportExport`;
+<<`LibraryFunctions`;
 <<`FIT`;
 <<`TCX`;
 <<`ZWO`;

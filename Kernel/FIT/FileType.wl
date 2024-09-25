@@ -76,7 +76,7 @@ fitFileType[ source_, file_String ] :=
     fitFileType[
         source,
         file,
-        Quiet[ fitFileTypeLibFunction @ file, LibraryFunction::rterr ]
+        Quiet[ compiledFunction[ "FITFileType" ][ file ], LibraryFunction::rterr ]
     ];
 
 fitFileType[ source_, file_, type_Integer ] :=

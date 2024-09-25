@@ -1,8 +1,12 @@
+(* TODO:
+    * move this file to main context
+    * create a MaximalMeanPowerCurve function that uses meanMaximalPowerCurveLibFunction
+*)
+
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Package Header*)
-BeginPackage[ "RickHennigan`ComputationalFitness`FIT`" ];
-Needs[ "RickHennigan`ComputationalFitness`" ];
+BeginPackage[ "RickHennigan`ComputationalFitness`" ];
 Needs[ "RickHennigan`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
@@ -61,6 +65,23 @@ $$libraryFunction      = HoldPattern[ _LibraryFunction      ];
 $$compiledCodeFunction = HoldPattern[ _CompiledCodeFunction ];
 $$compiledFunction     = $$libraryFunction|$$compiledCodeFunction|_CompiledFunction;
 
+$compiledFunctions = <|
+    "FITExport"             -> fitExportLibFunction,
+    "FITFileType"           -> fitFileTypeLibFunction,
+    "FITImport"             -> fitImportLibFunction,
+    "FITMessageTypes"       -> fitMessageTypesLibFunction,
+    "FITUsableColumns"      -> usableFITColumnsLibFunction,
+    "MaximalMeanPowerCurve" -> meanMaximalPowerCurveLibFunction
+|>;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*compiledFunction*)
+compiledFunction // beginDefinition;
+compiledFunction[ name_String ] := compiledFunction @ Lookup[ $compiledFunctions, name ];
+compiledFunction[ cf: $$compiledFunction ] := cf;
+compiledFunction // endDefinition;
+
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*libraryFunctionUnload*)
@@ -102,7 +123,7 @@ tagLoadedLibraryFunction[ f_ ] := f;
 (*fitImportLibFunction*)
 fitImportLibFunction // ClearAll;
 fitImportLibFunction := libraryFunctionLoad[
-    $libraryFile,
+    $fitLibraryFile,
     "FITImport",
     { String },
     { Integer, 2 }
@@ -113,7 +134,7 @@ fitImportLibFunction := libraryFunctionLoad[
 (*fitExportLibFunction*)
 fitExportLibFunction // ClearAll;
 fitExportLibFunction := libraryFunctionLoad[
-    $libraryFile,
+    $fitLibraryFile,
     "FITExport",
     { String, { Integer, 2 } },
     { Integer }
@@ -124,7 +145,7 @@ fitExportLibFunction := libraryFunctionLoad[
 (*fitMessageTypesLibFunction*)
 fitMessageTypesLibFunction // ClearAll;
 fitMessageTypesLibFunction := libraryFunctionLoad[
-    $libraryFile,
+    $fitLibraryFile,
     "FITMessageTypes",
     { String },
     { Integer, 2 }
@@ -135,7 +156,7 @@ fitMessageTypesLibFunction := libraryFunctionLoad[
 (*fitFileTypeLibFunction*)
 fitFileTypeLibFunction // ClearAll;
 fitFileTypeLibFunction := libraryFunctionLoad[
-    $libraryFile,
+    $fitLibraryFile,
     "FITFileType",
     { String },
     { Integer }
@@ -148,11 +169,18 @@ usableFITColumnsLibFunction // ClearAll;
 usableFITColumnsLibFunction := loadCompiledCodeFunction[ "FITUsableColumns" ];
 
 (* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*meanMaximalPowerCurveLibFunction*)
+meanMaximalPowerCurveLibFunction // ClearAll;
+meanMaximalPowerCurveLibFunction := loadCompiledCodeFunction[ "MeanMaximalPowerCurve" ];
+
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*CompiledCodeFunctions*)
 $compiledCodeFunctions // ClearAll;
 $compiledCodeFunctions = <|
-    "FITUsableColumns" -> usableFITColumnsF
+    "FITUsableColumns"      -> usableFITColumnsF,
+    "MeanMaximalPowerCurve" -> meanMaximalPowerCurveF
 |>;
 
 $compiledCodeFunctionsBag // ClearAll;
@@ -364,6 +392,36 @@ usableFITColumnsF = Function[
 ];
 
 (* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*meanMaximalPowerCurveF*)
+meanMaximalPowerCurveF = Function[
+    { Typed[ wattValues, "PackedArray"[ "Real64", 1 ] ] },
+    Block[ { n, prefixSum, powerCurve },
+
+        n = Length @ wattValues;
+        prefixSum = Prepend[ Accumulate @ wattValues, 0. ];
+        powerCurve = ConstantArray[ 0.0, n ];
+
+        Do[
+            Block[ { maxAvg = -1.0, sum, avg },
+
+                Do[
+                    sum = prefixSum[[ i + k + 1 ]] - prefixSum[[ i + 1 ]];
+                    avg = sum / k;
+                    If[ avg > maxAvg, maxAvg = avg ],
+                    { i, 0, n - k }
+                ];
+
+                powerCurve[[ k ]] = maxAvg
+            ],
+            { k, 1, n }
+        ];
+
+        powerCurve
+    ]
+];
+
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Utilities*)
 
@@ -438,8 +496,8 @@ $libraryErrorCodes = <|
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
-(*$libraryFile*)
-$libraryFile :=
+(*$fitLibraryFile*)
+$fitLibraryFile :=
     If[ FileExistsQ @ $libraryFile0,
         $libraryFile0,
         compileOnDemand[ ]

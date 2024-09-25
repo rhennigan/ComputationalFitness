@@ -139,7 +139,7 @@ fitExport0[ target_, file_String, data_ ] :=
         target,
         file,
         data,
-        Quiet[ fitExportLibFunction[ file, data ], LibraryFunction::rterr ]
+        Quiet[ compiledFunction[ "FITExport" ][ file, data ], LibraryFunction::rterr ]
     ];
 
 fitExport0[ target_, file_, data_, err_LibraryFunctionError ] :=

@@ -6,7 +6,6 @@ BeginPackage[ "RickHennigan`ComputationalFitness`FIT`" ];
 <<`Common`;
 <<`Values`;
 <<`Graphics`;
-<<`LibraryFunctions`;
 <<`Import`;
 <<`Export`;
 <<`FileType`;
