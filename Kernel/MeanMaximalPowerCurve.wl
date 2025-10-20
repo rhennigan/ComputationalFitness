@@ -122,16 +122,8 @@ throwNumberArrayError // endDefinition;
 quantityArrayToMMP // beginDefinition;
 
 quantityArrayToMMP[ array_QuantityArray ] := Enclose[
-    Module[ { invalid, watts, power, result },
-        If[ ! compatibleUnitQ[ array, "Watts" ],
-            invalid = ConfirmBy[
-                SelectFirst[ DeleteDuplicates @ QuantityUnit @ array, ! CompatibleUnitQ[ #, "Watts" ] & ],
-                StringQ,
-                "InvalidUnit"
-            ];
-            throwFailure[ "IncompatibleUnits", invalid, "Watts" ]
-        ];
-        watts = ConfirmMatch[ UnitConvert[ array, "Watts" ], _QuantityArray, "UnitConvert" ];
+    Module[ { watts, power, result },
+        watts = ConfirmMatch[ UnitConvert[ checkPowerArray @ array, "Watts" ], _QuantityArray, "UnitConvert" ];
         power = ConfirmBy[ QuantityMagnitude @ watts, numberArrayQ, "QuantityMagnitude" ];
         result = ConfirmBy[ numberArrayToMMP @ power, machineRealArrayQ, "PowerCurve" ];
         ConfirmMatch[ QuantityArray[ result, "Watts" ], _QuantityArray? ArrayQ, "Result" ]
@@ -140,6 +132,27 @@ quantityArrayToMMP[ array_QuantityArray ] := Enclose[
 ];
 
 quantityArrayToMMP // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*checkPowerArray*)
+checkPowerArray // beginDefinition;
+
+checkPowerArray[ array_QuantityArray ] := Enclose[
+    Module[ { invalid },
+        If[ ! compatibleUnitQ[ array, "Watts" ],
+            invalid = Confirm[
+                SelectFirst[ DeleteDuplicates @ QuantityUnit @ array, ! CompatibleUnitQ[ #, "Watts" ] & ],
+                "InvalidUnit"
+            ];
+            throwFailure[ "IncompatibleUnits", invalid, "Watts" ]
+        ];
+        array
+    ],
+    throwInternalFailure
+];
+
+checkPowerArray // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -314,10 +327,25 @@ takeLargerMMP // endDefinition;
 (*MeanMaximalPowerCurvePlot*)
 MeanMaximalPowerCurvePlot // beginDefinition;
 
-MeanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] := Enclose[
+MeanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] :=
+    catchMine @ meanMaximalPowerCurvePlot[ data, opts ];
+
+MeanMaximalPowerCurvePlot // endExportedDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*meanMaximalPowerCurvePlot*)
+meanMaximalPowerCurvePlot // beginDefinition;
+
+meanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] := Enclose[
     Module[ { mmpCurve, tickValues, ticks },
 
-        mmpCurve = ConfirmMatch[ MeanMaximalPowerCurve @ data, _QuantityArray, "Curve" ];
+        mmpCurve = ConfirmMatch[
+            If[ MatchQ[ data, _QuantityArray ], checkPowerArray @ data, MeanMaximalPowerCurve @ data ],
+            _QuantityArray,
+            "PowerCurve"
+        ];
+
         tickValues = QuantityMagnitude @ UnitConvert[ $mmpTicks, "Seconds" ];
         ticks = Transpose @ { tickValues, $mmpTicks };
 
@@ -335,7 +363,7 @@ MeanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] := Encl
     throwInternalFailure
 ];
 
-MeanMaximalPowerCurvePlot // endExportedDefinition;
+meanMaximalPowerCurvePlot // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
