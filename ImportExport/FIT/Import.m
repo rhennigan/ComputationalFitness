@@ -14,7 +14,8 @@ $fitImportElements = {
     "Messages",
     "PowerZonePlot",
     "AveragePowerPhasePlot",
-    "CriticalPowerCurvePlot"
+    "MeanMaximalPowerCurve",
+    "MeanMaximalPowerCurvePlot"
 };
 
 fitImporter[ elem_, args___ ] := Function[

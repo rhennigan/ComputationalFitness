@@ -158,6 +158,9 @@ FITImport[ _, "Elements", OptionsPattern[ ] ] :=
 FITImport[ file_, "FileType", OptionsPattern[ ] ] :=
     catchTopAs[ FITImport ] @ fitFileType @ file;
 
+FITImport[ file_, "MeanMaximalPowerCurve", OptionsPattern[ ] ] :=
+    catchTopAs[ FITImport ] @ MeanMaximalPowerCurve @ FITImport[ file, "Power" ];
+
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*TimeSeries Data*)
@@ -227,7 +230,7 @@ FITImport[ file_, "AveragePowerPhasePlot", opts: OptionsPattern[ ] ] :=
         opts
     ];
 
-FITImport[ file_, "CriticalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
+FITImport[ file_, "CriticalPowerCurvePlot"|"MeanMaximalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[
         criticalPowerCurve @ FITImport[ file, "Power", opts ],
         opts

@@ -390,34 +390,25 @@ phasePlotHalf // endDefinition;
 (*CriticalPowerCurvePlot*)
 criticalPowerCurve // beginDefinition;
 
-criticalPowerCurve[ power_TemporalData ] :=
-    Module[ { t1, t2, duration, cpCurve },
+criticalPowerCurve[ power_TemporalData ] := Enclose[
+    Module[ { cpCurve, tickValues, ticks },
 
-        t1 = power[ "FirstDate" ];
-        t2 = power[ "LastDate" ];
-        duration = t2 - t1;
-
-        cpCurve = Map[
-            { #1, Max @ MovingMap[ Mean, power, #1 ] } &,
-            TakeWhile[ $criticalPowerPoints, LessThan @ duration ]
-        ];
+        cpCurve = ConfirmMatch[ MeanMaximalPowerCurve @ power, _QuantityArray, "Curve" ];
+        tickValues = QuantityMagnitude @ UnitConvert[ $cpTicks, "Seconds" ];
+        ticks = Transpose @ { tickValues, $cpTicks };
 
         ListLinePlot[
-            Append[ cpCurve, { duration, Mean @ power } ],
+            cpCurve,
             ScalingFunctions -> { "Log", None },
             Filling          -> Bottom,
-            Ticks            -> { $cpTicks, Automatic },
+            Ticks            -> { ticks, Automatic },
+            GridLines        -> { tickValues, None },
             AspectRatio      -> 1 / 5,
-            PlotRange        -> {
-                { Quantity[ 1, "Seconds" ], All },
-                All
-            },
-            GridLines -> {
-                $cpTicks,
-                None
-            }
+            PlotRange        -> { { 1, All }, All }
         ]
-    ];
+    ],
+    throwInternalFailure
+];
 
 criticalPowerCurve // endDefinition;
 
