@@ -78,7 +78,7 @@ jobs:
         }
         wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
     - name: Archive compiled libraries
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
@@ -86,7 +86,7 @@ jobs:
 
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: check-paclet-stacks
         path: ${{ env.PACLET_STACK_HISTORY }}
@@ -140,7 +140,7 @@ jobs:
         fi
         wolframscript -runfirst 'CompoundExpression[Unprotect[\$EvaluationEnvironment],Set[\$EvaluationEnvironment,SymbolName[Script]],Protect[\$EvaluationEnvironment]]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
     - name: Archive compiled libraries
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
@@ -148,7 +148,7 @@ jobs:
 
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: check-paclet-stacks
         path: ${{ env.PACLET_STACK_HISTORY }}
@@ -202,7 +202,7 @@ jobs:
         fi
         wolframscript -runfirst 'CompoundExpression[Unprotect[\$EvaluationEnvironment],Set[\$EvaluationEnvironment,SymbolName[Script]],Protect[\$EvaluationEnvironment]]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
     - name: Archive compiled libraries
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
@@ -210,7 +210,7 @@ jobs:
 
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: check-paclet-stacks
         path: ${{ env.PACLET_STACK_HISTORY }}
@@ -244,7 +244,7 @@ jobs:
         fi
         wolframscript -f ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
     - name: Archive compiled libraries
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.WOLFRAM_LIBRARY_BUILD_OUTPUT }}/${{ env.WOLFRAM_SYSTEM_ID }}
@@ -252,7 +252,7 @@ jobs:
 
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: check-paclet-stacks
         path: ${{ env.PACLET_STACK_HISTORY }}
@@ -285,7 +285,7 @@ jobs:
       run: wolframscript -f Scripts/BuildPaclet.wls
 
     - name: UploadArtifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: PacletBuildArtifact
         path: ${{ env.PACLET_BUILD_DIR }}
@@ -293,7 +293,7 @@ jobs:
 
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: check-paclet-stacks
         path: ${{ env.PACLET_STACK_HISTORY }}
@@ -369,7 +369,7 @@ jobs:
     
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-paclet-stacks-${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.PACLET_STACK_HISTORY }}
@@ -432,7 +432,7 @@ jobs:
     
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-paclet-stacks-${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.PACLET_STACK_HISTORY }}
@@ -495,7 +495,7 @@ jobs:
     
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: test-paclet-stacks-${{ env.WOLFRAM_SYSTEM_ID }}
         path: ${{ env.PACLET_STACK_HISTORY }}
@@ -529,7 +529,7 @@ jobs:
       
       - name: Upload stack data
         if: always() && env.PACLET_STACK_HISTORY
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: test-paclet-stacks-${{ env.WOLFRAM_SYSTEM_ID }}
           path: ${{ env.PACLET_STACK_HISTORY }}
