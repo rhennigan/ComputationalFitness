@@ -76,7 +76,7 @@ VerificationTest[
 (* ::Subsection::Closed:: *)
 (*Properties & Relations*)
 VerificationTest[
-    MeanMaximalPowerCurve @ File[ "ExampleData/BikeLaps.fit" ][[ 60 ]],
+    MeanMaximalPowerCurve[ File[ "ExampleData/BikeLaps.fit" ] ][[ 60 ]],
     N @ Max @ MovingMap[ Mean, FITImport[ "ExampleData/BikeLaps.fit", "Power" ], Quantity[ 59, "Seconds" ] ],
     SameTest -> MatchQ,
     TestID   -> "PropertiesRelations-1@@Tests/MeanMaximalPowerCurve.wlt:78,1-83,2"
