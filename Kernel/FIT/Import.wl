@@ -232,7 +232,7 @@ FITImport[ file_, "AveragePowerPhasePlot", opts: OptionsPattern[ ] ] :=
 
 FITImport[ file_, "CriticalPowerCurvePlot"|"MeanMaximalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[
-        criticalPowerCurve @ FITImport[ file, "Power", opts ],
+        MeanMaximalPowerCurvePlot @ FITImport[ file, "Power", opts ],
         opts
     ];
 

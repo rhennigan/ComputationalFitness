@@ -311,6 +311,48 @@ takeLargerMMP // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
+(*MeanMaximalPowerCurvePlot*)
+MeanMaximalPowerCurvePlot // beginDefinition;
+
+MeanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] := Enclose[
+    Module[ { mmpCurve, tickValues, ticks },
+
+        mmpCurve = ConfirmMatch[ MeanMaximalPowerCurve @ data, _QuantityArray, "Curve" ];
+        tickValues = QuantityMagnitude @ UnitConvert[ $mmpTicks, "Seconds" ];
+        ticks = Transpose @ { tickValues, $mmpTicks };
+
+        ListLinePlot[
+            mmpCurve,
+            opts,
+            ScalingFunctions -> { "Log", None },
+            Filling          -> Bottom,
+            Ticks            -> { ticks, Automatic },
+            GridLines        -> { tickValues, None },
+            AspectRatio      -> 1 / 5,
+            PlotRange        -> { { 1, All }, All }
+        ]
+    ],
+    throwInternalFailure
+];
+
+MeanMaximalPowerCurvePlot // endExportedDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*$mmpTicks*)
+$mmpTicks = {
+    Quantity[  5, "Seconds" ],
+    Quantity[ 20, "Seconds" ],
+    Quantity[  1, "Minutes" ],
+    Quantity[  5, "Minutes" ],
+    Quantity[ 20, "Minutes" ],
+    Quantity[  1, "Hours"   ],
+    Quantity[  2, "Hours"   ],
+    Quantity[  5, "Hours"   ]
+};
+
+(* ::**************************************************************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Package Footer*)
 End[ ];
 EndPackage[ ];
