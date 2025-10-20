@@ -123,7 +123,7 @@ quantityArrayToMMP // beginDefinition;
 
 quantityArrayToMMP[ array_QuantityArray ] := Enclose[
     Module[ { invalid, watts, power, result },
-        If[ ! CompatibleUnitQ[ array, "Watts" ],
+        If[ ! compatibleUnitQ[ array, "Watts" ],
             invalid = ConfirmBy[
                 SelectFirst[ DeleteDuplicates @ QuantityUnit @ array, ! CompatibleUnitQ[ #, "Watts" ] & ],
                 StringQ,
@@ -140,6 +140,19 @@ quantityArrayToMMP[ array_QuantityArray ] := Enclose[
 ];
 
 quantityArrayToMMP // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*compatibleUnitQ*)
+compatibleUnitQ // beginDefinition;
+
+compatibleUnitQ[ array_QuantityArray, unit_ ] /; $VersionNumber < 13.3 :=
+    AllTrue[ DeleteDuplicates @ QuantityUnit @ array, CompatibleUnitQ[ #, unit ] & ];
+
+compatibleUnitQ[ array_, unit_ ] :=
+    CompatibleUnitQ[ array, unit ];
+
+compatibleUnitQ // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
