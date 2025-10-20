@@ -33,7 +33,7 @@ meanMaximalPowerCurve[ power_List? numberArrayQ               ] := numberArrayTo
 meanMaximalPowerCurve[ array_QuantityArray? ArrayQ            ] := quantityArrayToMMP @ array;
 meanMaximalPowerCurve[ timeSeries_TemporalData? temporalDataQ ] := temporalDataToMMP @ timeSeries;
 meanMaximalPowerCurve[ data_FitnessData? FitnessDataQ         ] := fitnessDataToMMP @ data;
-meanMaximalPowerCurve[ file_? FileExistsQ                     ] := fileToMMP @ file;
+meanMaximalPowerCurve[ file: _File | _String? FileExistsQ     ] := fileToMMP @ file;
 meanMaximalPowerCurve[ sources: { __ }                        ] := multiSourceToMMP @ sources;
 
 meanMaximalPowerCurve[ other_ ] :=
@@ -66,6 +66,14 @@ machineRealArrayQ // beginDefinition;
 machineRealArrayQ[ list_List ] := VectorQ[ list, Developer`MachineRealQ ];
 machineRealArrayQ[ ___ ] := False;
 machineRealArrayQ // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*machineRealArrayOrMissingQ*)
+machineRealArrayOrMissingQ // beginDefinition;
+machineRealArrayOrMissingQ[ _Missing ] := True;
+machineRealArrayOrMissingQ[ other_ ] := machineRealArrayQ @ other;
+machineRealArrayOrMissingQ // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -159,6 +167,14 @@ temporalDataQ[ ___ ] := False;
 temporalDataQ // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*temporalDataOrMissingQ*)
+temporalDataOrMissingQ // beginDefinition;
+temporalDataOrMissingQ[ _Missing ] := True;
+temporalDataOrMissingQ[ other_ ] := temporalDataQ @ other;
+temporalDataOrMissingQ // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*fitnessDataToMMP*)
 fitnessDataToMMP // beginDefinition;
@@ -176,9 +192,13 @@ fitnessDataToMMP // endDefinition;
 fileToMMP // beginDefinition;
 
 (* TODO: support importing power from other formats *)
+fileToMMP[ dir_? DirectoryQ ] :=
+    directoryToMMP @ dir;
+
 fileToMMP[ file_ ] := Enclose[
-    Module[ { data },
-        data = ConfirmBy[ FITImport[ file, "Power" ], temporalDataQ, "Import" ];
+    Catch @ Module[ { data },
+        data = ConfirmBy[ FITImport[ file, "Power" ], temporalDataOrMissingQ, "Import" ];
+        If[ MissingQ @ data, Throw @ Missing[ "NotAvailable" ] ];
         ConfirmMatch[ temporalDataToMMP @ data, _QuantityArray? ArrayQ, "PowerCurve" ]
     ],
     throwInternalFailure
@@ -188,13 +208,52 @@ fileToMMP // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
+(*directoryToMMP*)
+directoryToMMP // beginDefinition;
+
+directoryToMMP[ dir_ ] := Enclose[
+    Catch @ Module[ { files, usable },
+        files = ConfirmMatch[ FileNames[ All, dir ], { ___String }, "Files" ];
+        If[ files === { }, Throw @ Missing[ "NoUsableFiles", dir ] ];
+        usable = Select[ files, FITFormatQ[ #, "Activity" ] & ];
+        If[ usable === { }, Throw @ Missing[ "NoUsableFiles", dir ] ];
+        multiSourceToMMP @ usable
+    ],
+    throwInternalFailure
+];
+
+directoryToMMP // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*multiSourceToMMP*)
 multiSourceToMMP // beginDefinition;
 
 multiSourceToMMP[ { first_, rest___ } ] := Enclose[
-    Module[ { initial, combined, result },
-        initial = ConfirmBy[ importRealArrayMMP @ first, machineRealArrayQ, "Initial" ];
-        combined = ConfirmBy[ Fold[ takeLargerMMP, initial, { rest } ], machineRealArrayQ, "Combined" ];
+    Catch @ Module[ { initial, current, total, combined, result },
+
+        initial = ConfirmBy[ importRealArrayMMP @ first, machineRealArrayOrMissingQ, "Initial" ];
+
+        current = 1;
+        total   = Length @ { first, rest };
+
+        combined = ConfirmBy[
+            Progress`EvaluateWithProgress[
+                Fold[ Function[ current++; takeLargerMMP @ ## ], initial, { rest } ],
+                <|
+                    "ElapsedTime"   -> Automatic,
+                    "RemainingTime" -> Automatic,
+                    "ItemTotal"     :> total,
+                    "ItemCurrent"   :> current,
+                    "Progress"      :> Automatic
+                |>
+            ],
+            machineRealArrayOrMissingQ,
+            "Combined"
+        ];
+
+        If[ MissingQ @ combined, Throw @ Missing[ "NotAvailable" ] ];
+
         result = ConfirmMatch[ QuantityArray[ combined, "Watts" ], _QuantityArray? ArrayQ, "Result" ];
         result
     ],
@@ -215,9 +274,19 @@ importRealArrayMMP // endDefinition;
 (*takeLargerMMP*)
 takeLargerMMP // beginDefinition;
 
+takeLargerMMP[ _Missing, source_ ] := Enclose[
+    Module[ { new },
+        new = ConfirmBy[ importRealArrayMMP @ source, machineRealArrayOrMissingQ, "New" ];
+        clearCache[ ];
+        new
+    ],
+    throwInternalFailure
+];
+
 takeLargerMMP[ current_List, source_ ] := Enclose[
-    Module[ { new, res },
-        new = ConfirmBy[ importRealArrayMMP @ source, machineRealArrayQ, "New" ];
+    Catch @ Module[ { new, res },
+        new = ConfirmBy[ importRealArrayMMP @ source, machineRealArrayOrMissingQ, "New" ];
+        If[ MissingQ @ new, clearCache[ ]; Throw @ current ];
         res = ConfirmBy[ compiledFunction[ "PairwiseMax" ][ current, new ], Developer`PackedArrayQ, "Result" ];
         clearCache[ ];
         res
