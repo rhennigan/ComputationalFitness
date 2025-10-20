@@ -53,6 +53,9 @@ $$inertSymbol = HoldPattern @ Alternatives[
 ComputationalFitness::InvalidFitnessData =
 "Invalid FitnessData argument: `1`";
 
+ComputationalFitness::InvalidFitnessDataArguments =
+"Invalid FitnessData arguments in `1`";
+
 ComputationalFitness::InvalidFitnessDataType =
 "Invalid FitnessDataType in FitnessData: `1`";
 
@@ -71,11 +74,11 @@ ComputationalFitness::InvalidTypeData =
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Main Definition*)
-FitnessData[ data_Association ]? sp`HoldNotValidQ :=
+FitnessData[ data___ ]? sp`HoldNotValidQ :=
     catchTopAs[ FitnessData ] @ With[ { valid = validateFitnessData @ data },
         If[ AssociationQ @ valid,
             sp`HoldSetValid @ FitnessData @ valid,
-            throwFailure[ "InvalidFitnessData", data ]
+            throwFailure[ "InvalidArguments", FitnessData, HoldForm @ FitnessData @ data ]
         ]
     ];
 
@@ -83,13 +86,16 @@ FitnessData[ data_Association ]? sp`HoldNotValidQ :=
 (* ::Subsection::Closed:: *)
 (*validateFitnessData*)
 validateFitnessData // beginDefinition;
-validateFitnessData[ as_Association? AssociationQ ] := validateFitnessData[ as[ "DataFormat" ], as ];
-validateFitnessData[ "FITCompact", as_ ] := validateFITCompact @ as;
-validateFitnessData[ m_Missing, as_ ] := throwFailure[ "MissingDataFormat", as ];
-validateFitnessData[ format_String? StringQ, as_ ] := throwFailure[ "UnrecognizedDataFormat", format, as ];
-validateFitnessData[ format_, as_ ] := throwFailure[ "InvalidDataFormat", format, as ];
-validateFitnessData[ other_ ] := throwFailure[ "InvalidFitnessData", other ];
+validateFitnessData[ as_Association? AssociationQ ] := validateFitnessData0[ as[ "DataFormat" ], as ];
+validateFitnessData[ other___ ] := throwFailure[ "InvalidArguments", FitnessData, HoldForm @ FitnessData @ other ];
 validateFitnessData // endDefinition;
+
+validateFitnessData0 // beginDefinition;
+validateFitnessData0[ "FITCompact", as_ ] := validateFITCompact @ as;
+validateFitnessData0[ m_Missing, as_ ] := throwFailure[ "MissingDataFormat", as ];
+validateFitnessData0[ format_String? StringQ, as_ ] := throwFailure[ "UnrecognizedDataFormat", format, as ];
+validateFitnessData0[ format_, as_ ] := throwFailure[ "InvalidDataFormat", format, as ];
+validateFitnessData0 // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -179,7 +185,7 @@ fitnessDataOptions // endDefinition;
 (* ::Subsection::Closed:: *)
 (*fitnessDataStaticProperty*)
 fitnessDataStaticProperty // beginDefinition;
-fitnessDataStaticProperty[ FitnessData[ KeyValuePattern[ (Rule|RuleDelayed)[ prop_, val_ ] ] ], prop_ ] := val;
+fitnessDataStaticProperty[ HoldPattern @ FitnessData[ KeyValuePattern[ (Rule|RuleDelayed)[ p_, v_ ] ] ], p_ ] := v;
 fitnessDataStaticProperty[ fd_FitnessData? FitnessDataQ, prop_ ] := Missing[ "NotAvailable" ];
 fitnessDataStaticProperty // endDefinition;
 
@@ -276,10 +282,10 @@ $allowFormatting := MemberQ[ Attributes @ OutputForm, Protected ];
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*Boxes*)
-FitnessData /: MakeBoxes[ FitnessData[ info_Association ]? sp`HoldValidQ, fmt_ ] /; $allowFormatting :=
+FitnessData /: HoldPattern @ MakeBoxes[ FitnessData[ info_Association ]? sp`HoldValidQ, fmt_ ] /; $allowFormatting :=
     catchFormattingTop[ makeFitnessDataBoxes[ info, fmt ], fmt, FitnessData ];
 
-FitnessData /: MakeBoxes[ FitnessData[ info_Association? inertDataQ ], fmt_ ] /; $allowFormatting :=
+FitnessData /: HoldPattern @ MakeBoxes[ FitnessData[ info_Association? inertDataQ ], fmt_ ] /; $allowFormatting :=
     With[ { valid = Quiet @ Catch[ validateFitnessData @ info, $top ] },
         catchFormattingTop[ makeFitnessDataBoxes[ valid, fmt ], fmt, FitnessData ] /; AssociationQ @ valid
     ];
@@ -287,14 +293,14 @@ FitnessData /: MakeBoxes[ FitnessData[ info_Association? inertDataQ ], fmt_ ] /;
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*InputForm*)
-FitnessData /: Format[ FitnessData[ info_Association ]? sp`HoldValidQ, InputForm ] :=
+FitnessData /: HoldPattern @ Format[ FitnessData[ info_Association ]? sp`HoldValidQ, InputForm ] :=
     catchFormattingTop[
         makeFitnessDataInputForm @ info,
         InputForm,
         FitnessData
     ] /; $allowFormatting;
 
-FitnessData /: Format[ FitnessData[ info_Association? inertDataQ ], InputForm ] :=
+FitnessData /: HoldPattern @ Format[ FitnessData[ info_Association? inertDataQ ], InputForm ] :=
     With[ { valid = If[ $allowFormatting, Quiet @ Catch[ validateFitnessData @ info, $top ] ] },
         catchFormattingTop[
             makeFitnessDataInputForm @ info,
@@ -306,14 +312,14 @@ FitnessData /: Format[ FitnessData[ info_Association? inertDataQ ], InputForm ] 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*OutputForm*)
-FitnessData /: Format[ FitnessData[ info_Association ]? sp`HoldValidQ, OutputForm ] :=
+FitnessData /: HoldPattern @ Format[ FitnessData[ info_Association ]? sp`HoldValidQ, OutputForm ] :=
     catchFormattingTop[
         makeFitnessDataOutputForm @ info,
         OutputForm,
         FitnessData
     ] /; $allowFormatting;
 
-FitnessData /: Format[ FitnessData[ info_Association? inertDataQ ], OutputForm ] :=
+FitnessData /: HoldPattern @ Format[ FitnessData[ info_Association? inertDataQ ], OutputForm ] :=
     With[ { valid = If[ $allowFormatting, Quiet @ Catch[ validateFitnessData @ info, $top ] ] },
         catchFormattingTop[
             makeFitnessDataOutputForm @ info,

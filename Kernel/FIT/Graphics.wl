@@ -53,10 +53,11 @@ powerZonePlot[ power: _TimeSeries|_TemporalData ] :=
     powerZonePlot[ power, $ftp ];
 
 powerZonePlot[ power: _TimeSeries|_TemporalData, ftp_? NumberQ ] :=
-    Module[ { mean, top, resampled, cf },
+    Module[ { mean, top, dt, resampled, cf },
         mean = Mean @ power;
         top  = Max[ 1.2 * Max @ power, Quantity[ 1.5 * ftp, "Watts" ] ];
-        resampled = TimeSeriesResample[ power, (power["LastDate"] - power["FirstDate"]) / 1600 ];
+        dt = QuantityMagnitude @ UnitConvert[ (power["LastDate"] - power["FirstDate"]) / 1600.0, "Seconds" ];
+        resampled = TimeSeriesResample[ power, dt ];
         cf = powerZonePlotCF @ ftp;
         DateListPlot[
             resampled,
@@ -84,11 +85,12 @@ powerZonePlot[ power: _TimeSeries|_TemporalData, ftp_? NumberQ ] :=
     ];
 
 powerZonePlot[ power_, Automatic|None|_Missing ] :=
-    Module[ { mean, top, resampled },
+    Module[ { mean, top, dt, resampled },
         messageFailure[ "NoFTPValue" ];
         mean = Mean @ power;
         top  = 1.2 * Max @ power;
-        resampled = TimeSeriesResample[ power, (power["LastDate"] - power["FirstDate"]) / 1600 ];
+        dt = QuantityMagnitude @ UnitConvert[ (power["LastDate"] - power["FirstDate"]) / 1600.0, "Seconds" ];
+        resampled = TimeSeriesResample[ power, dt ];
         DateListPlot[
             resampled,
             AspectRatio          -> 1 / 5,
@@ -388,34 +390,25 @@ phasePlotHalf // endDefinition;
 (*CriticalPowerCurvePlot*)
 criticalPowerCurve // beginDefinition;
 
-criticalPowerCurve[ power_TemporalData ] :=
-    Module[ { t1, t2, duration, cpCurve },
+criticalPowerCurve[ power_TemporalData ] := Enclose[
+    Module[ { cpCurve, tickValues, ticks },
 
-        t1 = power[ "FirstDate" ];
-        t2 = power[ "LastDate" ];
-        duration = t2 - t1;
-
-        cpCurve = Map[
-            { #1, Max @ MovingMap[ Mean, power, #1 ] } &,
-            TakeWhile[ $criticalPowerPoints, LessThan @ duration ]
-        ];
+        cpCurve = ConfirmMatch[ MeanMaximalPowerCurve @ power, _QuantityArray, "Curve" ];
+        tickValues = QuantityMagnitude @ UnitConvert[ $cpTicks, "Seconds" ];
+        ticks = Transpose @ { tickValues, $cpTicks };
 
         ListLinePlot[
-            Append[ cpCurve, { duration, Mean @ power } ],
+            cpCurve,
             ScalingFunctions -> { "Log", None },
             Filling          -> Bottom,
-            Ticks            -> { $cpTicks, Automatic },
+            Ticks            -> { ticks, Automatic },
+            GridLines        -> { tickValues, None },
             AspectRatio      -> 1 / 5,
-            PlotRange        -> {
-                { Quantity[ 1, "Seconds" ], All },
-                All
-            },
-            GridLines -> {
-                $cpTicks,
-                None
-            }
+            PlotRange        -> { { 1, All }, All }
         ]
-    ];
+    ],
+    throwInternalFailure
+];
 
 criticalPowerCurve // endDefinition;
 

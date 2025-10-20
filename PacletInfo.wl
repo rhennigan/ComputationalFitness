@@ -1,6 +1,6 @@
 PacletObject[ <|
     "Name"             -> "RickHennigan/ComputationalFitness",
-    "Version"          -> "1.1.0",
+    "Version"          -> "1.2.0",
     "Description"      -> "Utilities for importing and analyzing fitness data from smartwatches, cycling computers, and other sources",
     "Creator"          -> "Richard Hennigan (Wolfram Research)",
     "WolframVersion"   -> "13.0+",
@@ -28,6 +28,7 @@ PacletObject[ <|
                 "RickHennigan`ComputationalFitness`FitnessData",
                 "RickHennigan`ComputationalFitness`FunctionalThresholdPower",
                 "RickHennigan`ComputationalFitness`MaximumHeartRate",
+                "RickHennigan`ComputationalFitness`MeanMaximalPowerCurve",
                 "RickHennigan`ComputationalFitness`PowerZoneColorFunction",
                 "RickHennigan`ComputationalFitness`Sport",
                 "RickHennigan`ComputationalFitness`TCXImport",

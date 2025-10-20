@@ -44,7 +44,7 @@ parseTCXDataset // beginDefinition;
 
 parseTCXDataset[ file_, xml: XMLObject[ _ ][ ___ ] ] :=
     Module[ { tp },
-        tp = parseTrackpoints @ xml;
+        tp = parseTrackPoints @ xml;
         If[ MatchQ[ tp, { __Association } ],
             Dataset @ tp,
             throwFailure[ TCXImport::InvalidTCX, file ]
@@ -59,18 +59,19 @@ parseTCXDataset // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
-(*parseTrackpoints*)
-parseTrackpoints // beginDefinition;
+(*parseTrackPoints*)
+parseTrackPoints // beginDefinition;
 
-parseTrackpoints[ xml_ ] :=
+parseTrackPoints[ xml_ ] :=
     Cases[
         xml,
+        (* cSpell: ignore Trackpoint *)
         XMLElement[ "Trackpoint", _, tp_ ] :>
             Association @ Flatten[ parseTPElement /@ Flatten @ { tp } ],
         Infinity
     ];
 
-parseTrackpoints // endDefinition;
+parseTrackPoints // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)

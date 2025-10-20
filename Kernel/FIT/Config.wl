@@ -97,7 +97,8 @@ $fitElements = {
     "Messages",
     "PowerZonePlot",
     "AveragePowerPhasePlot",
-    "CriticalPowerCurvePlot"
+    "MeanMaximalPowerCurve",
+    "MeanMaximalPowerCurvePlot"
 };
 
 (* ::**************************************************************************************************************:: *)

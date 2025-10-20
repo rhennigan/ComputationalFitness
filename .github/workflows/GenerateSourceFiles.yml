@@ -75,7 +75,7 @@ jobs:
         wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/GenerateSourceFiles.wls
 
     - name: Upload generated files
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with: 
         retention-days: 1
         path: |

@@ -29,6 +29,7 @@ GeneralUtilities`UnprotectAndClearAll[
     `FitnessDataQ,
     `FunctionalThresholdPower,
     `MaximumHeartRate,
+    `MeanMaximalPowerCurve,
     `PowerZoneColorFunction,
     `Sport,
     `TCXImport,
@@ -77,11 +78,14 @@ GeneralUtilities`UnprotectAndClearAll[
     `catchMine,
     `catchTop,
     `catchTopAs,
+    `clearCache,
     `compactFitFitnessDataQ,
+    `compiledFunction,
     `endDefinition,
     `findFile,
     `getDataFile,
     `importXML,
+    `libraryError,
     `messageFailure,
     `messagePrint,
     `optionsAssociation,
@@ -112,10 +116,12 @@ EndPackage[ ];
 <<`Config`;
 <<`Strings`;
 <<`ImportExport`;
+<<`LibraryFunctions`;
 <<`FIT`;
 <<`TCX`;
 <<`ZWO`;
 <<`FitnessData`;
+<<`MeanMaximalPowerCurve`;
 <<`Initialization`;
 
 (* ::**************************************************************************************************************:: *)

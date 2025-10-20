@@ -6,6 +6,8 @@ Needs[ "RickHennigan`ComputationalFitness`" ];
 Needs[ "RickHennigan`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
+FITImport // beginDefinition;
+
 (* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Messages*)
@@ -156,6 +158,9 @@ FITImport[ _, "Elements", OptionsPattern[ ] ] :=
 FITImport[ file_, "FileType", OptionsPattern[ ] ] :=
     catchTopAs[ FITImport ] @ fitFileType @ file;
 
+FITImport[ file_, "MeanMaximalPowerCurve", OptionsPattern[ ] ] :=
+    catchTopAs[ FITImport ] @ MeanMaximalPowerCurve @ FITImport[ file, "Power" ];
+
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*TimeSeries Data*)
@@ -225,7 +230,7 @@ FITImport[ file_, "AveragePowerPhasePlot", opts: OptionsPattern[ ] ] :=
         opts
     ];
 
-FITImport[ file_, "CriticalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
+FITImport[ file_, "CriticalPowerCurvePlot"|"MeanMaximalPowerCurvePlot", opts: OptionsPattern[ ] ] :=
     fitImportOptionsBlock[
         criticalPowerCurve @ FITImport[ file, "Power", opts ],
         opts
@@ -265,6 +270,8 @@ FITImport[ args___ ] :=
     catchTopAs[ FITImport ] @ With[ { len = Length @ HoldComplete @ args },
         throwFailure[ ComputationalFitness::FITImportArgumentCount, len ]
     ];
+
+FITImport // endExportedDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
@@ -575,7 +582,7 @@ fitImport0[ source_, file_String ] :=
     fitImport0[
         source,
         file,
-        Quiet[ fitImportLibFunction @ file, LibraryFunction::rterr ]
+        Quiet[ compiledFunction[ "FITImport" ][ file ], LibraryFunction::rterr ]
     ];
 
 fitImport0[ source_, file_, data_List? rawDataQ ] := (
@@ -611,7 +618,7 @@ fitMessageTypes[ source_, file_String ] :=
     fitMessageTypes[
         source,
         file,
-        Quiet[ fitMessageTypesLibFunction @ file, LibraryFunction::rterr ]
+        Quiet[ compiledFunction[ "FITMessageTypes" ][ file ], LibraryFunction::rterr ]
     ];
 
 fitMessageTypes[ source_, file_, data_List? rawDataQ ] :=
@@ -981,7 +988,7 @@ toCompactRawData // endDefinition;
 (*compactFieldData*)
 compactFieldData // beginDefinition;
 compactFieldData[ type_, data_ ] := <|
-    "Fields" -> usableFields[ type, usableFITColumnsLibFunction @ data ],
+    "Fields" -> usableFields[ type, compiledFunction[ "FITUsableColumns" ][ data ] ],
     "Data"   -> data
 |>;
 compactFieldData // endDefinition;
