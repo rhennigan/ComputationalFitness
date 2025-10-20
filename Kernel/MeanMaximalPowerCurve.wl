@@ -140,7 +140,7 @@ temporalDataToMMP // beginDefinition;
 
 temporalDataToMMP[ timeSeries_TemporalData ] := Enclose[
     Module[ { resampled, values, result },
-        resampled = ConfirmMatch[ TimeSeriesResample[ timeSeries, "Second" ], _TemporalData, "TimeSeriesResample" ];
+        resampled = ConfirmMatch[ TimeSeriesResample[ timeSeries, 1 ], _TemporalData, "TimeSeriesResample" ];
         values = ConfirmMatch[ resampled[ "Values" ], _QuantityArray? ArrayQ, "Values" ];
         result = ConfirmMatch[ quantityArrayToMMP @ values, _QuantityArray? ArrayQ, "PowerCurve" ];
         result
