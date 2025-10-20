@@ -11,7 +11,7 @@ Begin[ "`Private`" ];
 (*FITFormatQ*)
 FITFormatQ // beginDefinition;
 FITFormatQ[ file_String? FileExistsQ ] := fitFormatQ @ file;
-FITFormatQ[ file_String? FileExistsQ, type_ ] := FITFileType @ file === type;
+FITFormatQ[ file_String? FileExistsQ, type_ ] := fitFormatQ @ file && FITFileType @ file === type;
 FITFormatQ // endExportedDefinition;
 
 (* TODO: define for $$source *)
@@ -20,6 +20,9 @@ FITFormatQ // endExportedDefinition;
 (* ::Subsection::Closed:: *)
 (*fitFormatQ*)
 fitFormatQ // beginDefinition;
+
+fitFormatQ[ _? DirectoryQ ] :=
+    False;
 
 fitFormatQ[ file_String ] :=
     fitFormatQ[ file, Streams @ ExpandFileName @ file ];
