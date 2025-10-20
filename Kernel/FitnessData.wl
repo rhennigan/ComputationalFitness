@@ -53,6 +53,9 @@ $$inertSymbol = HoldPattern @ Alternatives[
 ComputationalFitness::InvalidFitnessData =
 "Invalid FitnessData argument: `1`";
 
+ComputationalFitness::InvalidFitnessDataArguments =
+"Invalid FitnessData arguments in `1`";
+
 ComputationalFitness::InvalidFitnessDataType =
 "Invalid FitnessDataType in FitnessData: `1`";
 
@@ -71,11 +74,11 @@ ComputationalFitness::InvalidTypeData =
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Main Definition*)
-FitnessData[ data_Association ]? sp`HoldNotValidQ :=
+FitnessData[ data___ ]? sp`HoldNotValidQ :=
     catchTopAs[ FitnessData ] @ With[ { valid = validateFitnessData @ data },
         If[ AssociationQ @ valid,
             sp`HoldSetValid @ FitnessData @ valid,
-            throwFailure[ "InvalidFitnessData", data ]
+            throwFailure[ "InvalidArguments", FitnessData, HoldForm @ FitnessData @ data ]
         ]
     ];
 
@@ -83,13 +86,16 @@ FitnessData[ data_Association ]? sp`HoldNotValidQ :=
 (* ::Subsection::Closed:: *)
 (*validateFitnessData*)
 validateFitnessData // beginDefinition;
-validateFitnessData[ as_Association? AssociationQ ] := validateFitnessData[ as[ "DataFormat" ], as ];
-validateFitnessData[ "FITCompact", as_ ] := validateFITCompact @ as;
-validateFitnessData[ m_Missing, as_ ] := throwFailure[ "MissingDataFormat", as ];
-validateFitnessData[ format_String? StringQ, as_ ] := throwFailure[ "UnrecognizedDataFormat", format, as ];
-validateFitnessData[ format_, as_ ] := throwFailure[ "InvalidDataFormat", format, as ];
-validateFitnessData[ other_ ] := throwFailure[ "InvalidFitnessData", other ];
+validateFitnessData[ as_Association? AssociationQ ] := validateFitnessData0[ as[ "DataFormat" ], as ];
+validateFitnessData[ other___ ] := throwFailure[ "InvalidArguments", FitnessData, HoldForm @ FitnessData @ other ];
 validateFitnessData // endDefinition;
+
+validateFitnessData0 // beginDefinition;
+validateFitnessData0[ "FITCompact", as_ ] := validateFITCompact @ as;
+validateFitnessData0[ m_Missing, as_ ] := throwFailure[ "MissingDataFormat", as ];
+validateFitnessData0[ format_String? StringQ, as_ ] := throwFailure[ "UnrecognizedDataFormat", format, as ];
+validateFitnessData0[ format_, as_ ] := throwFailure[ "InvalidDataFormat", format, as ];
+validateFitnessData0 // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
