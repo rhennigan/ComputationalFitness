@@ -272,7 +272,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: DownloadCompilationArtifacts
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         path: LibraryResources
 
@@ -345,7 +345,7 @@ jobs:
 
     - name: Download MX build
       id: download-mx-artifacts-step
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: PacletBuildArtifact
 
@@ -407,7 +407,7 @@ jobs:
 
     - name: Download MX build
       id: download-mx-artifacts-step
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: PacletBuildArtifact
 
@@ -469,7 +469,7 @@ jobs:
 
     - name: Download MX build
       id: download-mx-artifacts-step
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: PacletBuildArtifact
         path: build
@@ -512,7 +512,7 @@ jobs:
 
       - name: Download MX build
         id: download-mx-artifacts-step
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: PacletBuildArtifact
 
@@ -556,7 +556,7 @@ jobs:
 
     - name: Download MX build
       id: download-mx-artifacts-step
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: PacletBuildArtifact
 
@@ -600,7 +600,7 @@ jobs:
 
     - name: Download MX build
       id: download-mx-artifacts-step
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: PacletBuildArtifact
 
