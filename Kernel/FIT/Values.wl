@@ -13,10 +13,14 @@ $ContextAliases[ "int`" ] = "Internal`";
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*FITInterpreter*)
+FITInterpreter // beginDefinition;
+
 FITInterpreter[ spec_ ] := FITInterpreter[ spec ] =
     Block[ { $Context = $fitContext, $ContextPath = { $fitContext, "System`" } },
         makeInterpreter @ spec
     ];
+
+FITInterpreter // endExportedDefinition;
 
 $fitContext = $Context;
 
@@ -216,7 +220,6 @@ setFieldDefinitions[ valueSym_Symbol, inverterSym_Symbol, name_String, defs_Asso
         Function @ With[
             {
                 inverter   = makeInverter @ #Interpreter,
-                index      = #Index,
                 dimensions = #Dimensions
             },
             If[ dimensions === { },
@@ -1251,6 +1254,7 @@ fitGeoPosition[ { _, $invalidSINT32|0 } ] := Missing[ "NotAvailable" ];
 fitGeoPosition[ { a_, b_ } ] := GeoPosition[ 8.381903175442434*^-8*{ a, b } ];
 fitGeoPosition[ ___ ] := Missing[ "NotAvailable" ];
 
+(* cSpell: ignore ITRF00 *)
 ifitPositionLatitude // ClearAll;
 ifitPositionLatitude[ GeoPosition[ { lat_, __ } ] ] := geoPartToInteger @ lat;
 ifitPositionLatitude[ GeoPosition[ { lat_, __ }, "ITRF00" ] ] := geoPartToInteger @ lat;

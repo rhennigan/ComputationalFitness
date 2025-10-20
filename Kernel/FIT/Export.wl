@@ -9,6 +9,8 @@ Begin[ "`Private`" ];
 $ContextAliases[ "dev`" ] = "Developer`";
 $ContextAliases[ "int`" ] = "Internal`";
 
+FITExport // beginDefinition;
+
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Messages*)
@@ -84,6 +86,8 @@ FITExport[ file_, data_FitnessData? FitnessDataQ, opts: OptionsPattern[ ] ] :=
     ];
 
 FITExport[ ___ ] := Failure[ "NotImplemented", <| |> ];
+
+FITExport // endExportedDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section:: *)

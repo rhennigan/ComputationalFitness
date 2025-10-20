@@ -78,6 +78,7 @@ GeneralUtilities`UnprotectAndClearAll[
     `catchMine,
     `catchTop,
     `catchTopAs,
+    `clearCache,
     `compactFitFitnessDataQ,
     `compiledFunction,
     `endDefinition,

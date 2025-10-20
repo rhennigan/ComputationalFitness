@@ -42,12 +42,94 @@ ComputationalFitness::CopyTemporaryFailed =
 ComputationalFitness::InvalidXML =
 "Cannot import data as XML format.";
 
+ComputationalFitness::InvalidArguments =
+"Invalid arguments given for `1` in `2`.";
+
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
 $inDef        = False;
 $debug        = TrueQ @ $debug;
 $mxExclusions = Internal`Bag[ ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*optimizeEnclosures*)
+optimizeEnclosures // ClearAll;
+optimizeEnclosures // Attributes = { HoldFirst };
+optimizeEnclosures[ s_Symbol ] := DownValues[ s ] = expandThrowInternalFailures @ optimizeEnclosures0 @ DownValues @ s;
+
+optimizeEnclosures0 // ClearAll;
+optimizeEnclosures0[ expr_ ] :=
+    ReplaceAll[
+        expr,
+        HoldPattern[ e: Enclose[ _ ] | Enclose[ _, _ ] ] :>
+            With[ { new = addEnclosureTags[ e, $ConditionHold ] },
+                RuleCondition[ new, True ]
+            ]
+    ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*expandThrowInternalFailures*)
+expandThrowInternalFailures // beginDefinition;
+
+expandThrowInternalFailures[ expr_ ] :=
+    ReplaceAll[
+        expr,
+        HoldPattern[ Verbatim[ HoldPattern ][ lhs_ ] :> rhs_ ] /;
+            ! FreeQ[ HoldComplete @ rhs, HoldPattern @ Enclose[ _, throwInternalFailure, $enclosure ] ] :>
+                ReplaceAll[
+                    HoldPattern[ e$: lhs ] :> rhs,
+                    HoldPattern @ Enclose[ eval_, throwInternalFailure, $enclosure ] :>
+                        Enclose[ eval, throwInternalFailure[ e$, ##1 ] &, $enclosure ]
+                ]
+    ];
+
+expandThrowInternalFailures // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*addEnclosureTags*)
+addEnclosureTags // ClearAll;
+addEnclosureTags // Attributes = { HoldFirst };
+
+addEnclosureTags[ Enclose[ expr_ ], wrapper_ ] :=
+    addEnclosureTags[ Enclose[ expr, #1 & ], wrapper ];
+
+addEnclosureTags[ Enclose[ expr_, func_ ], wrapper_ ] :=
+    Module[ { held, replaced },
+        held = HoldComplete @ expr;
+        replaced = held /. $enclosureTagRules;
+        Replace[ replaced, HoldComplete[ e_ ] :> wrapper @ Enclose[ e, func, $enclosure ] ]
+    ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*$enclosureTagRules*)
+$enclosureTagRules // ClearAll;
+(* :!CodeAnalysis::BeginBlock:: *)
+(* :!CodeAnalysis::Disable::NoSurroundingEnclose:: *)
+$enclosureTagRules := $enclosureTagRules = Dispatch @ {
+    expr_Enclose                                      :> expr,
+
+    HoldPattern @ Confirm[ expr_ ]                    :> Confirm[ expr, Null, $enclosure ],
+    HoldPattern @ Confirm[ expr_, info_ ]             :> Confirm[ expr, info, $enclosure ],
+
+    HoldPattern @ ConfirmBy[ expr_, f_ ]              :> ConfirmBy[ expr, f, Null, $enclosure ],
+    HoldPattern @ ConfirmBy[ expr_, f_, info_ ]       :> ConfirmBy[ expr, f, info, $enclosure ],
+
+    HoldPattern @ ConfirmMatch[ expr_, patt_ ]        :> ConfirmMatch[ expr, patt, Null, $enclosure ],
+    HoldPattern @ ConfirmMatch[ expr_, patt_, info_ ] :> ConfirmMatch[ expr, patt, info, $enclosure ],
+
+    HoldPattern @ ConfirmQuiet[ expr_ ]               :> ConfirmQuiet[ expr, All, Null, $enclosure ],
+    HoldPattern @ ConfirmQuiet[ expr_, patt_ ]        :> ConfirmQuiet[ expr, patt, Null, $enclosure ],
+    HoldPattern @ ConfirmQuiet[ expr_, patt_, info_ ] :> ConfirmQuiet[ expr, patt, info, $enclosure ],
+
+    HoldPattern @ ConfirmAssert[ expr_ ]              :> ConfirmAssert[ expr, Null, $enclosure ],
+    HoldPattern @ ConfirmAssert[ expr_, info_ ]       :> ConfirmAssert[ expr, info, $enclosure ]
+};
+(* :!CodeAnalysis::EndBlock:: *)
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -76,10 +158,34 @@ beginDefinition[ s_Symbol ] /; $debug && $inDef :=
     ];
 (* :!CodeAnalysis::EndBlock:: *)
 
-beginDefinition[ s_Symbol ] :=
-    WithCleanup[ Unprotect @ s; ClearAll @ s, $inDef = True ];
+beginDefinition[ s_Symbol ] := WithCleanup[ Unprotect @ s; ClearAll @ s, $inDef = True ];
 
 beginDefinition // excludeFromMX;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*appendFallthroughError*)
+appendFallthroughError // ClearAll;
+appendFallthroughError // Attributes = { HoldFirst };
+
+appendFallthroughError[ s_Symbol, values: DownValues|UpValues ] :=
+    Module[ { block = Internal`InheritedBlock, before, after },
+        block[ { s },
+            before = values @ s;
+            appendFallthroughError0[ s, values ];
+            after = values @ s;
+        ];
+
+        If[ TrueQ[ Length @ after > Length @ before ],
+            values[ s ] = after,
+            values[ s ]
+        ]
+    ];
+
+appendFallthroughError0 // ClearAll;
+appendFallthroughError0[ s_Symbol, OwnValues  ] := e: HoldPattern @ s               := throwInternalFailure @ e;
+appendFallthroughError0[ s_Symbol, DownValues ] := e: HoldPattern @ s[ ___ ]        := throwInternalFailure @ e;
+appendFallthroughError0[ s_Symbol, UpValues   ] := e: HoldPattern @ s[ ___ ][ ___ ] := throwInternalFailure @ e;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -91,29 +197,78 @@ endDefinition[ s_Symbol ] := endDefinition[ s, DownValues ];
 
 endDefinition[ s_Symbol, None ] := $inDef = False;
 
-endDefinition[ s_Symbol, DownValues ] :=
+endDefinition[ s_Symbol, values: DownValues|UpValues ] :=
     WithCleanup[
-        AppendTo[ DownValues @ s,
-                  e: HoldPattern @ s[ ___ ] :>
-                      throwInternalFailure @ HoldForm @ e
-        ],
+        optimizeEnclosures @ s;
+        appendFallthroughError[ s, values ],
         $inDef = False
     ];
 
-endDefinition[ s_Symbol, SubValues  ] :=
-    WithCleanup[
-        AppendTo[ SubValues @ s,
-                  e: HoldPattern @ s[ ___ ][ ___ ] :>
-                      throwInternalFailure @ HoldForm @ e
-        ],
-        $inDef = False
-    ];
-
-endDefinition[ s_Symbol, list_List ] :=
-    endDefinition[ s, # ] & /@ list;
+endDefinition[ s_Symbol, list_List ] := (endDefinition[ s, #1 ] &) /@ list;
 
 endDefinition // endDefinition;
 endDefinition // excludeFromMX;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*endExportedDefinition*)
+endExportedDefinition // beginDefinition;
+endExportedDefinition // Attributes = { HoldFirst };
+
+endExportedDefinition[ s_Symbol ] :=
+    WithCleanup[
+        optimizeEnclosures @ s;
+        appendExportedFallthroughError @ s,
+        $inDef = False
+    ];
+
+endExportedDefinition // endDefinition;
+endExportedDefinition // excludeFromMX;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*appendExportedFallthroughError*)
+appendExportedFallthroughError // ClearAll;
+appendExportedFallthroughError // Attributes = { HoldFirst };
+
+appendExportedFallthroughError[ s_Symbol ] :=
+    Module[ { block = Internal`InheritedBlock, before, after },
+        block[ { s },
+            before = DownValues @ s;
+            appendExportedFallthroughError0 @ s;
+            after = DownValues @ s;
+        ];
+
+        If[ TrueQ[ Length @ after > Length @ before ],
+            DownValues[ s ] = after,
+            DownValues[ s ]
+        ]
+    ];
+
+appendExportedFallthroughError0 // ClearAll;
+appendExportedFallthroughError0[ f_Symbol ] := f[ a___ ] :=
+    catchTop[ throwFailure[ "InvalidArguments", f, HoldForm @ f @ a ], f ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*endDefinition*)
+endDefinition // beginDefinition;
+endDefinition // Attributes = { HoldFirst };
+
+endDefinition[ s_Symbol ] := endDefinition[ s, DownValues ];
+
+endDefinition[ s_Symbol, None ] := $inDef = False;
+
+endDefinition[ s_Symbol, values: DownValues|UpValues ] :=
+    WithCleanup[
+        optimizeEnclosures @ s;
+        appendFallthroughError[ s, values ],
+        $inDef = False
+    ];
+
+endDefinition[ s_Symbol, list_List ] := (endDefinition[ s, #1 ] &) /@ list;
+
+endDefinition // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -163,6 +318,13 @@ cached[ eval_ ] /; $cacheBlock :=
     ];
 
 cached[ eval_ ] := cacheBlock @ eval;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*clearCache*)
+clearCache // beginDefinition;
+clearCache[ ] := $blockCache = <| |>;
+clearCache // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)

@@ -6,6 +6,8 @@ Needs[ "RickHennigan`ComputationalFitness`" ];
 Needs[ "RickHennigan`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
+FITImport // beginDefinition;
+
 (* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
 (*Messages*)
@@ -265,6 +267,8 @@ FITImport[ args___ ] :=
     catchTopAs[ FITImport ] @ With[ { len = Length @ HoldComplete @ args },
         throwFailure[ ComputationalFitness::FITImportArgumentCount, len ]
     ];
+
+FITImport // endExportedDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section:: *)
