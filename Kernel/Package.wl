@@ -29,6 +29,7 @@ GeneralUtilities`UnprotectAndClearAll[
     `FitnessDataQ,
     `FunctionalThresholdPower,
     `MaximumHeartRate,
+    `MeanMaximalPowerCurve,
     `PowerZoneColorFunction,
     `Sport,
     `TCXImport,
@@ -119,6 +120,7 @@ EndPackage[ ];
 <<`TCX`;
 <<`ZWO`;
 <<`FitnessData`;
+<<`MeanMaximalPowerCurve`;
 <<`Initialization`;
 
 (* ::**************************************************************************************************************:: *)

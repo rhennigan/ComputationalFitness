@@ -66,12 +66,13 @@ $$compiledCodeFunction = HoldPattern[ _CompiledCodeFunction ];
 $$compiledFunction     = $$libraryFunction|$$compiledCodeFunction|_CompiledFunction;
 
 $compiledFunctions = <|
-    "FITExport"             -> fitExportLibFunction,
-    "FITFileType"           -> fitFileTypeLibFunction,
-    "FITImport"             -> fitImportLibFunction,
-    "FITMessageTypes"       -> fitMessageTypesLibFunction,
-    "FITUsableColumns"      -> usableFITColumnsLibFunction,
-    "MaximalMeanPowerCurve" -> meanMaximalPowerCurveLibFunction
+    "FITExport"             :> fitExportLibFunction,
+    "FITFileType"           :> fitFileTypeLibFunction,
+    "FITImport"             :> fitImportLibFunction,
+    "FITMessageTypes"       :> fitMessageTypesLibFunction,
+    "FITUsableColumns"      :> usableFITColumnsLibFunction,
+    "MaximalMeanPowerCurve" :> meanMaximalPowerCurveLibFunction,
+    "PairwiseMax"           :> pairwiseMaxLibFunction
 |>;
 
 (* ::**************************************************************************************************************:: *)
@@ -175,12 +176,19 @@ meanMaximalPowerCurveLibFunction // ClearAll;
 meanMaximalPowerCurveLibFunction := loadCompiledCodeFunction[ "MeanMaximalPowerCurve" ];
 
 (* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*pairwiseMaxLibFunction*)
+pairwiseMaxLibFunction // ClearAll;
+pairwiseMaxLibFunction := loadCompiledCodeFunction[ "PairwiseMax" ];
+
+(* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*CompiledCodeFunctions*)
 $compiledCodeFunctions // ClearAll;
 $compiledCodeFunctions = <|
     "FITUsableColumns"      -> usableFITColumnsF,
-    "MeanMaximalPowerCurve" -> meanMaximalPowerCurveF
+    "MeanMaximalPowerCurve" -> meanMaximalPowerCurveF,
+    "PairwiseMax"           -> pairwiseMaxF
 |>;
 
 $compiledCodeFunctionsBag // ClearAll;
@@ -399,7 +407,7 @@ meanMaximalPowerCurveF = Function[
     Block[ { n, prefixSum, powerCurve },
 
         n = Length @ wattValues;
-        prefixSum = Prepend[ Accumulate @ wattValues, 0. ];
+        prefixSum = Prepend[ Accumulate @ wattValues, 0.0 ];
         powerCurve = ConstantArray[ 0.0, n ];
 
         Do[
@@ -418,6 +426,27 @@ meanMaximalPowerCurveF = Function[
         ];
 
         powerCurve
+    ]
+];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*pairwiseMaxF*)
+pairwiseMaxF = Function[
+    {
+        Typed[ data1, "PackedArray"[ "Real64", 1 ] ],
+        Typed[ data2, "PackedArray"[ "Real64", 1 ] ]
+    },
+    Block[ { len1, len2, min, max, data },
+        len1 = Length @ data1;
+        len2 = Length @ data2;
+        min  = Min[ len1, len2 ];
+        max  = Max[ len1, len2 ];
+        data = ConstantArray[ 0.0, max ];
+        Do[ data[[ i ]] = Max[ data1[[ i ]], data2[[ i ]] ], { i, min } ];
+        If[ len1 > len2, Do[ data[[ i ]] = data1[[ i ]], { i, min + 1, max } ] ];
+        If[ len2 > len1, Do[ data[[ i ]] = data2[[ i ]], { i, min + 1, max } ] ];
+        data
     ]
 ];
 

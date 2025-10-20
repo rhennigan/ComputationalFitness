@@ -28,6 +28,7 @@ PacletObject[ <|
                 "RickHennigan`ComputationalFitness`FitnessData",
                 "RickHennigan`ComputationalFitness`FunctionalThresholdPower",
                 "RickHennigan`ComputationalFitness`MaximumHeartRate",
+                "RickHennigan`ComputationalFitness`MeanMaximalPowerCurve",
                 "RickHennigan`ComputationalFitness`PowerZoneColorFunction",
                 "RickHennigan`ComputationalFitness`Sport",
                 "RickHennigan`ComputationalFitness`TCXImport",
