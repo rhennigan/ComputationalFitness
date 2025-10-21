@@ -6,6 +6,45 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ComputationalFitness is a Wolfram Language paclet for importing and analyzing fitness data from smartwatches, cycling computers, and other sources. It supports FIT, TCX, and ZWO file formats with C-based binary parsing for performance.
 
+## Development
+
+In order to test changes to paclet code, you must first evaluate the following as a separate call to the WolframLanguageEvaluator tool:
+```wl
+PacletDirectoryLoad["path/to/ComputationalFitness"];
+Get["RickHennigan`ComputationalFitness`"]
+```
+
+Now you can make additional tool calls to run paclet code.
+
+If you've previously built an MX file for the paclet, you should delete it before testing your changes. You can find it in `Kernel/64Bit/ComputationalFitness.mx`.
+
+## Writing Tests
+
+Write tests in the following format:
+```wl
+VerificationTest[
+    input,
+    expected,
+    SameTest -> MatchQ,
+    TestID   -> "AnAppropriateTestID"
+]
+```
+
+You can optionally include a third argument to specify any expected messages that occur during the evaluation of the input, for example:
+
+```wl
+{ FITImport::InvalidFileFormat, ... }
+```
+
+Existing test IDs will also have a suffix appended to them (everything after the last `@@`) to indicate where the test is located in the codebase. You do not need to include this suffix in your new test IDs, since they are automatically generated on commit.
+
+You can run test files individually using:
+
+```wl
+report = TestReport["path/to/test/file.wlt"];
+report["TestsFailed"]
+```
+
 ## Build System
 
 ### Common Commands
@@ -25,16 +64,6 @@ wolframscript -f Scripts/TestPaclet.wls
 wolframscript -f Scripts/Compile.wls
 ```
 
-**Generate source files from ResourceDefinition.nb:**
-```bash
-wolframscript -f Scripts/GenerateSourceFiles.wls
-```
-
-**Format Wolfram Language files:**
-```bash
-wolframscript -f Scripts/FormatFiles.wls
-```
-
 ### Build Architecture
 
 - **Scripts/Common.wl**: Shared build infrastructure, loads `Wolfram/PacletCICD` for CI/CD operations
@@ -50,37 +79,63 @@ The paclet follows a modular structure with a main loader (`Kernel/Computational
 1. Attempts to load a pre-compiled MX file if available (for performance)
 2. Falls back to loading `Kernel/Package.wl` which orchestrates loading all submodules
 
-**Kernel/Package.wl** loads files in this order:
+**Kernel/Package.wl** must load files in this order:
 - `Utilities.wl` - Common utilities
 - `Data.wl` - Data handling
 - `Config.wl` - Configuration management
-- `Strings.wl` - String utilities
-- `ImportExport.wl` - Format registration
-- `LibraryFunctions.wl` - C library bindings
-- `FIT/` - FIT format support (subdirectory)
-- `TCX/` - TCX format support (subdirectory)
-- `ZWO/` - ZWO format support (subdirectory)
-- `FitnessData.wl` - Main data type
-- `MeanMaximalPowerCurve.wl` - Power analysis
+- All other package files in any order
 - `Initialization.wl` - Final setup
 
 ### Key Architecture Patterns
 
-**Exported Symbols**: Exported symbols in the main context must be declared in both the PacletInfo.wl and Kernel/Package.wl files.
+#### Error Handling
 
-**Binary Data Parsing**: The FIT format parser is implemented in C (Source/FIT/) and linked via LibraryLink for performance. The C code handles binary protocol parsing while Wolfram Language handles higher-level interpretation.
+Error handling is managed using the following helpers:
+- `catchTop` - Catches anything thrown by `throwFailure` or `throwInternalFailure`. Only the outermost `catchTop` is used.
+- `throwFailure` - Throws a handled handled error with a message ID and arguments.
+- `throwInternalFailure` - Throws an unhandled internal failure error.
 
-**Validation Pattern**: Core types like `FitnessData` use the ``System`Private`HoldNotValidQ`` / `HoldSetValid` pattern for efficient validation caching.
+The functions `catchMine` and `catchTopAs` are variations of `catchTop` that specify the symbol that should be used for error messages. These should only be used for public functions.
 
-**Error Handling**: Uses `catchMine`, `catchTop`, `throwFailure`, and `throwInternalFailure` helpers (defined in Package context) for consistent error management across the codebase.
+Define any error messages using the `ComputationalFitness` symbol. For example:
+```wl
+ComputationalFitness::NotMachineReal = "Expected real machine precision numbers but encountered `1`.";
+```
 
-**Definition Wrappers**: Functions are wrapped with `beginDefinition` / `endDefinition` (or `endExportedDefinition`) for consistent setup/teardown.
+Then, you can use something like the following to throw an error to the top level:
+```wl
+throwFailure[ "NotMachineReal", badValue ]
+```
 
-### Format Support
+The message will automatically be issued from the symbol that's using the outermost `catchMine` or `catchTopAs` block.
 
-- **FIT (Flexible and Interoperable Data Transfer)**: Primary format from Garmin and other devices. Binary protocol with message definitions in `Data/FITMessageDefinitions.wl`
-- **TCX (Training Center XML)**: XML-based format. Parser in `Kernel/TCX/`
-- **ZWO**: Zwift workout format. Parser in `Kernel/ZWO/`
+#### Exported Functions
+
+Exported functions in the main context must be declared in both the PacletInfo.wl and Kernel/Package.wl files. Define them using the following format:
+```wl
+NameOfFunction // beginDefinition;
+NameOfFunction[ ... ] := catchMine @ internalFunction[ ... ];
+NameOfFunction // endExportedDefinition;
+```
+
+The name of the internal function is often the same as the exported function, but beginning with a lowercase letter.
+
+#### Internal Functions
+
+Define internal helper functions using the following format:
+
+```wl
+nameOfFunction // beginDefinition;
+
+nameOfFunction[ ... ] := Enclose[
+    body,
+    throwInternalFailure
+];
+
+nameOfFunction // endDefinition;
+```
+
+The `Enclose` wrapper is only necessary if you are using any `Confirm`, `ConfirmBy`, `ConfirmMatch`, etc. functions in the body, and it will trigger a throw of an internal failure error if any of them fail.
 
 ### C Library Components
 
@@ -91,17 +146,7 @@ C source files in `Source/FIT/` implement the FIT SDK:
 - `fit_crc.c/h`: CRC validation
 - Compiled outputs go to `LibraryResources/{SystemID}/`
 
-## Testing
-
-Tests are in `Tests/` directory using `.wlt` format (Wolfram Language Test files):
-- `FITImport.wlt` - FIT import tests
-- `ImportExport.wlt` - General import/export tests
-- `MeanMaximalPowerCurve.wlt` - Power curve calculation tests
-
-Tests can be run individually:
-```wl
-TestReport["Tests/MeanMaximalPowerCurve.wlt"]
-```
+These files are generated from the FIT SDK using the `Scripts/GenerateSourceFiles.wls` script and should not be edited manually.
 
 ## CI/CD Pipeline
 
@@ -116,15 +161,10 @@ Platform-specific compilation uses different Wolfram Engine versions and caching
 
 Main exported symbols (see PacletInfo.wl):
 - `FITImport/FITExport` - FIT file I/O
-- `TCXImport` - TCX file import
-- `ZWOImport/ZWOExport` - ZWO file I/O
 - `FitnessData` - Main data container
-- `MeanMaximalPowerCurve` - Power curve analysis
-- `FunctionalThresholdPower`, `MaximumHeartRate`, `Weight`, `Sport` - Configuration
 
 ## Development Notes
 
-- The paclet uses `GeneralUtilities` for common patterns
 - Context aliases (e.g., ``sp`PrivateHoldNotValidQ``) reduce symbol verbosity
 - The build system integrates with GitHub Actions for automated releases
 - Release metadata (`$RELEASE_ID$`, etc.) is templated in PacletInfo.wl and replaced during CI builds
