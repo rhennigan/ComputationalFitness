@@ -259,6 +259,7 @@ multiSourceToMMP[ { first_, rest___ } ] := Enclose[
     Catch @ Module[ { initial, current, total, combined, result },
 
         initial = ConfirmBy[ importRealArrayMMP @ first, machineRealArrayOrMissingQ, "Initial" ];
+        clearCache[ ];
 
         current = 1;
         total   = Length @ { first, rest };
@@ -312,9 +313,9 @@ takeLargerMMP[ _Missing, source_ ] := Enclose[
 takeLargerMMP[ current_List, source_ ] := Enclose[
     Catch @ Module[ { new, res },
         new = ConfirmBy[ importRealArrayMMP @ source, machineRealArrayOrMissingQ, "New" ];
-        If[ MissingQ @ new, clearCache[ ]; Throw @ current ];
-        res = ConfirmBy[ compiledFunction[ "PairwiseMax" ][ current, new ], Developer`PackedArrayQ, "Result" ];
         clearCache[ ];
+        If[ MissingQ @ new, Throw @ current ];
+        res = ConfirmBy[ compiledFunction[ "PairwiseMax" ][ current, new ], Developer`PackedArrayQ, "Result" ];
         res
     ],
     throwInternalFailure
