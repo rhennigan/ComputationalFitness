@@ -8,7 +8,7 @@ ComputationalFitness is a Wolfram Language paclet for importing and analyzing fi
 
 ## Development
 
-Always use the WolframContext tool when working with Wolfram Language code to ensure that you are aware of the latest documentation and other Wolfram resources.
+Always use the WolframLanguageContext tool when working with Wolfram Language code to ensure that you are aware of the latest documentation and other Wolfram resources.
 
 In order to test changes to paclet code, you must first evaluate the following as a separate call to the WolframLanguageEvaluator tool:
 ```wl
@@ -47,7 +47,7 @@ report = TestReport["path/to/test/file.wlt"];
 report["TestsFailed"]
 ```
 
-Use the WolframContext tool if tests fail to help find a solution.
+Use the WolframLanguageContext tool if tests fail to help find a solution.
 
 ## Build System
 
