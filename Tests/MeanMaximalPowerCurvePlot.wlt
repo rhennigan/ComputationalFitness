@@ -218,7 +218,7 @@ VerificationTest[
 (*Possible Issues*)
 VerificationTest[
     MeanMaximalPowerCurvePlot @ File[ "ExampleData/Walk.fit" ],
-    _Failure,
+    _Missing,
     SameTest -> MatchQ,
     TestID   -> "PossibleIssues-1@@Tests/MeanMaximalPowerCurvePlot.wlt:219,1-224,2"
 ]
