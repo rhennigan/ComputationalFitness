@@ -226,13 +226,15 @@ VerificationTest[
 VerificationTest[
     MeanMaximalPowerCurvePlot[ ],
     _Failure,
+    { MeanMaximalPowerCurvePlot::InvalidArguments },
     SameTest -> MatchQ,
-    TestID   -> "PossibleIssues-2@@Tests/MeanMaximalPowerCurvePlot.wlt:226,1-231,2"
+    TestID   -> "PossibleIssues-2@@Tests/MeanMaximalPowerCurvePlot.wlt:226,1-232,2"
 ]
 
 VerificationTest[
     MeanMaximalPowerCurvePlot @ "invalid",
     _Failure,
+    { MeanMaximalPowerCurvePlot::InvalidArguments },
     SameTest -> MatchQ,
-    TestID   -> "PossibleIssues-3@@Tests/MeanMaximalPowerCurvePlot.wlt:233,1-238,2"
+    TestID   -> "PossibleIssues-3@@Tests/MeanMaximalPowerCurvePlot.wlt:234,1-240,2"
 ]
