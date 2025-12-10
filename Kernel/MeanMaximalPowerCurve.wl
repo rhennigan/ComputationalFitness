@@ -339,7 +339,7 @@ MeanMaximalPowerCurvePlot // endExportedDefinition;
 meanMaximalPowerCurvePlot // beginDefinition;
 
 meanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] := Enclose[
-    Module[ { mmpCurve, tickValues, ticks },
+    Catch @ Module[ { mmpCurve, tickValues, ticks },
 
         mmpCurve = ConfirmMatch[
             If[ MatchQ[ data, _QuantityArray ],
@@ -347,6 +347,7 @@ meanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] := Encl
                 (* else *)
                 Module[ { rawCurve },
                     rawCurve = MeanMaximalPowerCurve @ data;
+                    If[ MissingQ @ rawCurve, Throw @ rawCurve ];
                     (* Convert plain list to QuantityArray assuming Watts *)
                     If[ MatchQ[ rawCurve, _List ],
                         QuantityArray[ rawCurve, "Watts" ],
