@@ -140,8 +140,7 @@ Notebook[
         "The ",
         Cell[
          BoxData[SuperscriptBox[StyleBox["n", "TI"], "th"]],
-         "InlineFormula",
-         FormatType -> StandardForm
+         "InlineFormula"
         ],
         " entry in the array corresponds to the best average power output for any continuous ",
         Cell[BoxData[StyleBox["n", "TI"]], "InlineFormula"],
@@ -195,13 +194,27 @@ Notebook[
         Cell[
          BoxData[
           ButtonBox[
+           "MeanMaximalPowerCurvePlot",
+           BaseStyle -> "Link",
+           ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/MeanMaximalPowerCurvePlot"
+          ]
+         ],
+         "InlineSeeAlsoFunction",
+         TaggingRules -> {"PageType" -> "Function"},
+         CellTags -> "00a30517-c7d4-4078-ac10-3b780baa4588"
+        ],
+        StyleBox[" \[FilledVerySmallSquare] ", "InlineSeparator"],
+        Cell[
+         BoxData[
+          ButtonBox[
            "FITImport",
            BaseStyle -> "Link",
            ButtonData -> "paclet:RickHennigan/ComputationalFitness/ref/FITImport"
           ]
          ],
          "InlineSeeAlsoFunction",
-         TaggingRules -> {"PageType" -> "Function"}
+         TaggingRules -> {"PageType" -> "Function"},
+         CellTags -> "b9716ebc-870c-4632-a632-d36c1f400981"
         ],
         Cell[
          BoxData[
@@ -217,12 +230,12 @@ Notebook[
               nbobj$$ = 
                NotebookObject[
                 "6ba6a310-dc5f-a945-9524-97393a345c5b",
-                "3990fef0-1b3a-dd4a-a75f-c2c6573a4654"
+                "908dd631-8371-cb40-81c8-65124734ffb6"
                ],
               cellobj$$ = 
                CellObject[
-                "2739eb56-49d1-e242-aa49-19c520b68699",
-                "2a9c541e-8298-1d46-9607-c7351f341efd"
+                "1c045858-583c-7a49-9bdd-6f834815149f",
+                "8b419168-c27c-8044-88ca-9c8f751933a2"
                ]
              },
              TemplateBox[
@@ -1309,7 +1322,7 @@ Notebook[
            },
            GridLines -> {None, None},
            GridLinesStyle -> Directive[GrayLevel[0.5, 0.4]],
-           ImageSize -> {467.5, Automatic},
+           ImageSize -> {449.5, Automatic},
            Method -> {
             "AxisPadding" -> Scaled[0.02],
             "DefaultBoundaryStyle" -> Automatic,
