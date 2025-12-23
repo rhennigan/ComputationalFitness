@@ -74,6 +74,9 @@ ComputationalFitness::InvalidTypeData =
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Main Definition*)
+(* This is necessary to prevent outer evaluations of `N` from affecting the internal data of FitnessData objects. *)
+FitnessData // Attributes = { NHoldAll };
+
 FitnessData[ data___ ]? sp`HoldNotValidQ :=
     catchTopAs[ FitnessData ] @ With[ { valid = validateFitnessData @ data },
         If[ AssociationQ @ valid,

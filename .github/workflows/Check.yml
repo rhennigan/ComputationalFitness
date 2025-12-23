@@ -95,7 +95,7 @@ jobs:
 
   Compile-MacOSX-x86-64:
     name: Compile-MacOSX-x86-64
-    runs-on: macos-13
+    runs-on: macos-15-intel
     env:
       WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
@@ -157,7 +157,7 @@ jobs:
 
   Compile-MacOSX-ARM64:
     name: Compile-MacOSX-ARM64
-    runs-on: macos-14
+    runs-on: macos-15
     env:
       WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
@@ -379,7 +379,7 @@ jobs:
   Test-MacOSX-x86-64:
     name: Test-MacOSX-x86-64
     needs: [BuildPaclet]
-    runs-on: macos-13
+    runs-on: macos-15-intel
     env:
       WOLFRAM_SYSTEM_ID: MacOSX-x86-64
       WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
@@ -442,7 +442,7 @@ jobs:
   Test-MacOSX-ARM64:
     name: Test-MacOSX-ARM64
     needs: [BuildPaclet]
-    runs-on: macos-14
+    runs-on: macos-15
     env:
       WOLFRAM_SYSTEM_ID: MacOSX-ARM64
       WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0

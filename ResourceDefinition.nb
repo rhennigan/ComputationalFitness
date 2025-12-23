@@ -59,6 +59,88 @@ Notebook[
             CellID -> 382848790
            ],
            Cell[
+            BoxData[
+             InterpretationBox[
+              TagBox[
+               TemplateBox[
+                {
+                 "\"AGENTS.md\"",
+                 FileNameJoin[{NotebookDirectory[], "AGENTS.md"}]
+                },
+                "FileManagerFileOpenerTemplate"
+               ],
+               Function[
+                Annotation[
+                 #1,
+                 DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                  0
+                 ]
+                ]
+               ]
+              ],
+              FileNameJoin[{NotebookDirectory[], "AGENTS.md"}],
+              BoxID -> "FileTreePath",
+              BaseStyle -> {"Text"}
+             ]
+            ],
+            "FileManagerFile",
+            CellMargins -> {{Inherited, Inherited}, {Inherited, Inherited}},
+            CellGroupingRules -> {"SectionGrouping", 100},
+            CellFrameLabels -> {
+             {
+              Cell[
+               BoxData[TemplateBox[{}, "FileManagerTXTIconTemplate"]],
+               Background -> None
+              ],
+              Inherited
+             },
+             {Inherited, Inherited}
+            },
+            CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+            CellID -> 16498070
+           ],
+           Cell[
+            BoxData[
+             InterpretationBox[
+              TagBox[
+               TemplateBox[
+                {
+                 "\"CLAUDE.md\"",
+                 FileNameJoin[{NotebookDirectory[], "CLAUDE.md"}]
+                },
+                "FileManagerFileOpenerTemplate"
+               ],
+               Function[
+                Annotation[
+                 #1,
+                 DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                  0
+                 ]
+                ]
+               ]
+              ],
+              FileNameJoin[{NotebookDirectory[], "CLAUDE.md"}],
+              BoxID -> "FileTreePath",
+              BaseStyle -> {"Text"}
+             ]
+            ],
+            "FileManagerFile",
+            CellMargins -> {{Inherited, Inherited}, {Inherited, Inherited}},
+            CellGroupingRules -> {"SectionGrouping", 100},
+            CellFrameLabels -> {
+             {
+              Cell[
+               BoxData[TemplateBox[{}, "FileManagerTXTIconTemplate"]],
+               Background -> None
+              ],
+              Inherited
+             },
+             {Inherited, Inherited}
+            },
+            CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+            CellID -> 59099474
+           ],
+           Cell[
             CellGroupData[
              {
               Cell[
@@ -1482,6 +1564,65 @@ Notebook[
                         },
                         CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
                         CellID -> 121976237
+                       ],
+                       Cell[
+                        BoxData[
+                         InterpretationBox[
+                          TagBox[
+                           TemplateBox[
+                            {
+                             "\"MeanMaximalPowerCurvePlot.nb\"",
+                             FileNameJoin[
+                              {
+                               NotebookDirectory[],
+                               "Documentation",
+                               "English",
+                               "ReferencePages",
+                               "Symbols",
+                               "MeanMaximalPowerCurvePlot.nb"
+                              }
+                             ]
+                            },
+                            "FileManagerFileOpenerTemplate"
+                           ],
+                           Function[
+                            Annotation[
+                             #1,
+                             DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                              4
+                             ]
+                            ]
+                           ]
+                          ],
+                          FileNameJoin[
+                           {
+                            NotebookDirectory[],
+                            "Documentation",
+                            "English",
+                            "ReferencePages",
+                            "Symbols",
+                            "MeanMaximalPowerCurvePlot.nb"
+                           }
+                          ],
+                          BoxID -> "FileTreePath",
+                          BaseStyle -> {"Text"}
+                         ]
+                        ],
+                        "FileManagerFile",
+                        CellMargins -> {{92 + Inherited, Inherited}, {Inherited, Inherited}},
+                        CellGroupingRules -> {"SectionGrouping", 140},
+                        CellFrameLabels -> {
+                         {
+                          Cell[
+                           BoxData[TemplateBox[{}, "FileManagerNBIconTemplate"]],
+                           Background -> None
+                          ],
+                          Inherited
+                         },
+                         {Inherited, Inherited}
+                        },
+                        CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+                        CellID -> 271313708
                        ],
                        Cell[
                         BoxData[
@@ -8046,6 +8187,59 @@ Notebook[
                },
                CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
                CellID -> 105129385
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"MeanMaximalPowerCurvePlot.wlt\"",
+                    FileNameJoin[
+                     {
+                      NotebookDirectory[],
+                      "Tests",
+                      "MeanMaximalPowerCurvePlot.wlt"
+                     }
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {
+                   NotebookDirectory[],
+                   "Tests",
+                   "MeanMaximalPowerCurvePlot.wlt"
+                  }
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerWLIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 402621369
               ],
               Cell[
                BoxData[
@@ -15267,10 +15461,11 @@ Notebook[
   },
   "SubmissionReviewData" -> {"Review" -> False},
   "ToolsOpen" -> True,
-  "UpdatedTimestamp" -> 3.9699554966627301*^9,
+  "UpdatedTimestamp" -> 3.96995549666273*^9,
   "TemplateVersion" -> "2025.05.14",
   "StatusMessage" -> "",
-  "AutoUpdate" -> True
+  "AutoUpdate" -> True,
+  "Paclet" -> "None"
  },
  CreateCellID -> True,
  DynamicEvaluationTimeout -> 60,

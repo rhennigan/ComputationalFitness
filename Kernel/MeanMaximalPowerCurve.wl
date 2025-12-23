@@ -122,16 +122,8 @@ throwNumberArrayError // endDefinition;
 quantityArrayToMMP // beginDefinition;
 
 quantityArrayToMMP[ array_QuantityArray ] := Enclose[
-    Module[ { invalid, watts, power, result },
-        If[ ! compatibleUnitQ[ array, "Watts" ],
-            invalid = ConfirmBy[
-                SelectFirst[ DeleteDuplicates @ QuantityUnit @ array, ! CompatibleUnitQ[ #, "Watts" ] & ],
-                StringQ,
-                "InvalidUnit"
-            ];
-            throwFailure[ "IncompatibleUnits", invalid, "Watts" ]
-        ];
-        watts = ConfirmMatch[ UnitConvert[ array, "Watts" ], _QuantityArray, "UnitConvert" ];
+    Module[ { watts, power, result },
+        watts = ConfirmMatch[ UnitConvert[ checkPowerArray @ array, "Watts" ], _QuantityArray, "UnitConvert" ];
         power = ConfirmBy[ QuantityMagnitude @ watts, numberArrayQ, "QuantityMagnitude" ];
         result = ConfirmBy[ numberArrayToMMP @ power, machineRealArrayQ, "PowerCurve" ];
         ConfirmMatch[ QuantityArray[ result, "Watts" ], _QuantityArray? ArrayQ, "Result" ]
@@ -140,6 +132,27 @@ quantityArrayToMMP[ array_QuantityArray ] := Enclose[
 ];
 
 quantityArrayToMMP // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*checkPowerArray*)
+checkPowerArray // beginDefinition;
+
+checkPowerArray[ array_QuantityArray ] := Enclose[
+    Module[ { invalid },
+        If[ ! compatibleUnitQ[ array, "Watts" ],
+            invalid = Confirm[
+                SelectFirst[ DeleteDuplicates @ QuantityUnit @ array, ! CompatibleUnitQ[ #, "Watts" ] & ],
+                "InvalidUnit"
+            ];
+            throwFailure[ "IncompatibleUnits", invalid, "Watts" ]
+        ];
+        array
+    ],
+    throwInternalFailure
+];
+
+checkPowerArray // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsubsection::Closed:: *)
@@ -246,6 +259,7 @@ multiSourceToMMP[ { first_, rest___ } ] := Enclose[
     Catch @ Module[ { initial, current, total, combined, result },
 
         initial = ConfirmBy[ importRealArrayMMP @ first, machineRealArrayOrMissingQ, "Initial" ];
+        clearCache[ ];
 
         current = 1;
         total   = Length @ { first, rest };
@@ -299,15 +313,84 @@ takeLargerMMP[ _Missing, source_ ] := Enclose[
 takeLargerMMP[ current_List, source_ ] := Enclose[
     Catch @ Module[ { new, res },
         new = ConfirmBy[ importRealArrayMMP @ source, machineRealArrayOrMissingQ, "New" ];
-        If[ MissingQ @ new, clearCache[ ]; Throw @ current ];
-        res = ConfirmBy[ compiledFunction[ "PairwiseMax" ][ current, new ], Developer`PackedArrayQ, "Result" ];
         clearCache[ ];
+        If[ MissingQ @ new, Throw @ current ];
+        res = ConfirmBy[ compiledFunction[ "PairwiseMax" ][ current, new ], Developer`PackedArrayQ, "Result" ];
         res
     ],
     throwInternalFailure
 ];
 
 takeLargerMMP // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Section::Closed:: *)
+(*MeanMaximalPowerCurvePlot*)
+MeanMaximalPowerCurvePlot // beginDefinition;
+
+MeanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] :=
+    catchMine @ meanMaximalPowerCurvePlot[ data, opts ];
+
+MeanMaximalPowerCurvePlot // endExportedDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*meanMaximalPowerCurvePlot*)
+meanMaximalPowerCurvePlot // beginDefinition;
+
+meanMaximalPowerCurvePlot[ data_, opts: OptionsPattern[ ListLinePlot ] ] := Enclose[
+    Catch @ Module[ { mmpCurve, tickValues, ticks },
+
+        mmpCurve = ConfirmMatch[
+            If[ MatchQ[ data, _QuantityArray ],
+                checkPowerArray @ data,
+                (* else *)
+                Module[ { rawCurve },
+                    rawCurve = MeanMaximalPowerCurve @ data;
+                    If[ MissingQ @ rawCurve, Throw @ rawCurve ];
+                    (* Convert plain list to QuantityArray assuming Watts *)
+                    If[ MatchQ[ rawCurve, _List ],
+                        QuantityArray[ rawCurve, "Watts" ],
+                        rawCurve
+                    ]
+                ]
+            ],
+            _QuantityArray,
+            "PowerCurve"
+        ];
+
+        tickValues = QuantityMagnitude @ UnitConvert[ $mmpTicks, "Seconds" ];
+        ticks = Transpose @ { tickValues, $mmpTicks };
+
+        ListLinePlot[
+            mmpCurve,
+            opts,
+            ScalingFunctions -> { "Log", None },
+            Filling          -> Bottom,
+            Ticks            -> { ticks, Automatic },
+            GridLines        -> { tickValues, None },
+            AspectRatio      -> 1 / 5,
+            PlotRange        -> { { 1, All }, All }
+        ]
+    ],
+    throwInternalFailure
+];
+
+meanMaximalPowerCurvePlot // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*$mmpTicks*)
+$mmpTicks = {
+    Quantity[  5, "Seconds" ],
+    Quantity[ 20, "Seconds" ],
+    Quantity[  1, "Minutes" ],
+    Quantity[  5, "Minutes" ],
+    Quantity[ 20, "Minutes" ],
+    Quantity[  1, "Hours"   ],
+    Quantity[  2, "Hours"   ],
+    Quantity[  5, "Hours"   ]
+};
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)

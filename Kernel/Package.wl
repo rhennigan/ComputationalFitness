@@ -30,6 +30,7 @@ GeneralUtilities`UnprotectAndClearAll[
     `FunctionalThresholdPower,
     `MaximumHeartRate,
     `MeanMaximalPowerCurve,
+    `MeanMaximalPowerCurvePlot,
     `PowerZoneColorFunction,
     `Sport,
     `TCXImport,
