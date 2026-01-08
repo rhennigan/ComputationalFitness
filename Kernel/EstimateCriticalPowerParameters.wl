@@ -196,10 +196,14 @@ multiSourceToParameters // endDefinition;
 fitCriticalPowerModel // beginDefinition;
 
 fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
-    Module[ { pMax, cp, wPrime, initialGuess, fit, params, validated },
+    Module[ { pMax, cp, wPrime, initialGuess, pMax0, cp0, wPrime0, fit, params, validated },
 
         (* Initial parameter estimates *)
         initialGuess = ConfirmMatch[ estimateInitialParameters @ data, _Association, "InitialGuess" ];
+
+        pMax0   = initialGuess[ "PMax"   ];
+        cp0     = initialGuess[ "CP"     ];
+        wPrime0 = initialGuess[ "WPrime" ];
 
         (* Fit the model: P = CP + (PMax - CP) * W' / (W' + (PMax - CP) * t) *)
         fit = Quiet @ Check[
@@ -207,9 +211,10 @@ fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
                 data,
                 cp + (pMax - cp) * wPrime / (wPrime + (pMax - cp) * t),
                 {
-                    { cp, initialGuess[ "CP" ], 0.5 * initialGuess[ "CP" ], 1.5 * initialGuess[ "CP" ] },
-                    { wPrime, initialGuess[ "WPrime" ], 0.5 * initialGuess[ "WPrime" ], 2.0 * initialGuess[ "WPrime" ] },
-                    { pMax, initialGuess[ "PMax" ], 0.8 * initialGuess[ "PMax" ], 1.5 * initialGuess[ "PMax" ] }
+                    (*        initial, low          , high         *)
+                    { cp    , cp0    , 0.5 * cp0    , 1.5 * cp0     },
+                    { wPrime, wPrime0, 0.5 * wPrime0, 2.0 * wPrime0 },
+                    { pMax  , pMax0  , 0.8 * pMax0  , 1.5 * pMax0   }
                 },
                 t,
                 Method -> "LevenbergMarquardt"
@@ -224,9 +229,10 @@ fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
                     data,
                     cp + (pMax - cp) * wPrime / (wPrime + (pMax - cp) * t),
                     {
-                        { cp, initialGuess[ "CP" ], 0.5 * initialGuess[ "CP" ], 1.5 * initialGuess[ "CP" ] },
-                        { wPrime, initialGuess[ "WPrime" ], 0.5 * initialGuess[ "WPrime" ], 2.0 * initialGuess[ "WPrime" ] },
-                        { pMax, initialGuess[ "PMax" ], 0.8 * initialGuess[ "PMax" ], 1.5 * initialGuess[ "PMax" ] }
+                        (*        initial, low          , high         *)
+                        { cp    , cp0    , 0.5 * cp0    , 1.5 * cp0     },
+                        { wPrime, wPrime0, 0.5 * wPrime0, 2.0 * wPrime0 },
+                        { pMax  , pMax0  , 0.8 * pMax0  , 1.5 * pMax0   }
                     },
                     t,
                     Method -> "NMinimize"
@@ -273,7 +279,7 @@ estimateInitialParameters[ data: { { _Real, _Real } .. } ] := Enclose[
         (* Estimate PMax from short durations (5-15 seconds) *)
         shortDurations = Select[ sorted, 5 <= #[[1]] <= 15 & ];
         pMaxEst = If[ Length @ shortDurations >= 3,
-            Mean @ Take[ SortBy[ shortDurations, -#[[2]] & ], UpTo[ 3 ] ][[All, 2]],
+            Mean @ Take[ ReverseSortBy[ shortDurations, #[[2]] & ], UpTo[ 3 ] ][[All, 2]],
             Max @ sorted[[All, 2]]
         ];
 
