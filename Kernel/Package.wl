@@ -21,6 +21,7 @@ GeneralUtilities`UnprotectAndClearAll[
     `$FITMessageDefinitions,
     `ComputationalFitness,
     `EnergySystemStrain,
+    `EstimateCriticalPowerParameters,
     `FITExport,
     `FITFileType,
     `FITFormatQ,
@@ -130,6 +131,7 @@ EndPackage[ ];
 <<`FitnessData`;
 <<`MeanMaximalPowerCurve`;
 <<`EnergySystemStrain`;
+<<`EstimateCriticalPowerParameters`;
 <<`Initialization`;
 
 (* ::**************************************************************************************************************:: *)
