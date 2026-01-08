@@ -20,6 +20,7 @@ HoldComplete[
 GeneralUtilities`UnprotectAndClearAll[
     `$FITMessageDefinitions,
     `ComputationalFitness,
+    `EnergySystemStrain,
     `FITExport,
     `FITFileType,
     `FITFormatQ,
@@ -123,6 +124,7 @@ EndPackage[ ];
 <<`ZWO`;
 <<`FitnessData`;
 <<`MeanMaximalPowerCurve`;
+<<`EnergySystemStrain`;
 <<`Initialization`;
 
 (* ::**************************************************************************************************************:: *)

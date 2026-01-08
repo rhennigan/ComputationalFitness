@@ -21,6 +21,7 @@ PacletObject[ <|
             "Symbols"  -> {
                 "RickHennigan`ComputationalFitness`$FITMessageDefinitions",
                 "RickHennigan`ComputationalFitness`ComputationalFitness",
+                "RickHennigan`ComputationalFitness`EnergySystemStrain",
                 "RickHennigan`ComputationalFitness`FITExport",
                 "RickHennigan`ComputationalFitness`FITFileType",
                 "RickHennigan`ComputationalFitness`FITImport",
