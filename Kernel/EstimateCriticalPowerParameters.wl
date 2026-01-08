@@ -178,10 +178,6 @@ fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
         (* Initial parameter estimates *)
         initialGuess = ConfirmMatch[ estimateInitialParameters @ data, _Association, "InitialGuess" ];
 
-        pMax   = initialGuess[ "PMax" ];
-        cp     = initialGuess[ "CP" ];
-        wPrime = initialGuess[ "WPrime" ];
-
         (* Fit the model: P = CP + (PMax - CP) * W' / (W' + (PMax - CP) * t) *)
         fit = Quiet @ Check[
             FindFit[
@@ -193,10 +189,27 @@ fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
                     { pMax, initialGuess[ "PMax" ], 0.8 * initialGuess[ "PMax" ], 1.5 * initialGuess[ "PMax" ] }
                 },
                 t,
-                Method -> "LevenbergMarquardt",
-                MaxIterations -> 500
+                Method -> "LevenbergMarquardt"
             ],
             $Failed
+        ];
+
+        (* If Levenberg-Marquardt fails, try NMinimize as fallback *)
+        If[ fit === $Failed,
+            fit = Check[
+                FindFit[
+                    data,
+                    cp + (pMax - cp) * wPrime / (wPrime + (pMax - cp) * t),
+                    {
+                        { cp, initialGuess[ "CP" ], 0.5 * initialGuess[ "CP" ], 1.5 * initialGuess[ "CP" ] },
+                        { wPrime, initialGuess[ "WPrime" ], 0.5 * initialGuess[ "WPrime" ], 2.0 * initialGuess[ "WPrime" ] },
+                        { pMax, initialGuess[ "PMax" ], 0.8 * initialGuess[ "PMax" ], 1.5 * initialGuess[ "PMax" ] }
+                    },
+                    t,
+                    Method -> "NMinimize"
+                ],
+                $Failed
+            ]
         ];
 
         If[ fit === $Failed,
@@ -205,9 +218,9 @@ fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
 
         (* Extract fitted parameters *)
         params = <|
-            "CP"     -> Quantity[ cp /. fit, "Watts" ],
-            "WPrime" -> Quantity[ (wPrime /. fit), "Kilojoules" ],
-            "PMax"   -> Quantity[ pMax /. fit, "Watts" ]
+            "CP"     -> Quantity[ Lookup[ fit, cp     ], "Watts"      ],
+            "WPrime" -> Quantity[ Lookup[ fit, wPrime ], "Kilojoules" ],
+            "PMax"   -> Quantity[ Lookup[ fit, pMax   ], "Watts"      ]
         |>;
 
         (* Validate fitted parameters *)
@@ -244,8 +257,8 @@ estimateInitialParameters[ data: { { _Real, _Real } .. } ] := Enclose[
         (* Estimate CP from long durations (>20 minutes) *)
         longDurations = Select[ sorted, #[[1]] > 1200 & ];
         cpEst = If[ Length @ longDurations >= 5,
-            Mean @ Take[ SortBy[ longDurations, #[[2]] & ], UpTo[ 5 ] ][[All, 2]],
-            Min @ sorted[[All, 2]]
+            Mean[ Take[ ReverseSortBy[ longDurations, #[[ 2 ]] & ], UpTo[ 5 ] ][[ All, 2 ]] ],
+            Max @ sorted[[ All, 2 ]]
         ];
 
         (* Ensure PMax > CP *)
@@ -310,7 +323,7 @@ validateFittedParameters[ params_Association ] := Enclose[
         pMax    = params[ "PMax" ];
 
         cpVal     = QuantityMagnitude @ UnitConvert[ cp, "Watts" ];
-        wPrimeVal = QuantityMagnitude @ UnitConvert[ wPrime, "Joules" ];
+        wPrimeVal = QuantityMagnitude @ UnitConvert[ wPrime, "Kilojoules" ];
         pMaxVal   = QuantityMagnitude @ UnitConvert[ pMax, "Watts" ];
 
         issues = {};
