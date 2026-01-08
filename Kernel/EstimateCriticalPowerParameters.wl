@@ -321,7 +321,7 @@ estimateWPrimeFromData[ data: { { _Real, _Real } .. }, cp_Real ] := Enclose[
             Return[ 20000.0, Module ]
         ];
 
-        (* Estimate W' from: W' ≈ (P - CP) * t for medium durations *)
+        (* Estimate W' from: W' \[TildeTilde] (P - CP) * t for medium durations *)
         avgPower = Mean @ mediumDurations[[All, 2]];
         avgDuration = Mean @ mediumDurations[[All, 1]];
 

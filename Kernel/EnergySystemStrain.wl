@@ -268,9 +268,10 @@ validatePMax // endDefinition;
 (*calculateStrainScores*)
 calculateStrainScores // beginDefinition;
 
+(* TODO: This could be compiled as a library function in LibraryFunctions.wl *)
 calculateStrainScores[ power_List, cp_, wPrime_, pMax_ ] := Enclose[
-    Module[ { n, wExp, mpa, kStrain, pCP, pPMax, pWPrime, srCP, srWPrime, srPMax, sr,
-              ssCP, ssWPrime, ssPMax, ss, normFactor, i },
+    Module[ { n, wExp, mpa, kStrain, pCP, pPMax, pWPrime, srCP, srWPrime, srPMax,
+              ssCP, ssWPrime, ssPMax, ss, normFactor },
 
         n = Length @ power;
 
@@ -332,10 +333,10 @@ calculateStrainScores[ power_List, cp_, wPrime_, pMax_ ] := Enclose[
         ss = ssCP + ssWPrime + ssPMax;
 
         <|
-            "StrainScore" -> ss,
-            "AerobicStrain" -> ssCP,
+            "StrainScore"      -> ss,
+            "AerobicStrain"    -> ssCP,
             "GlycolyticStrain" -> ssWPrime,
-            "PCrStrain" -> ssPMax
+            "PCrStrain"        -> ssPMax
         |>
     ],
     throwInternalFailure
