@@ -17,6 +17,29 @@ ComputationalFitness::InvalidFit       = "The fitted parameters are not physiolo
 (*EstimateCriticalPowerParameters*)
 EstimateCriticalPowerParameters // beginDefinition;
 
+(* FIXME: CP estimates are definitely too low:
+
+In[1]:= EstimateCriticalPowerParameters[array]
+
+Out[1]= <|
+  "CP" -> Quantity[172.431, "Watts"],
+  "WPrime" -> Quantity[23693., "Kilojoules"],
+  "PMax" -> Quantity[1104.99, "Watts"]
+|>
+
+Compare with 20-minute test FTP estimate:
+
+In[2]:= array[[60*20]]*0.95
+
+Out[2]= Quantity[268.398, "Watts"]
+
+Or actual one hour effort:
+
+In[3]:= array[[60*60]]
+
+Out[3]= Quantity[250.594, "Watts"]
+*)
+
 EstimateCriticalPowerParameters[ data_, opts: OptionsPattern[ ] ] :=
     catchMine @ estimateCriticalPowerParameters[ data, opts ];
 
