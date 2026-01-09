@@ -17,29 +17,6 @@ ComputationalFitness::InvalidFit       = "The fitted parameters are not physiolo
 (*EstimateCriticalPowerParameters*)
 EstimateCriticalPowerParameters // beginDefinition;
 
-(* FIXME: CP estimates are definitely too low:
-
-In[1]:= EstimateCriticalPowerParameters[array]
-
-Out[1]= <|
-  "CriticalPower" -> Quantity[172.431, "Watts"],
-  "AnaerobicWorkCapacity" -> Quantity[23693., "Kilojoules"],
-  "MaximalInstantaneousPower" -> Quantity[1104.99, "Watts"]
-|>
-
-Compare with 20-minute test FTP estimate:
-
-In[2]:= array[[60*20]]*0.95
-
-Out[2]= Quantity[268.398, "Watts"]
-
-Or actual one hour effort:
-
-In[3]:= array[[60*60]]
-
-Out[3]= Quantity[250.594, "Watts"]
-*)
-
 EstimateCriticalPowerParameters[ data_, opts: OptionsPattern[ ] ] :=
     catchMine @ estimateCriticalPowerParameters[ data, opts ];
 
@@ -102,9 +79,12 @@ numberArrayToParameters[ power_List, opts___ ] := Enclose[
         (* Create duration-power pairs (duration in seconds, 1-indexed) *)
         durations = Range[ 1, n ];
 
-        (* Filter out zero or negative power values and very short durations *)
+        (* Filter to physiologically valid range for CP model *)
+        (* Use durations from 5s to 90 min where the 3-parameter model is valid *)
+        (* Beyond 90 min, glycogen depletion causes power to drop below true CP *)
         validData = ConfirmMatch[
-            Select[ Transpose @ { N @ durations, N @ power }, #[[1]] >= 5 && #[[2]] > 0 & ],
+            Select[ Transpose @ { N @ durations, N @ power },
+                    5 <= #[[1]] <= 5400 && #[[2]] > 0 & ],
             { { _Real, _Real } .. },
             "ValidData"
         ];
@@ -247,9 +227,9 @@ fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
 
         (* Extract fitted parameters *)
         params = <|
-            "AnaerobicWorkCapacity"     -> Quantity[ Lookup[ fit, wPrime ], "Kilojoules" ],
-            "CriticalPower"             -> Quantity[ Lookup[ fit, cp     ], "Watts"      ],
-            "MaximalInstantaneousPower" -> Quantity[ Lookup[ fit, pMax   ], "Watts"      ]
+            "AnaerobicWorkCapacity"     -> Quantity[ Lookup[ fit, wPrime ] / 1000.0, "Kilojoules" ],
+            "CriticalPower"             -> Quantity[ Lookup[ fit, cp     ], "Watts" ],
+            "MaximalInstantaneousPower" -> Quantity[ Lookup[ fit, pMax   ], "Watts" ]
         |>;
 
         (* Validate fitted parameters *)
@@ -279,15 +259,21 @@ estimateInitialParameters[ data: { { _Real, _Real } .. } ] := Enclose[
         (* Estimate PMax from short durations (5-15 seconds) *)
         shortDurations = Select[ sorted, 5 <= #[[ 1 ]] <= 15 & ];
         pMaxEst = If[ Length @ shortDurations >= 3,
+            (* Take mean of top 3 powers from short durations *)
             Mean @ Take[ ReverseSortBy[ shortDurations, #[[ 2 ]] & ], UpTo[ 3 ] ][[ All, 2 ]],
-            Max @ sorted[[ All, 2 ]]
+            (* Fallback: use max power from shortest available durations *)
+            Max @ Take[ sorted, UpTo[ 10 ] ][[ All, 2 ]]
         ];
 
-        (* Estimate CP from long durations (>20 minutes) *)
-        longDurations = Select[ sorted, #[[ 1 ]] > 1200 & ];
+        (* Estimate CP from long durations (20-90 minutes) *)
+        (* CP model is typically valid for durations up to ~60-90 min; beyond that, *)
+        (* glycogen depletion and other factors cause power to drop below true CP *)
+        longDurations = Select[ sorted, 1200 < #[[ 1 ]] <= 5400 & ];
         cpEst = If[ Length @ longDurations >= 5,
-            Mean @ Take[ ReverseSortBy[ longDurations, #[[ 2 ]] & ], UpTo[ 5 ] ][[ All, 2 ]],
-            Max @ sorted[[ All, 2 ]]
+            (* Take the mean power of the longest 5 durations in valid range *)
+            Mean @ Take[ SortBy[ longDurations, First ], -5 ][[ All, 2 ]],
+            (* Fallback: use power at longest available duration up to 90 min *)
+            Last[ Select[ sorted, #[[1]] <= 5400 & ] ][[ 2 ]]
         ];
 
         (* Ensure PMax > CP *)
@@ -367,11 +353,11 @@ validateFittedParameters[ params_Association ] := Enclose[
 
         (* Check for reasonable physiological ranges *)
         If[ cpVal < 50 || cpVal > 600, AppendTo[ issues, "CP outside reasonable range (50-600 W)" ] ];
-        If[ wPrimeVal < 5000 || wPrimeVal > 50000, AppendTo[ issues, "W' outside reasonable range (5-50 kJ)" ] ];
+        If[ wPrimeVal < 5 || wPrimeVal > 50, AppendTo[ issues, "W' outside reasonable range (5-50 kJ)" ] ];
         If[ pMaxVal < 200 || pMaxVal > 3000, AppendTo[ issues, "PMax outside reasonable range (200-3000 W)" ] ];
 
         If[ Length @ issues > 0,
-            throwFailure[ "InvalidFit", StringRiffle[ issues, ", " ] ]
+            throwFailure[ "InvalidFit", StringRiffle[ issues, ", " ], params ]
         ];
 
         params
