@@ -38,7 +38,22 @@ Begin[ "`Private`" ];
    The strain score accounts for both the intensity and duration of exercise by tracking
    how close the athlete is to their maximum power available (MPA), which decreases as
    W' is depleted. This provides a more physiologically accurate measure of training
-   load than traditional single-dimensional metrics like TSS. *)
+   load than traditional single-dimensional metrics like TSS.
+
+   W' Balance Recovery:
+   This implementation includes W' recovery during periods when power is below CP, using
+   the differential model by Skiba et al. (2015). The recovery time constant depends on
+   how far below CP the current power is:
+
+      tau = 546 * Exp[-0.01 * (CP - P)] + 316
+
+   This gives faster recovery at lower power outputs (e.g., coasting or easy spinning)
+   and slower recovery at powers closer to CP.
+
+   Reference:
+   Skiba, P. F., Fulford, J., Clarke, D. C., Vanhatalo, A., & Jones, A. M. (2015).
+   "Intramuscular determinants of the ability to recover work capacity above critical power."
+   Eur J Appl Physiol, 115(4), 703-713. *)
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -476,7 +491,7 @@ declareCompiledFunction[
             Typed[ pMax  , "Real64" ]
         },
         Block[ { n, wExp, mpa, kStrain, pCP, pPMax, pWPrime, srCP, srWPrime, srPMax,
-                ssCP, ssWPrime, ssPMax, ss, normFactor, p },
+                ssCP, ssWPrime, ssPMax, ss, normFactor, p, tau },
 
             n = Length @ power;
 
@@ -496,10 +511,15 @@ declareCompiledFunction[
             Do[
                 p = power[[ i ]];
 
-                (* Calculate Maximum Power Available (MPA) - Equation (4)
+                (* Calculate Maximum Power Available (MPA) - Modified Equation (4)
                     MPA decreases as W' is depleted, representing the athlete's diminishing
-                    capacity for high-intensity efforts *)
-                mpa = pMax - (pMax - cp) * (wExp / wPrime);
+                    capacity for high-intensity efforts.
+
+                    This uses the modified 3-parameter model where the W'exp/W' factor is
+                    raised to the 2nd power, as described in Kontro et al. (2024) and
+                    referenced on page 19 of arXiv:2503.14841v2. This modification provides
+                    better prediction of intermittent exercise performance. *)
+                mpa = pMax - (pMax - cp) * (wExp / wPrime) * (wExp / wPrime);
 
                 (* Calculate strain coefficient (kStrain) - Equation (11)
                     Higher values indicate greater physiological strain for the current power output *)
@@ -530,10 +550,21 @@ declareCompiledFunction[
                 ssWPrime += srWPrime * normFactor;
                 ssPMax   += srPMax * normFactor;
 
-                (* Update W' expenditure
-                    W' depletes at rate (P - CP) per second when power exceeds CP
-                    Note: W' recovery during rest is not implemented in this version *)
-                If[ p > cp, wExp = Min[ wExp + (p - cp), wPrime ] ],
+                (* Update W' expenditure using the differential model by Skiba et al. (2015)
+                    Reference: Skiba, P. F., et al. "Intramuscular determinants of the ability
+                    to recover work capacity above critical power." Eur J Appl Physiol (2015) *)
+                If[ p > cp,
+                    (* W' depletes at rate (P - CP) per second when power exceeds CP *)
+                    wExp = Min[ wExp + (p - cp), wPrime ],
+                    (* W' recovers when power is at or below CP.
+                        The time constant tau depends on how far below CP the power is:
+                        tau = 546 * Exp[-0.01 * (CP - P)] + 316
+                        This gives faster recovery at lower power outputs. *)
+                    If[ wExp > 0.0,
+                        tau  = 546.0 * Exp[ -0.01 * (cp - p) ] + 316.0;
+                        wExp = wExp * Exp[ -1.0 / tau ]
+                    ]
+                ],
                 { i, 1, n }
             ];
 
