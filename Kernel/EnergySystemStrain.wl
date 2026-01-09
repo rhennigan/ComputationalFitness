@@ -443,84 +443,112 @@ calculateStrainScores // beginDefinition;
    TODO: This could be compiled as a library function in LibraryFunctions.wl for performance. *)
 
 calculateStrainScores[ power_List, cp_, wPrime_, pMax_ ] := Enclose[
-    Module[ { n, wExp, mpa, kStrain, pCP, pPMax, pWPrime, srCP, srWPrime, srPMax,
-              ssCP, ssWPrime, ssPMax, ss, normFactor },
+    Module[ { ss, ssCP, ssWPrime, ssPMax },
 
-        n = Length @ power;
-
-        (* Initialize W' expenditure (W'exp) to zero - athlete starts fresh *)
-        wExp = 0.0;
-
-        (* Initialize strain score accumulators for each energy system *)
-        ssCP = 0.0;
-        ssWPrime = 0.0;
-        ssPMax = 0.0;
-
-        (* Normalization factor: (PMax / CP^2) * (100 / 3600)
-           This scales the output so that 1 hour at CP = 100 strain score units *)
-        normFactor = (pMax / (cp * cp)) * (100.0 / 3600.0);
-
-        (* Process each second of power data *)
-        Do[
-            Module[ { p },
-                p = power[[i]];
-
-                (* Calculate Maximum Power Available (MPA) - Equation (4)
-                   MPA decreases as W' is depleted, representing the athlete's diminishing
-                   capacity for high-intensity efforts *)
-                mpa = pMax - (pMax - cp) * (wExp / wPrime);
-
-                (* Calculate strain coefficient (kStrain) - Equation (11)
-                   Higher values indicate greater physiological strain for the current power output *)
-                kStrain = (pMax - mpa + cp) / (pMax - p + cp);
-
-                (* Calculate power contributions from each energy system - Equations (8-10) *)
-                If[ p <= cp,
-                    (* Below CP: only aerobic system contributes *)
-                    pCP = p;
-                    pPMax = 0.0;
-                    pWPrime = 0.0,
-                    (* else *)
-                    (* Above CP: all three systems contribute *)
-                    pCP = cp;                                    (* Aerobic maxed out *)
-                    pPMax = ((p - cp) * (p - cp)) / (pMax - cp); (* PCr system *)
-                    pWPrime = (p - cp) - pPMax                   (* Glycolytic system *)
-                ];
-
-                (* Calculate strain rates for each energy system - Equation (12) *)
-                srCP = kStrain * pCP;
-                srPMax = kStrain * pPMax;
-                srWPrime = kStrain * pWPrime;
-
-                (* Accumulate strain scores - Equation (13) *)
-                ssCP += srCP * normFactor;
-                ssWPrime += srWPrime * normFactor;
-                ssPMax += srPMax * normFactor;
-
-                (* Update W' expenditure
-                   W' depletes at rate (P - CP) per second when power exceeds CP
-                   Note: W' recovery during rest is not implemented in this version *)
-                If[ p > cp,
-                    wExp = Min[ wExp + (p - cp), wPrime ]
-                ]
-            ],
-            { i, 1, n }
+        { ss, ssCP, ssWPrime, ssPMax } = ConfirmMatch[
+            compiledFunction[ "StrainScores" ][ N @ power, cp, wPrime, pMax ],
+            { _Real, _Real, _Real, _Real },
+            "StrainScores"
         ];
 
-        (* Calculate total strain score as sum of system-specific scores *)
-        ss = ssCP + ssWPrime + ssPMax;
-
         <|
-            "StrainScore"      -> ss,        (* Total training load *)
-            "AerobicStrain"    -> ssCP,      (* Oxidative system load *)
-            "GlycolyticStrain" -> ssWPrime,  (* Glycolytic system load *)
-            "PCrStrain"        -> ssPMax     (* Phosphocreatine system load *)
+            "StrainScore"      -> ss,       (* Total training load *)
+            "AerobicStrain"    -> ssCP,     (* Oxidative system load *)
+            "GlycolyticStrain" -> ssWPrime, (* Glycolytic system load *)
+            "PCrStrain"        -> ssPMax    (* Phosphocreatine system load *)
         |>
     ],
     throwInternalFailure
 ];
 
 calculateStrainScores // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Compiled Code*)
+declareCompiledFunction[
+    "StrainScores",
+    Function[
+        {
+            Typed[ power , "PackedArray"[ "Real64", 1 ] ],
+            Typed[ cp    , "Real64" ],
+            Typed[ wPrime, "Real64" ],
+            Typed[ pMax  , "Real64" ]
+        },
+        Block[ { n, wExp, mpa, kStrain, pCP, pPMax, pWPrime, srCP, srWPrime, srPMax,
+                ssCP, ssWPrime, ssPMax, ss, normFactor, p },
+
+            n = Length @ power;
+
+            (* Initialize W' expenditure (W'exp) to zero - athlete starts fresh *)
+            wExp = 0.0;
+
+            (* Initialize strain score accumulators for each energy system *)
+            ssCP     = 0.0;
+            ssWPrime = 0.0;
+            ssPMax   = 0.0;
+
+            (* Normalization factor: (PMax / CP^2) * (100 / 3600)
+            This scales the output so that 1 hour at CP = 100 strain score units *)
+            normFactor = (pMax / (cp * cp)) * (100.0 / 3600.0);
+
+            (* Process each second of power data *)
+            Do[
+                p = power[[ i ]];
+
+                (* Calculate Maximum Power Available (MPA) - Equation (4)
+                    MPA decreases as W' is depleted, representing the athlete's diminishing
+                    capacity for high-intensity efforts *)
+                mpa = pMax - (pMax - cp) * (wExp / wPrime);
+
+                (* Calculate strain coefficient (kStrain) - Equation (11)
+                    Higher values indicate greater physiological strain for the current power output *)
+                kStrain = (pMax - mpa + cp) / (pMax - p + cp);
+
+                (* Calculate power contributions from each energy system - Equations (8-10) *)
+                If[ p <= cp
+                    ,
+                    (* Below CP: only aerobic system contributes *)
+                    pCP     = p;
+                    pPMax   = 0.0;
+                    pWPrime = 0.0
+                    ,
+                    (* else *)
+                    (* Above CP: all three systems contribute *)
+                    pCP     = cp;                                  (* Aerobic maxed out *)
+                    pPMax   = ((p - cp) * (p - cp)) / (pMax - cp); (* PCr system *)
+                    pWPrime = (p - cp) - pPMax                     (* Glycolytic system *)
+                ];
+
+                (* Calculate strain rates for each energy system - Equation (12) *)
+                srCP     = kStrain * pCP;
+                srPMax   = kStrain * pPMax;
+                srWPrime = kStrain * pWPrime;
+
+                (* Accumulate strain scores - Equation (13) *)
+                ssCP     += srCP * normFactor;
+                ssWPrime += srWPrime * normFactor;
+                ssPMax   += srPMax * normFactor;
+
+                (* Update W' expenditure
+                    W' depletes at rate (P - CP) per second when power exceeds CP
+                    Note: W' recovery during rest is not implemented in this version *)
+                If[ p > cp, wExp = Min[ wExp + (p - cp), wPrime ] ],
+                { i, 1, n }
+            ];
+
+            (* Calculate total strain score as sum of system-specific scores *)
+            ss = ssCP + ssWPrime + ssPMax;
+
+            {
+                ss,       (* Total training load *)
+                ssCP,     (* Oxidative system load *)
+                ssWPrime, (* Glycolytic system load *)
+                ssPMax    (* Phosphocreatine system load *)
+            }
+        ]
+    ]
+];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)

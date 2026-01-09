@@ -5,6 +5,8 @@ BeginPackage[ "RickHennigan`ComputationalFitness`" ];
 Needs[ "RickHennigan`ComputationalFitness`Package`" ];
 Begin[ "`Private`" ];
 
+(* TODO: Including the computed MeanMaximalPowerCurve in the output would be useful *)
+
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Messages*)

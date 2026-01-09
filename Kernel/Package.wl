@@ -85,6 +85,7 @@ GeneralUtilities`UnprotectAndClearAll[
     `clearCache,
     `compactFitFitnessDataQ,
     `compiledFunction,
+    `declareCompiledFunction,
     `endDefinition,
     `findFile,
     `getDataFile,

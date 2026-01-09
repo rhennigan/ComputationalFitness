@@ -23,6 +23,8 @@ cicd`ScriptConfirmMatch[ PacletDirectoryLoad @ $pacletDir, { ___, $pacletDir, __
 Get[ "RickHennigan`ComputationalFitness`" ];
 
 cicd`ConsoleLog[ "Compiling libraries..." ];
+Quiet @ DeleteDirectory[ FileNameJoin @ { $pacletDir, "LibraryResources", $SystemID }, DeleteContents -> True ];
+cicd`ScriptConfirmAssert[ ! DirectoryQ @ FileNameJoin @ { $pacletDir, "LibraryResources", $SystemID } ];
 $compiled = RickHennigan`ComputationalFitness`Package`recompileLibraries[ True ];
 
 cicd`ScriptConfirmAssert[ FileExistsQ @ $compiled[ "FITImportExport" ] ];
