@@ -7,6 +7,41 @@ Begin[ "`Private`" ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
+(*Overview*)
+
+(* The three-dimensional strain score model quantifies training load based on energy system-specific
+   contributions to power output. This implementation is based on the model described in:
+
+   Kontro, H., Mastracci, A., Cheung, S. S., & MacInnis, M. J. (2025).
+   "The three-dimensional impulse-response model: Modeling the training process in accordance
+   with energy system-specific adaptation"
+   arXiv:2503.14841v2
+
+   The model uses the 3-parameter critical power model to estimate the contribution of three
+   energy systems during exercise:
+
+   1. Aerobic/Oxidative System (CP - Critical Power):
+      - Represents the maximal sustainable aerobic power output
+      - The ceiling for rate-limited oxidative energy provision
+      - All power <= CP comes from this system
+
+   2. Glycolytic/Lactic System (W' - Anaerobic Work Capacity):
+      - Finite capacity for anaerobic energy production via glycolysis
+      - Depletes during sustained exercise above CP
+      - Primary contributor at moderate to high intensities above CP
+
+   3. Alactic/PCr System (PMax - Maximal Instantaneous Power):
+      - Phosphocreatine system providing immediate energy
+      - Dominant during very high power outputs
+      - Rate-limited but quickly replenished
+
+   The strain score accounts for both the intensity and duration of exercise by tracking
+   how close the athlete is to their maximum power available (MPA), which decreases as
+   W' is depleted. This provides a more physiologically accurate measure of training
+   load than traditional single-dimensional metrics like TSS. *)
+
+(* ::**************************************************************************************************************:: *)
+(* ::Section::Closed:: *)
 (*Messages*)
 ComputationalFitness::InvalidCP     = "Critical power (CP) must be a positive number in watts.";
 ComputationalFitness::InvalidWPrime = "Work prime (W') must be a positive number in joules or kilojoules.";
@@ -16,6 +51,38 @@ ComputationalFitness::MissingPower  = "No power data available in the input.";
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*EnergySystemStrain*)
+
+(* EnergySystemStrain calculates energy system-specific training load from power data.
+
+   Usage:
+     EnergySystemStrain[data, history]
+
+   Arguments:
+     data    - Power data for a single activity. Can be a List, QuantityArray, TemporalData,
+               FitnessData object, or file path (String/File).
+     history - Either:
+               1) Historical training data used to estimate the athlete's CP, W', and PMax parameters
+                  via EstimateCriticalPowerParameters, OR
+               2) An Association with pre-computed parameters from EstimateCriticalPowerParameters
+                  containing "CriticalPower", "AnaerobicWorkCapacity", and "MaximalInstantaneousPower"
+
+   Returns:
+     An Association with four keys:
+       "StrainScore"      - Total training load (analogous to TSS)
+       "AerobicStrain"    - Load on the oxidative/aerobic system (CP)
+       "GlycolyticStrain" - Load on the glycolytic/lactic system (W')
+       "PCrStrain"        - Load on the phosphocreatine/alactic system (PMax)
+
+   Example:
+     (* Estimate parameters from mean maximal power curve *)
+     params = EstimateCriticalPowerParameters[mmpCurve];
+     (* Calculate strain for a specific activity *)
+     strain = EnergySystemStrain[activityFile, params];
+
+   The three-dimensional strain score provides a more detailed analysis of training load
+   than traditional single-dimensional metrics by separating the load on each energy system.
+   This allows for better tracking of energy system-specific adaptations over time. *)
+
 EnergySystemStrain // beginDefinition;
 
 EnergySystemStrain[ data_, history_, opts: OptionsPattern[ ] ] :=
@@ -329,22 +396,68 @@ validatePMax // endDefinition;
 (*calculateStrainScores*)
 calculateStrainScores // beginDefinition;
 
-(* TODO: This could be compiled as a library function in LibraryFunctions.wl *)
+(* Calculates energy system-specific strain scores from continuous power data using the
+   3-parameter critical power model. The calculation follows the methodology described in
+   Kontro et al. (2025), arXiv:2503.14841v2, Section III.
+
+   Key Concepts:
+
+   1. Maximum Power Available (MPA) - Equation (4):
+      MPA = PMax - (PMax - CP) * (W'exp / W')
+
+      MPA represents the highest instantaneous power achievable at a given moment and decreases
+      as W' is depleted. When W' is fully expended, MPA equals CP. This dynamic ceiling creates
+      the foundation for the strain coefficient calculation.
+
+   2. Strain Coefficient (kStrain) - Equation (11):
+      kStrain = (PMax - MPA + CP) / (PMax - P + CP)
+
+      The strain coefficient quantifies how difficult a given power output is relative to the
+      athlete's current state of fatigue. As MPA approaches P, kStrain increases, reflecting
+      that the same power output becomes more strenuous as W' depletes. When fresh (MPA = PMax),
+      kStrain is lower; when fatigued (MPA approaches CP), kStrain approaches 1.0.
+
+   3. Energy System Contributions - Equations (8-10):
+      For P <= CP:  all power comes from the aerobic system (P_CP = P)
+      For P > CP:
+        P_CP    = CP                             (aerobic system maxed out)
+        P_PMax  = (P - CP)^2 / (PMax - CP)       (alactic/PCr system contribution)
+        P_W'    = P - CP - P_PMax                (glycolytic system contribution)
+
+      These equations partition power output among the three energy systems based on the
+      3-parameter critical power model. The aerobic system operates at maximum (CP) for all
+      power above CP. The PCr system contributes proportionally more at higher power outputs,
+      while the glycolytic system fills the gap.
+
+   4. Strain Rate (SR) - Equation (12):
+      SR = kStrain * P
+
+      Multiplying power by the strain coefficient gives the instantaneous strain rate. This
+      rate is then partitioned among the three energy systems based on their power contributions,
+      yielding SR_CP, SR_W', and SR_PMax.
+
+   5. Normalization:
+      The normalization factor (PMax / CP^2) * (100 / 3600) scales the strain scores so that
+      one hour at CP equals 100 strain score units, making it comparable to TSS.
+
+   TODO: This could be compiled as a library function in LibraryFunctions.wl for performance. *)
+
 calculateStrainScores[ power_List, cp_, wPrime_, pMax_ ] := Enclose[
     Module[ { n, wExp, mpa, kStrain, pCP, pPMax, pWPrime, srCP, srWPrime, srPMax,
               ssCP, ssWPrime, ssPMax, ss, normFactor },
 
         n = Length @ power;
 
-        (* Initialize W' expenditure *)
+        (* Initialize W' expenditure (W'exp) to zero - athlete starts fresh *)
         wExp = 0.0;
 
-        (* Initialize accumulators *)
+        (* Initialize strain score accumulators for each energy system *)
         ssCP = 0.0;
         ssWPrime = 0.0;
         ssPMax = 0.0;
 
-        (* Normalization factor: (PMax / CP^2) * (100 / 3600) *)
+        (* Normalization factor: (PMax / CP^2) * (100 / 3600)
+           This scales the output so that 1 hour at CP = 100 strain score units *)
         normFactor = (pMax / (cp * cp)) * (100.0 / 3600.0);
 
         (* Process each second of power data *)
@@ -352,52 +465,56 @@ calculateStrainScores[ power_List, cp_, wPrime_, pMax_ ] := Enclose[
             Module[ { p },
                 p = power[[i]];
 
-                (* Calculate MPA *)
+                (* Calculate Maximum Power Available (MPA) - Equation (4)
+                   MPA decreases as W' is depleted, representing the athlete's diminishing
+                   capacity for high-intensity efforts *)
                 mpa = pMax - (pMax - cp) * (wExp / wPrime);
 
-                (* Calculate strain coefficient *)
+                (* Calculate strain coefficient (kStrain) - Equation (11)
+                   Higher values indicate greater physiological strain for the current power output *)
                 kStrain = (pMax - mpa + cp) / (pMax - p + cp);
 
-                (* Calculate power contributions *)
+                (* Calculate power contributions from each energy system - Equations (8-10) *)
                 If[ p <= cp,
-                    (* Below CP: only aerobic contribution *)
+                    (* Below CP: only aerobic system contributes *)
                     pCP = p;
                     pPMax = 0.0;
                     pWPrime = 0.0,
                     (* else *)
                     (* Above CP: all three systems contribute *)
-                    pCP = cp;
-                    pPMax = ((p - cp) * (p - cp)) / (pMax - cp);
-                    pWPrime = (p - cp) - pPMax
+                    pCP = cp;                                    (* Aerobic maxed out *)
+                    pPMax = ((p - cp) * (p - cp)) / (pMax - cp); (* PCr system *)
+                    pWPrime = (p - cp) - pPMax                   (* Glycolytic system *)
                 ];
 
-                (* Calculate strain rates *)
+                (* Calculate strain rates for each energy system - Equation (12) *)
                 srCP = kStrain * pCP;
                 srPMax = kStrain * pPMax;
                 srWPrime = kStrain * pWPrime;
 
-                (* Accumulate strain scores *)
+                (* Accumulate strain scores - Equation (13) *)
                 ssCP += srCP * normFactor;
                 ssWPrime += srWPrime * normFactor;
                 ssPMax += srPMax * normFactor;
 
-                (* Update W' expenditure *)
+                (* Update W' expenditure
+                   W' depletes at rate (P - CP) per second when power exceeds CP
+                   Note: W' recovery during rest is not implemented in this version *)
                 If[ p > cp,
                     wExp = Min[ wExp + (p - cp), wPrime ]
-                    (* Note: W' recovery during rest not implemented in this version *)
                 ]
             ],
             { i, 1, n }
         ];
 
-        (* Calculate total strain score *)
+        (* Calculate total strain score as sum of system-specific scores *)
         ss = ssCP + ssWPrime + ssPMax;
 
         <|
-            "StrainScore"      -> ss,
-            "AerobicStrain"    -> ssCP,
-            "GlycolyticStrain" -> ssWPrime,
-            "PCrStrain"        -> ssPMax
+            "StrainScore"      -> ss,        (* Total training load *)
+            "AerobicStrain"    -> ssCP,      (* Oxidative system load *)
+            "GlycolyticStrain" -> ssWPrime,  (* Glycolytic system load *)
+            "PCrStrain"        -> ssPMax     (* Phosphocreatine system load *)
         |>
     ],
     throwInternalFailure
