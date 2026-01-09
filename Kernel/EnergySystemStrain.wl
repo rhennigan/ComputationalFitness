@@ -18,8 +18,8 @@ ComputationalFitness::MissingPower  = "No power data available in the input.";
 (*EnergySystemStrain*)
 EnergySystemStrain // beginDefinition;
 
-EnergySystemStrain[ data_, cp_, wPrime_, pMax_, opts: OptionsPattern[ ] ] :=
-    catchMine @ energySystemStrain[ data, cp, wPrime, pMax, opts ];
+EnergySystemStrain[ data_, history_, opts: OptionsPattern[ ] ] :=
+    catchMine @ energySystemStrain[ data, history, opts ];
 
 EnergySystemStrain // endExportedDefinition;
 
@@ -28,28 +28,89 @@ EnergySystemStrain // endExportedDefinition;
 (*energySystemStrain*)
 energySystemStrain // beginDefinition;
 
-energySystemStrain[ power_List? machineRealArrayQ, cp_, wPrime_, pMax_, opts___ ] :=
-    machineRealArrayToStrain[ power, cp, wPrime, pMax, opts ];
+energySystemStrain[ data_, history_, opts___ ] := Enclose[
+    Module[ { params, cp, wPrime, pMax },
+        (* Extract or estimate critical power parameters from history *)
+        params = ConfirmMatch[
+            extractParameters @ history,
+            _Association,
+            "Parameters"
+        ];
 
-energySystemStrain[ power_List? numberArrayQ, cp_, wPrime_, pMax_, opts___ ] :=
-    numberArrayToStrain[ power, cp, wPrime, pMax, opts ];
+        cp     = params[ "CriticalPower" ];
+        wPrime = params[ "AnaerobicWorkCapacity" ];
+        pMax   = params[ "MaximalInstantaneousPower" ];
 
-energySystemStrain[ array_QuantityArray? ArrayQ, cp_, wPrime_, pMax_, opts___ ] :=
-    quantityArrayToStrain[ array, cp, wPrime, pMax, opts ];
-
-energySystemStrain[ timeSeries_TemporalData? temporalDataQ, cp_, wPrime_, pMax_, opts___ ] :=
-    temporalDataToStrain[ timeSeries, cp, wPrime, pMax, opts ];
-
-energySystemStrain[ data_FitnessData? FitnessDataQ, cp_, wPrime_, pMax_, opts___ ] :=
-    fitnessDataToStrain[ data, cp, wPrime, pMax, opts ];
-
-energySystemStrain[ file: _File | _String? FileExistsQ, cp_, wPrime_, pMax_, opts___ ] :=
-    fileToStrain[ file, cp, wPrime, pMax, opts ];
-
-energySystemStrain[ other_, cp_, wPrime_, pMax_, ___ ] :=
-    throwFailure[ "InvalidArguments", EnergySystemStrain, HoldForm @ EnergySystemStrain[ other, cp, wPrime, pMax ] ];
+        (* Dispatch to appropriate handler based on data type *)
+        ConfirmMatch[
+            energySystemStrainWithParams[ data, cp, wPrime, pMax, opts ],
+            _Association,
+            "Result"
+        ]
+    ],
+    throwInternalFailure
+];
 
 energySystemStrain // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*criticalPowerParametersQ*)
+criticalPowerParametersQ // beginDefinition;
+
+criticalPowerParametersQ[ assoc_Association ] :=
+    KeyExistsQ[ assoc, "CriticalPower" ] &&
+    KeyExistsQ[ assoc, "AnaerobicWorkCapacity" ] &&
+    KeyExistsQ[ assoc, "MaximalInstantaneousPower" ];
+
+criticalPowerParametersQ[ _ ] := False;
+
+criticalPowerParametersQ // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*extractParameters*)
+extractParameters // beginDefinition;
+
+(* If history is already an association with the required keys, use it directly *)
+extractParameters[ params_Association? criticalPowerParametersQ ] := params;
+
+(* Otherwise, estimate parameters from the history data *)
+extractParameters[ history_ ] := Enclose[
+    ConfirmMatch[
+        EstimateCriticalPowerParameters @ history,
+        _Association,
+        "EstimatedParameters"
+    ],
+    throwInternalFailure
+];
+
+extractParameters // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*energySystemStrainWithParams*)
+energySystemStrainWithParams // beginDefinition;
+
+energySystemStrainWithParams[ power_List? machineRealArrayQ, cp_, wPrime_, pMax_, opts___ ] :=
+    machineRealArrayToStrain[ power, cp, wPrime, pMax, opts ];
+
+energySystemStrainWithParams[ power_List? numberArrayQ, cp_, wPrime_, pMax_, opts___ ] :=
+    numberArrayToStrain[ power, cp, wPrime, pMax, opts ];
+
+energySystemStrainWithParams[ array_QuantityArray? ArrayQ, cp_, wPrime_, pMax_, opts___ ] :=
+    quantityArrayToStrain[ array, cp, wPrime, pMax, opts ];
+
+energySystemStrainWithParams[ timeSeries_TemporalData? temporalDataQ, cp_, wPrime_, pMax_, opts___ ] :=
+    temporalDataToStrain[ timeSeries, cp, wPrime, pMax, opts ];
+
+energySystemStrainWithParams[ data_FitnessData? FitnessDataQ, cp_, wPrime_, pMax_, opts___ ] :=
+    fitnessDataToStrain[ data, cp, wPrime, pMax, opts ];
+
+energySystemStrainWithParams[ file: _File | _String? FileExistsQ, cp_, wPrime_, pMax_, opts___ ] :=
+    fileToStrain[ file, cp, wPrime, pMax, opts ];
+
+energySystemStrainWithParams // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
