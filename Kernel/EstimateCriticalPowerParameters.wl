@@ -22,9 +22,9 @@ EstimateCriticalPowerParameters // beginDefinition;
 In[1]:= EstimateCriticalPowerParameters[array]
 
 Out[1]= <|
-  "CP" -> Quantity[172.431, "Watts"],
-  "WPrime" -> Quantity[23693., "Kilojoules"],
-  "PMax" -> Quantity[1104.99, "Watts"]
+  "CriticalPower" -> Quantity[172.431, "Watts"],
+  "AnaerobicWorkCapacity" -> Quantity[23693., "Kilojoules"],
+  "MaximalInstantaneousPower" -> Quantity[1104.99, "Watts"]
 |>
 
 Compare with 20-minute test FTP estimate:
@@ -201,9 +201,9 @@ fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
         (* Initial parameter estimates *)
         initialGuess = ConfirmMatch[ estimateInitialParameters @ data, _Association, "InitialGuess" ];
 
-        pMax0   = initialGuess[ "PMax"   ];
-        cp0     = initialGuess[ "CP"     ];
-        wPrime0 = initialGuess[ "WPrime" ];
+        pMax0   = initialGuess[ "MaximalInstantaneousPower" ];
+        cp0     = initialGuess[ "CriticalPower"             ];
+        wPrime0 = initialGuess[ "AnaerobicWorkCapacity"     ];
 
         (* Fit the model: P = CP + (PMax - CP) * W' / (W' + (PMax - CP) * t) *)
         fit = Quiet @ Check[
@@ -247,9 +247,9 @@ fitCriticalPowerModel[ data: { { _Real, _Real } .. } ] := Enclose[
 
         (* Extract fitted parameters *)
         params = <|
-            "CP"     -> Quantity[ Lookup[ fit, cp     ], "Watts"      ],
-            "WPrime" -> Quantity[ Lookup[ fit, wPrime ], "Kilojoules" ],
-            "PMax"   -> Quantity[ Lookup[ fit, pMax   ], "Watts"      ]
+            "AnaerobicWorkCapacity"     -> Quantity[ Lookup[ fit, wPrime ], "Kilojoules" ],
+            "CriticalPower"             -> Quantity[ Lookup[ fit, cp     ], "Watts"      ],
+            "MaximalInstantaneousPower" -> Quantity[ Lookup[ fit, pMax   ], "Watts"      ]
         |>;
 
         (* Validate fitted parameters *)
@@ -277,16 +277,16 @@ estimateInitialParameters[ data: { { _Real, _Real } .. } ] := Enclose[
         sorted = SortBy[ data, First ];
 
         (* Estimate PMax from short durations (5-15 seconds) *)
-        shortDurations = Select[ sorted, 5 <= #[[1]] <= 15 & ];
+        shortDurations = Select[ sorted, 5 <= #[[ 1 ]] <= 15 & ];
         pMaxEst = If[ Length @ shortDurations >= 3,
-            Mean @ Take[ ReverseSortBy[ shortDurations, #[[2]] & ], UpTo[ 3 ] ][[All, 2]],
-            Max @ sorted[[All, 2]]
+            Mean @ Take[ ReverseSortBy[ shortDurations, #[[ 2 ]] & ], UpTo[ 3 ] ][[ All, 2 ]],
+            Max @ sorted[[ All, 2 ]]
         ];
 
         (* Estimate CP from long durations (>20 minutes) *)
-        longDurations = Select[ sorted, #[[1]] > 1200 & ];
+        longDurations = Select[ sorted, #[[ 1 ]] > 1200 & ];
         cpEst = If[ Length @ longDurations >= 5,
-            Mean[ Take[ ReverseSortBy[ longDurations, #[[ 2 ]] & ], UpTo[ 5 ] ][[ All, 2 ]] ],
+            Mean @ Take[ ReverseSortBy[ longDurations, #[[ 2 ]] & ], UpTo[ 5 ] ][[ All, 2 ]],
             Max @ sorted[[ All, 2 ]]
         ];
 
@@ -302,9 +302,9 @@ estimateInitialParameters[ data: { { _Real, _Real } .. } ] := Enclose[
         ];
 
         <|
-            "PMax"   -> pMaxEst,
-            "CP"     -> cpEst,
-            "WPrime" -> wPrimeEst
+            "AnaerobicWorkCapacity"     -> wPrimeEst,
+            "CriticalPower"             -> cpEst,
+            "MaximalInstantaneousPower" -> pMaxEst
         |>
     ],
     throwInternalFailure
@@ -347,13 +347,13 @@ validateFittedParameters // beginDefinition;
 validateFittedParameters[ params_Association ] := Enclose[
     Module[ { cp, wPrime, pMax, cpVal, wPrimeVal, pMaxVal, issues },
 
-        cp      = params[ "CP" ];
-        wPrime  = params[ "WPrime" ];
-        pMax    = params[ "PMax" ];
+        cp      = params[ "CriticalPower"             ];
+        wPrime  = params[ "AnaerobicWorkCapacity"     ];
+        pMax    = params[ "MaximalInstantaneousPower" ];
 
-        cpVal     = QuantityMagnitude @ UnitConvert[ cp, "Watts" ];
+        cpVal     = QuantityMagnitude @ UnitConvert[ cp    , "Watts"      ];
         wPrimeVal = QuantityMagnitude @ UnitConvert[ wPrime, "Kilojoules" ];
-        pMaxVal   = QuantityMagnitude @ UnitConvert[ pMax, "Watts" ];
+        pMaxVal   = QuantityMagnitude @ UnitConvert[ pMax  , "Watts"      ];
 
         issues = {};
 
