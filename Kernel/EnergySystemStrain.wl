@@ -453,9 +453,7 @@ calculateStrainScores // beginDefinition;
 
    5. Normalization:
       The normalization factor (PMax / CP^2) * (100 / 3600) scales the strain scores so that
-      one hour at CP equals 100 strain score units, making it comparable to TSS.
-
-   TODO: This could be compiled as a library function in LibraryFunctions.wl for performance. *)
+      one hour at CP equals 100 strain score units, making it comparable to TSS. *)
 
 calculateStrainScores[ power_List, cp_, wPrime_, pMax_ ] := Enclose[
     Module[ { ss, ssCP, ssWPrime, ssPMax },
@@ -467,10 +465,10 @@ calculateStrainScores[ power_List, cp_, wPrime_, pMax_ ] := Enclose[
         ];
 
         <|
-            "StrainScore"      -> ss,       (* Total training load *)
-            "AerobicStrain"    -> ssCP,     (* Oxidative system load *)
-            "GlycolyticStrain" -> ssWPrime, (* Glycolytic system load *)
-            "PCrStrain"        -> ssPMax    (* Phosphocreatine system load *)
+            "Total"           -> ss,       (* Total training load *)
+            "Oxidative"       -> ssCP,     (* Oxidative system load *)
+            "Glycolytic"      -> ssWPrime, (* Glycolytic system load *)
+            "Phosphocreatine" -> ssPMax    (* Phosphocreatine system load *)
         |>
     ],
     throwInternalFailure
