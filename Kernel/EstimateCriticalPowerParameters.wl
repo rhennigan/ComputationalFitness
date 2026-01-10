@@ -355,7 +355,7 @@ validateFittedParameters[ params_Association ] := Enclose[
 
         (* Check for reasonable physiological ranges *)
         If[ cpVal < 50 || cpVal > 600, AppendTo[ issues, "CP outside reasonable range (50-600 W)" ] ];
-        If[ wPrimeVal < 5 || wPrimeVal > 50, AppendTo[ issues, "W' outside reasonable range (5-50 kJ)" ] ];
+        If[ wPrimeVal < 5 || wPrimeVal > 100, AppendTo[ issues, "W' outside reasonable range (5-100 kJ)" ] ];
         If[ pMaxVal < 200 || pMaxVal > 3000, AppendTo[ issues, "PMax outside reasonable range (200-3000 W)" ] ];
 
         If[ Length @ issues > 0,
