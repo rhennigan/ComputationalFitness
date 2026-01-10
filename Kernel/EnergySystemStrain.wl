@@ -59,7 +59,7 @@ Begin[ "`Private`" ];
 (* ::Section::Closed:: *)
 (*Messages*)
 ComputationalFitness::InvalidCP     = "Critical power (CP) must be a positive number in watts.";
-ComputationalFitness::InvalidWPrime = "Work prime (W') must be a positive number in joules or kilojoules.";
+ComputationalFitness::InvalidWPrime = "Anaerobic work capacity (W') must be a positive number in joules or kilojoules.";
 ComputationalFitness::InvalidPMax   = "Maximal power (PMax) must be a positive number in watts greater than CP.";
 ComputationalFitness::MissingPower  = "No power data available in the input.";
 
@@ -83,10 +83,10 @@ ComputationalFitness::MissingPower  = "No power data available in the input.";
 
    Returns:
      An Association with four keys:
-       "StrainScore"      - Total training load (analogous to TSS)
-       "AerobicStrain"    - Load on the oxidative/aerobic system (CP)
-       "GlycolyticStrain" - Load on the glycolytic/lactic system (W')
-       "PCrStrain"        - Load on the phosphocreatine/alactic system (PMax)
+       "Total"           - Total training load (analogous to TSS)
+       "Oxidative"       - Load on the oxidative/aerobic system (CP)
+       "Glycolytic"      - Load on the glycolytic/lactic system (W')
+       "Phosphocreatine" - Load on the phosphocreatine/alactic system (PMax)
 
    Example:
      (* Estimate parameters from mean maximal power curve *)
