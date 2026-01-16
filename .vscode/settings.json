@@ -4,6 +4,7 @@
         "Appl",
         "Cheung",
         "cicd",
+        "developerdata",
         "Fulford",
         "Glycolytic",
         "Innis",
@@ -11,14 +12,18 @@
         "Levenberg",
         "Marquardt",
         "Mastracci",
+        "multisport",
         "nofun",
         "noopen",
         "oneline",
         "pathw",
+        "patt",
         "Physiol",
+        "poolswim",
         "privv",
         "Skiba",
         "subpackages",
-        "Vanhatalo"
+        "Vanhatalo",
+        "Zwift"
     ]
 }
