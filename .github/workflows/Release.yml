@@ -70,9 +70,9 @@ jobs:
         $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
         if ("${{ env.WLPR_PACLET_SITE }}") {
             echo 'Updating paclet sites...'
-            wolfram -noprompt -run 'PacletInstall[\"PacletManager\"];PacletSiteRegister[\"${{ env.WLPR_PACLET_SITE }}\"];PacletSiteUpdate[PacletSites[]];Quit[]'
+            wolfram -noprompt -run 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]'
         }
-        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment="Script";Protect[$EvaluationEnvironment]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
     - name: Archive compiled libraries
       uses: actions/upload-artifact@v4
       with:
@@ -357,9 +357,9 @@ jobs:
         $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
         if ("${{ env.WLPR_PACLET_SITE }}") {
             echo 'Updating paclet sites...'
-            wolfram -noprompt -run 'PacletInstall[\"PacletManager\"];PacletSiteRegister[\"${{ env.WLPR_PACLET_SITE }}\"];PacletSiteUpdate[PacletSites[]];Quit[]'
+            wolfram -noprompt -run 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]'
         }
-        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/TestPaclet.wls
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment="Script";Protect[$EvaluationEnvironment]' -script Scripts/TestPaclet.wls
     
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
