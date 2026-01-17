@@ -255,7 +255,7 @@ VerificationTest[
 ]
 
 VerificationTest[
-    FITFileType @ FileNameJoin @ { $pacletDir, "README.md" },
+    FITFileType @ FileNameJoin @ { $pacletDir, "LICENSE" },
     _Failure,
     { FITFileType::LibraryErrorNoFileID },
     SameTest -> MatchQ,
