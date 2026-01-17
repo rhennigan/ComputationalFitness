@@ -169,20 +169,23 @@ VerificationTest[
 VerificationTest[
     EstimateCriticalPowerParameters @ File[ "ExampleData/Walk.fit" ],
     _Failure,
+    { ComputationalFitness::Internal },
     SameTest -> MatchQ,
-    TestID   -> "PossibleIssues-NoPowerData@@Tests/EstimateCriticalPowerParameters.wlt:169,1-174,2"
+    TestID   -> "PossibleIssues-NoPowerData@@Tests/EstimateCriticalPowerParameters.wlt:169,1-175,2"
 ]
 
 VerificationTest[
     EstimateCriticalPowerParameters @ QuantityArray[ ConstantArray[ 100.0, 5 ], "Watts" ],
     _Failure,
+    { EstimateCriticalPowerParameters::InsufficientData },
     SameTest -> MatchQ,
-    TestID   -> "PossibleIssues-TooFewPoints@@Tests/EstimateCriticalPowerParameters.wlt:176,1-181,2"
+    TestID   -> "PossibleIssues-TooFewPoints@@Tests/EstimateCriticalPowerParameters.wlt:177,1-183,2"
 ]
 
 VerificationTest[
     EstimateCriticalPowerParameters @ "NonExistentFile.fit",
     _Failure,
+    { EstimateCriticalPowerParameters::InvalidArguments },
     SameTest -> MatchQ,
-    TestID   -> "PossibleIssues-InvalidFile@@Tests/EstimateCriticalPowerParameters.wlt:183,1-188,2"
+    TestID   -> "PossibleIssues-InvalidFile@@Tests/EstimateCriticalPowerParameters.wlt:185,1-191,2"
 ]

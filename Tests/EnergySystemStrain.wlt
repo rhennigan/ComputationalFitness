@@ -189,8 +189,9 @@ VerificationTest[
         <| "CriticalPower" -> -250, "AnaerobicWorkCapacity" -> 20, "MaximalInstantaneousPower" -> 1200 |>
     ],
     _Failure,
+    { EnergySystemStrain::InvalidCP },
     SameTest -> MatchQ,
-    TestID   -> "ParameterValidation-1@@Tests/EnergySystemStrain.wlt:186,1-194,2"
+    TestID   -> "ParameterValidation-1@@Tests/EnergySystemStrain.wlt:186,1-195,2"
 ]
 
 (* Invalid W' (negative) *)
@@ -200,8 +201,9 @@ VerificationTest[
         <| "CriticalPower" -> 250, "AnaerobicWorkCapacity" -> -20, "MaximalInstantaneousPower" -> 1200 |>
     ],
     _Failure,
+    { EnergySystemStrain::InvalidWPrime },
     SameTest -> MatchQ,
-    TestID   -> "ParameterValidation-2@@Tests/EnergySystemStrain.wlt:197,1-205,2"
+    TestID   -> "ParameterValidation-2@@Tests/EnergySystemStrain.wlt:198,1-207,2"
 ]
 
 (* Invalid PMax (less than CP) *)
@@ -211,8 +213,9 @@ VerificationTest[
         <| "CriticalPower" -> 250, "AnaerobicWorkCapacity" -> 20, "MaximalInstantaneousPower" -> 200 |>
     ],
     _Failure,
+    { EnergySystemStrain::InvalidPMax },
     SameTest -> MatchQ,
-    TestID   -> "ParameterValidation-3@@Tests/EnergySystemStrain.wlt:208,1-216,2"
+    TestID   -> "ParameterValidation-3@@Tests/EnergySystemStrain.wlt:210,1-219,2"
 ]
 
 (* Valid parameters with units *)
@@ -227,7 +230,7 @@ VerificationTest[
     ],
     _Association,
     SameTest -> MatchQ,
-    TestID   -> "ParameterValidation-4@@Tests/EnergySystemStrain.wlt:219,1-231,2"
+    TestID   -> "ParameterValidation-4@@Tests/EnergySystemStrain.wlt:222,1-234,2"
 ]
 
 (* ::**************************************************************************************************************:: *)
@@ -238,8 +241,9 @@ VerificationTest[
 VerificationTest[
     EnergySystemStrain[ File[ "ExampleData/Walk.fit" ], $params ],
     _Failure,
+    { EnergySystemStrain::MissingPower },
     SameTest -> MatchQ,
-    TestID   -> "PossibleIssues-1@@Tests/EnergySystemStrain.wlt:238,1-243,2"
+    TestID   -> "PossibleIssues-1@@Tests/EnergySystemStrain.wlt:241,1-247,2"
 ]
 
 (* Empty power array *)
@@ -247,7 +251,7 @@ VerificationTest[
     EnergySystemStrain[ {}, $params ],
     _Association,
     SameTest -> MatchQ,
-    TestID   -> "PossibleIssues-2@@Tests/EnergySystemStrain.wlt:246,1-251,2"
+    TestID   -> "PossibleIssues-2@@Tests/EnergySystemStrain.wlt:250,1-255,2"
 ]
 
 (* Single power value *)
@@ -255,5 +259,5 @@ VerificationTest[
     EnergySystemStrain[ { 200.0 }, $params ],
     _Association,
     SameTest -> MatchQ,
-    TestID   -> "PossibleIssues-3@@Tests/EnergySystemStrain.wlt:254,1-259,2"
+    TestID   -> "PossibleIssues-3@@Tests/EnergySystemStrain.wlt:258,1-263,2"
 ]

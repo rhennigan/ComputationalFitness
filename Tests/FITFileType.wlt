@@ -249,22 +249,25 @@ VerificationTest[
 VerificationTest[
     FITFileType @ FileNameJoin @ { $pacletDir, "ExampleData", "nonexistent.fit" },
     _Failure,
+    { FITFileType::LibraryErrorOpenFile },
     SameTest -> MatchQ,
-    TestID -> "FITFileType-NonexistentFile@@Tests/FITFileType.wlt:249,1-254,2"
+    TestID -> "FITFileType-NonexistentFile@@Tests/FITFileType.wlt:249,1-255,2"
 ]
 
 VerificationTest[
     FITFileType @ FileNameJoin @ { $pacletDir, "README.md" },
     _Failure,
+    { FITFileType::LibraryErrorNoFileID },
     SameTest -> MatchQ,
-    TestID -> "FITFileType-NonFITFile@@Tests/FITFileType.wlt:256,1-261,2"
+    TestID -> "FITFileType-NonFITFile@@Tests/FITFileType.wlt:257,1-263,2"
 ]
 
 VerificationTest[
     FITFileType @ FileNameJoin @ { $pacletDir, "PacletInfo.wl" },
     _Failure,
+    { FITFileType::LibraryErrorNoFileID },
     SameTest -> MatchQ,
-    TestID -> "FITFileType-WolframFile@@Tests/FITFileType.wlt:263,1-268,2"
+    TestID -> "FITFileType-WolframFile@@Tests/FITFileType.wlt:265,1-271,2"
 ]
 
 (* ::**************************************************************************************************************:: *)
@@ -274,7 +277,7 @@ VerificationTest[
     FITFileType @ FileNameJoin @ { $pacletDir, "ExampleData", "activity_truncated.fit" },
     "Activity" | _Missing,
     SameTest -> MatchQ,
-    TestID -> "FITFileType-TruncatedFile@@Tests/FITFileType.wlt:273,1-278,2"
+    TestID -> "FITFileType-TruncatedFile@@Tests/FITFileType.wlt:276,1-281,2"
 ]
 
 (* ::**************************************************************************************************************:: *)
@@ -298,6 +301,7 @@ VerificationTest[
         FITFileType @ tempFile
     ],
     _Failure | _Missing,
+    { FITFileType::LibraryErrorNoFileID },
     SameTest -> MatchQ,
-    TestID -> "FITFileType-InvalidStructure@@Tests/FITFileType.wlt:283,1-303,2"
+    TestID -> "FITFileType-InvalidStructure@@Tests/FITFileType.wlt:286,1-307,2"
 ]
