@@ -21,8 +21,8 @@ jobs:
       WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
       WOLFRAM_SYSTEM_ID: Windows-x86-64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
-      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.1.0.0/WolframEngine_13.1.0_WIN.msi
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-14-1-0-0
+      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/14.1.0.0/WolframEngine_14.1.0_WIN.msi
     steps:
     - name: Checkout
       id: checkout-code-step
@@ -70,9 +70,9 @@ jobs:
         $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
         if ("${{ env.WLPR_PACLET_SITE }}") {
             echo 'Updating paclet sites...'
-            wolfram -noprompt -run 'PacletInstall[\"PacletManager\"];PacletSiteRegister[\"${{ env.WLPR_PACLET_SITE }}\"];PacletSiteUpdate[PacletSites[]];Quit[]'
+            wolfram -noprompt -run 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]'
         }
-        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment="Script";Protect[$EvaluationEnvironment]' -script ${{ env.WOLFRAM_LIBRARY_BUILD_SCRIPT }}
     - name: Archive compiled libraries
       uses: actions/upload-artifact@v4
       with:
@@ -96,9 +96,9 @@ jobs:
       WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
       WOLFRAM_SYSTEM_ID: MacOSX-x86-64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-14-1-0-0
       WOLFRAMENGINE_DOWNLOAD_PATH: /tmp/downloads
-      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/13.1.0.0/WolframEngine_13.1.0_MAC.dmg
+      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/14.1.0.0/WolframEngine_14.1.0_MAC.dmg
       WOLFRAMENGINE_INSTALLATION_DIRECTORY: "/Applications/Wolfram Engine.app"
     steps:
     - name: Checkout
@@ -158,9 +158,9 @@ jobs:
       WOLFRAM_LIBRARY_BUILD_OUTPUT: LibraryResources/
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
       WOLFRAM_SYSTEM_ID: MacOSX-ARM64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-14-1-0-0
       WOLFRAMENGINE_DOWNLOAD_PATH: /tmp/downloads
-      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/13.1.0.0/WolframEngine_13.1.0_MAC.dmg
+      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/14.1.0.0/WolframEngine_14.1.0_MAC.dmg
       WOLFRAMENGINE_INSTALLATION_DIRECTORY: "/Applications/Wolfram Engine.app"
     steps:
     - name: Checkout
@@ -217,7 +217,7 @@ jobs:
     name: Compile-Linux-x86-64
     runs-on: ubuntu-latest
     container:
-      image: wolframresearch/wolframengine:13.3
+      image: wolframresearch/wolframengine:14.1
       options: --user root
     env:
       WOLFRAM_LIBRARY_BUILD_SCRIPT: ./Scripts/Compile.wls
@@ -261,7 +261,7 @@ jobs:
     runs-on: ubuntu-latest
 
     container:
-      image: wolframresearch/wolframengine:13.3
+      image: wolframresearch/wolframengine:14.1
       options: --user root
 
     env:
@@ -301,8 +301,8 @@ jobs:
     runs-on: windows-latest
     env:
       WOLFRAM_SYSTEM_ID: Windows-x86-64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
-      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/13.1.0.0/WolframEngine_13.1.0_WIN.msi
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-14-1-0-0
+      WOLFRAMENGINE_INSTALL_MSI_DOWNLOAD_URL: https://files.wolframcdn.com/packages/winget/14.1.0.0/WolframEngine_14.1.0_WIN.msi
     steps:
     - name: Checkout
       id: checkout-code-step
@@ -357,9 +357,9 @@ jobs:
         $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
         if ("${{ env.WLPR_PACLET_SITE }}") {
             echo 'Updating paclet sites...'
-            wolfram -noprompt -run 'PacletInstall[\"PacletManager\"];PacletSiteRegister[\"${{ env.WLPR_PACLET_SITE }}\"];PacletSiteUpdate[PacletSites[]];Quit[]'
+            wolfram -noprompt -run 'PacletInstall["PacletManager"];PacletSiteRegister["${{ env.WLPR_PACLET_SITE }}"];PacletSiteUpdate[PacletSites[]];Quit[]'
         }
-        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/TestPaclet.wls
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment="Script";Protect[$EvaluationEnvironment]' -script Scripts/TestPaclet.wls
     
     - name: Upload stack data
       if: always() && env.PACLET_STACK_HISTORY
@@ -376,9 +376,9 @@ jobs:
     runs-on: macos-15-intel
     env:
       WOLFRAM_SYSTEM_ID: MacOSX-x86-64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-14-1-0-0
       WOLFRAMENGINE_DOWNLOAD_PATH: /tmp/downloads
-      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/13.1.0.0/WolframEngine_13.1.0_MAC.dmg
+      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/14.1.0.0/WolframEngine_14.1.0_MAC.dmg
       WOLFRAMENGINE_INSTALLATION_DIRECTORY: "/Applications/Wolfram Engine.app"
     steps:
     - name: Checkout
@@ -438,9 +438,9 @@ jobs:
     runs-on: macos-15
     env:
       WOLFRAM_SYSTEM_ID: MacOSX-ARM64
-      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-13-1-0-0
+      WOLFRAMENGINE_CACHE_KEY: WolframEngine-A-14-1-0-0
       WOLFRAMENGINE_DOWNLOAD_PATH: /tmp/downloads
-      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/13.1.0.0/WolframEngine_13.1.0_MAC.dmg
+      WOLFRAMENGINE_INSTALL_DMG_DOWNLOAD_URL: https://files.wolframcdn.com/packages/Homebrew/14.1.0.0/WolframEngine_14.1.0_MAC.dmg
       WOLFRAMENGINE_INSTALLATION_DIRECTORY: "/Applications/Wolfram Engine.app"
     steps:
     - name: Checkout
@@ -500,7 +500,7 @@ jobs:
     needs: [BuildPaclet]
     runs-on: ubuntu-latest
     container:
-      image: wolframresearch/wolframengine:13.3
+      image: wolframresearch/wolframengine:14.1
       options: --user root
     env:
       WOLFRAM_SYSTEM_ID: Linux-x86-64
@@ -535,7 +535,7 @@ jobs:
     timeout-minutes: 30
 
     container:
-      image: wolframresearch/wolframengine:13.3
+      image: wolframresearch/wolframengine:14.1
       options: --user root
 
     env:
@@ -588,7 +588,7 @@ jobs:
     timeout-minutes: 30
 
     container:
-      image: wolframresearch/wolframengine:13.3
+      image: wolframresearch/wolframengine:14.1
       options: --user root
 
     env:

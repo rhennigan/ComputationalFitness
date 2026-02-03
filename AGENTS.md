@@ -40,12 +40,7 @@ You can optionally include a third argument to specify any expected messages tha
 
 Existing test IDs will also have a suffix appended to them (everything after the last `@@`) to indicate where the test is located in the codebase. You do not need to include this suffix in your new test IDs, since they are automatically generated on commit.
 
-You can run test files individually using:
-
-```wl
-report = TestReport["path/to/test/file.wlt"];
-report["TestsFailed"]
-```
+You can run test files using the TestReport MCP tool on the "Tests" directory.
 
 Use the WolframLanguageContext tool if tests fail to help find a solution.
 
@@ -56,11 +51,6 @@ Use the WolframLanguageContext tool if tests fail to help find a solution.
 **Build the paclet:**
 ```bash
 wolframscript -f Scripts/BuildPaclet.wls
-```
-
-**Run tests:**
-```bash
-wolframscript -f Scripts/TestPaclet.wls
 ```
 
 **Compile C libraries for current platform:**

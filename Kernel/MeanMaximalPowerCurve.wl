@@ -48,7 +48,7 @@ machineRealArrayToMMP // beginDefinition;
 
 machineRealArrayToMMP[ power_List ] := Enclose[
     Module[ { result },
-        result = ConfirmBy[ compiledFunction[ "MaximalMeanPowerCurve" ][ N @ power ], machineRealArrayQ, "ArrayCheck" ];
+        result = ConfirmBy[ compiledFunction[ "MeanMaximalPowerCurve" ][ N @ power ], machineRealArrayQ, "ArrayCheck" ];
         If[ TrueQ @ $returnMMPArray,
             Throw[ result, $mmpTag ],
             result
@@ -391,6 +391,67 @@ $mmpTicks = {
     Quantity[  2, "Hours"   ],
     Quantity[  5, "Hours"   ]
 };
+
+(* ::**************************************************************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Compiled Code*)
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*MeanMaximalPowerCurve*)
+declareCompiledFunction[
+    "MeanMaximalPowerCurve",
+    Function[
+        { Typed[ wattValues, "PackedArray"[ "Real64", 1 ] ] },
+        Block[ { n, prefixSum, powerCurve },
+
+            n = Length @ wattValues;
+            prefixSum = Prepend[ Accumulate @ wattValues, 0.0 ];
+            powerCurve = ConstantArray[ 0.0, n ];
+
+            Do[
+                Block[ { maxAvg = -1.0, sum, avg },
+
+                    Do[
+                        sum = prefixSum[[ i + k + 1 ]] - prefixSum[[ i + 1 ]];
+                        avg = sum / k;
+                        If[ avg > maxAvg, maxAvg = avg ],
+                        { i, 0, n - k }
+                    ];
+
+                    powerCurve[[ k ]] = maxAvg
+                ],
+                { k, 1, n }
+            ];
+
+            powerCurve
+        ]
+    ]
+];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*PairwiseMax*)
+declareCompiledFunction[
+    "PairwiseMax",
+    Function[
+        {
+            Typed[ data1, "PackedArray"[ "Real64", 1 ] ],
+            Typed[ data2, "PackedArray"[ "Real64", 1 ] ]
+        },
+        Block[ { len1, len2, min, max, data },
+            len1 = Length @ data1;
+            len2 = Length @ data2;
+            min  = Min[ len1, len2 ];
+            max  = Max[ len1, len2 ];
+            data = ConstantArray[ 0.0, max ];
+            Do[ data[[ i ]] = Max[ data1[[ i ]], data2[[ i ]] ], { i, min } ];
+            If[ len1 > len2, Do[ data[[ i ]] = data1[[ i ]], { i, min + 1, max } ] ];
+            If[ len2 > len1, Do[ data[[ i ]] = data2[[ i ]], { i, min + 1, max } ] ];
+            data
+        ]
+    ]
+];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)

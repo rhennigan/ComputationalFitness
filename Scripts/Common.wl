@@ -1,8 +1,8 @@
 (* cSpell: ignore samevers *)
 
 (* :!CodeAnalysis::BeginBlock:: *)
-(* :!CodeAnalysis::Disable::SuspiciousSessionSymbol:: *)
 (* :!CodeAnalysis::Disable::BadInternalDefinition:: *)
+(* :!CodeAnalysis::Disable::PrivateContextSymbol:: *)
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -100,10 +100,7 @@ messagePrint[ Message[ msg_, args___ ] ] :=
     messagePrint[ msg, args ];
 
 messagePrint[ msg_MessageName, args___ ] :=
-    Print[ "::warning::",
-           ToString @ Unevaluated @ msg <> ": " <> messageString[ msg, args ]
-    ];
-
+    cicd`ConsoleWarning[ ToString @ Unevaluated @ msg <> ": " <> messageString[ msg, args ] ];
 
 messageString[ template_String, args___ ] :=
     ToString[ StringForm[ template, Sequence @@ Short /@ { args } ],
@@ -120,9 +117,84 @@ messageString[ ___ ] := "-- Message text not found --";
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
+(*logPrint*)
+logPrint // ClearAll;
+logPrint[ args___ ] := With[ { t = $logTimeStamp }, WriteLine[ "stderr", sequenceString[ t, " ", args ] ] ];
+
+$logTimeStamp := DateString[
+    {
+        "Year", "-", "Month", "-", "Day",
+        "T",
+        "Hour", ":", "Minute", ":", "Second", ".", "Millisecond",
+        "Z"
+    },
+    TimeZone -> 0
+];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*sequenceString*)
+sequenceString // ClearAll;
+sequenceString // Attributes = { HoldAll };
+sequenceString[ args___ ] := ToString @ Unevaluated @ SequenceForm @ args;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
 (*Publisher ID*)
 Needs[ "ResourceSystemClient`" -> None ];
 $PublisherID = PacletObject[ File @ $pacletDir ][ "PublisherID" ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Command Line Arguments*)
+$scriptCommandLine := Select[ Flatten @ { Replace[ $ScriptCommandLine, { } :> $CommandLine ] }, StringQ ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*getBooleanArgument*)
+getBooleanArgument // Attributes = { HoldRest };
+
+getBooleanArgument[ name_ ] :=
+    getBooleanArgument[ name, False ];
+
+getBooleanArgument[ name_String, default_ ] :=
+    getBooleanArgument[ { name, name }, default ];
+
+getBooleanArgument[ { short_String, full_String }, default_ ] := Catch[
+    Module[ { named, interpreted, res },
+        If[ MemberQ[ $scriptCommandLine, "-"<>short | "--"<>full ], Throw[ True, $booleanTag ] ];
+        named = getNamedArgument @ full;
+        If[ ! StringQ @ named, Throw[ default, $booleanTag ] ];
+        interpreted = Interpreter[ "Boolean" ][ named ];
+        If[ BooleanQ @ interpreted,
+            interpreted,
+            res = default;
+            cicd`ConsoleError @ TemplateApply[
+                "The value \"`1`\" specified for \"`2`\" is not a valid boolean value. Using default value: \"`3`\".",
+                { named, full, res }
+            ];
+            res
+        ]
+    ],
+    $booleanTag
+];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*getNamedArgument*)
+getNamedArgument // Attributes = { HoldRest };
+
+getNamedArgument[ name_ ] :=
+    getNamedArgument[ name, Missing[ "NotSpecified" ] ];
+
+getNamedArgument[ name_String, default_ ] :=
+    Module[ { arg },
+        arg = SelectFirst[ $scriptCommandLine, StringQ @ # && StringStartsQ[ #, "--"<>name<>"=" ] & ];
+        If[ StringQ @ arg,
+            StringDelete[ arg, StartOfString ~~ "--"<>name<>"=" ],
+            default
+        ]
+    ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
@@ -206,11 +278,11 @@ updatePacletInfo[ dir_ ] /; StringQ @ Environment[ "GITHUB_ACTION" ] := Enclose[
             }
         ];
 
-        Print[ "Updating PacletInfo"     ];
-        Print[ "    ReleaseID:   ", id   ];
-        Print[ "    ReleaseDate: ", date ];
-        Print[ "    ReleaseURL:  ", url  ];
-        Print[ "    ActionURL:   ", run  ];
+        cicd`ConsoleLog[ "Updating PacletInfo"       ];
+        cicd`ConsoleLog[ "    ReleaseID:   " <> id   ];
+        cicd`ConsoleLog[ "    ReleaseDate: " <> date ];
+        cicd`ConsoleLog[ "    ReleaseURL:  " <> url  ];
+        cicd`ConsoleLog[ "    ActionURL:   " <> run  ];
 
         Confirm @ WithCleanup[ BinaryWrite[ file, new ],
                                Close @ file
@@ -218,10 +290,7 @@ updatePacletInfo[ dir_ ] /; StringQ @ Environment[ "GITHUB_ACTION" ] := Enclose[
 
         updateReleaseInfoCell[ dir, url, cmt, run ]
     ],
-    Function[
-        Print[ "::error::Failed to update PacletInfo template parameters." ];
-        Exit[ 1 ]
-    ]
+    cicd`ConsoleError[ "Failed to update PacletInfo template parameters.", "Fatal" -> True ] &
 ];
 
 
@@ -332,13 +401,11 @@ checkResult[ eval: (sym_Symbol)[ args___ ] ] :=
 
         If[ MatchQ[ Head @ result, HoldPattern @ sym ]
             ,
-            Print[ "::error::" <> full <> " not defined" ];
-            Exit[ 1 ]
+            cicd`ConsoleError[ full <> " not defined", "Fatal" -> True ]
         ];
 
         If[ FailureQ @ result,
-            Print[ "::error::" <> full <> " failed" ];
-            Exit[ 1 ]
+            cicd`ConsoleError[ full <> " failed", "Fatal" -> True ]
         ]
     ];
 
@@ -353,7 +420,7 @@ checkMessages[ name_String ] :=
         If[ $messageNumber > 0,
             stackName = name<>"StackHistory";
             stacks = ExpandFileName[ stackName<>".wxf" ];
-            Print[ "::notice::Exporting stack data: ", stacks ];
+            cicd`ConsoleNotice @ SequenceForm[ "Exporting stack data: ", stacks ];
             Export[ stacks, $stackHistory, "WXF", PerformanceGoal -> "Size" ];
             setOutput[ "PACLET_STACK_HISTORY", stacks ];
             setOutput[ "PACLET_STACK_NAME", stackName ];
@@ -363,15 +430,15 @@ checkMessages[ name_String ] :=
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Setup*)
-Print[ "Paclet Directory: ", $pacletDir ];
+cicd`ConsoleLog @ SequenceForm[ "Paclet Directory: ", $pacletDir ];
 
 updatePacletInfo @ $pacletDir;
 
 setResourceSystemBase[ ];
-Print[ "ResourceSystemBase: ", $ResourceSystemBase ];
+cicd`ConsoleLog @ SequenceForm[ "ResourceSystemBase: ", $ResourceSystemBase ];
 
 $defNB = File @ FileNameJoin @ { $pacletDir, "ResourceDefinition.nb" };
-Print[ "Definition Notebook: ", $defNB ];
+cicd`ConsoleLog @ SequenceForm[ "Definition Notebook: ", $defNB ];
 
 
 $loadedDefinitions = True;

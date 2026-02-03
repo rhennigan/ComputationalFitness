@@ -2823,6 +2823,59 @@ Notebook[
                  TagBox[
                   TemplateBox[
                    {
+                    "\"MeanMaximalPowerCurve.wxf\"",
+                    FileNameJoin[
+                     {
+                      NotebookDirectory[],
+                      "ExampleData",
+                      "MeanMaximalPowerCurve.wxf"
+                     }
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {
+                   NotebookDirectory[],
+                   "ExampleData",
+                   "MeanMaximalPowerCurve.wxf"
+                  }
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerWLIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 25810683
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
                     "\"MonitoringFile.fit\"",
                     FileNameJoin[
                      {NotebookDirectory[], "ExampleData", "MonitoringFile.fit"}
@@ -4282,6 +4335,104 @@ Notebook[
                CellID -> 16727602
               ],
               Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"EnergySystemStrain.wl\"",
+                    FileNameJoin[
+                     {NotebookDirectory[], "Kernel", "EnergySystemStrain.wl"}
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {NotebookDirectory[], "Kernel", "EnergySystemStrain.wl"}
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerWLIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 50421456
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"EstimateCriticalPowerParameters.wl\"",
+                    FileNameJoin[
+                     {
+                      NotebookDirectory[],
+                      "Kernel",
+                      "EstimateCriticalPowerParameters.wl"
+                     }
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {
+                   NotebookDirectory[],
+                   "Kernel",
+                   "EstimateCriticalPowerParameters.wl"
+                  }
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerWLIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 17586528
+              ],
+              Cell[
                CellGroupData[
                 {
                  Cell[
@@ -5529,372 +5680,6 @@ Notebook[
             ]
            ],
            Cell[
-            CellGroupData[
-             {
-              Cell[
-               TextData[
-                Cell[
-                 BoxData[
-                  InterpretationBox[
-                   TagBox[
-                    ActionMenuBox[
-                     "\"LibraryResources\"",
-                     {
-                      "\"Open/Close Group\"" :>
-                       (SelectionMove[ParentCell[EvaluationCell[]], All, Cell];
-                       FrontEndTokenExecute[
-                        EvaluationNotebook[],
-                        "OpenCloseGroup"
-                       ]),
-                      "\"Open Directory\"" :>
-                       DefinitionNotebookClient`FileTreeOpen[
-                        ParentCell[EvaluationCell[]]
-                       ],
-                      "\"Un/Mark as Excluded\"" :>
-                       DefinitionNotebookClient`FileTreeExclusionToggle[
-                        ParentCell[EvaluationCell[]]
-                       ],
-                      "\"Copy Path to Clipboard\"" :>
-                       DefinitionNotebookClient`FileTreeCopy[
-                        ParentCell[EvaluationCell[]]
-                       ]
-                     },
-                     Appearance -> None,
-                     BaseStyle -> {"Text"}
-                    ],
-                    Function[
-                     Annotation[
-                      #1,
-                      DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
-                       0
-                      ]
-                     ]
-                    ]
-                   ],
-                   FileNameJoin[{NotebookDirectory[], "LibraryResources"}],
-                   BoxID -> "FileTreePath",
-                   BaseStyle -> {"Text"}
-                  ]
-                 ]
-                ]
-               ],
-               "FileManagerDirectory",
-               CellMargins -> {{Inherited, Inherited}, {Inherited, Inherited}},
-               CellGroupingRules -> {"SectionGrouping", 100},
-               CellFrameLabels -> {
-                {
-                 Cell[
-                  BoxData[
-                   TemplateBox[{}, "FileManagerDirectoryIconTemplate"]
-                  ],
-                  Background -> None
-                 ],
-                 Inherited
-                },
-                {Inherited, Inherited}
-               },
-               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
-               CellID -> 48827181
-              ],
-              Cell[
-               CellGroupData[
-                {
-                 Cell[
-                  TextData[
-                   Cell[
-                    BoxData[
-                     InterpretationBox[
-                      TagBox[
-                       ActionMenuBox[
-                        "\"Windows-x86-64\"",
-                        {
-                         "\"Open/Close Group\"" :>
-                          (SelectionMove[ParentCell[EvaluationCell[]], All, Cell];
-                          FrontEndTokenExecute[
-                           EvaluationNotebook[],
-                           "OpenCloseGroup"
-                          ]),
-                         "\"Open Directory\"" :>
-                          DefinitionNotebookClient`FileTreeOpen[
-                           ParentCell[EvaluationCell[]]
-                          ],
-                         "\"Un/Mark as Excluded\"" :>
-                          DefinitionNotebookClient`FileTreeExclusionToggle[
-                           ParentCell[EvaluationCell[]]
-                          ],
-                         "\"Copy Path to Clipboard\"" :>
-                          DefinitionNotebookClient`FileTreeCopy[
-                           ParentCell[EvaluationCell[]]
-                          ]
-                        },
-                        Appearance -> None,
-                        BaseStyle -> {"Text"}
-                       ],
-                       Function[
-                        Annotation[
-                         #1,
-                         DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
-                          1
-                         ]
-                        ]
-                       ]
-                      ],
-                      FileNameJoin[
-                       {NotebookDirectory[], "LibraryResources", "Windows-x86-64"}
-                      ],
-                      BoxID -> "FileTreePath",
-                      BaseStyle -> {"Text"}
-                     ]
-                    ]
-                   ]
-                  ],
-                  "FileManagerDirectory",
-                  CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
-                  CellGroupingRules -> {"SectionGrouping", 110},
-                  CellFrameLabels -> {
-                   {
-                    Cell[
-                     BoxData[
-                      TemplateBox[{}, "FileManagerDirectoryIconTemplate"]
-                     ],
-                     Background -> None
-                    ],
-                    Inherited
-                   },
-                   {Inherited, Inherited}
-                  },
-                  CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
-                  CellID -> 306168562
-                 ],
-                 Cell[
-                  BoxData[
-                   InterpretationBox[
-                    TagBox[
-                     TemplateBox[
-                      {
-                       "\"FITImportExport.dll\"",
-                       FileNameJoin[
-                        {
-                         NotebookDirectory[],
-                         "LibraryResources",
-                         "Windows-x86-64",
-                         "FITImportExport.dll"
-                        }
-                       ]
-                      },
-                      "FileManagerFileOpenerTemplate"
-                     ],
-                     Function[
-                      Annotation[
-                       #1,
-                       DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
-                        2
-                       ]
-                      ]
-                     ]
-                    ],
-                    FileNameJoin[
-                     {
-                      NotebookDirectory[],
-                      "LibraryResources",
-                      "Windows-x86-64",
-                      "FITImportExport.dll"
-                     }
-                    ],
-                    BoxID -> "FileTreePath",
-                    BaseStyle -> {"Text"}
-                   ]
-                  ],
-                  "FileManagerFile",
-                  CellMargins -> {{46 + Inherited, Inherited}, {Inherited, Inherited}},
-                  CellGroupingRules -> {"SectionGrouping", 120},
-                  CellFrameLabels -> {
-                   {
-                    Cell[
-                     BoxData[TemplateBox[{}, "FileManagerUnknownIconTemplate"]],
-                     Background -> None
-                    ],
-                    Inherited
-                   },
-                   {Inherited, Inherited}
-                  },
-                  CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
-                  CellID -> 118987589
-                 ],
-                 Cell[
-                  BoxData[
-                   InterpretationBox[
-                    TagBox[
-                     TemplateBox[
-                      {
-                       "\"FITUsableColumns.dll\"",
-                       FileNameJoin[
-                        {
-                         NotebookDirectory[],
-                         "LibraryResources",
-                         "Windows-x86-64",
-                         "FITUsableColumns.dll"
-                        }
-                       ]
-                      },
-                      "FileManagerFileOpenerTemplate"
-                     ],
-                     Function[
-                      Annotation[
-                       #1,
-                       DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
-                        2
-                       ]
-                      ]
-                     ]
-                    ],
-                    FileNameJoin[
-                     {
-                      NotebookDirectory[],
-                      "LibraryResources",
-                      "Windows-x86-64",
-                      "FITUsableColumns.dll"
-                     }
-                    ],
-                    BoxID -> "FileTreePath",
-                    BaseStyle -> {"Text"}
-                   ]
-                  ],
-                  "FileManagerFile",
-                  CellMargins -> {{46 + Inherited, Inherited}, {Inherited, Inherited}},
-                  CellGroupingRules -> {"SectionGrouping", 120},
-                  CellFrameLabels -> {
-                   {
-                    Cell[
-                     BoxData[TemplateBox[{}, "FileManagerUnknownIconTemplate"]],
-                     Background -> None
-                    ],
-                    Inherited
-                   },
-                   {Inherited, Inherited}
-                  },
-                  CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
-                  CellID -> 83891310
-                 ],
-                 Cell[
-                  BoxData[
-                   InterpretationBox[
-                    TagBox[
-                     TemplateBox[
-                      {
-                       "\"MeanMaximalPowerCurve.dll\"",
-                       FileNameJoin[
-                        {
-                         NotebookDirectory[],
-                         "LibraryResources",
-                         "Windows-x86-64",
-                         "MeanMaximalPowerCurve.dll"
-                        }
-                       ]
-                      },
-                      "FileManagerFileOpenerTemplate"
-                     ],
-                     Function[
-                      Annotation[
-                       #1,
-                       DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
-                        2
-                       ]
-                      ]
-                     ]
-                    ],
-                    FileNameJoin[
-                     {
-                      NotebookDirectory[],
-                      "LibraryResources",
-                      "Windows-x86-64",
-                      "MeanMaximalPowerCurve.dll"
-                     }
-                    ],
-                    BoxID -> "FileTreePath",
-                    BaseStyle -> {"Text"}
-                   ]
-                  ],
-                  "FileManagerFile",
-                  CellMargins -> {{46 + Inherited, Inherited}, {Inherited, Inherited}},
-                  CellGroupingRules -> {"SectionGrouping", 120},
-                  CellFrameLabels -> {
-                   {
-                    Cell[
-                     BoxData[TemplateBox[{}, "FileManagerUnknownIconTemplate"]],
-                     Background -> None
-                    ],
-                    Inherited
-                   },
-                   {Inherited, Inherited}
-                  },
-                  CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
-                  CellID -> 26351302
-                 ],
-                 Cell[
-                  BoxData[
-                   InterpretationBox[
-                    TagBox[
-                     TemplateBox[
-                      {
-                       "\"PairwiseMax.dll\"",
-                       FileNameJoin[
-                        {
-                         NotebookDirectory[],
-                         "LibraryResources",
-                         "Windows-x86-64",
-                         "PairwiseMax.dll"
-                        }
-                       ]
-                      },
-                      "FileManagerFileOpenerTemplate"
-                     ],
-                     Function[
-                      Annotation[
-                       #1,
-                       DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
-                        2
-                       ]
-                      ]
-                     ]
-                    ],
-                    FileNameJoin[
-                     {
-                      NotebookDirectory[],
-                      "LibraryResources",
-                      "Windows-x86-64",
-                      "PairwiseMax.dll"
-                     }
-                    ],
-                    BoxID -> "FileTreePath",
-                    BaseStyle -> {"Text"}
-                   ]
-                  ],
-                  "FileManagerFile",
-                  CellMargins -> {{46 + Inherited, Inherited}, {Inherited, Inherited}},
-                  CellGroupingRules -> {"SectionGrouping", 120},
-                  CellFrameLabels -> {
-                   {
-                    Cell[
-                     BoxData[TemplateBox[{}, "FileManagerUnknownIconTemplate"]],
-                     Background -> None
-                    ],
-                    Inherited
-                   },
-                   {Inherited, Inherited}
-                  },
-                  CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
-                  CellID -> 499148512
-                 ]
-                },
-                Closed
-               ]
-              ]
-             },
-             Closed
-            ]
-           ],
-           Cell[
             BoxData[
              InterpretationBox[
               TagBox[
@@ -6063,6 +5848,364 @@ Notebook[
             },
             CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
             CellID -> 329838888
+           ],
+           Cell[
+            CellGroupData[
+             {
+              Cell[
+               TextData[
+                Cell[
+                 BoxData[
+                  InterpretationBox[
+                   TagBox[
+                    ActionMenuBox[
+                     "\"Scratch\"",
+                     {
+                      "\"Open/Close Group\"" :>
+                       (SelectionMove[ParentCell[EvaluationCell[]], All, Cell];
+                       FrontEndTokenExecute[
+                        EvaluationNotebook[],
+                        "OpenCloseGroup"
+                       ]),
+                      "\"Open Directory\"" :>
+                       DefinitionNotebookClient`FileTreeOpen[
+                        ParentCell[EvaluationCell[]]
+                       ],
+                      "\"Un/Mark as Excluded\"" :>
+                       DefinitionNotebookClient`FileTreeExclusionToggle[
+                        ParentCell[EvaluationCell[]]
+                       ],
+                      "\"Copy Path to Clipboard\"" :>
+                       DefinitionNotebookClient`FileTreeCopy[
+                        ParentCell[EvaluationCell[]]
+                       ]
+                     },
+                     Appearance -> None,
+                     BaseStyle -> {"Text"}
+                    ],
+                    Function[
+                     Annotation[
+                      #1,
+                      DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                       0
+                      ]
+                     ]
+                    ]
+                   ],
+                   FileNameJoin[{NotebookDirectory[], "Scratch"}],
+                   BoxID -> "FileTreePath",
+                   BaseStyle -> {"Text"}
+                  ]
+                 ]
+                ]
+               ],
+               "FileManagerDirectory",
+               CellMargins -> {{Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 100},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[
+                   TemplateBox[{}, "FileManagerDirectoryIconTemplate"]
+                  ],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 23450306
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"2026-01-07-18-19-14.fit\"",
+                    FileNameJoin[
+                     {NotebookDirectory[], "Scratch", "2026-01-07-18-19-14.fit"}
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {NotebookDirectory[], "Scratch", "2026-01-07-18-19-14.fit"}
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerUnknownIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 551692940
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"2503.14841v2.pdf\"",
+                    FileNameJoin[
+                     {NotebookDirectory[], "Scratch", "2503.14841v2.pdf"}
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {NotebookDirectory[], "Scratch", "2503.14841v2.pdf"}
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerUnknownIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 853056530
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"EnergySystemStrainIssue.nb\"",
+                    FileNameJoin[
+                     {
+                      NotebookDirectory[],
+                      "Scratch",
+                      "EnergySystemStrainIssue.nb"
+                     }
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {
+                   NotebookDirectory[],
+                   "Scratch",
+                   "EnergySystemStrainIssue.nb"
+                  }
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerNBIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 102487297
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"mmpc-90-days.wxf\"",
+                    FileNameJoin[
+                     {NotebookDirectory[], "Scratch", "mmpc-90-days.wxf"}
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {NotebookDirectory[], "Scratch", "mmpc-90-days.wxf"}
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerWLIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 179589174
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"Morton-3-Parameter-Critical-Power-Model.pdf\"",
+                    FileNameJoin[
+                     {
+                      NotebookDirectory[],
+                      "Scratch",
+                      "Morton-3-Parameter-Critical-Power-Model.pdf"
+                     }
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {
+                   NotebookDirectory[],
+                   "Scratch",
+                   "Morton-3-Parameter-Critical-Power-Model.pdf"
+                  }
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerUnknownIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 650535371
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"Skiba et al (2014).pdf\"",
+                    FileNameJoin[
+                     {NotebookDirectory[], "Scratch", "Skiba et al (2014).pdf"}
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {NotebookDirectory[], "Scratch", "Skiba et al (2014).pdf"}
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerUnknownIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 34624098
+              ]
+             },
+             Closed
+            ]
            ],
            Cell[
             CellGroupData[
@@ -8097,6 +8240,149 @@ Notebook[
                },
                CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
                CellID -> 222735094
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"EnergySystemStrain.wlt\"",
+                    FileNameJoin[
+                     {NotebookDirectory[], "Tests", "EnergySystemStrain.wlt"}
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {NotebookDirectory[], "Tests", "EnergySystemStrain.wlt"}
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerWLIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 193537003
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"EstimateCriticalPowerParameters.wlt\"",
+                    FileNameJoin[
+                     {
+                      NotebookDirectory[],
+                      "Tests",
+                      "EstimateCriticalPowerParameters.wlt"
+                     }
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {
+                   NotebookDirectory[],
+                   "Tests",
+                   "EstimateCriticalPowerParameters.wlt"
+                  }
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerWLIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 78783724
+              ],
+              Cell[
+               BoxData[
+                InterpretationBox[
+                 TagBox[
+                  TemplateBox[
+                   {
+                    "\"FITFileType.wlt\"",
+                    FileNameJoin[
+                     {NotebookDirectory[], "Tests", "FITFileType.wlt"}
+                    ]
+                   },
+                   "FileManagerFileOpenerTemplate"
+                  ],
+                  Function[
+                   Annotation[
+                    #1,
+                    DefinitionNotebookClient`TemplateCells`PackagePrivate`fileDepth[
+                     1
+                    ]
+                   ]
+                  ]
+                 ],
+                 FileNameJoin[
+                  {NotebookDirectory[], "Tests", "FITFileType.wlt"}
+                 ],
+                 BoxID -> "FileTreePath",
+                 BaseStyle -> {"Text"}
+                ]
+               ],
+               "FileManagerFile",
+               CellMargins -> {{23 + Inherited, Inherited}, {Inherited, Inherited}},
+               CellGroupingRules -> {"SectionGrouping", 110},
+               CellFrameLabels -> {
+                {
+                 Cell[
+                  BoxData[TemplateBox[{}, "FileManagerWLIconTemplate"]],
+                  Background -> None
+                 ],
+                 Inherited
+                },
+                {Inherited, Inherited}
+               },
+               CellTags -> {"FileManagerCell", "FileManager-PacletFiles"},
+               CellID -> 39395682
               ],
               Cell[
                BoxData[
@@ -13474,7 +13760,7 @@ Notebook[
                },
                CellID -> 389299396
               ],
-              Cell["13.0+", "Text", CellID -> 25087666]
+              Cell["14.1+", "Text", CellID -> 25087666]
              },
              Open
             ]

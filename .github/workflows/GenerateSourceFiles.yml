@@ -72,7 +72,7 @@ jobs:
         WOLFRAMINIT: "-pwfile !cloudlm.wolfram.com -entitlement ${{ secrets.WOLFRAMSCRIPT_ENTITLEMENTID }}"
       run: |
         $env:Path += ';${{ env.WOLFRAMENGINE_INSTALLATION_DIRECTORY }}\'
-        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment=\"Script\";Protect[$EvaluationEnvironment]' -script Scripts/GenerateSourceFiles.wls
+        wolfram -runfirst 'Unprotect[$EvaluationEnvironment];$EvaluationEnvironment="Script";Protect[$EvaluationEnvironment]' -script Scripts/GenerateSourceFiles.wls
 
     - name: Upload generated files
       uses: actions/upload-artifact@v4

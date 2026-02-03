@@ -20,6 +20,8 @@ HoldComplete[
 GeneralUtilities`UnprotectAndClearAll[
     `$FITMessageDefinitions,
     `ComputationalFitness,
+    `EnergySystemStrain,
+    `EstimateCriticalPowerParameters,
     `FITExport,
     `FITFileType,
     `FITFormatQ,
@@ -79,16 +81,20 @@ GeneralUtilities`UnprotectAndClearAll[
     `catchMine,
     `catchTop,
     `catchTopAs,
+    `checkPowerArray,
     `clearCache,
     `compactFitFitnessDataQ,
     `compiledFunction,
+    `declareCompiledFunction,
     `endDefinition,
     `findFile,
     `getDataFile,
     `importXML,
     `libraryError,
+    `machineRealArrayQ,
     `messageFailure,
     `messagePrint,
+    `numberArrayQ,
     `optionsAssociation,
     `rawDataQ,
     `recompileLibraries,
@@ -102,6 +108,8 @@ GeneralUtilities`UnprotectAndClearAll[
     `setUnitSystem,
     `setWeight,
     `sourceFileApply,
+    `temporalDataOrMissingQ,
+    `temporalDataQ,
     `throwFailure,
     `throwInternalFailure,
     `toNiceCamelCase
@@ -123,6 +131,8 @@ EndPackage[ ];
 <<`ZWO`;
 <<`FitnessData`;
 <<`MeanMaximalPowerCurve`;
+<<`EnergySystemStrain`;
+<<`EstimateCriticalPowerParameters`;
 <<`Initialization`;
 
 (* ::**************************************************************************************************************:: *)

@@ -48,9 +48,10 @@ ComputationalFitness::InvalidArguments =
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
 (*Initialization*)
-$inDef        = False;
-$debug        = TrueQ @ $debug;
-$mxExclusions = Internal`Bag[ ];
+$inDef           = False;
+$internalFailure = None;
+$debug           = TrueQ @ $debug;
+$mxExclusions    = Internal`Bag[ ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -183,9 +184,18 @@ appendFallthroughError[ s_Symbol, values: DownValues|UpValues ] :=
     ];
 
 appendFallthroughError0 // ClearAll;
-appendFallthroughError0[ s_Symbol, OwnValues  ] := e: HoldPattern @ s               := throwInternalFailure @ e;
-appendFallthroughError0[ s_Symbol, DownValues ] := e: HoldPattern @ s[ ___ ]        := throwInternalFailure @ e;
-appendFallthroughError0[ s_Symbol, UpValues   ] := e: HoldPattern @ s[ ___ ][ ___ ] := throwInternalFailure @ e;
+
+appendFallthroughError0[ s_Symbol, OwnValues ] :=
+    e: HoldPattern @ s :=
+        throwInternalFailure[ e, "UnhandledOwnValues", HoldForm @ s ];
+
+appendFallthroughError0[ s_Symbol, DownValues ] :=
+    e: HoldPattern @ s[ ___ ] :=
+        throwInternalFailure[ e, "UnhandledDownValues", HoldForm @ s ];
+
+appendFallthroughError0[ s_Symbol, UpValues ] :=
+    e: HoldPattern @ s[ ___ ][ ___ ] :=
+        throwInternalFailure[ e, "UnhandledUpValues", HoldForm @ s ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
@@ -501,47 +511,335 @@ blockProtected // endDefinition;
 throwInternalFailure // beginDefinition;
 throwInternalFailure // Attributes = { HoldFirst };
 
-throwInternalFailure[ eval: h_Symbol[ ___ ], a___ ] /; $formatting :=
-    With[ { msg = h::InternalFormatting },
-        throwFailure[ h::InternalFormatting, $bugReportLink, HoldForm @ eval, a ] /;
-            StringQ @ msg
-    ];
-
-throwInternalFailure[ eval: h_Symbol[ ___ ], a___ ] :=
-    With[ { msg = h::Internal },
-        throwFailure[ h::Internal, $bugReportLink, HoldForm @ eval, a ] /;
-            StringQ @ msg
-    ];
-
-throwInternalFailure[ eval_, a___ ] /; $formatting :=
-    throwFailure[
-        ComputationalFitness::InternalFormatting,
-        $bugReportLink,
-        HoldForm @ eval,
-        a
-    ];
+throwInternalFailure[ HoldForm[ eval_ ], a___ ] := throwInternalFailure[ eval, a ];
 
 throwInternalFailure[ eval_, a___ ] :=
-    throwFailure[
-        ComputationalFitness::Internal,
-        $bugReportLink,
-        HoldForm @ eval,
-        a
+    Block[ { $internalFailure = $lastInternalFailure = makeInternalFailureData[ eval, a ] },
+        throwFailure[ ComputationalFitness::Internal, $bugReportLink, $internalFailure ]
     ];
 
 throwInternalFailure // endDefinition;
 
 (* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*makeInternalFailureData*)
+makeInternalFailureData // Attributes = { HoldFirst };
+
+makeInternalFailureData[ eval_, Failure[ tag_, as_Association ], args___ ] :=
+    StackInhibit @ Module[ { $stack = Stack[ _ ] },
+        DeleteMissing @ <|
+            "Evaluation"  :> eval,
+            KeyTake[ as, $priorityFailureKeys ],
+            "Stack"       :> $stack,
+            "Failure"     -> Failure[ tag, Association[ KeyDrop[ as, $priorityFailureKeys ], as ] ],
+            "Arguments"   -> { args }
+        |>
+    ];
+
+makeInternalFailureData[ eval_, args___ ] :=
+    StackInhibit @ Module[ { $stack = Stack[ _ ] },
+        <|
+            "Evaluation" :> eval,
+            "Stack"      :> $stack,
+            "Arguments"  -> { args }
+        |>
+    ];
+
+$priorityFailureKeys = { "Information", "ConfirmationType", "Expression", "Function", "Pattern", "Test" };
+
+(* ::**************************************************************************************************************:: *)
+(* ::Section::Closed:: *)
+(*Bug Report Link Generation*)
+
+$issuesURL = "https://github.com/rhennigan/ComputationalFitness/issues/new";
+
+$maxBugReportURLSize = 7000;
+(*
+    RFC 7230 recommends clients support 8000: https://www.rfc-editor.org/rfc/rfc7230#section-3.1.1
+    Long bug report links might not work in old versions of IE,
+    but using IE these days should probably be considered user error.
+*)
+
+$maxPartLength = 500;
+
+$thisPaclet    := PacletObject[ "RickHennigan/ComputationalFitness" ];
+$pacletVersion := $thisPaclet[ "Version" ];
+$debugData     := debugData @ $thisPaclet[ "PacletInfo" ];
+$releaseID     := $releaseID = getReleaseID @ $thisPaclet;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*getReleaseID*)
+getReleaseID[ paclet_PacletObject ] :=
+    getReleaseID[ paclet, paclet[ "ReleaseID" ] ];
+
+getReleaseID[ paclet_PacletObject, "$RELEASE_ID$" | "None" | Except[ _String ] ] :=
+    getReleaseID0 @ paclet[ "Location" ];
+
+getReleaseID[ paclet_, id_String ] := id;
+
+
+getReleaseID0[ dir_? DirectoryQ ] :=
+    Module[ { stdOut, id },
+        stdOut = Quiet @ RunProcess[ { "git", "rev-parse", "HEAD" }, "StandardOutput", ProcessDirectory -> dir ];
+        id = If[ StringQ @ stdOut, StringTrim @ stdOut, "" ];
+        If[ StringMatchQ[ id, Repeated[ HexadecimalCharacter, { 40 } ] ],
+            id,
+            "None"
+        ]
+    ];
+
+getReleaseID0[ ___ ] := "None";
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*debugData*)
+debugData // beginDefinition;
+
+debugData[ as_Association? AssociationQ ] := <|
+    KeyTake[ as, { "Name", "Version" } ],
+    "ReleaseID"             -> $releaseID,
+    "EvaluationEnvironment" -> $EvaluationEnvironment,
+    "FrontEndVersion"       -> $frontEndVersion,
+    "KernelVersion"         -> SystemInformation[ "Kernel", "Version" ],
+    "SystemID"              -> $SystemID,
+    "Notebooks"             -> $Notebooks,
+    "DynamicEvaluation"     -> $DynamicEvaluation,
+    "SynchronousEvaluation" -> $SynchronousEvaluation,
+    "TaskEvaluation"        -> MatchQ[ $CurrentTask, _TaskObject ]
+|>;
+
+debugData // endDefinition;
+
+(* ::**************************************************************************************************************:: *)
 (* ::Subsection::Closed:: *)
 (*$bugReportLink*)
-$bugReportLink := $bugReportLink = Hyperlink[
+$bugReportLink := Hyperlink[
     "Report this issue \[RightGuillemet]",
-    URLBuild @ <|
-        "Scheme" -> "https",
-        "Domain" -> "github.com",
-        "Path"   -> { "rhennigan", "ComputationalFitness", "issues", "new" }
-    |>
+    trimURL @ URLBuild[ $issuesURL, { "title" -> "Insert Title Here", "labels" -> "bug", "body" -> bugReportBody[ ] } ]
 ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*bugReportBody*)
+bugReportBody[ ] := bugReportBody @ $thisPaclet[ "PacletInfo" ];
+
+bugReportBody[ as_Association? AssociationQ ] :=
+    Module[ { debugData, stack, internalFailure, bugReportText, file, data },
+
+        debugData        = $debugData;
+        stack            = $bugReportStack;
+        internalFailure  = $internalFailure;
+
+        bugReportText = TemplateApply[
+            $bugReportBodyTemplate,
+            TemplateVerbatim /@ <|
+                "DebugData"       -> associationMarkdown @ debugData,
+                "Stack"           -> stack,
+                "InternalFailure" -> markdownCodeBlock @ internalFailure,
+                "SourceLink"      -> sourceLink @ internalFailure
+            |>
+        ];
+
+        data = <|
+            "ReportText"      -> bugReportText,
+            "PacletInfo"      -> as,
+            "DebugData"       -> debugData,
+            "Stack"           -> stack,
+            "InternalFailure" -> internalFailure
+        |>;
+
+        file = File @ Export[
+            FileNameJoin @ { $UserBaseDirectory, "Logs", "ComputationalFitness", "LastInternalFailureData.mx" },
+            data,
+            "MX"
+        ];
+
+        WithCleanup[
+            Unprotect[ $LastComputationalFitnessFailure, $LastComputationalFitnessFailureText ]
+            ,
+            $LastComputationalFitnessFailure     = file;
+            $LastComputationalFitnessFailureText = bugReportText;
+            ,
+            Protect[ $LastComputationalFitnessFailure, $LastComputationalFitnessFailureText ]
+        ];
+
+        bugReportText
+    ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*sourceLink*)
+sourceLink[ KeyValuePattern[ "Information" -> info_String ] ] := sourceLink @ info;
+sourceLink[ info_String ] := sourceLink @ StringSplit[ info, "@@" ];
+sourceLink[ { tag_String, source_String } ] := sourceLink @ { tag, StringSplit[ source, ":" ] };
+sourceLink[ { tag_String, { file_String, pos_String } } ] := sourceLink @ { tag, file, StringSplit[ pos, "-" ] };
+
+sourceLink[ { tag_String, file_String, { lc1_String, lc2_String } } ] :=
+    sourceLink @ { tag, file, StringSplit[ lc1, "," ], StringSplit[ lc2, "," ] };
+
+sourceLink[ { tag_String, file_String, { l1_String, c1_String }, { l2_String, c2_String } } ] :=
+    Module[ { id },
+        id = Replace[ $releaseID, { "$RELEASE_ID$" | "None" | Except[ _String ] -> "main" } ];
+        "\n\nhttps://github.com/rhennigan/ComputationalFitness/blob/"<>id<>"/"<>file<>"#L"<>l1<>"-L"<>l2
+    ];
+
+sourceLink[ ___ ] := "";
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*$bugReportBodyTemplate*)
+$bugReportBodyTemplate = StringTemplate[ "\
+Describe the issue in detail here. Attach any relevant screenshots or files. \
+The section below was automatically generated. \
+Remove any information that you do not wish to include in the report.\
+\
+%%SourceLink%%
+
+<details>
+<summary>Debug Data</summary>
+
+%%DebugData%%
+
+## Failure Data
+
+%%InternalFailure%%
+
+## Stack Data
+```
+%%Stack%%
+```
+
+</details>",
+Delimiters -> "%%"
+];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*$frontEndVersion*)
+$frontEndVersion :=
+    If[ TrueQ @ $CloudEvaluation && $EvaluationEnvironment === "Session",
+        StringJoin[ "Cloud: ", ToString @ $CloudVersion ],
+        StringJoin[ "Desktop: ", ToString @ UsingFrontEnd @ SystemInformation[ "FrontEnd", "Version" ] ]
+    ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*$bugReportStack*)
+$bugReportStack := StringRiffle[
+    Reverse @ Replace[
+        DeleteAdjacentDuplicates @ Cases[
+            Stack[ _ ],
+            HoldForm[ (s_Symbol) | (s_Symbol)[ ___ ] | (s_Symbol)[ ___ ][ ___ ] ] /;
+                AtomQ @ Unevaluated @ s && StringStartsQ[ Context @ s, "RickHennigan`ComputationalFitness`" ] :>
+                    SymbolName @ Unevaluated @ s
+        ],
+        { a___, "throwInternalFailure", ___ } :> { a, "throwInternalFailure" }
+    ],
+    "\n"
+];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*trimURL*)
+trimURL[ url_String ] := trimURL[ url, $maxBugReportURLSize ];
+
+trimURL[ url_String, limit_Integer ] /; StringLength @ url <= limit := url;
+
+trimURL[ url_String, limit_Integer ] :=
+    Module[ { sp, bt, nl, before, after, base, take },
+        sp     = ("+"|"%20")...;
+        bt     = URLEncode[ "```" ];
+        nl     = (URLEncode[ "\r\n" ] | URLEncode[ "\n" ])...;
+        before = Longest[ "%23%23"~~sp~~"Failure"~~sp~~"Data"~~nl~~bt~~nl ];
+        after  = Longest[ nl~~bt~~nl~~"%3C%2F"~~"details"~~"%3E" ];
+        base   = StringLength @ StringReplace[ url, a: before ~~ ___ ~~ b: after :> a <> "\n" <> b ];
+        take   = UpTo @ Max[ limit - base, 80 ];
+
+        With[ { t = take },
+            StringReplace[
+                StringReplace[ url, a: before ~~ b__ ~~ c: after :> a <> StringTake[ b, t ] <> "\n" <> c ],
+                "%%0A" | ("%"~~HexadecimalCharacter~~"%0A") :> "%0A"
+            ]
+        ]
+    ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*associationMarkdown*)
+associationMarkdown[ data_Association? AssociationQ ] := StringJoin[
+    "| Property | Value |\n| --- | --- |\n",
+    StringRiffle[
+        KeyValueMap[
+            Function[
+                { k, v },
+                StringJoin @ StringJoin[
+                    "| ",
+                    ToString @ ToString[ Unevaluated @ k, CharacterEncoding -> "UTF-8" ],
+                    " | ``",
+                    escapePipes @ truncatePartString @ ToString[
+                        Unevaluated @ v,
+                        InputForm,
+                        CharacterEncoding -> "UTF-8"
+                    ],
+                    "`` |"
+                ],
+                HoldAllComplete
+            ],
+            data
+        ],
+        "\n"
+    ]
+];
+
+associationMarkdown[ rules___ ] := With[ { as = Association @ rules }, associationMarkdown @ as /; AssociationQ @ as ];
+associationMarkdown[ other_   ] := markdownCodeBlock @ other;
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsection::Closed:: *)
+(*markdownCodeBlock*)
+markdownCodeBlock[ as_Association? AssociationQ ] :=
+    "```\n<|\n" <> StringRiffle[ ruleToString /@ Normal[ as, Association ], ",\n" ] <> "\n|>\n```\n";
+
+markdownCodeBlock[ expr_ ] := StringJoin[
+    "```\n",
+    StringTake[ ToString[ expr, InputForm, PageWidth -> $maxPartLength ], UpTo @ $maxBugReportURLSize ],
+    "\n```\n"
+];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*ruleToString*)
+ruleToString[ a_ -> b_ ] := StringJoin[
+    "  ",
+    ToString[ Unevaluated @ a, InputForm ],
+    " -> ",
+    truncatePartString @ ToString[ Unevaluated @ b, InputForm ]
+];
+
+ruleToString[ a_ :> b_ ] := StringJoin[
+    "  ",
+    ToString[ Unevaluated @ a, InputForm ],
+    " :> ",
+    truncatePartString @ ToString[ Unevaluated @ b, InputForm ]
+];
+
+ruleToString[ other_ ] := truncatePartString @ ToString[ Unevaluated @ other, InputForm ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*truncatePartString*)
+truncatePartString[ string_ ] := truncatePartString[ string, $maxPartLength ];
+
+truncatePartString[ string_String, max_Integer ] :=
+    If[ StringLength @ string > max, StringTake[ string, UpTo @ max ] <> "...", string ];
+
+truncatePartString[ other_, max_Integer ] := truncatePartString[ ToString[ Unevaluated @ other, InputForm ], max ];
+
+(* ::**************************************************************************************************************:: *)
+(* ::Subsubsection::Closed:: *)
+(*escapePipes*)
+escapePipes[ string_String ] := StringReplace[ string, "|" -> "\\|" ];
 
 (* ::**************************************************************************************************************:: *)
 (* ::Section::Closed:: *)
