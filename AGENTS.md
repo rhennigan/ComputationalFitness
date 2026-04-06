@@ -162,3 +162,27 @@ Main exported symbols (see PacletInfo.wl):
 - Context aliases (e.g., ``sp`PrivateHoldNotValidQ``) reduce symbol verbosity
 - The build system integrates with GitHub Actions for automated releases
 - Release metadata (`$RELEASE_ID$`, etc.) is templated in PacletInfo.wl and replaced during CI builds
+
+## Cursor Cloud specific instructions
+
+### Runtime environment
+
+Wolfram Engine 14.1 runs inside a Docker container (`wolframresearch/wolframengine:14.1`). A persistent container named `wolfram-dev` is created with `build-essential` pre-installed (required for C compilation via `CCompilerDriver`). A `/usr/local/bin/wolframscript` wrapper script delegates to this container, mounting `/workspace` so all repo paths work transparently.
+
+The `WOLFRAMSCRIPT_ENTITLEMENTID` secret must be configured for licensing. When set, the wrapper passes it through to the container along with the `WOLFRAMINIT` env var.
+
+### Key commands
+
+| Task | Command |
+|------|---------|
+| Compile C libraries | `wolframscript -f Scripts/Compile.wls` |
+| Build paclet | `wolframscript -f Scripts/BuildPaclet.wls` (requires cloud publisher auth; MX build succeeds without it) |
+| Run all tests | `wolframscript -f Scripts/TestPaclet.wls` |
+| Load paclet interactively | `wolframscript -code 'PacletDirectoryLoad["/workspace"]; Get["RickHennigan\x60ComputationalFitness\x60"]; ...'` |
+
+### Gotchas
+
+- The `LibraryResources/` directory is not checked into git. You must run `wolframscript -f Scripts/Compile.wls` before the paclet can load FIT files (the C shared libraries are compiled on demand for the current `$SystemID`).
+- The full `BuildPaclet.wls` script validates cloud resource references and will fail without Wolfram Cloud publisher credentials (`RESOURCE_PUBLISHER_TOKEN`). This is expected in local dev; the MX file and C libraries are the important build outputs.
+- If you modify paclet code and an MX file exists at `Kernel/64Bit/ComputationalFitness.mx`, delete it before testing so the kernel loads the source `.wl` files instead of the cached MX.
+- The `wolfram-dev` Docker container must be running for `wolframscript` to work. If it was stopped, restart it with `sudo docker start wolfram-dev`.
